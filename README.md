@@ -8,5 +8,7 @@ Edit the "data" Javascript file.
 
 ## Assets
 Most of the assest belong to [RobTop Games](http://robtopgames.com)
+
 Pusab ([License](https://www.fontsquirrel.com/license/Pusab))
+
 Oxygene ([License](http://pizzadude.dk/site/))
