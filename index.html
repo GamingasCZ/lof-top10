@@ -5,19 +5,211 @@
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="icon" href="./images/gdbrowser.png">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script rel="text/javascript" src="generator.js"></script>
-
     <title>Top 10 Levelů od Fanoušků</title>
+    <script>
+ids = [-1,55029144,52409692,-1,-1,59654444,-1,55189154,55787317,39776379];
+
+function onGDBClick(pos) {
+  $(document).ready(function() {
+    if (ids[pos] == -1) {
+      $("#cpopup"+pos).css("background-color","rgba(255,128,128,0.5)");
+      $("#cpopup"+pos).text("Level neexistuje!");
+      $("#cpopup"+pos).fadeTo(100,1);
+      $("#cpopup"+pos).fadeTo(500,0);
+    }
+    else {
+      window.open("https://gdbrowser.com/"+ids[pos],"_blank");
+    }
+  });
+}
+
+function onIDCopyClick(pos) {
+  $(document).ready(function() {
+    $(".popup").fadeTo(100,0);
+    if (ids[pos] == -1) {
+      $("#cpopup"+pos).css("background-color","rgba(255,128,128,0.5)");
+      $("#cpopup"+pos).text("Level neexistuje!");
+      $("#cpopup"+pos).fadeTo(100,1);
+      $("#cpopup"+pos).fadeTo(500,0);
+    }
+    else {
+      $("#cpopup"+pos).text("ID: "+ids[pos]);
+      $("#cpopup"+pos).fadeTo(100,1);
+    }
+  });
+}
+
+function onYTClick(link) {
+  $(document).ready(function() {
+  $(".popup").fadeTo(100,0);
+  if (link.length < 3) {
+    $("#cpopup"+link).css("background-color","rgba(255,128,128,0.5)");
+    $("#cpopup"+link).text("Video neexistuje!");
+    $("#cpopup"+link).fadeTo(100,1);
+    $("#cpopup"+link).fadeTo(500,0);
+      }
+  else {
+    window.open("https://www.youtube.com/watch?v="+link,"_blank")
+      }
+    });
+}
+</script>
   </head>
   <body>
     <div class="shade">
       <a href="https://github.com/GamingasCZ/lof-top10"><img class="github" src="images/github.png"></a>
-      <img class="title">
+      <img class="title" src="./images/title.png">
     </div>
     <div align="center">
       <button id="yearButton" class="button"><img class="yearButtonImg" src="images/button1.png"></button>
       <button id="yearButton" class="button disabled"><img class ="yearButtonImg" src="images/locked.png"></button>
     </div>
-    <div class="boards"></div>
+    <img src="./images/crown.png" id="crown" align="center">
+
+    <div class="box" id="top1"><span>Snowy</span>
+      <button class="button" onclick="onYTClick('FBJUt0U4kUw')" title="Zobrazit epizodu">
+        <img class="boxLink" src="./images/yticon.png">
+      </button>
+      <button class="button" onclick="onGDBClick(9)" title="Zobrazit v GDBrowseru">
+        <img class="boxLink" src="./images/gdbrowser.png">
+      </button>
+      <button class="button" onclick="onIDCopyClick(9)" title="Zkopírovat ID levelu">
+        <img class="boxLink" src="./images/copyID.png">
+      </button>
+
+      <p>Od: MurlocGD, PizzaGamerhu</p>
+    <h3 class="popup" id="cpopup9">ID zkopírováno</h3>
+
+    </div>
+
+    <div class="box" id="top2"><span>Garatun</span>
+      <button class="button" onclick="onYTClick('yXo6jY_W6LM')" title="Zobrazit epizodu">
+        <img class="boxLink" src="./images/yticon.png">
+      </button>
+      <button class="button" onclick="onGDBClick(8)" title="Zobrazit v GDBrowseru">
+        <img class="boxLink" src="./images/gdbrowser.png">
+      </button>
+      <button class="button" onclick="onIDCopyClick(8)" title="Zkopírovat ID levelu">
+        <img class="boxLink" src="./images/copyID.png">
+      </button>
+      <p>Od: TellConfig</p>
+      <h3 class="popup" id="cpopup8">ID zkopírováno</h3>
+    </div>
+
+    <div class="box" id="top3"><span>Gold Ring</span>
+      <button class="button" onclick="onYTClick('uT2n-35x1CA')" title="Zobrazit epizodu">
+        <img class="boxLink" src="./images/yticon.png">
+      </button>
+      <button class="button" onclick="onGDBClick(7)" title="Zobrazit v GDBrowseru">
+        <img class="boxLink" src="./images/gdbrowser.png">
+      </button>
+      <button class="button" onclick="onIDCopyClick(7)" title="Zkopírovat ID levelu">
+        <img class="boxLink" src="./images/copyID.png">
+      </button>
+      <p>Od: ShadowBurnSK</p>
+      <h3 class="popup" id="cpopup7">ID zkopírováno</h3>
+    </div>
+
+    <div class="box" id="top4"><span>FiFqo Calling Rebirth</span>
+      <button class="button" onclick="onYTClick('WLJ0rVXIDP4')" title="Zobrazit epizodu">
+        <img class="boxLink" src="./images/yticon.png">
+      </button>
+      <button class="button disabled" onclick="onGDBClick(6)" title="Zobrazit v GDBrowseru">
+        <img class="boxLink" src="./images/gdbrowser.png">
+      </button>
+      <button class="button disabled" onclick="onIDCopyClick(6)" title="Zkopírovat ID levelu">
+        <img class="boxLink" src="./images/copyID.png">
+      </button>
+      <p>Od: GD Mini</p>
+      <h3 class="popup" id="cpopup6">ID zkopírováno</h3>
+    </div>
+
+    <div class="box" id="top5"><span>Gamingas</span>
+      <button class="button" onclick="onYTClick('V1zGo03x4Po')" title="Zobrazit epizodu">
+        <img class="boxLink" src="./images/yticon.png">
+      </button>
+      <button class="button" onclick="onGDBClick(5)" title="Zobrazit v GDBrowseru">
+        <img class="boxLink" src="./images/gdbrowser.png">
+      </button>
+      <button class="button" onclick="onIDCopyClick(5)" title="Zkopírovat ID levelu">
+        <img class="boxLink" src="./images/copyID.png">
+      </button>
+      <p>Od: Qrange</p>
+      <h3 class="popup" id="cpopup5">ID zkopírováno</h3>
+    </div>
+
+    <div class="box" id="top6"><span>Infinity Gamingas</span>
+      <button class="button disabled" onclick="onYTClick('4')" title="Zobrazit epizodu">
+        <img class="boxLink" src="./images/yticon.png">
+      </button>
+      <button class="button disabled" onclick="onGDBClick(4)" title="Zobrazit v GDBrowseru">
+        <img class="boxLink" src="./images/gdbrowser.png">
+      </button>
+      <button class="button disabled" onclick="onIDCopyClick(4)" title="Zkopírovat ID levelu">
+        <img class="boxLink" src="./images/copyID.png">
+      </button>
+      <p>Od: Jazerplay, PlayerGeoCZ</p>
+      <h3 class="popup" id="cpopup4">ID zkopírováno</h3>
+    </div>
+
+    <div class="box" id="top7"><span>Deltarune</span>
+      <button class="button" onclick="onYTClick('3u3ptITvG5g')" title="Zobrazit epizodu">
+        <img class="boxLink" src="./images/yticon.png">
+      </button>
+      <button class="button disabled" onclick="onGDBClick(3)" title="Zobrazit v GDBrowseru">
+        <img class="boxLink" src="./images/gdbrowser.png">
+      </button>
+      <button class="button disabled" onclick="onIDCopyClick(3)" title="Zkopírovat ID levelu">
+        <img class="boxLink" src="./images/copyID.png">
+      </button>
+      <p>Od: EidamGD</p>
+      <h3 class="popup" id="cpopup3">ID zkopírováno</h3>
+    </div>
+
+    <div class="box" id="top8"><span>GG Gedon</span>
+      <button class="button" onclick="onYTClick('ljaAtxqcngg')" title="Zobrazit epizodu">
+        <img class="boxLink" src="./images/yticon.png">
+      </button>
+      <button class="button" onclick="onGDBClick(2)" title="Zobrazit v GDBrowseru">
+        <img class="boxLink" src="./images/gdbrowser.png">
+      </button>
+      <button class="button" onclick="onIDCopyClick(2)" title="Zkopírovat ID levelu">
+        <img class="boxLink" src="./images/copyID.png">
+      </button>
+      <p>Od: Jakubko2005</p>
+      <h3 class="popup" id="cpopup2">ID zkopírováno</h3>
+    </div>
+
+    <div class="box" id="top9"><span>Rainbow Travel</span>
+      <button class="button" onclick="onYTClick('FBJUt0U4kUw')" title="Zobrazit epizodu">
+        <img class="boxLink" src="./images/yticon.png">
+      </button>
+      <button class="button" onclick="onGDBClick(1)" title="Zobrazit v GDBrowseru">
+        <img class="boxLink" src="./images/gdbrowser.png">
+      </button>
+      <button class="button" onclick="onIDCopyClick(1)" title="Zkopírovat ID levelu">
+        <img class="boxLink" src="./images/copyID.png">
+      </button>
+      <p>Od: PlayerGeoCZ</p>
+      <h3 class="popup" id="cpopup1">ID zkopírováno</h3>
+    </div>
+
+    <div class="box" id="top10"><span>Fracture</span>
+      <button class="button" onclick="onYTClick('WLJ0rVXIDP4')" title="Zobrazit epizodu">
+        <img class="boxLink" src="./images/yticon.png">
+      </button>
+      <button class="button disabled" onclick="onGDBClick(0)" title="Zobrazit v GDBrowseru">
+        <img class="boxLink" src="./images/gdbrowser.png">
+      </button>
+      <button class="button disabled" onclick="onIDCopyClick(0)" title="Zkopírovat ID levelu">
+        <img class="boxLink" src="./images/copyID.png">
+      </button>
+      <p>Od: ImSamo</p>
+      <h3 class="popup" id="cpopup0">ID zkopírováno</h3>
+    </div>
+
+    <p class="credits">Většina obrázků patří
+      <a href="https://www.robtopgames.com">RobTop Games</a>.<br />
+    </p>
 </body>
 </html>
