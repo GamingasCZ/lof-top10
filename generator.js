@@ -107,14 +107,14 @@ function onIDCopyClick(pos,index) {
 function onYTClick(link,index) {
 	$(document).ready(function() {
 		$(".popup").fadeTo(100,0);
-		if (link == null) {
+		if (link == "null") {
 			$("#cpopup"+index).css("background-color","rgba(255,128,128,0.5)");
 			$("#cpopup"+index).text("Video neexistuje!");
 			$("#cpopup"+index).fadeTo(100,1);
 			$("#cpopup"+index).fadeTo(500,0);
 			}
 		else {
-			window.open("https://www.youtube.com/watch?v="+link,"_blank")
+			window.open("https://www.youtube.com/watch?v="+link,"_blank");
 			}
 			});
 	}
@@ -123,15 +123,15 @@ function onYTClick(link,index) {
 $(function() {
 	$(".title").attr("src",boards["titleImg"]);
 
-	for (i=1;i<=Object.keys(boards).length;i++) {
+	for (i=1;i<Object.keys(boards).length;i++) {
 
-		let bIndex = (i).toString()
+		let bIndex = (i).toString();
 
-		if (boards[bIndex]["levelID"] == null) {var ID = "disabled"}
-		else {var ID = ""}
+		if (boards[bIndex]["levelID"] == null) {var ID = "disabled";}
+		else {var ID = "";}
 
-		if (boards[bIndex]["video"] == null) {var video = "disabled"}
-		else {var video = ""}
+		if (boards[bIndex]["video"] == null) {var video = "disabled";}
+		else {var video = "";}
 
 		cardBG = `background-color: ${boards[bIndex]["color"]}`;
 
@@ -147,7 +147,7 @@ $(function() {
 
 		$(".boards").append(`
 		<div class="box" style="${cardBG}"><span>${boards[bIndex]["levelName"]}</span>
-		<button class="button ${video}" onclick="onYTClick(${boards[bIndex]["video"]},${bIndex})" title="Zobrazit epizodu">
+		<button class="button ${video}" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="Zobrazit epizodu">
 			<img class="boxLink" src="./images/yticon.png">
 		</button>
 		<button class="button ${ID}" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="Zobrazit v GDBrowseru">
