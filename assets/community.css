@@ -1,0 +1,54 @@
+.uploadBG {
+    background-color: rgb(50, 63, 50);
+    padding: 2% 5% 2% 5%;
+    margin: 2vh 10vw;
+    border: rgb(24, 24, 24) 10px solid;
+    border-radius: 10px;
+}
+
+.uploadText {
+    color: white;
+    font-family: "pusab";
+    src: url("assets/PUSAB.TTF");
+    font-size: 3vw;
+    text-shadow: 2px 2px black,
+    -2px -2px black,
+    -2px 2px black,
+     2px -2px black;
+}
+
+.uploadTitle {
+    font-size: 500%;
+    margin: 5px 0px 5px 0px;
+}
+
+input {
+    background-color: rgb(36, 36, 36);
+    border:rgb(24, 24, 24) 5px solid;
+    border-radius: 5%;
+    padding: 3px 5px;
+    color: white;
+}
+
+#jsonBox {
+    background-color: rgb(36, 36, 36);
+    border:rgb(24, 24, 24) 5px solid;
+    border-radius: 5%;
+    width: 90%;
+    height: 100vh;
+    border-radius: 2%;
+    padding: 1% 2%;
+    margin: auto;
+    color: white;
+}
+
+.jsonHelp {
+    width: 40%;
+    height: 40%;
+}
+
+.errorBox {
+    padding: 1% 0.5%;
+    border-radius: 5px;
+    font-size: 200%;
+}

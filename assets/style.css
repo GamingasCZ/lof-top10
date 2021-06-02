@@ -22,7 +22,7 @@ body {
 
 @font-face::before {
   font-family: "pusab";
-  content = '';
+  content: "";
   src: url("assets/PUSAB.TTF");
 }
 
@@ -100,7 +100,7 @@ span {
   float: none;
 }
 .yearButtonImg {
-  width: inherit;
+  width: 250px;
 }
 
 .button {

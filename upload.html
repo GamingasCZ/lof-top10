@@ -1,18 +1,75 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="./assets/style.css">
-    <link rel="icon" href="./images/gdbrowser.png">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script rel="text/javascript" src="generator.js"></script>
 
-    <title>Nahrávání seznamů</title>
-  </head>
-  <body>
-    <div class="shade">
-      <a href="https://github.com/GamingasCZ/lof-top10"><img class="github" src="images/github.png"></a>
-      <img class="title">
-    </div>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/community.css">
+
+  <link rel="icon" href="./images/gdbrowser.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script rel="text/javascript" src="generator.js"></script>
+  <script rel="text/javascript" src="editor.js"></script>
+
+  <title>Nahrávání seznamů</title>
+</head>
+
+<body>
+  <div class="shade">
+    <a href="https://github.com/GamingasCZ/lof-top10"><img class="github" src="images/github.png"></a>
+    <img class="title">
+  </div>
+
+  <div align="center">
+
+    <button id="yearButton" class="button">
+      <a href="index.html">
+        <img class="yearButtonImg" src="images/button1.png">
+      </a>
+    </button>
+
+    <button id="yearButton" class="button disabled"><img class="yearButtonImg" src="images/locked.png"></button>
+
+    <button id="yearButton" class="button"><img class="yearButtonImg" src="images/community.png"></button>
+  </div>
+
+  <div class="uploadBG smallUploaderDialog">
+    <h3 class="uploadText uploadTitle" align="center">Nahrávání</h3>
+    <button class="button" onclick="showUploader()" title="Ukázat nahrávací dialog">
+      <img src="images/arrow.png">
+    </button>
+  </div>
+
+  <form class="uploadBG uploaderDialog">
+    <h3 class="uploadText uploadTitle" align="center">Nahrávání</h3>
+    <button class="button" onclick="hideUploader()" title="Sbalit nahrávací dialog">
+      <img src="images/arrow.png" style="transform: rotate(180deg);">
+    </button>
+    <h3 class="uploadText">Jméno seznamu: <input type="text"></h3>
+    <h3 class="uploadText">Tvurce: <input type="text"></h3>
+    <h3 class="uploadText">JSON
+      <button class="button" type="button" onclick="checkJson($('#jsonBox').val())" title="Zkontrolovat JSON">
+        <a href="#errorBox">
+          <img class="jsonHelp" src="images/jsonHelp.png">
+        </a>
+
+      </button>
+
+      <button class="button" title="Zobrazit šablonu">
+        <a href="https://google.com">
+          <img class="jsonHelp" src="images/jsonCopy.png">
+        </a>
+      </button>
+
+    </h3>
+    <textarea id="jsonBox"></textarea>
+    <p class="errorBox" style="color: rgb(255, 255, 255);"></p>
+    <input type="submit">
+
+  </form>
+
 </body>
+
 </html>
