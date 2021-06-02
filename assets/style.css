@@ -147,23 +147,3 @@ span {
   margin-left: auto;
   margin-right: auto;
 }
-
-#top1 {
-  border-color: yellow;
-  border-width: 5px;
-  border-style: solid;
-  background-color: #e55b5b;
-  box-shadow: 5px 5px 40px yellow,
-            -5px -5px 40px green,
-             5px -5px 40px aqua,
-             -5px 5px 40px red;
-}
-
-#top2 {
-  box-shadow: 2px 2px 30px aqua;
-  background-color: #71fcec;
-}
-#top3 {
-  box-shadow: 2px 2px 20px yellow;
-  background-color: #f3fc71;
-}
