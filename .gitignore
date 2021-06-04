@@ -1,1 +1,3 @@
 .directory
+php/sendList.php
+php/getLists.php
