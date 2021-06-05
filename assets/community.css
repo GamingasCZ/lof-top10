@@ -7,6 +7,8 @@
 }
 
 .uploadText {
+    margin-top: 2%;
+    margin-bottom: 2%;
     color: white;
     font-family: "pusab";
     src: url("assets/PUSAB.TTF");
@@ -23,11 +25,13 @@
 }
 
 input {
+    margin: inherit;
     background-color: rgb(36, 36, 36);
     border:rgb(24, 24, 24) 5px solid;
     border-radius: 5%;
     padding: 3px 5px;
     color: white;
+    transform: translateY(-20%);
 }
 
 #jsonBox {
@@ -40,6 +44,7 @@ input {
     padding: 1% 2%;
     margin: auto;
     color: white;
+    font-family: monospace;
 }
 
 .jsonHelp {
@@ -51,4 +56,21 @@ input {
     padding: 1% 0.5%;
     border-radius: 5px;
     font-size: 200%;
+}
+
+#listPreview {
+    background-color: rgb(36, 36, 36);
+    color: white;
+    padding: 1% 2% 1% 2%;
+    margin: 7%;
+    border: white 7px solid;
+    border-radius: 5px;
+    cursor: pointer;
+    float: none;
+    display: block;
+    size: 80%;
+}
+
+#listPreview:hover {
+    background-color: tomato;
 }

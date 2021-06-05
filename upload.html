@@ -37,18 +37,18 @@
 
   <div class="uploadBG smallUploaderDialog">
     <h3 class="uploadText uploadTitle" align="center">Nahrávání</h3>
-    <button class="button" onclick="showUploader()" title="Ukázat nahrávací dialog">
+    <button class="button" onclick="showUploader()" type="button" title="Ukázat nahrávací dialog">
       <img src="images/arrow.png">
     </button>
   </div>
 
-  <form class="uploadBG uploaderDialog">
+  <form id="levelUpload" action="php/sendList.php" method="post" class="uploadBG uploaderDialog">
     <h3 class="uploadText uploadTitle" align="center">Nahrávání</h3>
-    <button class="button" onclick="hideUploader()" title="Sbalit nahrávací dialog">
+    <button class="button" type="button" onclick="hideUploader()" title="Sbalit nahrávací dialog">
       <img src="images/arrow.png" style="transform: rotate(180deg);">
     </button>
-    <h3 class="uploadText">Jméno seznamu: <input type="text"></h3>
-    <h3 class="uploadText">Tvurce: <input type="text"></h3>
+    <label for="lName" class="uploadText">Jméno seznamu: <input name="lName" type="text"></label><br />
+    <label for="creator" class="uploadText">Tvurce: <input name="creator" type="text"></label><br />
     <h3 class="uploadText">JSON
       <button class="button" type="button" onclick="checkJson($('#jsonBox').val())" title="Zkontrolovat JSON">
         <a href="#errorBox">
@@ -58,17 +58,18 @@
       </button>
 
       <button class="button" title="Zobrazit šablonu">
-        <a href="https://google.com">
+        <a href="https://raw.githubusercontent.com/GamingasCZ/lof-top10/editor/listTemplate.json">
           <img class="jsonHelp" src="images/jsonCopy.png">
         </a>
       </button>
 
     </h3>
-    <textarea id="jsonBox"></textarea>
+    <textarea form="levelUpload" name="listData" id="jsonBox"></textarea>
     <p class="errorBox" style="color: rgb(255, 255, 255);"></p>
-    <input type="submit">
-
+    <input onclick="" type="submit" value="Nahrát">
   </form>
+
+  <div class="customLists"></div>
 
 </body>
 
