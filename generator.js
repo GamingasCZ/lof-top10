@@ -44,6 +44,49 @@ function onYTClick(link, index) {
 	});
 }
 
+function generateList(boards) {
+	for (i = 1; i < Object.keys(boards).length; i++) {
+
+		let bIndex = (i).toString();
+
+		if (boards[bIndex]["levelID"] == null) { var ID = "disabled"; }
+		else { var ID = ""; }
+
+		if (boards[bIndex]["video"] == null) { var video = "disabled"; }
+		else { var video = ""; }
+
+		var cardBG = `background-color: ${boards[bIndex]["color"]}`;
+
+		if (i == 1) {
+			cardBG += ";box-shadow: 5px 5px 40px yellow, -5px -5px 40px green, 5px -5px 40px aqua, -5px 5px 40px red;";
+		}
+		if (i == 2) {
+			cardBG += `;box-shadow: 2px 2px 30px ${boards[bIndex]["color"]}`;
+		}
+		if (i == 3) {
+			cardBG += `;box-shadow: 2px 2px 20px ${boards[bIndex]["color"]}`;
+		}
+
+		$(".boards").append(`
+		<div class="box" style="${cardBG}"><span>${boards[bIndex]["levelName"]}</span>
+		<button class="button ${video}" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="Zobrazit epizodu">
+			<img class="boxLink" src="./images/yticon.png">
+		</button>
+		<button class="button ${ID}" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="Zobrazit v GDBrowseru">
+			<img class="boxLink" src="./images/gdbrowser.png">
+		</button>
+		<button class="button ${ID}" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="ZkopĂ­rovat ID levelu">
+			<img class="boxLink" src="./images/copyID.png">
+		</button>
+
+		<p>Od: ${boards[bIndex]["creator"]}</p>
+		<h3 class="popup" id="cpopup${bIndex}">ID zkopĂ­rovĂˇno</h3>
+
+		</div>
+	`);
+	};
+}
+
 var listData = "";
 $(function () {
 
@@ -125,92 +168,17 @@ $(function () {
 
 	if (location.search != "") {
 		var listID = location.search.slice(1).split("=")[1];
-		var ok = $.get("./php/getLists.php?id=" + listID, function (data) {
-			boards = data;
-			for (i = 1; i < Object.keys(boards).length; i++) {
-
-				let bIndex = (i).toString();
-		
-				if (boards[bIndex]["levelID"] == null) { var ID = "disabled"; }
-				else { var ID = ""; }
-		
-				if (boards[bIndex]["video"] == null) { var video = "disabled"; }
-				else { var video = ""; }
-		
-				var cardBG = `background-color: ${boards[bIndex]["color"]}`;
-		
-				if (i == 1) {
-					cardBG += ";box-shadow: 5px 5px 40px yellow, -5px -5px 40px green, 5px -5px 40px aqua, -5px 5px 40px red;";
-				}
-				if (i == 2) {
-					cardBG += `;box-shadow: 2px 2px 30px ${boards[bIndex]["color"]}`;
-				}
-				if (i == 3) {
-					cardBG += `;box-shadow: 2px 2px 20px ${boards[bIndex]["color"]}`;
-				}
-		
-				$(".boards").append(`
-				<div class="box" style="${cardBG}"><span>${boards[bIndex]["levelName"]}</span>
-				<button class="button ${video}" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="Zobrazit epizodu">
-					<img class="boxLink" src="./images/yticon.png">
-				</button>
-				<button class="button ${ID}" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="Zobrazit v GDBrowseru">
-					<img class="boxLink" src="./images/gdbrowser.png">
-				</button>
-				<button class="button ${ID}" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="Zkopírovat ID levelu">
-					<img class="boxLink" src="./images/copyID.png">
-				</button>
-		
-				<p>Od: ${boards[bIndex]["creator"]}</p>
-				<h3 class="popup" id="cpopup${bIndex}">ID zkopírováno</h3>
-		
-				</div>
-			`);
-			};
-		});
-		console.log(ok);
-		console.log(listData);
-		var boards = listData;
+		$.get("./php/getLists.php?id=" + listID, function (data) {
+			let listData = data.split(";");
+			let boards = JSON.parse(listData[3]);
+			$(".titles").append("<p>Seznam: "+listData[1]+"</p><p>Od: "+listData[0]+"</p>");
+			generateList(boards);
+		}
+		)
+	}
+	else {
+		generateList(boards);
 	}
 
-	for (i = 1; i < Object.keys(boards).length; i++) {
 
-		let bIndex = (i).toString();
-
-		if (boards[bIndex]["levelID"] == null) { var ID = "disabled"; }
-		else { var ID = ""; }
-
-		if (boards[bIndex]["video"] == null) { var video = "disabled"; }
-		else { var video = ""; }
-
-		var cardBG = `background-color: ${boards[bIndex]["color"]}`;
-
-		if (i == 1) {
-			cardBG += ";box-shadow: 5px 5px 40px yellow, -5px -5px 40px green, 5px -5px 40px aqua, -5px 5px 40px red;";
-		}
-		if (i == 2) {
-			cardBG += `;box-shadow: 2px 2px 30px ${boards[bIndex]["color"]}`;
-		}
-		if (i == 3) {
-			cardBG += `;box-shadow: 2px 2px 20px ${boards[bIndex]["color"]}`;
-		}
-
-		$(".boards").append(`
-		<div class="box" style="${cardBG}"><span>${boards[bIndex]["levelName"]}</span>
-		<button class="button ${video}" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="Zobrazit epizodu">
-			<img class="boxLink" src="./images/yticon.png">
-		</button>
-		<button class="button ${ID}" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="Zobrazit v GDBrowseru">
-			<img class="boxLink" src="./images/gdbrowser.png">
-		</button>
-		<button class="button ${ID}" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="Zkopírovat ID levelu">
-			<img class="boxLink" src="./images/copyID.png">
-		</button>
-
-		<p>Od: ${boards[bIndex]["creator"]}</p>
-		<h3 class="popup" id="cpopup${bIndex}">ID zkopírováno</h3>
-
-		</div>
-	`);
-	};
 });

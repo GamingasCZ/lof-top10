@@ -41,9 +41,11 @@ $(function () {
             for (i = 0; listsArray.length; i++) {
                 let listData = (listsArray[i]).split(";");
                 $(".customLists").append(`
-                <div id="listPreview" listid="${listData[4]}" class="button">
+                <div id="listPreview" class="button">
+                    <a href="http://www.gamingas.wz.cz/index.html?id=${listData[4]}">
                     <div class="uploadText">${listData[1]}</div>
                     <div class="uploadText">Od: ${listData[0]}</div>
+                    </a>
                 </div>
                         `)
             };
@@ -51,10 +53,12 @@ $(function () {
         if (data.match(/\|/g).length == 1) {
             let listData = (data).split(";");
             $(".customLists").append(`
-            <div id="listPreview" listid="${listData[4]}" class="button">
-                <div class="uploadText">${listData[1]}</div>
-                <div class="uploadText">Od: ${listData[0]}</div>
-            </div>
+                <div id="listPreview" class="button">
+                    <a href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[4]}">
+                    <div class="uploadText">${listData[1]}</div>
+                    <div class="uploadText">Od: ${listData[0]}</div>
+                    </a>
+                </div>
                     `)
         }
     });

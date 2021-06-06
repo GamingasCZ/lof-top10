@@ -47,6 +47,15 @@ span {
   font-family: sans-serif;
 }
 
+/*Nadpis v custom Listu*/
+.titles {
+    font-size: 5vw;
+    color: white;
+    margin: auto;
+    text-align: center;
+    
+}
+
 .title {
   width: 90vw;
   transform: scale(1,1) rotateZ(0deg);
