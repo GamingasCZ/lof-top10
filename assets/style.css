@@ -17,7 +17,7 @@
 }
 
 body {
-  background-color: black;
+  background-image: url("../images/bg.png");
 }
 
 @font-face::before {
@@ -70,6 +70,7 @@ span {
 
 .box {
   background-color: #43a045;
+  background-image: url("../images/cardBg.png");
   padding: 20px 0px 32px 50px;
   margin: 50px 10% 50px 10%;
   border-radius: 10px;
