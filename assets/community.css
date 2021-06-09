@@ -70,7 +70,10 @@ input {
     cursor: pointer;
     float: none;
     display: block;
-    size: 80%;
+}
+
+#listPreview:visited {
+    background-color: rgb(64, 153, 56);
 }
 
 #listPreview:hover {
