@@ -53,6 +53,7 @@ span {
     color: white;
     margin: auto;
     text-align: center;
+    font-family: pusab;
     
 }
 
@@ -104,7 +105,7 @@ span {
 }
 
 #yearButton {
-  width: 250px;
+  width: inherit;
   margin: 0px 8vw 0px 0px;
   float: none;
 }

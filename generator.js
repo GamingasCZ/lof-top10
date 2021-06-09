@@ -169,10 +169,17 @@ $(function () {
 	if (location.search != "") {
 		var listID = location.search.slice(1).split("=")[1];
 		$.get("./php/getLists.php?id=" + listID, function (data) {
-			let listData = data.split(";");
-			let boards = JSON.parse(listData[3]);
-			$(".titles").append("<p>Seznam: "+listData[1]+"</p><p>Od: "+listData[0]+"</p>");
-			generateList(boards);
+			if (data == 1) {
+				$(".titles").append("<p>Seznam neexistuje :/!</p>");}
+			else if (data == 2) {
+				$(".titles").append("<p>Jakej génius hodil slovo namísto IDcka :D</p>");}
+			else {
+				let listData = data.split(";");
+				let boards = JSON.parse(listData[3]);
+				$(".titles").append("<p>Seznam: "+listData[1]+"</p><p>Od: "+listData[0]+"</p>");
+				generateList(boards);
+			}
+
 		}
 		)
 	}

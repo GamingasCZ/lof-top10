@@ -17,10 +17,11 @@
     -2px -2px black,
     -2px 2px black,
      2px -2px black;
+    line-height: 3vw;
 }
 
 .uploadTitle {
-    font-size: 500%;
+    font-size: 10vw;
     margin: 5px 0px 5px 0px;
 }
 
@@ -32,6 +33,7 @@ input {
     padding: 3px 5px;
     color: white;
     transform: translateY(-20%);
+    width: 15vw;
 }
 
 #jsonBox {

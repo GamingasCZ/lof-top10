@@ -47,8 +47,8 @@
     <button class="button" type="button" onclick="hideUploader()" title="Sbalit nahrávací dialog">
       <img src="images/arrow.png" style="transform: rotate(180deg);">
     </button>
-    <label for="lName" class="uploadText">Jméno seznamu: <input name="lName" type="text"></label><br />
-    <label for="creator" class="uploadText">Tvurce: <input name="creator" type="text"></label><br />
+    <label for="lName" class="uploadText">Jméno seznamu: <input name="lName" type="text" id="listnm"></label><br />
+    <label for="creator" class="uploadText">Tvurce: <input name="creator" type="text" id="creatornm"></label><br />
     <h3 class="uploadText">JSON
       <button class="button" type="button" onclick="checkJson($('#jsonBox').val())" title="Zkontrolovat JSON">
         <a href="#errorBox">
@@ -66,7 +66,7 @@
     </h3>
     <textarea form="levelUpload" name="listData" id="jsonBox"></textarea>
     <p class="errorBox" style="color: rgb(255, 255, 255);"></p>
-    <input onclick="" type="submit" value="Nahrát">
+    <input onclick="uploadList()" type="button" value="Nahrát">
   </form>
 
   <div class="customLists"></div>
