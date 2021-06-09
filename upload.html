@@ -35,16 +35,14 @@
   </div>
 
   <div class="uploadBG smallUploaderDialog">
-    <h3 class="uploadText uploadTitle" align="center">Nahrávání</h3>
-    <button class="button" onclick="showUploader()" type="button" title="Ukázat nahrávací dialog">
-      <img src="images/arrow.png">
+    <button align="center" class="button uploadText uploadTitle" onclick="showUploader()" type="button" title="Ukázat nahrávací dialog">
+      Nahrávání
     </button>
   </div>
 
   <form id="levelUpload" action="php/sendList.php" method="post" class="uploadBG uploaderDialog">
-    <h3 class="uploadText uploadTitle" align="center">Nahrávání</h3>
-    <button class="button" type="button" onclick="hideUploader()" title="Sbalit nahrávací dialog">
-      <img src="images/arrow.png" style="transform: rotate(180deg);">
+    <button class="button  uploadText uploadTitle" type="button" onclick="hideUploader()" title="Sbalit nahrávací dialog">
+      Nahrávání
     </button>
     <label for="lName" class="uploadText">Jméno seznamu: <input name="lName" type="text" id="listnm"></label><br />
     <label for="creator" class="uploadText">Tvurce: <input name="creator" type="text" id="creatornm"></label><br />

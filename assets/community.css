@@ -22,7 +22,15 @@
 
 .uploadTitle {
     font-size: 7vw;
-    margin: 5px 0px 5px 0px;
+    margin: auto;
+    padding: 5px 0px 5px 0px;
+    float: none;
+    display: block;
+    text-shadow: 2px 2px rgb(61, 131, 79),
+    -2px -2px rgb(61, 131, 79),
+    -2px 2px rgb(61, 131, 79),
+     2px -2px rgb(61, 131, 79);
+
 }
 
 input {
