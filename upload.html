@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/community.css">
+
+  <link rel="icon" href="./images/gdbrowser.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script rel="text/javascript" src="generator.js"></script>
+  <script rel="text/javascript" src="editor.js"></script>
+
+  <title>Nahrávání seznamů</title>
+</head>
+
+<body>
+  <div class="shade">
+    <a href="https://github.com/GamingasCZ/lof-top10"><img class="github" src="images/github.png"></a>
+    <img class="title">
+  </div>
+
+  <div align="center">
+
+    <button id="yearButton" class="button">
+      <a href="index.html">
+        <img class="yearButtonImg" src="images/button1.png">
+      </a>
+    </button>
+
+    <button id="yearButton" class="button disabled"><img class="yearButtonImg" src="images/locked.png"></button>
+
+    <button id="yearButton" class="button"><img class="yearButtonImg" src="images/community.png"></button>
+  </div>
+
+  <div class="uploadBG smallUploaderDialog">
+    <button align="center" class="button uploadText uploadTitle" onclick="showUploader()" type="button" title="Ukázat nahrávací dialog">
+      Nahrávání
+    </button>
+  </div>
+
+  <form id="levelUpload" action="php/sendList.php" method="post" class="uploadBG uploaderDialog">
+    <button class="button  uploadText uploadTitle" type="button" onclick="hideUploader()" title="Sbalit nahrávací dialog">
+      Nahrávání
+    </button>
+    <label for="lName" class="uploadText">Jméno seznamu: <input name="lName" type="text" id="listnm"></label><br />
+    <label for="creator" class="uploadText">Tvurce: <input name="creator" type="text" id="creatornm"></label><br />
+    <h3 class="uploadText">JSON
+      <button class="button" type="button" onclick="checkJson($('#jsonBox').val())" title="Zkontrolovat JSON">
+        <a href="#errorBox">
+          <img class="jsonHelp" src="images/jsonHelp.png">
+        </a>
+
+      </button>
+
+      <button class="button" title="Zobrazit šablonu">
+        <a href="https://raw.githubusercontent.com/GamingasCZ/lof-top10/editor/listTemplate.json">
+          <img class="jsonHelp" src="images/jsonCopy.png">
+        </a>
+      </button>
+
+    </h3>
+    <textarea form="levelUpload" name="listData" id="jsonBox"></textarea>
+    <p class="errorBox" style="color: rgb(255, 255, 255);"></p>
+    <input onclick="uploadList()" type="button" value="Nahrát">
+  </form>
+
+  <div class="customLists"></div>
+
+</body>
+
+</html>

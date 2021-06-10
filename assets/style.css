@@ -17,12 +17,12 @@
 }
 
 body {
-  background-color: black;
+  background-image: url("../images/bg.png");
 }
 
 @font-face::before {
   font-family: "pusab";
-  content = '';
+  content: "";
   src: url("assets/PUSAB.TTF");
 }
 
@@ -47,6 +47,16 @@ span {
   font-family: sans-serif;
 }
 
+/*Nadpis v custom Listu*/
+.titles {
+    font-size: 5vw;
+    color: white;
+    margin: auto;
+    text-align: center;
+    font-family: pusab;
+    
+}
+
 .title {
   width: 90vw;
   transform: scale(1,1) rotateZ(0deg);
@@ -60,6 +70,7 @@ span {
 
 .box {
   background-color: #43a045;
+  background-image: url("../images/cardBg.png");
   padding: 20px 0px 32px 50px;
   margin: 50px 10% 50px 10%;
   border-radius: 10px;
@@ -95,12 +106,12 @@ span {
 }
 
 #yearButton {
-  width: 250px;
+  width: inherit;
   margin: 0px 8vw 0px 0px;
   float: none;
 }
 .yearButtonImg {
-  width: inherit;
+  width: 250px;
 }
 
 .button {
