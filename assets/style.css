@@ -20,11 +20,6 @@ body {
   background-image: url("../images/bg.png");
 }
 
-@font-face::before {
-  font-family: "pusab";
-  content: "";
-  src: url("assets/PUSAB.TTF");
-}
 
 .shade {
   background-image: linear-gradient(green,#00000000);
@@ -158,3 +153,5 @@ span {
   margin-left: auto;
   margin-right: auto;
 }
+
+
