@@ -27,12 +27,20 @@ function addLevel() {
         // Smazání tutorialu
         $("#mainContent").text("");
     }
-    
-    $("#mainContent").append(card);
+
+    $("#mainContent").append(card(listLenght));
     levelList[listLenght] = "ok";
 
-    document.getElementById("positionEdit").addEventListener("input", function () {
-        $(".positionEdit").css("background-color",$("#colorPicker").val());
+
+    $("#colorPicker").on("change", function () {
+        let chosenColor = $(this).val()
+        let rgb = [];
+        for (i = 1; i < 6; i += 2) {
+            rgb.push(parseInt("0x"+chosenColor.slice(i,i+2))-40)
+        }
+            $(".positionEdit").css("background-color", $(this).val());
+            $(".positionEdit").css("border-color", `rgb(${rgb.join(",")})`)
+            $("#lineSplit").css("background-color", `rgb(${rgb.join(",")})`)
     })
 }
 
@@ -40,7 +48,8 @@ var levelList = {
     "titleImg": ""
 }
 
-var card = `
+function card(index) {
+    return `
 <div class="positionEdit">
     <label class="uploadText">ID: </label><input autocomplete="off" id="posInputBox" class="idbox" type="text">
 
@@ -53,7 +62,7 @@ var card = `
             <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(90deg);">
         </button>
 
-        <input type="text" autocomplete="off" style="width: 3%; margin: 0.5%;" class="listPosition">
+        <input type="text" autocomplete="off" style="width: 3%; margin: 0.5%;" class="listPosition" value="${index}">
 
         <button title="Přesunout level níž" type="button" onclick="moveCard('down')" class="button" style="float: none;">
             <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(-90deg);">
@@ -61,8 +70,7 @@ var card = `
     </div>
 
     <hr id="lineSplit">
-    <img id="posInputPics" src="./images/gauntlet.png">
-    <input id="posInputBox" class="cardLName" type="text" autocomplete="off" placeholder="Jméno levelu">
+    <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName" type="text" autocomplete="off" placeholder="Jméno levelu">
 
     <img id="posInputPics" src="./images/bytost.png">
     <input id="posInputBox" class="cardLCreator" autocomplete="off" type="text"placeholder="Tvurce"><br />
@@ -73,17 +81,15 @@ var card = `
     <input title="Barva karty" type="color" id="colorPicker" class="button cardButton">
 </div>
     `;
+}
 
 function changeCardColor() {
     $(".positionEdit").addEventListener("input", function () {
-        $(".positionEdit").css("background-color",$("#colorPicker").val());
+        $(".positionEdit").css("background-color", $("#colorPicker").val());
     })
 }
 
-
 $(function () {
-    document.getElementById("positionEdit").addEventListener("input", function () {
-        $(".positionEdit").css("background-color",$("#colorPicker").val());
-    })
+
 }
 )

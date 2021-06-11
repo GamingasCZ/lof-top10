@@ -133,6 +133,7 @@ input::-moz-placeholder {
     background-color: darksalmon;
     border: salmon 5px solid;
     border-radius: 8px;
+    white-space: nowrap;
   }
 
 #posInputBox {
@@ -160,4 +161,12 @@ input::-moz-placeholder {
 #posInputPics {
     width: 5vw;
     height: 5vw;
+}
+
+#colorPicker {
+    width: 182px;
+    height: 184px;
+    background-image: url("../images/colorSelect.png");
+    background-repeat: no-repeat;
+
 }
