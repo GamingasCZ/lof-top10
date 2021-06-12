@@ -9,6 +9,39 @@ function getDetailsFromID() {
     })
 }
 
+function getAccountID(accountData) {
+    return accountData["accountID"];
+}
+
+function getDetailsFromName() {
+    let givenName = $(".cardLName").val();
+    let givenMaker = $(".cardLCreator").val();
+    
+    // Hledání nejlikovanějšího levelu
+    if (givenMaker == "") {
+        $.get("https://gdbrowser.com/api/search/"+givenName+"?count=1", function(data) {
+            console.log(data);
+            console.log("https://gdbrowser.com/api/search/"+givenName+"?count=1");
+            $(".cardLName").val(data[0]["name"]);
+            $(".cardLCreator").val(data[0]["author"]);
+            $(".idbox").val(data[0]["id"]);
+            })
+        }
+    else {
+        let accID = $.get("https://gdbrowser.com/api/profile/"+givenMaker, getAccountID(data));
+        $.get("https://gdbrowser.com/api/search/"+givenName+"?count=1?creators", function(data) {
+            
+            
+            console.log(data);
+            console.log("https://gdbrowser.com/api/search/"+givenName+"?count=1");
+            $(".cardLName").val(data[0]["name"]);
+            $(".cardLCreator").val(data[0]["author"]);
+            $(".idbox").val(data[0]["id"]);
+            })
+        }
+    }
+}
+
 function moveCard(position) {
     var listPlacement = parseInt($(".listPosition").val());
     if (position == "up") {
@@ -84,8 +117,12 @@ function card(index) {
     <hr id="lineSplit">
     <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName" type="text" autocomplete="off" placeholder="Jméno levelu">
 
+    <button type="button" onclick="getDetailsFromName()" class="button" style="float: none;">
+        <img id="fillButton" src="./images/getStats.png">
+    </button>
+    
     <img id="posInputPics" src="./images/bytost.png">
-    <input id="posInputBox" class="cardLCreator" autocomplete="off" type="text"placeholder="Tvurce"><br />
+    <input id="posInputBox" style="width:15vw;" class="cardLCreator" autocomplete="off" type="text"placeholder="Tvurce"><br />
 
     <img id="posInputPics" src="./images/yticon.png"><input autocomplete="off" id="posInputBox" type="text" placeholder="Video">
 
