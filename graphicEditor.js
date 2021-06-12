@@ -36,12 +36,24 @@ function addLevel() {
         let chosenColor = $(this).val()
         let rgb = [];
         for (i = 1; i < 6; i += 2) {
-            rgb.push(parseInt("0x"+chosenColor.slice(i,i+2))-40)
+            rgb.push(parseInt("0x"+chosenColor.slice(i,i+2))-40);
         }
             $(".positionEdit").css("background-color", $(this).val());
-            $(".positionEdit").css("border-color", `rgb(${rgb.join(",")})`)
-            $("#lineSplit").css("background-color", `rgb(${rgb.join(",")})`)
+            $(".positionEdit").css("border-color", `rgb(${rgb.join(",")})`);
+            $("#lineSplit").css("background-color", `rgb(${rgb.join(",")})`);
     })
+}
+
+function removeLevel() {
+    delete levelList[($(".listPosition").val())];
+    
+    // Přidá tutorial, když je seznam prázdný
+    if ((Object.keys(levelList)).length == 1) {
+        $("#mainContent").html(`Kliknutím na <img width=5% src="images/add.png"> pridáš level!`);
+    }
+        
+    $(".positionEdit").remove();
+    
 }
 
 var levelList = {
@@ -77,8 +89,13 @@ function card(index) {
 
     <img id="posInputPics" src="./images/yticon.png"><input autocomplete="off" id="posInputBox" type="text" placeholder="Video">
 
-    <input title="Smazat kartu" type="button" class="button cardButton">
-    <input title="Barva karty" type="color" id="colorPicker" class="button cardButton">
+    <button title="Smazat kartu" onclick="removeLevel()" type="button" class="button cardButton" style="width: 8vw; height: 8vw;">
+        <img src="./images/delete.png" style="width: inherit; height: inherit;">
+    </button>
+    <button type="button" class="button" style="width: 8vw; height: 8vw;">
+        <img src="./images/colorSelect.png" style="width: inherit; height: inherit;">
+        <input title="Barva karty" type="color" id="colorPicker" class="cardButton">
+    </button>
 </div>
     `;
 }

@@ -164,9 +164,10 @@ input::-moz-placeholder {
 }
 
 #colorPicker {
-    width: 182px;
-    height: 184px;
-    background-image: url("../images/colorSelect.png");
-    background-repeat: no-repeat;
+    width: inherit;
+    height: inherit;
+    position: relative;
+    opacity: 0%;
+    transform: translateX(-100%);
 
 }
