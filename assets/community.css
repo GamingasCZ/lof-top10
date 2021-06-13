@@ -121,7 +121,7 @@ input::-moz-placeholder {
 .editorHeader {
     background-color: rgb(89, 185, 89);
     margin: 0% -7%;
-    padding: 2% 3%;
+    padding: 5vw 3%;
 }
 #mainContent {
     background-color: rgb(44, 99, 44);
@@ -142,7 +142,7 @@ input::-moz-placeholder {
     border: none;
 }
 
-#lineSplit {
+.lineSplitGeneral {
     height: 4px;
     background-color: salmon;
     border: none;
@@ -163,7 +163,7 @@ input::-moz-placeholder {
     height: 5vw;
 }
 
-#colorPicker {
+.cpicker {
     width: inherit;
     height: inherit;
     position: relative;
