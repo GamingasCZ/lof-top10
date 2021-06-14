@@ -3,6 +3,8 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/community.css">
 
@@ -50,7 +52,8 @@
     <br />
     <input name="lName" type="text" id="listnm" placeholder="Jméno seznamu"><br />
     <input name="creator" type="text" id="creatornm" placeholder="Tvurce"><br />
-    <div class="editorHeader uploadText">Levely
+    <div class="editorHeader uploadText">
+      <div class="headerText">Levely</div>
       <button onclick="addLevel()" type="button" class="button" title="Přidat level do seznamu">
         <img src="images/add.png" style="width: 50%;">
       </button>
@@ -62,33 +65,6 @@
     <div class="editorHeader uploadText" id="mainContent">
       Kliknutím na <img width=5% src="images/add.png"> pridáš level!
     </div>
-    <!--
-    <div class="positionEdit">
-      <label class="uploadText">ID: </label><input id="posInputBox" class="idbox" type="text">
-      <button type="button" onclick="getDetailsFromID()" class="button" style="float: none;">
-        <img id="fillButton" src="./images/getStats.png">
-      </button>
-
-      <div style="display: inline; margin-left: 10%;">
-        <button title="Přesunout level výš" type="button" onclick="moveCard('up')" class="button" style="float: none;">
-          <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(90deg);">
-        </button>
-        <input type="text" style="width: 3%; margin: 0.5%;" class="listPosition">
-        <button title="Přesunout level níž" type="button" onclick="moveCard('down')" class="button" style="float: none;">
-          <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(-90deg);">
-        </button>
-      </div>
-
-      <hr id="lineSplit">
-      <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName" type="text"
-        placeholder="Jméno levelu">
-      <img id="posInputPics" src="./images/bytost.png"><input id="posInputBox" class="cardLCreator" type="text"
-        placeholder="Tvurce"><br />
-      <img id="posInputPics" src="./images/yticon.png"><input id="posInputBox" type="text" placeholder="Video">
-      <input title="Smazat kartu" type="button" class="button cardButton">
-      <input title="Barva karty" type="color" class="button cardButton">
-    </div>
-    -->
     <p class="errorBox" style="color: rgb(255, 255, 255);"></p>
     <input onclick="uploadList()" type="button" id="submitbutton" value="Nahrát">
   </form>

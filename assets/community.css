@@ -33,7 +33,32 @@
 
 }
 
-input:not(.cardButton) {
+input:not(.cardButton, .cardInput) {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+    margin-bottom: 0.5%;
+    background-color: rgb(36, 36, 36);
+    border:rgb(36, 36, 36) 5px solid;
+    border-radius: 5%;
+    padding: 3px 5px;
+    color: white;
+    transform: translateY(-20%);
+    width: 15em;
+    height: 5vh;
+
+    font-family: "pusab";
+    src: url("assets/PUSAB.TTF");
+    font-size: 3vw;
+    text-shadow: 2px 2px black,
+    -2px -2px black,
+    -2px 2px black,
+     2px -2px black;
+    display: flex;
+    justify-content: center;
+}
+
+.cardInput {
     margin: 15px 30%;
     background-color: rgb(36, 36, 36);
     border:rgb(36, 36, 36) 5px solid;
@@ -121,14 +146,24 @@ input::-moz-placeholder {
 .editorHeader {
     background-color: rgb(89, 185, 89);
     margin: 0% -7%;
-    padding: 5vw 3%;
+    padding: 1vw 1%;
+    display: flex;
+    justify-content: end;
 }
+.headerText {
+    display: inherit;
+    align-items: center;
+    margin-right: auto;
+    margin-left: 2%;
+}
+
 #mainContent {
     background-color: rgb(44, 99, 44);
+
 }
 
 
-.positionEdit {
+.positionEdit, .smallPosEdit {
     margin: 5% -2% 5% -2%;
     background-color: darksalmon;
     border: salmon 5px solid;
@@ -149,9 +184,8 @@ input::-moz-placeholder {
     margin: 1% 3%;
 }
 
-#fillButton {
-    width: 35%;
-    height: 35%;
+.nameDetailGetter {
+    margin-right: 10%;
 }
 
 #moveLPosButton {
@@ -161,6 +195,11 @@ input::-moz-placeholder {
 #posInputPics {
     width: 5vw;
     height: 5vw;
+}
+
+.positionButtons {
+    display: flex;
+    justify-content: end;
 }
 
 .cpicker {

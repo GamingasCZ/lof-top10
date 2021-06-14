@@ -1,10 +1,12 @@
 
 function getDetailsFromID(id) {
     // Tohle budeš pak muset předělat, až bude všechno fungovat :D
-    let givenID = $(".idbox"+id).val();
+    let givenID = $(".idbox" + id).val();
     $.get("https://gdbrowser.com/api/level/" + givenID, function (data) {
-        $(".cardLName"+id).val(data["name"]);
-        $(".cardLCreator"+id).val(data["author"]);
+        $(".cardLName" + id).val(data["name"]);
+        levelList[id]["levelName"] = data["name"];
+        $(".cardLCreator" + id).val(data["author"]);
+        levelList[id]["creator"] = data["author"];
     })
 }
 
@@ -23,8 +25,11 @@ function getDetailsFromName(id) {
             console.log(data);
             console.log("https://gdbrowser.com/api/search/" + givenName + "?count=1");
             $(".cardLName" + id).val(data[0]["name"]);
+            levelList[id]["levelName"] = data[0]["name"];
             $(".cardLCreator" + id).val(data[0]["author"]);
+            levelList[id]["creator"] = data[0]["author"];
             $(".idbox" + id).val(data[0]["id"]);
+            levelList[id]["levelID"] = data[0]["id"]
         })
     }
     else {
@@ -45,41 +50,67 @@ function moveCard(position, currID) {
     let listPlacement = parseInt($(".listPosition" + currID.toString()).val());
     if (position == "up") {
         if (listPlacement > 1) {
+            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement - 1)]["levelName"])
+            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement - 1)]["creator"])
+            $(".idbox" + (listPlacement)).val(levelList[(listPlacement - 1)]["levelID"])
+            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement - 1)]["video"])
+            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement - 1)]["color"])
+
             updateCardData(listPlacement - 1, -1);
             updateCardData(listPlacement, listPlacement - 1);
             updateCardData(-1, listPlacement)
-            $(".cardLName"+(listPlacement)).val(levelList[(listPlacement-1)]["levelName"])
-            $(".cardLCreator"+(listPlacement)).val(levelList[(listPlacement-1)]["creator"])
-            $(".idbox"+(listPlacement)).val(levelList[(listPlacement-1)]["levelID"])
-            $(".cardLVideo"+(listPlacement)).val(levelList[(listPlacement-1)]["video"])
-            $("#top"+(listPlacement)).css("background-color",levelList[(listPlacement-1)]["color"])
 
-            $(".cardLName"+(listPlacement-1)).val(levelList[(listPlacement)]["levelName"])
-            $(".cardLCreator"+(listPlacement-1)).val(levelList[(listPlacement)]["creator"])
-            $(".idbox"+(listPlacement-1)).val(levelList[(listPlacement)]["levelID"])
-            $(".cardLVideo"+(listPlacement-1)).val(levelList[(listPlacement)]["video"])
-            $("#top"+(listPlacement-1)).css("background-color",levelList[(listPlacement)]["color"])
-    
+            $(".cardLName" + (listPlacement - 1)).val(levelList[(listPlacement)]["levelName"])
+            $(".cardLCreator" + (listPlacement - 1)).val(levelList[(listPlacement)]["creator"])
+            $(".idbox" + (listPlacement - 1)).val(levelList[(listPlacement)]["levelID"])
+            $(".cardLVideo" + (listPlacement - 1)).val(levelList[(listPlacement)]["video"])
+            $("#top" + (listPlacement - 1)).css("background-color", levelList[(listPlacement)]["color"])
         }
     }
     else {
-        if (listPlacement < Object.keys(levelList).length-1) {
+        if (listPlacement < Object.keys(levelList).length - 1) {
+            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement + 1)]["levelName"])
+            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement + 1)]["creator"])
+            $(".idbox" + (listPlacement)).val(levelList[(listPlacement + 1)]["levelID"])
+            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement + 1)]["video"])
+            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement + 1)]["color"])
+
             updateCardData(listPlacement + 1, -1);
             updateCardData(listPlacement, listPlacement + 1);
             updateCardData(-1, listPlacement);
-            $(".cardLName"+(listPlacement)).val(levelList[(listPlacement+1)]["levelName"]);
-            $(".cardLCreator"+(listPlacement)).val(levelList[(listPlacement+1)]["creator"]);
-            $(".idbox"+(listPlacement)).val(levelList[(listPlacement+1)]["levelID"]);
-            $(".cardLVideo"+(listPlacement)).val(levelList[(listPlacement+1)]["video"]);
-            $("#top"+(listPlacement)).css("background-color",levelList[(listPlacement+1)]["color"]);
 
-            $(".cardLName"+(listPlacement+1)).val(levelList[(listPlacement)]["levelName"]);
-            $(".cardLCreator"+(listPlacement+1)).val(levelList[(listPlacement)]["creator"]);
-            $(".idbox"+(listPlacement+1)).val(levelList[(listPlacement)]["levelID"]);
-            $(".cardLVideo"+(listPlacement+1)).val(levelList[(listPlacement)]["video"]);
-            $("#top"+(listPlacement+1)).css("background-color",levelList[(listPlacement)]["color"]);
+            $(".cardLName" + (listPlacement + 1)).val(levelList[(listPlacement)]["levelName"])
+            $(".cardLCreator" + (listPlacement + 1)).val(levelList[(listPlacement)]["creator"])
+            $(".idbox" + (listPlacement + 1)).val(levelList[(listPlacement)]["levelID"])
+            $(".cardLVideo" + (listPlacement + 1)).val(levelList[(listPlacement)]["video"])
+            $("#top" + (listPlacement + 1)).css("background-color", levelList[(listPlacement)]["color"])
         }
     }
+}
+
+function updateSmPos() {
+    for (i = 1; i < Object.keys(levelList).length; i++) {
+        let chosenColor = $("#top"+i).css("background-color");
+        $("#smtop" + i).css("background-color", chosenColor);
+
+        if (levelList[i]["levelName"] == "") {
+            $("#smtop" + i.toString()).text(`#${i} - Bezejmenný`);
+        }
+        else if (levelList[i]["creator"] == "" & levelList[i]["levelName"] != "") {
+            $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]}`);
+        }
+        else {
+            $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} od ${levelList[i]["creator"]}`);
+        }
+    }
+}
+
+function displayCard(id) {
+    $(".smallPosEdit").show();
+    $("#smtop" + id.toString()).hide();
+    $(".positionEdit").hide();
+    $("#top" + id.toString()).show();
+    updateSmPos()
 }
 
 function addLevel() {
@@ -89,7 +120,12 @@ function addLevel() {
         $("#mainContent").text("");
     }
 
+    $(".positionEdit").hide();
+    updateSmPos();
+    $(".smallPosEdit").show();
+
     $("#mainContent").append(card(listLenght));
+    $("#smtop" + listLenght).hide()
     levelList[listLenght] = {
         "levelName": "",
         "creator": "",
@@ -160,8 +196,8 @@ function updateCardData(prevID, newID) {
         delete levelList[prevID + "waiting"];
 
         // Smaže neexistující karty
-        if (levelList[prevID] == undefined) {delete levelList[prevID]}
-        if (levelList[newID] == undefined) {delete levelList[newID]}
+        if (levelList[prevID] == undefined) { delete levelList[prevID] }
+        if (levelList[newID] == undefined) { delete levelList[newID] }
     }
 
 
@@ -180,6 +216,7 @@ function removeLevel(id) {
     }
 
     $("#top" + id.toString()).remove();
+    $("#smtop" + id.toString()).remove();
 
 }
 
@@ -189,14 +226,16 @@ var levelList = {
 
 function card(index) {
     return `
+<div onclick="displayCard(${index});" class="smallPosEdit" id="smtop${index}">
+</div>
 <div class="positionEdit" id="top${index}">
-    <img id="posInputPics" src="./images/idtext.png"><input autocomplete="off" id="posInputBox" class="idbox${index}" type="text">
+    <img id="posInputPics" src="./images/idtext.png"><input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text">
 
-    <button type="button" onclick="getDetailsFromID(${index})" class="button idDetailGetter${index}" style="float: none;">
+    <button type="button" onclick="getDetailsFromID(${index})" class="button idDetailGetter${index}" style="display: flex;justify-content:">
         <img id="fillButton" src="./images/getStats.png">
     </button>
 
-    <div style="display: inline; margin-left: 10%;">
+    <div class="positionButtons">
         <button title="Přesunout level níž" type="button" onclick="moveCard('up',${index})" class="button upmover${index}" style="float: none;">
             <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(90deg);">
         </button>
@@ -209,7 +248,7 @@ function card(index) {
     </div>
 
     <hr id="lineSplit${index}" class="lineSplitGeneral">
-    <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName${index}" type="text" autocomplete="off" placeholder="Jméno levelu">
+    <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="Jméno levelu">
 
     <button type="button" onclick="getDetailsFromName(${index})" class="button nameDetailGetter" style="float: none;">
         <img id="fillButton" src="./images/getStats.png">
@@ -218,7 +257,7 @@ function card(index) {
     <img id="posInputPics" src="./images/bytost.png">
     <input id="posInputBox" style="width:15vw;" class="cardLCreator${index}" autocomplete="off" type="text"placeholder="Tvurce"><br />
 
-    <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index}" autocomplete="off" id="posInputBox" type="text" placeholder="Video">
+    <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="Video">
 
     <button title="Smazat kartu" onclick="removeLevel(${index})" type="button" class="removerButton${index} button cardButton" style="width: 8vw; height: 8vw;">
         <img src="./images/delete.png" style="width: inherit; height: inherit;">
@@ -240,7 +279,7 @@ function changeCardColor() {
 function preview() {
     let data = JSON.stringify(levelList);
     let encodedData = [];
-    for (i=0;i < data.length; i++) {
+    for (i = 0; i < data.length; i++) {
         encodedData.push(data.charCodeAt(i));
     }
     encodedData = btoa(encodedData.join(","));
