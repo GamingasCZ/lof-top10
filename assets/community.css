@@ -148,13 +148,25 @@ input::-moz-placeholder {
     margin: 0% -7%;
     padding: 1vw 1%;
     display: flex;
-    justify-content: end;
+    justify-content: center;
+    flex-direction: column;
 }
+
+#plusSign {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
 .headerText {
     display: inherit;
     align-items: center;
     margin-right: auto;
     margin-left: 2%;
+}
+
+.helpText {
+    display: inherit;
+    text-align: center;
 }
 
 #mainContent {
@@ -164,7 +176,7 @@ input::-moz-placeholder {
 
 
 .positionEdit, .smallPosEdit {
-    margin: 5% -2% 5% -2%;
+    margin: 2%;
     background-color: darksalmon;
     border: salmon 5px solid;
     border-radius: 8px;
@@ -185,7 +197,7 @@ input::-moz-placeholder {
 }
 
 .nameDetailGetter {
-    margin-right: 10%;
+    margin-right: 5%;
 }
 
 #moveLPosButton {
@@ -200,6 +212,15 @@ input::-moz-placeholder {
 .positionButtons {
     display: flex;
     justify-content: end;
+}
+
+#positionDisplay {
+    width: 13%;
+    margin: 0.5%;
+    margin-top: 6%;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
 }
 
 .cpicker {

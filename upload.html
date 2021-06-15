@@ -53,17 +53,18 @@
     <input name="lName" type="text" id="listnm" placeholder="Jméno seznamu"><br />
     <input name="creator" type="text" id="creatornm" placeholder="Tvurce"><br />
     <div class="editorHeader uploadText">
-      <div class="headerText">Levely</div>
-      <button onclick="addLevel()" type="button" class="button" title="Přidat level do seznamu">
-        <img src="images/add.png" style="width: 50%;">
-      </button>
-      <button onclick="preview()" type="button" class="button" title="Náhled seznamu">
-        <img src="images/preview.png" style="width: 50%;">
-      </button>
+      <div><p style="display: inline-flex;">Levely</p>
+        <button onclick="addLevel()" type="button" class="button" title="Přidat level do seznamu">
+          <img src="images/add.png" style="width: 50%;">
+        </button>
+        <button onclick="preview()" type="button" class="button" title="Náhled seznamu">
+          <img src="images/preview.png" style="width: 50%;">
+        </button>
+      </div>
     </div>
 
-    <div class="editorHeader uploadText" id="mainContent">
-      Kliknutím na <img width=5% src="images/add.png"> pridáš level!
+    <div class="editorHeader uploadText helpText" id="mainContent">
+      Kliknutím na <img width=5% id="plusSign" src="images/add.png"> pridáš level!
     </div>
     <p class="errorBox" style="color: rgb(255, 255, 255);"></p>
     <input onclick="uploadList()" type="button" id="submitbutton" value="Nahrát">

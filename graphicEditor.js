@@ -90,7 +90,7 @@ function moveCard(position, currID) {
 
 function updateSmPos() {
     for (i = 1; i < Object.keys(levelList).length; i++) {
-        let chosenColor = $("#top"+i).css("background-color");
+        let chosenColor = $("#top" + i).css("background-color");
         $("#smtop" + i).css("background-color", chosenColor);
 
         if (levelList[i]["levelName"] == "") {
@@ -170,6 +170,8 @@ function updateCardData(prevID, newID) {
         levelList[newID + "waiting"] = levelList[newID];
     }
 
+    $("#smtop" + prevID).attr("onclick", "displayCard(" + newID + ")");
+    $("#smtop" + prevID).attr("id", "smtop" + newID);
     $("#top" + prevID).attr("id", "top" + newID);
     $(".idbox" + prevID).attr("class", "idbox" + newID);
     $(".idDetailGetter" + prevID).attr("onclick", "getDetailsFromID(" + newID + ")");
@@ -212,7 +214,7 @@ function removeLevel(id) {
 
     // Přidá tutorial, když je seznam prázdný
     if ((Object.keys(levelList)).length == 1) {
-        $("#mainContent").html(`Kliknutím na <img width=5% src="images/add.png"> pridáš level!`);
+        $("#mainContent").html(`Kliknutím na <img width=5% id="plusSign" src="images/add.png"> pridáš level!`);
     }
 
     $("#top" + id.toString()).remove();
@@ -229,22 +231,27 @@ function card(index) {
 <div onclick="displayCard(${index});" class="smallPosEdit" id="smtop${index}">
 </div>
 <div class="positionEdit" id="top${index}">
-    <img id="posInputPics" src="./images/idtext.png"><input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text">
+    <div style="display: flex">
+        <div>
+            <img id="posInputPics" src="./images/idtext.png">
+            <input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text">
 
-    <button type="button" onclick="getDetailsFromID(${index})" class="button idDetailGetter${index}" style="display: flex;justify-content:">
-        <img id="fillButton" src="./images/getStats.png">
-    </button>
+            <button type="button" onclick="getDetailsFromID(${index})" style="float: none;" class="button idDetailGetter${index}">
+                <img id="fillButton" src="./images/getStats.png">
+            </button>
+        </div>
 
-    <div class="positionButtons">
-        <button title="Přesunout level níž" type="button" onclick="moveCard('up',${index})" class="button upmover${index}" style="float: none;">
-            <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(90deg);">
-        </button>
+        <div class="positionButtons">
+            <button title="Přesunout level níž" type="button" onclick="moveCard('up',${index})" class="button upmover${index}" style="float: none;">
+                <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(90deg);">
+            </button>
 
-        <input type="text" autocomplete="off" style="width: 3%; margin: 0.5%;" class="listPosition${index}" value="${index}">
+            <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" value="${index}">
 
-        <button title="Přesunout level výš" type="button" onclick="moveCard('down',${index})" class="button downmover${index}" style="float: none;">
-            <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(-90deg);">
-        </button>
+            <button title="Přesunout level výš" type="button" onclick="moveCard('down',${index})" class="button downmover${index}" style="float: none;">
+                <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(-90deg);">
+            </button>
+        </div>
     </div>
 
     <hr id="lineSplit${index}" class="lineSplitGeneral">
@@ -255,7 +262,7 @@ function card(index) {
     </button>
     
     <img id="posInputPics" src="./images/bytost.png">
-    <input id="posInputBox" style="width:15vw;" class="cardLCreator${index}" autocomplete="off" type="text"placeholder="Tvurce"><br />
+    <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="Tvurce" style="width: 15vw;display: inline-flex;"><br />
 
     <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="Video">
 
