@@ -171,7 +171,7 @@ input::-moz-placeholder {
 
 #mainContent {
     background-color: rgb(44, 99, 44);
-
+    text-align: left;
 }
 
 
@@ -181,7 +181,13 @@ input::-moz-placeholder {
     border: salmon 5px solid;
     border-radius: 8px;
     white-space: nowrap;
+    box-shadow: #0000004f 8px 8px 5px;
   }
+
+.positionEdit {
+    transform: scaleY(0);
+    transition-duration: 0.1s;
+}
 
 #posInputBox {
     margin: 2%;
@@ -221,6 +227,13 @@ input::-moz-placeholder {
     padding-left: 0;
     padding-right: 0;
     text-align: center;
+}
+
+.cardButton {
+	padding-left: 2%;
+	padding-right: 11%;
+	width: 7vw;
+	height: 7vw;
 }
 
 .cpicker {

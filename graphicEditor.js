@@ -92,6 +92,7 @@ function updateSmPos() {
     for (i = 1; i < Object.keys(levelList).length; i++) {
         let chosenColor = $("#top" + i).css("background-color");
         $("#smtop" + i).css("background-color", chosenColor);
+        $("#smtop" + i).css("border-color", chosenColor);
 
         if (levelList[i]["levelName"] == "") {
             $("#smtop" + i.toString()).text(`#${i} - Bezejmenný`);
@@ -109,31 +110,57 @@ function displayCard(id) {
     $(".smallPosEdit").show();
     $("#smtop" + id.toString()).hide();
     $(".positionEdit").hide();
+    $("#top" + id.toString()).css("transform","scaleY(0)");
     $("#top" + id.toString()).show();
+    $("#top" + id.toString()).css("transform","scaleY(1)");
     updateSmPos()
 }
+
 
 function addLevel() {
     var listLenght = Object.keys(levelList).length;
     if (listLenght == 1) {
-        // Smazání tutorialu
+        // Removing tutorial
         $("#mainContent").text("");
     }
 
+    // Skryje všechny rozbalené karty
     $(".positionEdit").hide();
-    updateSmPos();
+    // Zobrazí všechny sbalené karty
     $(".smallPosEdit").show();
 
+    updateSmPos();
+
+    // Adds the CARD!
     $("#mainContent").append(card(listLenght));
-    $("#smtop" + listLenght).hide()
+    // Skryje zabalenou kartu právě přidané karty
+    $("#smtop" + listLenght).hide();
+    // Adds the card to the JSON
     levelList[listLenght] = {
         "levelName": "",
         "creator": "",
-        "levelID": "",
-        "video": "",
+        "levelID": null,
+        "video": null,
         "color": ""
     };
 
+    $("#top" + listLenght).css("transform","scaleY(1)");
+
+    // Random color generation
+    let rgb = [];
+    for (i = 0; i < 3; i++) {
+        rgb.push(parseInt(Math.random() * 255));
+    }
+
+    let darker = rgb.map(c => c - 40);
+
+    $("#top" + listLenght).css("background-color", `rgb(${rgb.join(",")})`);
+    $("#top" + listLenght).css("border-color", `rgb(${darker.join(",")})`);
+    $("#smtop" + listLenght).css("background-color", `rgb(${rgb.join(",")})`);
+    $("#smtop" + listLenght).css("border-color", `rgb(${darker.join(",")})`);
+    $("#lineSplit" + listLenght).css("background-color", `rgb(${darker.join(",")})`);
+
+    // Sets the color of the added card
     $("#colorPicker" + listLenght).on("change", function () {
         let chosenColor = $(this).val()
         let rgb = [];
@@ -170,10 +197,11 @@ function updateCardData(prevID, newID) {
         levelList[newID + "waiting"] = levelList[newID];
     }
 
+    // FUCK THIS!
     $("#smtop" + prevID).attr("onclick", "displayCard(" + newID + ")");
     $("#smtop" + prevID).attr("id", "smtop" + newID);
     $("#top" + prevID).attr("id", "top" + newID);
-    $(".idbox" + prevID).attr("class", "idbox" + newID);
+    $(".idbox" + prevID).attr("class", "cardInput idbox" + newID);
     $(".idDetailGetter" + prevID).attr("onclick", "getDetailsFromID(" + newID + ")");
     $(".idDetailGetter" + prevID).attr("class", "button idDetailGetter" + newID);
     $(".upmover" + prevID).attr("onclick", "moveCard('up'," + newID + ")");
@@ -183,10 +211,10 @@ function updateCardData(prevID, newID) {
     $(".downmover" + prevID).attr("onclick", "moveCard('down'," + newID + ")");
     $(".downmover" + prevID).attr("class", "button downmover" + newID);
     $("#lineSplit" + prevID).attr("id", "lineSplit" + newID);
-    $(".cardLName" + prevID).attr("class", "cardLName" + newID);
+    $(".cardLName" + prevID).attr("class", "cardInput cardLName" + newID);
     $(".nameDetailGetter" + prevID).attr("onclick", "getDetailsFromName(" + newID + ")");
-    $(".cardLCreator" + prevID).attr("class", "cardLCreator" + newID);
-    $(".cardLVideo" + prevID).attr("class", "cardLVideo" + newID);
+    $(".cardLCreator" + prevID).attr("class", "cardInput cardLCreator" + newID);
+    $(".cardLVideo" + prevID).attr("class", "cardInput cardLVideo" + newID);
     $(".removerButton" + prevID).attr("onclick", "removeLevel(" + newID + ")");
     $(".removerButton" + prevID).attr("class", "button cardButton removerButton" + newID);
     $("#colorPicker" + prevID).attr("id", "colorPicker" + newID);
@@ -202,7 +230,6 @@ function updateCardData(prevID, newID) {
         if (levelList[newID] == undefined) { delete levelList[newID] }
     }
 
-
 }
 
 function removeLevel(id) {
@@ -210,6 +237,10 @@ function removeLevel(id) {
 
     for (i = 2; i < Object.keys(levelList).length; i++) {
         $(".listPosition" + id.toString()).val()
+    }
+
+    for (j = id + 1; j <= Object.keys(levelList).length; j++) {
+        updateCardData(j, j - 1);
     }
 
     // Přidá tutorial, když je seznam prázdný
@@ -220,13 +251,17 @@ function removeLevel(id) {
     $("#top" + id.toString()).remove();
     $("#smtop" + id.toString()).remove();
 
+    updateSmPos();
+    $("#top" + id.toString()).show();
+    $("#smtop"+ id.toString()).hide();
+
 }
 
 var levelList = {
     "titleImg": ""
 }
 
-function card(index) {
+function card(index, rndColor) {
     return `
 <div onclick="displayCard(${index});" class="smallPosEdit" id="smtop${index}">
 </div>
@@ -266,12 +301,12 @@ function card(index) {
 
     <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="Video">
 
-    <button title="Smazat kartu" onclick="removeLevel(${index})" type="button" class="removerButton${index} button cardButton" style="width: 8vw; height: 8vw;">
+    <button title="Smazat kartu" onclick="removeLevel(${index})" type="button" class="removerButton${index} button cardButton">
         <img src="./images/delete.png" style="width: inherit; height: inherit;">
     </button>
-    <button type="button" class="button" style="width: 8vw; height: 8vw;">
+    <button type="button" class="button cardButton">
         <img src="./images/colorSelect.png" style="width: inherit; height: inherit;">
-        <input title="Barva karty" type="color" id="colorPicker${index}" class="cardButton cpicker">
+        <input title="Barva karty" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
     </button>
 </div>
     `;
