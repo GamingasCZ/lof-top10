@@ -150,11 +150,22 @@ input::-moz-placeholder {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    background-image: url("../images/headerBG.png");
 }
 
 #plusSign {
     margin-left: 2%;
     margin-right: 2%;
+}
+
+.headerButtons {
+    width: 7vw;
+    height: 7vw;
+    padding-right: 8vw;
+}
+.headerButtonsImgs {
+    width: inherit;
+    height: inherit;
 }
 
 .headerText {
@@ -172,11 +183,13 @@ input::-moz-placeholder {
 #mainContent {
     background-color: rgb(44, 99, 44);
     text-align: left;
+    background-image: url("../images/fade.png");
+    background-repeat: repeat-x;
 }
 
 
 .positionEdit, .smallPosEdit {
-    margin: 2%;
+    margin: 1%;
     background-color: darksalmon;
     border: salmon 5px solid;
     border-radius: 8px;
@@ -185,7 +198,7 @@ input::-moz-placeholder {
   }
 
 .positionEdit {
-    transform: scaleY(0);
+    transform: scaleY(1);
     transition-duration: 0.1s;
 }
 

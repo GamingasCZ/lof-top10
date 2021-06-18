@@ -50,42 +50,53 @@ function moveCard(position, currID) {
     let listPlacement = parseInt($(".listPosition" + currID.toString()).val());
     if (position == "up") {
         if (listPlacement > 1) {
-            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement - 1)]["levelName"])
-            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement - 1)]["creator"])
-            $(".idbox" + (listPlacement)).val(levelList[(listPlacement - 1)]["levelID"])
-            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement - 1)]["video"])
-            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement - 1)]["color"])
+            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement)]["levelName"])
+            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement)]["creator"])
+            $(".idbox" + (listPlacement)).val(levelList[(listPlacement)]["levelID"])
+            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement)]["video"])
+            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement)]["color"])
+
+            $(".card" + (listPlacement - 1)).before($(".card" + (listPlacement)));
 
             updateCardData(listPlacement - 1, -1);
             updateCardData(listPlacement, listPlacement - 1);
             updateCardData(-1, listPlacement)
 
-            $(".cardLName" + (listPlacement - 1)).val(levelList[(listPlacement)]["levelName"])
-            $(".cardLCreator" + (listPlacement - 1)).val(levelList[(listPlacement)]["creator"])
-            $(".idbox" + (listPlacement - 1)).val(levelList[(listPlacement)]["levelID"])
-            $(".cardLVideo" + (listPlacement - 1)).val(levelList[(listPlacement)]["video"])
-            $("#top" + (listPlacement - 1)).css("background-color", levelList[(listPlacement)]["color"])
+            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement)]["levelName"])
+            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement)]["creator"])
+            $(".idbox" + (listPlacement)).val(levelList[(listPlacement)]["levelID"])
+            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement)]["video"])
+            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement)]["color"])
+
+            listPlacement--
         }
     }
     else {
         if (listPlacement < Object.keys(levelList).length - 1) {
-            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement + 1)]["levelName"])
-            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement + 1)]["creator"])
-            $(".idbox" + (listPlacement)).val(levelList[(listPlacement + 1)]["levelID"])
-            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement + 1)]["video"])
-            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement + 1)]["color"])
+            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement)]["levelName"])
+            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement)]["creator"])
+            $(".idbox" + (listPlacement)).val(levelList[(listPlacement)]["levelID"])
+            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement)]["video"])
+            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement)]["color"])
+
+
+            $(".card" + (listPlacement + 1)).after($(".card" + (listPlacement)));
 
             updateCardData(listPlacement + 1, -1);
             updateCardData(listPlacement, listPlacement + 1);
             updateCardData(-1, listPlacement);
 
-            $(".cardLName" + (listPlacement + 1)).val(levelList[(listPlacement)]["levelName"])
-            $(".cardLCreator" + (listPlacement + 1)).val(levelList[(listPlacement)]["creator"])
-            $(".idbox" + (listPlacement + 1)).val(levelList[(listPlacement)]["levelID"])
-            $(".cardLVideo" + (listPlacement + 1)).val(levelList[(listPlacement)]["video"])
-            $("#top" + (listPlacement + 1)).css("background-color", levelList[(listPlacement)]["color"])
+            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement)]["levelName"])
+            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement)]["creator"])
+            $(".idbox" + (listPlacement)).val(levelList[(listPlacement)]["levelID"])
+            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement)]["video"])
+            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement)]["color"])
+
+            listPlacement++
         }
     }
+    updateSmPos();
+    document.getElementById("top"+listPlacement).scrollIntoView();
 }
 
 function updateSmPos() {
@@ -110,9 +121,9 @@ function displayCard(id) {
     $(".smallPosEdit").show();
     $("#smtop" + id.toString()).hide();
     $(".positionEdit").hide();
-    $("#top" + id.toString()).css("transform","scaleY(0)");
+    $("#top" + id.toString()).css("transform", "scaleY(0.8)");
     $("#top" + id.toString()).show();
-    $("#top" + id.toString()).css("transform","scaleY(1)");
+    $("#top" + id.toString()).css("transform", "scaleY(1)");
     updateSmPos()
 }
 
@@ -122,7 +133,15 @@ function addLevel() {
     if (listLenght == 1) {
         // Removing tutorial
         $("#mainContent").text("");
+        $(".previewButton").removeClass("disabled");
     }
+    else if (listLenght > 50) {
+        $(".addCardButton").addClass("disabled");
+        return null
+    }
+
+    $(".headerTitle").text("Levely");
+    fupPos = 0;
 
     // Skryje všechny rozbalené karty
     $(".positionEdit").hide();
@@ -144,7 +163,7 @@ function addLevel() {
         "color": ""
     };
 
-    $("#top" + listLenght).css("transform","scaleY(1)");
+    $("#top" + listLenght).css("transform", "scaleY(1)");
 
     // Random color generation
     let rgb = [];
@@ -159,6 +178,9 @@ function addLevel() {
     $("#smtop" + listLenght).css("background-color", `rgb(${rgb.join(",")})`);
     $("#smtop" + listLenght).css("border-color", `rgb(${darker.join(",")})`);
     $("#lineSplit" + listLenght).css("background-color", `rgb(${darker.join(",")})`);
+
+    let inhex = rgb.map(c => (c).toString(16))
+    levelList[listLenght]["color"] = "#" + inhex.join("");
 
     // Sets the color of the added card
     $("#colorPicker" + listLenght).on("change", function () {
@@ -198,6 +220,7 @@ function updateCardData(prevID, newID) {
     }
 
     // FUCK THIS!
+    $(".card" + prevID).attr("class", "card" + newID);
     $("#smtop" + prevID).attr("onclick", "displayCard(" + newID + ")");
     $("#smtop" + prevID).attr("id", "smtop" + newID);
     $("#top" + prevID).attr("id", "top" + newID);
@@ -206,8 +229,8 @@ function updateCardData(prevID, newID) {
     $(".idDetailGetter" + prevID).attr("class", "button idDetailGetter" + newID);
     $(".upmover" + prevID).attr("onclick", "moveCard('up'," + newID + ")");
     $(".upmover" + prevID).attr("class", "button upmover" + newID);
-    $(".listPosition" + prevID).attr("value", newID)
-    $(".listPosition" + prevID).attr("class", "listPosition" + newID)
+    $(".listPosition" + prevID).attr("value", newID);
+    $(".listPosition" + prevID).attr("class", "listPosition" + newID);
     $(".downmover" + prevID).attr("onclick", "moveCard('down'," + newID + ")");
     $(".downmover" + prevID).attr("class", "button downmover" + newID);
     $("#lineSplit" + prevID).attr("id", "lineSplit" + newID);
@@ -246,6 +269,7 @@ function removeLevel(id) {
     // Přidá tutorial, když je seznam prázdný
     if ((Object.keys(levelList)).length == 1) {
         $("#mainContent").html(`Kliknutím na <img width=5% id="plusSign" src="images/add.png"> pridáš level!`);
+        $(".previewButton").addClass("disabled");
     }
 
     $("#top" + id.toString()).remove();
@@ -253,7 +277,7 @@ function removeLevel(id) {
 
     updateSmPos();
     $("#top" + id.toString()).show();
-    $("#smtop"+ id.toString()).hide();
+    $("#smtop" + id.toString()).hide();
 
 }
 
@@ -263,51 +287,53 @@ var levelList = {
 
 function card(index, rndColor) {
     return `
-<div onclick="displayCard(${index});" class="smallPosEdit" id="smtop${index}">
-</div>
-<div class="positionEdit" id="top${index}">
-    <div style="display: flex">
-        <div>
-            <img id="posInputPics" src="./images/idtext.png">
-            <input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text">
-
-            <button type="button" onclick="getDetailsFromID(${index})" style="float: none;" class="button idDetailGetter${index}">
-                <img id="fillButton" src="./images/getStats.png">
-            </button>
-        </div>
-
-        <div class="positionButtons">
-            <button title="Přesunout level níž" type="button" onclick="moveCard('up',${index})" class="button upmover${index}" style="float: none;">
-                <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(90deg);">
-            </button>
-
-            <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" value="${index}">
-
-            <button title="Přesunout level výš" type="button" onclick="moveCard('down',${index})" class="button downmover${index}" style="float: none;">
-                <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(-90deg);">
-            </button>
-        </div>
+<div class="card${index}">
+    <div onclick="displayCard(${index});" class="smallPosEdit" id="smtop${index}">
     </div>
+    <div class="positionEdit" id="top${index}">
+        <div style="display: flex">
+            <div>
+                <img id="posInputPics" src="./images/idtext.png">
+                <input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text">
 
-    <hr id="lineSplit${index}" class="lineSplitGeneral">
-    <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="Jméno levelu">
+                <button type="button" onclick="getDetailsFromID(${index})" style="float: none;" class="button idDetailGetter${index}">
+                    <img id="fillButton" src="./images/getStats.png">
+                </button>
+            </div>
 
-    <button type="button" onclick="getDetailsFromName(${index})" class="button nameDetailGetter" style="float: none;">
-        <img id="fillButton" src="./images/getStats.png">
-    </button>
-    
-    <img id="posInputPics" src="./images/bytost.png">
-    <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="Tvurce" style="width: 15vw;display: inline-flex;"><br />
+            <div class="positionButtons">
+                <button title="Přesunout level níž" type="button" onclick="moveCard('up',${index})" class="button upmover${index}" style="float: none;">
+                    <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(90deg);">
+                </button>
 
-    <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="Video">
+                <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" disabled="true" value="${index}">
 
-    <button title="Smazat kartu" onclick="removeLevel(${index})" type="button" class="removerButton${index} button cardButton">
-        <img src="./images/delete.png" style="width: inherit; height: inherit;">
-    </button>
-    <button type="button" class="button cardButton">
-        <img src="./images/colorSelect.png" style="width: inherit; height: inherit;">
-        <input title="Barva karty" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
-    </button>
+                <button title="Přesunout level výš" type="button" onclick="moveCard('down',${index})" class="button downmover${index}" style="float: none;">
+                    <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(-90deg);">
+                </button>
+            </div>
+        </div>
+
+        <hr id="lineSplit${index}" class="lineSplitGeneral">
+        <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="Jméno levelu">
+
+        <button type="button" onclick="getDetailsFromName(${index})" class="button nameDetailGetter" style="float: none;">
+            <img id="fillButton" src="./images/getStats.png">
+        </button>
+        
+        <img id="posInputPics" src="./images/bytost.png">
+        <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="Tvurce" style="width: 15vw;display: inline-flex;"><br />
+
+        <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="Video">
+
+        <button title="Smazat kartu" onclick="removeLevel(${index})" type="button" class="removerButton${index} button cardButton">
+            <img src="./images/delete.png" style="width: inherit; height: inherit;">
+        </button>
+        <button type="button" class="button cardButton">
+            <img src="./images/colorSelect.png" style="width: inherit; height: inherit;">
+            <input title="Barva karty" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
+        </button>
+    </div>
 </div>
     `;
 }
@@ -318,13 +344,74 @@ function changeCardColor() {
     })
 }
 
+var fuckupMessages = [
+    "Přidej prosím level :).",
+    "Nejdřív přidej level!",
+    "Tím klikáním nic neuděláš :D.",
+    "Oho, snažíš se mě vyzvat na zápas?",
+    "Mám času dost! Klikej dál.",
+    "Svůj náhled ale nedostaneš.",
+    "Je zábava tě sledovat :D.",
+    "Jdu si udělat chutný nápoj!",
+    "Zelený, nebo černý čaj?",
+    "Asi se nemusím ptát...",
+    "Jen klikej dál!",
+    "Energií tvého prstu ohřívám konvici :D.",
+    "Konvice již vaří.",
+    "A mám čaj připravený.",
+    "Klikáš vážně dobře!",
+    "Je poznat, že jsi Geodeš hráč.",
+    "...",
+    "Oh né! Co jsem to udělal!",
+    "Mohu za to všechno já!",
+    "Zasekl jsem tě do nekonečné smyčky klikání.",
+    "Jak tě ale mám zastavit?",
+    "Mohl bych být hnusák a nechat tě tu... :<'",
+    "Čaj už mám skoro dopitý.",
+    "Vařící čaj...",
+    "To je jedno!",
+    "Hohó! Pokračuj, protože odcházím.",
+    "Ano! Toto je můj poslední dialog!",
+    "Úplně poslední!",
+    "Spočítejme to spolu!",
+    "Tři!",
+    "Dva.",
+    "Jedna.",
+    "Zahraj si SuperGamingasBros. :D.",
+    "Konec!"
+];
+var fupPos = 0;
 function preview() {
-    let data = JSON.stringify(levelList);
-    let encodedData = [];
-    for (i = 0; i < data.length; i++) {
-        encodedData.push(data.charCodeAt(i));
+    if (Object.keys(levelList).length > 1) {
+        let data = JSON.stringify(levelList);
+        let encodedData = [];
+        for (i = 0; i < data.length; i++) {
+            encodedData.push(data.charCodeAt(i));
+        }
+        encodedData = btoa(encodedData.join(","));
+        console.log(encodedData);
+        window.open("./index.html?preview=" + encodedData, "_blank")
     }
-    encodedData = btoa(encodedData.join(","));
-    console.log(encodedData);
-    window.open("./index.html?preview=" + encodedData, "_blank")
+    else {
+        $(".headerTitle").text(fuckupMessages[fupPos]);
+        fupPos++
+        if (fupPos > fuckupMessages.length) {
+            fupPos = 0;
+        }
+    }
 }
+
+$(function () {
+
+    $(window).on("resize", function () {
+        if ($(window).width() < $(window).height()) {
+            $(".headerTitle").text("Pro použití editoru si otoč mobil ;).");
+            $("#mainContent").hide()
+        }
+        else {
+            $(".headerTitle").html(`Levely`);
+            $("#mainContent").show()
+        }
+
+    })
+})
