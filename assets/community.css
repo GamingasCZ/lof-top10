@@ -1,6 +1,6 @@
 .uploadBG {
     background-color: rgb(50, 63, 50);
-    padding: 2% 5% 2% 5%;
+    padding: 2% 0% 2% 0%;
     margin: 2vh 10vw;
     border: rgb(24, 24, 24) 10px solid;
     border-radius: 10px;
@@ -145,7 +145,7 @@ input::-moz-placeholder {
 
 .editorHeader {
     background-color: rgb(89, 185, 89);
-    margin: 0% -7%;
+    margin: 0%;
     padding: 1vw 1%;
     display: flex;
     justify-content: center;

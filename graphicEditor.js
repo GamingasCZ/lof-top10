@@ -268,7 +268,7 @@ function removeLevel(id) {
 
     // Přidá tutorial, když je seznam prázdný
     if ((Object.keys(levelList)).length == 1) {
-        $("#mainContent").html(`Kliknutím na <img width=5% id="plusSign" src="images/add.png"> pridáš level!`);
+        $("#mainContent").html(`<p class="helpText">Kliknutím na <img width=5% id="plusSign" src="images/add.png"> pridáš level!</p>`);
         $(".previewButton").addClass("disabled");
     }
 
