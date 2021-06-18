@@ -37,6 +37,16 @@
     <button id="yearButton" class="button"><img class="yearButtonImg" src="images/community.png"></button>
   </div>
 
+  <div class="helpBG"></div>
+  <div class="popupHelp uploadText">
+    <p style="text-align: center;">Obrazky seznamů</p>
+    <div>
+      Jestli chces svuj seznam poradne vyzdobit, muzes k nemu pridat obrazek ktery se u neho zobrazí!
+      <!--obr-->
+      <b style="color: tomato;">Nemusis pridavat zadny obrazek!</b>
+    </div>
+  </div>
+
   <div class="uploadBG smallUploaderDialog">
     <button align="center" class="button uploadText uploadTitle" onclick="showUploader()" type="button"
       title="Ukázat nahrávací dialog">
@@ -52,6 +62,9 @@
     <br />
     <input name="lName" type="text" id="listnm" placeholder="Jméno seznamu"><br />
     <input name="creator" type="text" id="creatornm" placeholder="Tvurce"><br />
+    <input type="text" onchange="" placeholder="Obrazek seznamu">
+    <img src="images/help.png" class="button" onclick="$('.helpBG, popupHelp').toggle()">
+    <br />
     <div class="editorHeader uploadText">
       <div><p class="headerTitle" style="display: inline-flex;">Levely</p>
         <button onclick="addLevel()" type="button" class="button addCardButton headerButtons" title="Přidat level do seznamu">
