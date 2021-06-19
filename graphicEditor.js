@@ -338,12 +338,6 @@ function card(index, rndColor) {
     `;
 }
 
-function changeCardColor() {
-    $(".positionEdit").addEventListener("input", function () {
-        $(".positionEdit").css("background-color", $("#colorPicker").val());
-    })
-}
-
 var fuckupMessages = [
     "Přidej prosím level :).",
     "Nejdřív přidej level!",
@@ -401,8 +395,17 @@ function preview() {
     }
 }
 
-$(function () {
+function closeHelp() {
+    $(".popupHelp").hide();
+    $(".helpBG").hide();
+}
+function openHelp() {
+    $(".popupHelp").show();
+    $(".helpBG").show();
+}
 
+
+$(function () {
     $(window).on("resize", function () {
         if ($(window).width() < $(window).height()) {
             $(".headerTitle").text("Pro použití editoru si otoč mobil ;).");

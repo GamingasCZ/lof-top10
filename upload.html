@@ -37,8 +37,9 @@
     <button id="yearButton" class="button"><img class="yearButtonImg" src="images/community.png"></button>
   </div>
 
-  <div class="helpBG"></div>
-  <div class="popupHelp uploadText">
+  <div class="helpBG" style="display: none;"></div>
+  <div class="popupHelp uploadText" style="display: none;">
+    <img src="./images/delete.png" class="button" style="width: 10%;" onclick="closeHelp()">
     <p style="text-align: center;">Obrazky seznamů</p>
     <div>
       Jestli chces svuj seznam poradne vyzdobit, muzes k nemu pridat obrazek ktery se u neho zobrazí!
@@ -63,7 +64,7 @@
     <input name="lName" type="text" id="listnm" placeholder="Jméno seznamu"><br />
     <input name="creator" type="text" id="creatornm" placeholder="Tvurce"><br />
     <input type="text" onchange="" placeholder="Obrazek seznamu">
-    <img src="images/help.png" class="button" onclick="$('.helpBG, popupHelp').toggle()">
+    <img src="images/help.png" class="button" onclick="openHelp()">
     <br />
     <div class="editorHeader uploadText">
       <div><p class="headerTitle" style="display: inline-flex;">Levely</p>

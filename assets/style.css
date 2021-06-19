@@ -20,6 +20,10 @@ body {
   background-image: url("../images/bg.png");
 }
 
+@font-face {
+    font-family: pusab;
+    src: url("../assets/PUSAB.otf") format("opentype");
+}
 
 .shade {
   background-image: linear-gradient(green,#00000000);
