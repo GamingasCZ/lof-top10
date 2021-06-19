@@ -72,7 +72,6 @@ input:not(.cardButton, .cardInput) {
     height: 5vh;
 
     font-family: "pusab";
-    src: url("assets/PUSAB.TTF");
     font-size: 3vw;
     text-shadow: 2px 2px black,
     -2px -2px black,
@@ -103,9 +102,9 @@ input:not(.cardButton, .cardInput) {
 }
 
 input::-webkit-input-placeholder {
+    opacity: 0.5;
     color: white;
     font-family: "pusab";
-    src: url("assets/PUSAB.TTF");
     font-size: 3vw;
     text-shadow: 2px 2px black,
     -2px -2px black,
@@ -115,7 +114,6 @@ input::-webkit-input-placeholder {
 input::-moz-placeholder {
     color: white;
     font-family: "pusab";
-    src: url("assets/PUSAB.TTF");
     font-size: 3vw;
     text-shadow: 2px 2px black,
     -2px -2px black,

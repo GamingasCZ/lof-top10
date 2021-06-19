@@ -376,6 +376,10 @@ var fuckupMessages = [
 ];
 var fupPos = 0;
 function preview() {
+    if (checkJson(JSON.stringify(levelList)) == false) {
+        return null;
+    }
+    
     if (Object.keys(levelList).length > 1) {
         let data = JSON.stringify(levelList);
         let encodedData = [];
