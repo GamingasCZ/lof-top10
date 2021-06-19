@@ -16,7 +16,7 @@ function onGDBClick(pos, index) {
 function onIDCopyClick(pos, index) {
 	$(document).ready(function () {
 		$(".popup").fadeTo(100, 0);
-		if (pos == null) {
+		if (pos == null || pos == "") {
 			$("#cpopup" + index).css("background-color", "rgba(255,128,128,0.5)");
 			$("#cpopup" + index).text("Level neexistuje!");
 			$("#cpopup" + index).fadeTo(100, 1);
@@ -32,7 +32,7 @@ function onIDCopyClick(pos, index) {
 function onYTClick(link, index) {
 	$(document).ready(function () {
 		$(".popup").fadeTo(100, 0);
-		if (link == "null") {
+		if (link == "null" || pos == "") {
 			$("#cpopup" + index).css("background-color", "rgba(255,128,128,0.5)");
 			$("#cpopup" + index).text("Video neexistuje!");
 			$("#cpopup" + index).fadeTo(100, 1);
@@ -49,10 +49,10 @@ function generateList(boards) {
 
 		let bIndex = (i).toString();
 
-		if (boards[bIndex]["levelID"] == null) { var ID = "disabled"; }
+		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = "disabled"; }
 		else { var ID = ""; }
 
-		if (boards[bIndex]["video"] == null) { var video = "disabled"; }
+		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = "disabled"; }
 		else { var video = ""; }
 
 		var cardBG = `background-color: ${boards[bIndex]["color"]}`;
@@ -91,7 +91,7 @@ var listData = "";
 $(function () {
 
 	var boards = {
-		"titleImg": "images/title.png",
+		"titleImg": "./images/title.png",
 		"1": {
 			"levelName": "Snowy",
 			"creator": "MurlocGD, PizzaGamerHu",
@@ -164,8 +164,6 @@ $(function () {
 		}
 	};
 
-	$(".title").attr("src", boards["titleImg"]);
-
 	if (location.search != "") {
 		var listID = location.search.slice(1).split("=");
 		if (listID[0] == "preview") {
@@ -176,6 +174,7 @@ $(function () {
 			}
 			let boards = JSON.parse(decodedData);
 			$(".titles").append("<p>(Náhled)</p>");
+			$(".titleImage").attr("src", boards["titleImg"]);
 			generateList(boards);
 		}
 		else if (listID[0] == "id") {
@@ -194,6 +193,7 @@ $(function () {
 			}
 			)
 		}
+		
 
 	}
 	else {

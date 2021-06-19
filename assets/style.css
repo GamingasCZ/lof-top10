@@ -151,6 +151,13 @@ span {
   transition-timing-function: ease-in-out;
 }
 
+.titleImage {
+  margin-left: auto;
+  margin-right: auto;
+  width: 15%;
+  display: block;
+}
+
 #crown {
   transform: translateY(120px);
   display: block;

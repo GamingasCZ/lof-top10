@@ -185,15 +185,16 @@ function addLevel() {
     // Sets the color of the added card
     $("#colorPicker" + listLenght).on("change", function () {
         let chosenColor = $(this).val()
+        let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
         let rgb = [];
         for (i = 1; i < 6; i += 2) {
             rgb.push(parseInt("0x" + chosenColor.slice(i, i + 2)) - 40);
         }
-        $("#top" + listLenght).css("background-color", $(this).val());
-        $("#top" + listLenght).css("border-color", `rgb(${rgb.join(",")})`);
-        $("#lineSplit" + listLenght).css("background-color", `rgb(${rgb.join(",")})`);
+        $("#top" + cardSelected).css("background-color", chosenColor);
+        $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
+        $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
 
-        levelList[listLenght]["color"] = chosenColor;
+        levelList[cardSelected]["color"] = chosenColor;
     });
 
     $(".idbox" + listLenght).on("change", function () {
@@ -400,12 +401,12 @@ function preview() {
 }
 
 function closeHelp() {
-    $(".popupHelp").hide();
-    $(".helpBG").hide();
+    $(".popupHelp").slideUp();
+    $(".helpBG").fadeOut();
 }
 function openHelp() {
-    $(".popupHelp").show();
-    $(".helpBG").show();
+    $(".popupHelp").slideDown()
+    $(".helpBG").fadeIn();
 }
 
 
@@ -422,3 +423,7 @@ $(function () {
 
     })
 })
+
+function updateTitImg() {
+    levelList["titleImg"] = $(".titImgInp").val()
+}
