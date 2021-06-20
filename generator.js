@@ -32,7 +32,7 @@ function onIDCopyClick(pos, index) {
 function onYTClick(link, index) {
 	$(document).ready(function () {
 		$(".popup").fadeTo(100, 0);
-		if (link == "null" || pos == "") {
+		if (link == "null" || link == "") {
 			$("#cpopup" + index).css("background-color", "rgba(255,128,128,0.5)");
 			$("#cpopup" + index).text("Video neexistuje!");
 			$("#cpopup" + index).fadeTo(100, 1);

@@ -8,6 +8,7 @@ function getDetailsFromID(id) {
         $(".cardLCreator" + id).val(data["author"]);
         levelList[id]["creator"] = data["author"];
     })
+    updateSmPos()
 }
 
 function getAccountID(accountData) {
@@ -20,29 +21,17 @@ function getDetailsFromName(id) {
     let givenMaker = $(".cardLCreator" + id).val();
 
     // Hledání nejlikovanějšího levelu
-    if (givenMaker == "") {
-        $.get("https://gdbrowser.com/api/search/" + givenName + "?count=1", function (data) {
-            console.log(data);
-            console.log("https://gdbrowser.com/api/search/" + givenName + "?count=1");
-            $(".cardLName" + id).val(data[0]["name"]);
-            levelList[id]["levelName"] = data[0]["name"];
-            $(".cardLCreator" + id).val(data[0]["author"]);
-            levelList[id]["creator"] = data[0]["author"];
-            $(".idbox" + id).val(data[0]["id"]);
-            levelList[id]["levelID"] = data[0]["id"]
+    $.get("https://gdbrowser.com/api/search/" + givenName + "?count=1", function (data) {
+        console.log(data);
+        console.log("https://gdbrowser.com/api/search/" + givenName + "?count=1");
+        $(".cardLName" + id).val(data[0]["name"]);
+        levelList[id]["levelName"] = data[0]["name"];
+        $(".cardLCreator" + id).val(data[0]["author"]);
+        levelList[id]["creator"] = data[0]["author"];
+        $(".idbox" + id).val(data[0]["id"]);
+        levelList[id]["levelID"] = data[0]["id"]
         })
-    }
-    else {
-        let accID = $.get("https://gdbrowser.com/api/profile/" + givenMaker, getAccountID(data));
-        console.log(accID);
-        $.get("https://gdbrowser.com/api/search/" + givenName + "?count=1?creators", function (data) {
-            console.log(data);
-            console.log("https://gdbrowser.com/api/search/" + givenName + "?count=1");
-            $(".cardLName" + id).val(data[0]["name"]);
-            $(".cardLCreator" + id).val(data[0]["author"]);
-            $(".idbox" + id).val(data[0]["id"]);
-        })
-    }
+    updateSmPos()
 }
 
 
@@ -198,19 +187,28 @@ function addLevel() {
     });
 
     $(".idbox" + listLenght).on("change", function () {
-        levelList[listLenght]["levelID"] = $(this).val();
+        let selection = $(".idbox"+($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+        levelList[position]["levelID"] = selection;
     });
 
     $(".cardLName" + listLenght).on("change", function () {
-        levelList[listLenght]["levelName"] = $(this).val();
+        console.log($(this))
+        let selection = $(".cardLName"+($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+        levelList[position]["levelName"] = selection;
     });
 
     $(".cardLCreator" + listLenght).on("change", function () {
-        levelList[listLenght]["creator"] = $(this).val();
+        let selection = $(".cardLCreator"+($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+        levelList[position]["creator"] = selection;
     });
 
     $(".cardLVideo" + listLenght).on("change", function () {
-        levelList[listLenght]["video"] = $(this).val();
+        let selection = $(".cardLVideo"+($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+        levelList[position]["video"] = selection;
     });
 }
 
@@ -237,6 +235,7 @@ function updateCardData(prevID, newID) {
     $("#lineSplit" + prevID).attr("id", "lineSplit" + newID);
     $(".cardLName" + prevID).attr("class", "cardInput cardLName" + newID);
     $(".nameDetailGetter" + prevID).attr("onclick", "getDetailsFromName(" + newID + ")");
+    $(".nameDetailGetter" + prevID).attr("class", "button nameDetailGetter" + newID);
     $(".cardLCreator" + prevID).attr("class", "cardInput cardLCreator" + newID);
     $(".cardLVideo" + prevID).attr("class", "cardInput cardLVideo" + newID);
     $(".removerButton" + prevID).attr("onclick", "removeLevel(" + newID + ")");
@@ -318,7 +317,7 @@ function card(index, rndColor) {
         <hr id="lineSplit${index}" class="lineSplitGeneral">
         <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="Jméno levelu">
 
-        <button type="button" onclick="getDetailsFromName(${index})" class="button nameDetailGetter" style="float: none;">
+        <button type="button" onclick="getDetailsFromName(${index})" class="button nameDetailGetter${index}" style="float: none;">
             <img id="fillButton" src="./images/getStats.png">
         </button>
         
