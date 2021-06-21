@@ -24,7 +24,7 @@ function checkJson(data) {
         // 2/3 Neobsahuje prázdné jméno/tvůrce
         for (i = 1; i < Object.keys(parsedData).length; i++) {
             if (parsedData[i] == undefined) {
-                throw(i+". místo neexistuje. Bug mi nahlaš (nebo si nehrej s JSONem :D).")
+                throw (i + ". místo neexistuje. Bug mi nahlaš (nebo si nehrej s JSONem :D).")
             }
             if (parsedData[i]["levelName"] == "") {
                 throw ("Level na " + i + ". místě nemá JMÉNO!")
@@ -80,38 +80,48 @@ function checkJson(data) {
 
 function uploadList() {
     let isValid = checkJson(JSON.stringify(levelList));
-    console.log(isValid);
-    isValid = false;
     if (isValid) {
+        $("#listData").attr("value",JSON.stringify(levelList));
         $("#levelUpload").submit();
     }
 }
 
 $(function () {
     if (location.search != "") {
-        var password = location.search.slice(1).split("=")[1];
+        let password = location.search.slice(1).split(/[=&]/g);
 
-        if (isNaN(parseInt(password))) {
+        // Change depending on your website
+        let currWebsite = `http://gamingas.wz.cz/lofttop10/?id=${password[3]}`;
+
+        if (isNaN(parseInt(password[1]))) {
             var pstr = `Tvé heslo je ale hypergay. <b style="color: tomato;">Nehraj si se stránkou >:(</b>.`;
         }
         else {
-            var pstr = `Mužeš si nechat heslo na památku, protože zmením systém :) : <b style="color: lime;">${password}</b>`;
+            var pstr = `Mužeš si nechat heslo na památku, protože zmením systém :) : <b style="color: lime;">${password[1]}</b>`;
         }
 
         $(".uploaderDialog").html(`
-<img src=./images/check.png align="center">
-<p class="uploadText">Seznam byl nahran! ${pstr}</p>
+<img style="padding-left: 3%" src=./images/check.png>
+<p class="uploadText" style="padding-left: 3%">Seznam byl nahran!</p>
+<!--
+<h6 class="shareTitle uploadText">Sdílet</h6>
+<br />
+<div class="shareBG uploadText" style="float: none;">${currWebsite}
+<img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
+</div>
+-->
         `);
     }
     $(".smallUploaderDialog").hide();
-    var ok = $.get("./php/getLists.php", function (data) {
+    $.get("./php/getLists.php", function (data) {
         // Zbavení se line breaku
+        console.log(data)
         data = data.slice(0, -2);
 
         try {
             if (data.match(/\|/g).length > 0) {
                 let listsArray = data.split("|");
-                for (i = 0; listsArray.length - 1; i++) {
+                for (i = 0; listsArray.length - 2; i++) {
                     let listData = (listsArray[i]).split(";");
                     $(".customLists").append(`
                 <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[4]}">
@@ -129,6 +139,7 @@ $(function () {
         }
 
         catch (error) {
+            console.log(error);
             if (data.match(/\|/g) == null || data.endsWith("|\n")) {
                 let listData = (data).split(";");
                 $(".customLists").append(`
@@ -150,6 +161,6 @@ function hideUploader() {
     $(".smallUploaderDialog").show();
 }
 function showUploader() {
-    $(".uploaderDialog").show();
+    $(".uploaderDialog").show()
     $(".smallUploaderDialog").hide();
 }

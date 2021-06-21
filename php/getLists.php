@@ -24,7 +24,7 @@ if (count($_GET) != 0) {
     }
     else {
       foreach ($rows as $row) {
-        echo join(";",$row);
+        echo htmlspecialchars_decode(join(";",$row));
       }
     }
   }
@@ -34,7 +34,7 @@ else {
 
   $rows = $result->fetch_all(MYSQLI_ASSOC);
   foreach ($rows as $row) {
-    echo join(";",$row) . "|";
+    echo htmlspecialchars_decode(join(";",$row)) . "|";
         
     }
       

@@ -185,6 +185,7 @@ $(function () {
 					$(".titles").append("<p>Jakej génius hodil slovo namísto IDcka :D</p>");}
 				else {
 					let listData = data.split(";");
+					listData[3].replace("&quot;","\"");
 					let boards = JSON.parse(listData[3]);
 					$(".titles").append("<p>Seznam: "+listData[1]+"</p><p>Od: "+listData[0]+"</p>");
 					generateList(boards);

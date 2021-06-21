@@ -19,16 +19,22 @@ foreach ($fuckupData as $post) {
     $mysqli -> close();
     exit();
   }
-  $fuckupData[i] = htmlspecialchars($post);
+  $fuckupData[$i] = htmlspecialchars($post);
   $i += 1;
 }
 
 $pass = passwordGenerator();
 
 $result = $mysqli -> query("INSERT INTO `lists`(`creator`,`name`,`password`,`data`) VALUES ('".$fuckupData[0]."','".$fuckupData[1]."','".$pass."','".$fuckupData[2]."')");
+$listIDquery = $mysqli -> query("SELECT LAST_INSERT_ID()");
+$rows = $listIDquery -> fetch_all(MYSQLI_ASSOC);
+foreach ($rows as $row) {
+  $listID = join("",$row);
+}
+
 
 $mysqli -> close();
 
-header("location:http://www.gamingas.wz.cz/lofttop10/upload.html?password=" . $pass);
+header("location:http://www.gamingas.wz.cz/lofttop10/upload.html?password=" . $pass . "&id=" . $listID);
 
 ?>

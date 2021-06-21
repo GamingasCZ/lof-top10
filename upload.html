@@ -21,7 +21,7 @@
 <body>
   <div class="shade">
     <a href="https://github.com/GamingasCZ/lof-top10"><img class="github" src="images/github.png"></a>
-    <img class="title">
+    <img class="title" src="./images/title.png">
   </div>
 
   <div align="center">
@@ -40,10 +40,10 @@
   <div class="helpBG" style="display: none;"></div>
   <div class="popupHelp uploadText" style="display: none;">
     <img src="./images/delete.png" class="button" style="width: 10%;" onclick="closeHelp()">
-    <p style="text-align: center;">Obrazky seznamů</p>
+    <p style="text-align: center;">Obrazky seznamu</p>
     <div>
-      Jestli chces svuj seznam poradne vyzdobit, muzes k nemu pridat obrazek ktery se u neho zobrazí!
-      <!--obr-->
+      Jestli chces svuj seznam poradne vyzdobit, muzes k nemu pridat obrazek ktery se u neho zobrazí!<br />
+      <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
       <b style="color: tomato;">Nemusis pridavat zadny obrazek!</b>
     </div>
   </div>
@@ -61,6 +61,7 @@
       Nahrávání
     </button>
     <br />
+    <input name="listData" id="listData" type="hidden" value="">
     <input name="lName" type="text" id="listnm" placeholder="Jméno seznamu"><br />
     <input name="creator" type="text" id="creatornm" placeholder="Tvurce"><br />
     <div style="display: flex;">
