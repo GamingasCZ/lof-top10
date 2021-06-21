@@ -387,8 +387,8 @@ function preview() {
             encodedData.push(data.charCodeAt(i));
         }
         encodedData = btoa(encodedData.join(","));
-        console.log(encodedData);
-        window.open("./index.html?preview=" + encodedData, "_blank")
+        sessionStorage.setItem("previewJson", encodedData);
+        window.open("./index.html?preview=1","_blank")
     }
     else {
         $(".headerTitle").text(fuckupMessages[fupPos]);

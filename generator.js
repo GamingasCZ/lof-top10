@@ -166,8 +166,8 @@ $(function () {
 
 	if (location.search != "") {
 		var listID = location.search.slice(1).split("=");
-		if (listID[0] == "preview") {
-			let decodeData = atob(listID[1]).split(",");
+		if (listID[0] == "preview" & listID[1] == "1") {
+			let decodeData = atob(sessionStorage.getItem("previewJson")).split(",");
 			let decodedData = "";
 			for (i=0;i < decodeData.length;i++) {
 				decodedData += String.fromCharCode(decodeData[i]);
@@ -188,11 +188,15 @@ $(function () {
 					listData[3].replace("&quot;","\"");
 					let boards = JSON.parse(listData[3]);
 					$(".titles").append("<p>Seznam: "+listData[1]+"</p><p>Od: "+listData[0]+"</p>");
+					$(".titleImage").attr("src", boards["titleImg"]);
 					generateList(boards);
 				}
 	
 			}
 			)
+		}
+		else {
+			generateList(boards);
 		}
 		
 
