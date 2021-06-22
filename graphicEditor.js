@@ -30,7 +30,7 @@ function getDetailsFromName(id) {
         levelList[id]["creator"] = data[0]["author"];
         $(".idbox" + id).val(data[0]["id"]);
         levelList[id]["levelID"] = data[0]["id"]
-        })
+    })
     updateSmPos()
 }
 
@@ -85,7 +85,7 @@ function moveCard(position, currID) {
         }
     }
     updateSmPos();
-    document.getElementById("top"+listPlacement).scrollIntoView();
+    document.getElementById("top" + listPlacement).scrollIntoView();
 }
 
 function updateSmPos() {
@@ -124,10 +124,8 @@ function addLevel() {
         $("#mainContent").text("");
         $(".previewButton").removeClass("disabled");
     }
-    else if (listLenght > 50) {
-        $(".addCardButton").addClass("disabled");
-        return null
-    }
+    else if (listLenght > 50) { return null }
+    else if (listLenght > 49) { $(".addCardButton").addClass("disabled") }
 
     $(".headerTitle").text("Levely");
     fupPos = 0;
@@ -187,26 +185,26 @@ function addLevel() {
     });
 
     $(".idbox" + listLenght).on("change", function () {
-        let selection = $(".idbox"+($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
         let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
         levelList[position]["levelID"] = selection;
     });
 
     $(".cardLName" + listLenght).on("change", function () {
         console.log($(this))
-        let selection = $(".cardLName"+($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let selection = $(".cardLName" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
         let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
         levelList[position]["levelName"] = selection;
     });
 
     $(".cardLCreator" + listLenght).on("change", function () {
-        let selection = $(".cardLCreator"+($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
         let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
         levelList[position]["creator"] = selection;
     });
 
     $(".cardLVideo" + listLenght).on("change", function () {
-        let selection = $(".cardLVideo"+($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
         let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
         levelList[position]["video"] = selection;
     });
@@ -248,7 +246,7 @@ function updateCardData(prevID, newID) {
         delete levelList[newID + "waiting"];
         delete levelList[prevID + "waiting"];
 
-        // Smaže neexistující karty
+        // Deletes nonexistent cards
         if (levelList[prevID] == undefined) { delete levelList[prevID] }
         if (levelList[newID] == undefined) { delete levelList[newID] }
     }
@@ -258,15 +256,16 @@ function updateCardData(prevID, newID) {
 function removeLevel(id) {
     delete levelList[($(".listPosition" + id.toString()).val())];
 
-    for (i = 2; i < Object.keys(levelList).length; i++) {
-        $(".listPosition" + id.toString()).val()
+    // Enables the add button
+    if (Object.keys(levelList).length < 51) {
+        $(".addCardButton").removeClass("disabled");
     }
 
     for (j = id + 1; j <= Object.keys(levelList).length; j++) {
         updateCardData(j, j - 1);
     }
 
-    // Přidá tutorial, když je seznam prázdný
+    // Adds the tutorial, when the list is empty
     if ((Object.keys(levelList)).length == 1) {
         $("#mainContent").html(`<p class="helpText">Kliknutím na <img width=5% id="plusSign" src="images/add.png"> pridáš level!</p>`);
         $(".previewButton").addClass("disabled");
@@ -279,6 +278,13 @@ function removeLevel(id) {
     $("#top" + id.toString()).show();
     $("#smtop" + id.toString()).hide();
 
+    // Removing a card duplicates the "card" div - fix
+    for (k = 0; k < $(".card" + id.toString()).length; k++) {
+        // Removes all card empty divs
+        if ($(".card" + id.toString())[k]["innerHTML"].length < 20) {
+            $(".card" + id.toString())[k].remove()
+        }
+    }
 }
 
 var levelList = {
@@ -379,7 +385,7 @@ function preview() {
     if (checkJson(JSON.stringify(levelList)) == false) {
         return null;
     }
-    
+
     if (Object.keys(levelList).length > 1) {
         let data = JSON.stringify(levelList);
         let encodedData = [];
@@ -388,7 +394,7 @@ function preview() {
         }
         encodedData = btoa(encodedData.join(","));
         sessionStorage.setItem("previewJson", encodedData);
-        window.open("./index.html?preview=1","_blank")
+        window.open("./index.html?preview=1", "_blank")
     }
     else {
         $(".headerTitle").text(fuckupMessages[fupPos]);
