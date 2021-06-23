@@ -20,10 +20,9 @@ body {
   background-image: url("../images/bg.png");
 }
 
-@font-face::before {
-  font-family: "pusab";
-  content: "";
-  src: url("assets/PUSAB.TTF");
+@font-face {
+    font-family: pusab;
+    src: url("../assets/PUSAB.otf") format("opentype");
 }
 
 .shade {
@@ -152,9 +151,18 @@ span {
   transition-timing-function: ease-in-out;
 }
 
+.titleImage {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40em;
+  display: block;
+}
+
 #crown {
   transform: translateY(120px);
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
+
+

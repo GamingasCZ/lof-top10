@@ -1,6 +1,36 @@
+
+.helpButton {
+    position: absolute;
+    width: 3vw;
+    right: 23%;
+}
+.helpBG {
+	background-color: #000000a1;
+	/* margin: 100%; */
+	position: fixed;
+	top: 0px;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+    background-image: url("../images/thinkAn.gif");
+}
+.popupHelp {
+    background-color: rgb(50, 63, 50);
+    border: rgb(24, 24, 24) 10px solid;
+    border-radius: 10px;
+    position: fixed;
+    margin: auto;
+    z-index: 3;
+    width: 80%;
+    left: 10%;
+    padding: 2%;
+    top: 2%;    
+}
+
+
 .uploadBG {
     background-color: rgb(50, 63, 50);
-    padding: 2% 5% 2% 5%;
+    padding: 2% 0% 2% 0%;
     margin: 2vh 10vw;
     border: rgb(24, 24, 24) 10px solid;
     border-radius: 10px;
@@ -33,20 +63,73 @@
 
 }
 
-input {
-    margin: inherit;
+input:not(.cardButton, .cardInput) {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+    margin-bottom: 0.5%;
     background-color: rgb(36, 36, 36);
-    border:rgb(24, 24, 24) 5px solid;
+    border:rgb(36, 36, 36) 5px solid;
     border-radius: 5%;
     padding: 3px 5px;
     color: white;
     transform: translateY(-20%);
-    width: 15vw;
+    width: 15em;
+    height: 5vh;
+
+    font-family: "pusab";
+    font-size: 3vw;
+    text-shadow: 2px 2px black,
+    -2px -2px black,
+    -2px 2px black,
+     2px -2px black;
+    display: flex;
+    justify-content: center;
+}
+
+.cardInput {
+    margin: 15px 30%;
+    background-color: rgb(36, 36, 36);
+    border:rgb(36, 36, 36) 5px solid;
+    border-radius: 5%;
+    padding: 3px 5px;
+    color: white;
+    transform: translateY(-20%);
+    width: 25vw;
+    height: 5vh;
+
+    font-family: "pusab";
+    src: url("assets/PUSAB.TTF");
+    font-size: 3vw;
+    text-shadow: 2px 2px black,
+    -2px -2px black,
+    -2px 2px black,
+     2px -2px black;
+}
+
+input::-webkit-input-placeholder {
+    opacity: 0.5;
+    color: white;
+    font-family: "pusab";
+    font-size: 3vw;
+    text-shadow: 2px 2px black,
+    -2px -2px black,
+    -2px 2px black,
+     2px -2px black;
+}
+input::-moz-placeholder {
+    color: white;
+    font-family: "pusab";
+    font-size: 3vw;
+    text-shadow: 2px 2px black,
+    -2px -2px black,
+    -2px 2px black,
+     2px -2px black;
 }
 
 #jsonBox {
     background-color: rgb(36, 36, 36);
-    border:rgb(24, 24, 24) 5px solid;
+    border:rgb(36, 36, 36) 5px solid;
     border-radius: 5%;
     width: 90%;
     height: 100vh;
@@ -86,4 +169,150 @@ input {
 
 #listPreview:hover {
     background-color: tomato;
+}
+
+.editorHeader {
+    background-color: rgb(89, 185, 89);
+    margin: 0%;
+    padding: 1vw 1%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-image: url("../images/headerBG.png");
+}
+
+#plusSign {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.headerButtons {
+    width: 7vw;
+    height: 7vw;
+    padding-right: 8vw;
+}
+.headerButtonsImgs {
+    width: inherit;
+    height: inherit;
+}
+
+.headerText {
+    display: inherit;
+    align-items: center;
+    margin-right: auto;
+    margin-left: 2%;
+}
+
+.helpText {
+    display: inherit;
+    text-align: center;
+}
+
+#mainContent {
+    background-color: rgb(44, 99, 44);
+    text-align: left;
+    background-image: url("../images/fade.png");
+    background-repeat: repeat-x;
+}
+
+
+.positionEdit, .smallPosEdit {
+    margin: 1%;
+    background-color: darksalmon;
+    border: salmon 5px solid;
+    border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: #0000004f 8px 8px 5px;
+  }
+
+.positionEdit {
+    transform: scaleY(1);
+    transition-duration: 0.1s;
+}
+
+#posInputBox {
+    margin: 2%;
+    background-color: rgba(36, 36, 36, 0.5);
+    border: none;
+}
+
+.lineSplitGeneral {
+    height: 4px;
+    background-color: salmon;
+    border: none;
+    margin: 1% 3%;
+}
+
+.nameDetailGetter {
+    margin-right: 5%;
+}
+
+#moveLPosButton {
+    width: 80%;
+}
+
+#posInputPics {
+    width: 5vw;
+    height: 5vw;
+}
+
+.positionButtons {
+    display: flex;
+    justify-content: end;
+}
+
+#positionDisplay {
+    width: 13%;
+    margin: 0.5%;
+    margin-top: 6%;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+}
+
+.cardButton {
+	padding-left: 2%;
+	padding-right: 11%;
+	width: 7vw;
+	height: 7vw;
+}
+
+.cpicker {
+    width: inherit;
+    height: inherit;
+    position: relative;
+    opacity: 0%;
+    transform: translateX(-100%);
+
+}
+
+.shareBG {
+	background-color: #1e1e1e;
+	padding: 3%;
+	margin: 3%;
+	border-radius: 10px;
+	font-size: 2vw;
+	margin-top: 0px;
+	margin-right: 0%;
+	display: inline;
+	padding-right: 20%;
+}
+
+.shareTitle {
+	font-size: 3vw;
+	display: inline;
+	margin-left: 3%;
+	color: #1fb1e1;
+	margin-right: auto;
+    margin-top: 5%;
+	bottom: 1vw;
+	position: relative;
+}
+
+.shareBut {
+	width: 8%;
+	top: -8%;
+	display: inline;
+	position: relative;
+	left: -14%;
 }
