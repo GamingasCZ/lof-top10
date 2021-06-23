@@ -86,16 +86,15 @@ $(function () {
     $(".smallUploaderDialog").hide();
     $.get("./php/getLists.php", function (data) {
         // Zbavení se line breaku
-        console.log(data)
         data = data.slice(0, -2);
 
         try {
             if (data.match(/\|/g).length > 0) {
                 let listsArray = data.split("|");
-                for (i = 0; listsArray.length - 2; i++) {
+                for (i = 0; i < listsArray.length; i++) {
                     let listData = (listsArray[i]).split(";");
                     $(".customLists").append(`
-                <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[4]}">
+                <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
                     <div id="listPreview" class="button">
                         <div class="uploadText">${listData[1]}</div>
                         <div class="uploadText">Od: ${listData[0]}</div>
@@ -110,7 +109,6 @@ $(function () {
         }
 
         catch (error) {
-            console.log(error);
             if (data.match(/\|/g) == null || data.endsWith("|\n")) {
                 let listData = (data).split(";");
                 $(".customLists").append(`
