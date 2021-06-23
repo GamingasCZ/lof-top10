@@ -182,7 +182,7 @@ $(function () {
 				else {
 					let listData = data.split(";");
 					listData[3].replace("&quot;", "\"");
-					let boards = JSON.parse(listData[3]);
+					let boards = JSON.parse(listData[2]);
 					$(".titles").append("<p>Seznam: " + listData[1] + "</p><p>Od: " + listData[0] + "</p>");
 					$(".titleImage").attr("src", boards["titleImg"]);
 					generateList(boards);
