@@ -23,9 +23,9 @@ foreach ($fuckupData as $post) {
   $i += 1;
 }
 
-$pass = passwordGenerator();
+$pass = passwordGenerator($_POST["lName"], $_POST["creator"], $_POST["listData"]);
 
-$result = $mysqli -> query("INSERT INTO `lists`(`creator`,`name`,`password`,`data`) VALUES ('".$fuckupData[0]."','".$fuckupData[1]."','".$pass."','".$fuckupData[2]."')");
+$result = $mysqli -> query("INSERT INTO `lists`(`creator`,`name`,`data`) VALUES ('".$fuckupData[0]."','".$fuckupData[1]."','".$fuckupData[2]."')");
 $listIDquery = $mysqli -> query("SELECT LAST_INSERT_ID()");
 $rows = $listIDquery -> fetch_all(MYSQLI_ASSOC);
 foreach ($rows as $row) {

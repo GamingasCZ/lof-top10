@@ -288,31 +288,25 @@ input::-moz-placeholder {
 
 .shareBG {
 	background-color: #1e1e1e;
-	padding: 3%;
+	padding: 1%;
 	margin: 3%;
 	border-radius: 10px;
 	font-size: 2vw;
 	margin-top: 0px;
-	margin-right: 0%;
+	margin-right: 9%;
 	display: inline;
 	padding-right: 20%;
 }
 
 .shareTitle {
-	font-size: 3vw;
-	display: inline;
 	margin-left: 3%;
 	color: #1fb1e1;
-	margin-right: auto;
-    margin-top: 5%;
-	bottom: 1vw;
-	position: relative;
+    margin-bottom: 0;
 }
 
 .shareBut {
-	width: 8%;
-	top: -8%;
-	display: inline;
+	width: 7%;
+	bottom: 1vw;
 	position: relative;
-	left: -14%;
+	left: -13%;
 }

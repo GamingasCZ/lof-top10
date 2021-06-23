@@ -67,19 +67,20 @@ $(function () {
             var pstr = `Tvé heslo je ale hypergay. <b style="color: tomato;">Nehraj si se stránkou >:(</b>.`;
         }
         else {
-            var pstr = `Mužeš si nechat heslo na památku, protože zmením systém :) : <b style="color: lime;">${password[1]}</b>`;
+            var pstr = `Schovej si heslo, protože pomocí neho mužeš upravit/smazat seznam!: <b style="color: lime;">${password[1]}</b>`;
         }
 
         $(".uploaderDialog").html(`
 <img style="padding-left: 3%" src=./images/check.png>
-<p class="uploadText" style="padding-left: 3%">Seznam byl nahran!</p>
-<!--
-<h6 class="shareTitle uploadText">Sdílet</h6>
-<br />
-<div class="shareBG uploadText" style="float: none;">${currWebsite}
-<img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
+<p class="uploadText" style="padding: 0 3% 0 3%">Seznam byl nahran! ${pstr}</p>
+
+<div style="margin-top: 5%;">
+    <h6 class="shareTitle uploadText">Sdílet</h6>
+    <div class="shareBG uploadText" style="float: none;">${currWebsite}
+    <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
+    </div>
 </div>
--->
+
         `);
     }
     $(".smallUploaderDialog").hide();
