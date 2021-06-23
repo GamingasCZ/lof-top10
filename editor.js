@@ -34,36 +34,6 @@ function checkJson(data) {
             }
         }
         return true;
-
-        // Má title obrázek?
-        /*
-        if (parsedData.hasOwnProperty("titleImg")) {
-            var properties = ["levelName", "creator", "levelID", "video", "color"];
-            for (i = 1; i < ((Object.keys(parsedData)).length); i++) {
-                console.log(i);
-                for (j = 0; j < (Object.keys((i).toString()).length); i++) {
-
-                    // Má nějaké klíče navíc?
-                    if (Object.keys(parsedData[i]).length != properties.length) {
-                        throw ("JSON obsahuje nějaké klíče navíc! (nepřidávej nic do šablony :D)");
-                    }
-                    //console.log(parsedData[(i).toString()].indexOf([Object.keys((i).toString())[j]]));
-                    // Má všechny potřebné klíče?
-                    let key = Object.keys(parsedData[i])[j];
-                    
-                    if (properties.indexOf(key) == -1) {
-                        console.log(Object.keys(parsedData[i])[j]);
-                        throw ("JSON neobsahuje některé klíče! (nemaž/nepřejmenovávej 'levelName', 'creator' atd... :D)");
-                    
-                }
-
-            }
-
-        }
-        else {
-            throw ("Jsi gay :D");
-        }
-        */
     }
     catch (error) {
         $(".errorBox").css("background-color", "rgba(255, 73, 73, 0.8)");

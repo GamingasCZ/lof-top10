@@ -34,53 +34,38 @@ function getDetailsFromName(id) {
     updateSmPos()
 }
 
-
+function refreshCardDetails(lp) {
+    $(".cardLName" + lp).val(levelList[lp]["levelName"])
+    $(".cardLCreator" + lp).val(levelList[lp]["creator"])
+    $(".idbox" + lp).val(levelList[lp]["levelID"])
+    $(".cardLVideo" + lp).val(levelList[lp]["video"])
+    $("#top" + lp).css("background-color", levelList[lp]["color"])
+}
 function moveCard(position, currID) {
     let listPlacement = parseInt($(".listPosition" + currID.toString()).val());
     if (position == "up") {
         if (listPlacement > 1) {
-            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement)]["levelName"])
-            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement)]["creator"])
-            $(".idbox" + (listPlacement)).val(levelList[(listPlacement)]["levelID"])
-            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement)]["video"])
-            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement)]["color"])
-
+            refreshCardDetails(listPlacement)
             $(".card" + (listPlacement - 1)).before($(".card" + (listPlacement)));
 
             updateCardData(listPlacement - 1, -1);
             updateCardData(listPlacement, listPlacement - 1);
             updateCardData(-1, listPlacement)
 
-            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement)]["levelName"])
-            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement)]["creator"])
-            $(".idbox" + (listPlacement)).val(levelList[(listPlacement)]["levelID"])
-            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement)]["video"])
-            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement)]["color"])
-
+            refreshCardDetails(listPlacement)
             listPlacement--
         }
     }
     else {
         if (listPlacement < Object.keys(levelList).length - 1) {
-            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement)]["levelName"])
-            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement)]["creator"])
-            $(".idbox" + (listPlacement)).val(levelList[(listPlacement)]["levelID"])
-            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement)]["video"])
-            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement)]["color"])
-
-
+            refreshCardDetails(listPlacement)
             $(".card" + (listPlacement + 1)).after($(".card" + (listPlacement)));
 
             updateCardData(listPlacement + 1, -1);
             updateCardData(listPlacement, listPlacement + 1);
             updateCardData(-1, listPlacement);
 
-            $(".cardLName" + (listPlacement)).val(levelList[(listPlacement)]["levelName"])
-            $(".cardLCreator" + (listPlacement)).val(levelList[(listPlacement)]["creator"])
-            $(".idbox" + (listPlacement)).val(levelList[(listPlacement)]["levelID"])
-            $(".cardLVideo" + (listPlacement)).val(levelList[(listPlacement)]["video"])
-            $("#top" + (listPlacement)).css("background-color", levelList[(listPlacement)]["color"])
-
+            refreshCardDetails(listPlacement)
             listPlacement++
         }
     }
@@ -191,7 +176,6 @@ function addLevel() {
     });
 
     $(".cardLName" + listLenght).on("change", function () {
-        console.log($(this))
         let selection = $(".cardLName" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
         let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
         levelList[position]["levelName"] = selection;

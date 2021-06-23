@@ -1,3 +1,78 @@
+// Default 2019 board
+var boards = {
+	"titleImg": "./images/title.png",
+	"1": {
+		"levelName": "Snowy",
+		"creator": "MurlocGD, PizzaGamerHu",
+		"levelID": "39776379",
+		"video": "FBJUt0U4kUw",
+		"color": "#e55b5b"
+	},
+	"2": {
+		"levelName": "Garatun",
+		"creator": "TellConfig",
+		"levelID": "55787317",
+		"video": "yXo6jY_W6LM",
+		"color": "#71fcec"
+	},
+	"3": {
+		"levelName": "Gold Ring",
+		"creator": "ShadowBurnSK",
+		"levelID": "62611697",
+		"video": "uT2n-35x1CA",
+		"color": "#f3fc71"
+	},
+	"4": {
+		"levelName": "FiFqo Calling Rebirth",
+		"creator": "GD Mini",
+		"levelID": null,
+		"video": "WLJ0rVXIDP4",
+		"color": "#43a045"
+	},
+	"5": {
+		"levelName": "Gamingas",
+		"creator": "Qrange",
+		"levelID": "59654444",
+		"video": "V1zGo03x4Po",
+		"color": "#cc3bc2"
+	},
+	"6": {
+		"levelName": "Infinity Gamingas",
+		"creator": "Jazerplay, PlayerGeoCZ",
+		"levelID": null,
+		"video": null,
+		"color": "#b28fea"
+	},
+	"7": {
+		"levelName": "Deltarune",
+		"creator": "EidamGD",
+		"levelID": null,
+		"video": "3u3ptITvG5g",
+		"color": "#3d0f10"
+	},
+	"8": {
+		"levelName": "GG Gedon",
+		"creator": "Jakubko2005",
+		"levelID": "52409692",
+		"video": "ljaAtxqcngg",
+		"color": "#e8e53e"
+	},
+	"9": {
+		"levelName": "Rainbow Travel",
+		"creator": "PlayerGeoCZ",
+		"levelID": "55029144",
+		"video": "FBJUt0U4kUw",
+		"color": "#3ee860"
+	},
+	"10": {
+		"levelName": "Fracture",
+		"creator": "ImSamo",
+		"levelID": null,
+		"video": "WLJ0rVXIDP4",
+		"color": "#9a10ea"
+	}
+};
+
 function onGDBClick(pos, index) {
 	$(document).ready(function () {
 		$(".popup").fadeTo(100, 0);
@@ -57,15 +132,9 @@ function generateList(boards) {
 
 		var cardBG = `background-color: ${boards[bIndex]["color"]}`;
 
-		if (i == 1) {
-			cardBG += ";box-shadow: 5px 5px 40px yellow, -5px -5px 40px green, 5px -5px 40px aqua, -5px 5px 40px red;";
-		}
-		if (i == 2) {
-			cardBG += `;box-shadow: 2px 2px 30px ${boards[bIndex]["color"]}`;
-		}
-		if (i == 3) {
-			cardBG += `;box-shadow: 2px 2px 20px ${boards[bIndex]["color"]}`;
-		}
+		if (i == 1) { cardBG += ";box-shadow: 5px 5px 40px yellow, -5px -5px 40px green, 5px -5px 40px aqua, -5px 5px 40px red;"; }
+		if (i == 2) { cardBG += `;box-shadow: 2px 2px 30px ${boards[bIndex]["color"]}`; }
+		if (i == 3) { cardBG += `;box-shadow: 2px 2px 20px ${boards[bIndex]["color"]}`; }
 
 		$(".boards").append(`
 		<div class="box" style="${cardBG}"><span>${boards[bIndex]["levelName"]}</span>
@@ -89,87 +158,12 @@ function generateList(boards) {
 
 var listData = "";
 $(function () {
-
-	var boards = {
-		"titleImg": "./images/title.png",
-		"1": {
-			"levelName": "Snowy",
-			"creator": "MurlocGD, PizzaGamerHu",
-			"levelID": "39776379",
-			"video": "FBJUt0U4kUw",
-			"color": "#e55b5b"
-		},
-		"2": {
-			"levelName": "Garatun",
-			"creator": "TellConfig",
-			"levelID": "55787317",
-			"video": "yXo6jY_W6LM",
-			"color": "#71fcec"
-		},
-		"3": {
-			"levelName": "Gold Ring",
-			"creator": "ShadowBurnSK",
-			"levelID": "62611697",
-			"video": "uT2n-35x1CA",
-			"color": "#f3fc71"
-		},
-		"4": {
-			"levelName": "FiFqo Calling Rebirth",
-			"creator": "GD Mini",
-			"levelID": null,
-			"video": "WLJ0rVXIDP4",
-			"color": "#43a045"
-		},
-		"5": {
-			"levelName": "Gamingas",
-			"creator": "Qrange",
-			"levelID": "59654444",
-			"video": "V1zGo03x4Po",
-			"color": "#cc3bc2"
-		},
-		"6": {
-			"levelName": "Infinity Gamingas",
-			"creator": "Jazerplay, PlayerGeoCZ",
-			"levelID": null,
-			"video": null,
-			"color": "#b28fea"
-		},
-		"7": {
-			"levelName": "Deltarune",
-			"creator": "EidamGD",
-			"levelID": null,
-			"video": "3u3ptITvG5g",
-			"color": "#3d0f10"
-		},
-		"8": {
-			"levelName": "GG Gedon",
-			"creator": "Jakubko2005",
-			"levelID": "52409692",
-			"video": "ljaAtxqcngg",
-			"color": "#e8e53e"
-		},
-		"9": {
-			"levelName": "Rainbow Travel",
-			"creator": "PlayerGeoCZ",
-			"levelID": "55029144",
-			"video": "FBJUt0U4kUw",
-			"color": "#3ee860"
-		},
-		"10": {
-			"levelName": "Fracture",
-			"creator": "ImSamo",
-			"levelID": null,
-			"video": "WLJ0rVXIDP4",
-			"color": "#9a10ea"
-		}
-	};
-
 	if (location.search != "") {
 		var listID = location.search.slice(1).split("=");
 		if (listID[0] == "preview" & listID[1] == "1") {
 			let decodeData = atob(sessionStorage.getItem("previewJson")).split(",");
 			let decodedData = "";
-			for (i=0;i < decodeData.length;i++) {
+			for (i = 0; i < decodeData.length; i++) {
 				decodedData += String.fromCharCode(decodeData[i]);
 			}
 			let boards = JSON.parse(decodedData);
@@ -180,30 +174,27 @@ $(function () {
 		else if (listID[0] == "id") {
 			$.get("./php/getLists.php?id=" + listID[1], function (data) {
 				if (data == 1) {
-					$(".titles").append("<p>Seznam neexistuje :/!</p>");}
+					$(".titles").append("<p>Seznam neexistuje :/!</p>");
+				}
 				else if (data == 2) {
-					$(".titles").append("<p>Jakej génius hodil slovo namísto IDcka :D</p>");}
+					$(".titles").append("<p>Jakej génius hodil slovo namísto IDcka :D</p>");
+				}
 				else {
 					let listData = data.split(";");
-					listData[3].replace("&quot;","\"");
+					listData[3].replace("&quot;", "\"");
 					let boards = JSON.parse(listData[3]);
-					$(".titles").append("<p>Seznam: "+listData[1]+"</p><p>Od: "+listData[0]+"</p>");
+					$(".titles").append("<p>Seznam: " + listData[1] + "</p><p>Od: " + listData[0] + "</p>");
 					$(".titleImage").attr("src", boards["titleImg"]);
 					generateList(boards);
 				}
-	
 			}
 			)
 		}
 		else {
 			generateList(boards);
 		}
-		
-
 	}
 	else {
 		generateList(boards);
 	}
-
-
 });
