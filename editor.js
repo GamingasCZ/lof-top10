@@ -112,7 +112,7 @@ $(function () {
             if (data.match(/\|/g) == null || data.endsWith("|\n")) {
                 let listData = (data).split(";");
                 $(".customLists").append(`
-                <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[4]}">
+                <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
                 <div id="listPreview" class="button">
                     <div class="uploadText">${listData[1]}</div>
                     <div class="uploadText">Od: ${listData[0]}</div>
