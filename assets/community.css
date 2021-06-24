@@ -43,10 +43,7 @@
     font-family: "pusab";
     src: url("assets/PUSAB.TTF");
     font-size: 3vw;
-    text-shadow: 2px 2px black,
-    -2px -2px black,
-    -2px 2px black,
-     2px -2px black;
+    -webkit-text-stroke: black 2px;
     line-height: 3vw;
 }
 
@@ -79,10 +76,7 @@ input:not(.cardButton, .cardInput) {
 
     font-family: "pusab";
     font-size: 3vw;
-    text-shadow: 2px 2px black,
-    -2px -2px black,
-    -2px 2px black,
-     2px -2px black;
+    -webkit-text-stroke: black 2px;
     display: flex;
     justify-content: center;
 }
@@ -101,10 +95,7 @@ input:not(.cardButton, .cardInput) {
     font-family: "pusab";
     src: url("assets/PUSAB.TTF");
     font-size: 3vw;
-    text-shadow: 2px 2px black,
-    -2px -2px black,
-    -2px 2px black,
-     2px -2px black;
+    -webkit-text-stroke: black 2px;
 }
 
 input::-webkit-input-placeholder {
@@ -112,19 +103,13 @@ input::-webkit-input-placeholder {
     color: white;
     font-family: "pusab";
     font-size: 3vw;
-    text-shadow: 2px 2px black,
-    -2px -2px black,
-    -2px 2px black,
-     2px -2px black;
+    -webkit-text-stroke: black 2px;
 }
 input::-moz-placeholder {
     color: white;
     font-family: "pusab";
     font-size: 3vw;
-    text-shadow: 2px 2px black,
-    -2px -2px black,
-    -2px 2px black,
-     2px -2px black;
+    -webkit-text-stroke: black 2px;
 }
 
 #jsonBox {
