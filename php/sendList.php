@@ -5,6 +5,7 @@
 require("secrets.php");
 
 $mysqli = new mysqli($hostname, $username, $password, $database);
+$time = new DateTime();
 
 if ($mysqli -> connect_errno) {
   echo "0";
@@ -23,9 +24,12 @@ foreach ($fuckupData as $post) {
   $i += 1;
 }
 
-$pass = passwordGenerator($_POST["lName"], $_POST["creator"], $_POST["listData"]);
+$timestamp = $time -> getTimestamp();
+$pass = passwordGenerator($_POST["lName"], $_POST["creator"], $timestamp);
 
-$result = $mysqli -> query("INSERT INTO `lists`(`creator`,`name`,`data`) VALUES ('".$fuckupData[0]."','".$fuckupData[1]."','".$fuckupData[2]."')");
+
+$query = sprintf("INSERT INTO `lists`(`creator`,`name`,`data`,`timestamp`) VALUES ('%s','%s','%s','%s')",$fuckupData[0],$fuckupData[1],$fuckupData[2],$timestamp);
+$result = $mysqli -> query($query);
 $listIDquery = $mysqli -> query("SELECT LAST_INSERT_ID()");
 $rows = $listIDquery -> fetch_all(MYSQLI_ASSOC);
 foreach ($rows as $row) {

@@ -24,15 +24,15 @@ if (in_array("", $datacheck)) {
 $getList = $mysqli -> query("SELECT * FROM `lists` WHERE id=" . join("",array_slice($datacheck,0,1)));
 $listData = $getList -> fetch_assoc();
 
-$listPwd = passwordGenerator($listData["name"], $listData["creator"], $listData["data"]);
-$listData["data"] = str_replace("&quot;",'"',$listData["data"]);
+$listPwd = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
+
 if ($_POST["pwdEntered"] != $listPwd) {
-    //sleep(4);
+    sleep(4);
     echo "2";
     exit();
 }
 else {
     echo "3";
-    //header("location:http://www.gamingas.wz.cz/lofttop10/upload.html?edit=");
+    header("location:http://www.gamingas.wz.cz/lofttop10/upload.html?edit=".$listData["id"]."&pass=".$_POST["pwdEntered"]);
 }
 ?>

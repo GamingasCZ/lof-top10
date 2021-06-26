@@ -5,7 +5,7 @@ $username = "";
 $password = "";
 $database = "";
 
-function passwordGenerator($listName, $creator, $data) {
+function passwordGenerator($listName, $creator, $timestamp) {
     return 0;
 }
 
