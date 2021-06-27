@@ -160,6 +160,12 @@ var listData = "";
 $(function () {
 	if (location.search != "") {
 		var listID = location.search.slice(1).split("=");
+
+		// Password input removal
+		if (listID[0] != "id") {
+			$(".password").remove()
+		}
+
 		if (listID[0] == "preview" & listID[1] == "1") {
 			let decodeData = atob(sessionStorage.getItem("previewJson")).split(",");
 			let decodedData = "";
@@ -195,7 +201,15 @@ $(function () {
 		}
 	}
 	else {
+		$(".password").remove()
 		generateList(boards);
+	}
+
+	// Removing stuff if list is empty
+	if ($(".box").length == 0) {
+		$(".titles").append("<p>Nepodarilo se nacíst seznam!</p>");
+		$(".password").remove();
+		$("#crown").remove();
 	}
 });
 
