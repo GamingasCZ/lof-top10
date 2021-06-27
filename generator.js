@@ -198,3 +198,15 @@ $(function () {
 		generateList(boards);
 	}
 });
+
+function checkPassword() {
+	let listID = location.search.slice(1).split("=");
+	let passEntered = $(".passInput").val();
+	$.post("./php/pwdCheckAction.php",{"id":listID[1],"pwdEntered":$(".passInput").val()}, function (data) {
+		// Incorrect pwd
+		if (data == 2) {
+			//testing
+			alert("Neplatné heslo");
+		}
+		})
+}
