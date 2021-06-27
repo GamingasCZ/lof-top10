@@ -34,6 +34,11 @@ function getDetailsFromName(id) {
     updateSmPos()
 }
 
+function generateFromJSON() {
+    // TODO: check if pass is correct
+    
+}
+
 function refreshCardDetails(lp) {
     $(".cardLName" + lp).val(levelList[lp]["levelName"])
     $(".cardLCreator" + lp).val(levelList[lp]["creator"])
