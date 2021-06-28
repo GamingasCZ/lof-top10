@@ -1,4 +1,3 @@
-
 function getDetailsFromID(id) {
     // Tohle budeš pak muset předělat, až bude všechno fungovat :D
     let givenID = $(".idbox" + id).val();
@@ -41,18 +40,19 @@ function generateFromJSON() {
             window.location.replace("./upload.html")
         }
         else {
-            data = data.replace("&quot;", "\"")
-            lData = data.split(";")
+            let lData = $("#listData").html(data).text()
+            lData = lData.split(";")
             // Removing tutorial
             $("#mainContent").text("");
             $(".previewButton").removeClass("disabled");
 
             $("#listnm").val(lData[0])
             $("#creatornm").val(lData[1])
-            $(".titImgInp").val(lData["titleImg"])
 
-            levelList = JSON.parse(lData[3]);
-            for (i = 0; i < Object.keys(lData).length - 1; i++) {
+            levelList = JSON.parse(lData[2]);
+            $(".titImgInp").val(levelList["titleImg"])
+
+            for (i = 0; i < Object.keys(levelList).length - 1; i++) {
                 loadLevel(i + 1)
             }
             updateSmPos()
@@ -479,7 +479,19 @@ function openHelp() {
 
 
 $(function () {
+
+    // Disabling input boxes when editing a list
+    let listID = location.search.slice(1).split(/[=&]/g);
+    if (listID.indexOf("edit") != -1) {
+        $(".uploadTitle").text("Upravování");
+        $("#listnm").attr("disabled", "true");
+        $("#creatornm").attr("disabled", "true");
+        $("#submitbutton").text("Aktualizovat")
+        $("#submitbutton").attr("onclick","updateList()")
+    }
+
     $(window).on("resize", function () {
+        // Editor disable on portrait orientaton
         if ($(window).width() < $(window).height()) {
             $(".headerTitle").text("Pro použití editoru si otoč mobil ;).");
             $("#mainContent").hide()
@@ -491,7 +503,3 @@ $(function () {
 
     })
 })
-
-function updateTitImg() {
-    levelList["titleImg"] = $(".titImgInp").val()
-}

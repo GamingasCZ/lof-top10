@@ -55,6 +55,23 @@ function uploadList() {
         $("#levelUpload").submit();
     }
 }
+function updateList() {
+    let isValid = checkJson(JSON.stringify(levelList));
+    if (isValid) {
+        // will later also update uploadList()
+        let data = location.search.slice(1).split(/[=&]/g);
+        let postData = {
+            "listData": JSON.stringify(levelList),
+            "id": data[1],
+            "pwdEntered": data[3]
+        }
+        $.post("./php/updateList.php", postData, function (data) {
+            let updateData = data.split(";")
+            window.location.replace(`http://www.gamingas.wz.cz/lofttop10/upload.html?update=1`);
+        })
+    }
+}
+
 
 $(function () {
     if (location.search != "") {
@@ -62,6 +79,17 @@ $(function () {
 
         if (password[0] == "edit" & password[2] == "pass") {
             generateFromJSON()
+        }
+        else if (password[0] == "update") {
+
+            $(".uploaderDialog").html(`
+            <img style="padding-left: 3%" src=./images/check.png>
+            <p class="uploadText" style="padding: 0 3% 0 3%">Seznam byl aktualizovan!</p>
+
+            </div>
+            </div>
+            
+            `);
         }
         else {
             // Change depending on your website
