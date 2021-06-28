@@ -15,7 +15,7 @@ if ($mysqli -> connect_errno) {
     exit();
 }
 
-$datacheck = [$_POST["id"], $_POST["pwdEntered"]];
+$datacheck = [$_POST["id"], $_POST["pwdEntered"], $_POST["retData"]];
 if (in_array("", $datacheck)) {
     echo "1";
     exit();
@@ -32,7 +32,11 @@ if ($_POST["pwdEntered"] != $listPwd) {
     exit();
 }
 else {
-    echo "3";
-    header("location:http://www.gamingas.wz.cz/lofttop10/upload.html?edit=".$listData["id"]."&pass=".$_POST["pwdEntered"]);
+    if ($_POST["retData"] == "1") {
+        echo sprintf("%s;%s;%s",$listData["name"],$listData["creator"],$listData["data"]);
+    }
+    else {
+        echo "3";
+    }
 }
 ?>

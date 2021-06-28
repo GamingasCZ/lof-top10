@@ -154,6 +154,12 @@ function generateList(boards) {
 		</div>
 	`);
 	};
+	// Removing stuff if list is empty
+	if ($(".box").length == 0) {
+		$(".titles").append("<p>Nepodarilo se nacíst seznam!</p>");
+		$(".password").remove();
+		$("#crown").remove();
+	}
 }
 
 var listData = "";
@@ -181,9 +187,13 @@ $(function () {
 			$.get("./php/getLists.php?id=" + listID[1], function (data) {
 				if (data == 1) {
 					$(".titles").append("<p>Seznam neexistuje :/!</p>");
+					$(".password").remove();
+					$("#crown").remove();
 				}
 				else if (data == 2) {
 					$(".titles").append("<p>Jakej génius hodil slovo namísto IDcka :D</p>");
+					$(".password").remove();
+					$("#crown").remove();
 				}
 				else {
 					let listData = data.split(";");
@@ -204,23 +214,24 @@ $(function () {
 		$(".password").remove()
 		generateList(boards);
 	}
-
-	// Removing stuff if list is empty
-	if ($(".box").length == 0) {
-		$(".titles").append("<p>Nepodarilo se nacíst seznam!</p>");
-		$(".password").remove();
-		$("#crown").remove();
-	}
 });
 
 function checkPassword() {
 	let listID = location.search.slice(1).split("=");
 	let passEntered = $(".passInput").val();
-	$.post("./php/pwdCheckAction.php",{"id":listID[1],"pwdEntered":$(".passInput").val()}, function (data) {
+	$(".passImg").addClass("disabled");
+	$(".passText").css("color","#82fc80")
+	$(".passText").text("Kontrolování hesla...")
+	$.post("./php/pwdCheckAction.php", { "id": listID[1], "pwdEntered": $(".passInput").val(),"retData": "0"}, function (data) {
 		// Incorrect pwd
 		if (data == 2) {
 			//testing
-			alert("Neplatné heslo");
+			$(".passImg").removeClass("disabled");
+			$(".passText").css("color","#fc8093")
+			$(".passText").text("Heslo je nesprávné!")
 		}
-		})
+		if (data == 3) {
+			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?edit=${listID[1]}&pass=${$(".passInput").val()}`;
+		}
+	})
 }

@@ -295,3 +295,9 @@ input::-moz-placeholder {
 	position: relative;
 	left: -13%;
 }
+
+.passText {
+    margin-top: -4%;
+    margin-bottom: 0;
+    margin-left: 1%;
+}
