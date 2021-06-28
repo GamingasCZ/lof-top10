@@ -216,6 +216,17 @@ function addLevel() {
     });
 
     $(".cardLVideo" + listLenght).on("change", function () {
+        // Link is a regular YT link
+        if ($(this).val().match(/(watch\?v=)/g)) {
+            let linkMatch = $(this).val().match(/(?<=\?v=).+/g);
+            $(this).val(linkMatch);
+        }
+        // Link is most likely a shortened YT link
+        else {
+            let linkMatch = $(this).val().match(/(?<=youtu.be\/).+/g);
+            $(this).val(linkMatch);
+        }
+
         let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
         let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
         levelList[position]["video"] = selection;
@@ -268,6 +279,16 @@ function loadLevel(pos) {
     });
 
     $(".cardLVideo" + pos).on("change", function () {
+        if ($(this).val().match(/(watch\?v=)/g)) {
+            let linkMatch = $(this).val().match(/(?<=\?v=).+/g);
+            $(this).val(linkMatch);
+        }
+        // Link is most likely a shortened YT link
+        else {
+            let linkMatch = $(this).val().match(/(?<=youtu.be\/).+/g);
+            $(this).val(linkMatch);
+        }
+
         let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
         let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
         levelList[position]["video"] = selection;
