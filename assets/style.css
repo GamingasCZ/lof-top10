@@ -76,7 +76,7 @@ span {
   font-size: 3vw;
   font-family: "pusab";
   color: white;
-  -webkit-text-stroke: black 2px;
+  -webkit-text-stroke: black 0.17vw;
 }
 
 .boxLink {
