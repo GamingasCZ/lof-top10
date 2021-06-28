@@ -51,38 +51,72 @@ function checkJson(data) {
 function uploadList() {
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
-        $("#listData").attr("value",JSON.stringify(levelList));
+        $("#listData").attr("value", JSON.stringify(levelList));
         $("#levelUpload").submit();
     }
 }
+function updateList() {
+    let isValid = checkJson(JSON.stringify(levelList));
+    if (isValid) {
+        // will later also update uploadList()
+        let data = location.search.slice(1).split(/[=&]/g);
+        let postData = {
+            "listData": JSON.stringify(levelList),
+            "id": data[1],
+            "pwdEntered": data[3]
+        }
+        $.post("./php/updateList.php", postData, function (data) {
+            let updateData = data.split(";")
+            window.location.replace(`http://www.gamingas.wz.cz/lofttop10/upload.html?update=1`);
+        })
+    }
+}
+
 
 $(function () {
     if (location.search != "") {
         let password = location.search.slice(1).split(/[=&]/g);
 
-        // Change depending on your website
-        let currWebsite = `http://gamingas.wz.cz/lofttop10/?id=${password[3]}`;
+        if (password[0] == "edit" & password[2] == "pass") {
+            generateFromJSON()
+        }
+        else if (password[0] == "update") {
 
-        if (isNaN(parseInt(password[1]))) {
-            var pstr = `Tvé heslo je ale hypergay. <b style="color: tomato;">Nehraj si se stránkou >:(</b>.`;
+            $(".uploaderDialog").html(`
+            <img style="padding-left: 3%" src=./images/check.png>
+            <p class="uploadText" style="padding: 0 3% 0 3%">Seznam byl aktualizovan!</p>
+
+            </div>
+            </div>
+            
+            `);
         }
         else {
-            var pstr = `Schovej si heslo, protože pomocí neho mužeš upravit/smazat seznam!: <b style="color: lime;">${password[1]}</b>`;
-        }
+            // Change depending on your website
+            let currWebsite = `http://gamingas.wz.cz/lofttop10/?id=${password[3]}`;
 
-        $(".uploaderDialog").html(`
+            if (isNaN(parseInt(password[1]))) {
+                var pstr = `Tvé heslo je ale hypergay. <b style="color: tomato;">Nehraj si se stránkou >:(</b>.`;
+            }
+            else {
+                var pstr = `Schovej si heslo, protože pomocí neho mužeš upravit/smazat seznam!: <b style="color: lime;">${password[1]}</b>`;
+            }
+
+            $(".uploaderDialog").html(`
 <img style="padding-left: 3%" src=./images/check.png>
 <p class="uploadText" style="padding: 0 3% 0 3%">Seznam byl nahran! ${pstr}</p>
 
 <div style="margin-top: 5%;">
-    <h6 class="shareTitle uploadText">Sdílet</h6>
-    <div class="shareBG uploadText" style="float: none;">${currWebsite}
-    <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
-    </div>
+<h6 class="shareTitle uploadText">Sdílet</h6>
+<div class="shareBG uploadText" style="float: none;">${currWebsite}
+<img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
+</div>
 </div>
 
-        `);
+`);
+        }
     }
+
     $(".smallUploaderDialog").hide();
     $.get("./php/getLists.php", function (data) {
         // Zbavení se line breaku

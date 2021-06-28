@@ -44,7 +44,6 @@
     src: url("assets/PUSAB.TTF");
     font-size: 3vw;
     -webkit-text-stroke: black 0.17vw;
-    line-height: 3vw;
 }
 
 .uploadTitle {
@@ -294,4 +293,10 @@ input::-moz-placeholder {
 	bottom: 1vw;
 	position: relative;
 	left: -13%;
+}
+
+.passText {
+    margin-top: -4%;
+    margin-bottom: 0;
+    margin-left: 1%;
 }

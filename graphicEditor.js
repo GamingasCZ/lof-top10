@@ -1,4 +1,3 @@
-
 function getDetailsFromID(id) {
     // Tohle budeš pak muset předělat, až bude všechno fungovat :D
     let givenID = $(".idbox" + id).val();
@@ -32,6 +31,34 @@ function getDetailsFromName(id) {
         levelList[id]["levelID"] = data[0]["id"]
     })
     updateSmPos()
+}
+
+function generateFromJSON() {
+    let listID = location.search.slice(1).split(/[=&]/g);
+    $.post("./php/pwdCheckAction.php", { "id": listID[1], "pwdEntered": listID[3], "retData": "1" }, function (data) {
+        if (data == 2) {
+            window.location.replace("./upload.html")
+        }
+        else {
+            let lData = $("#listData").html(data).text()
+            lData = lData.split(";")
+            // Removing tutorial
+            $("#mainContent").text("");
+            $(".previewButton").removeClass("disabled");
+
+            $("#listnm").val(lData[0])
+            $("#creatornm").val(lData[1])
+
+            levelList = JSON.parse(lData[2]);
+            $(".titImgInp").val(levelList["titleImg"])
+
+            for (i = 0; i < Object.keys(levelList).length - 1; i++) {
+                loadLevel(i + 1)
+            }
+            updateSmPos()
+            displayCard("1")
+        }
+    })
 }
 
 function refreshCardDetails(lp) {
@@ -151,7 +178,8 @@ function addLevel() {
     $("#smtop" + listLenght).css("border-color", `rgb(${darker.join(",")})`);
     $("#lineSplit" + listLenght).css("background-color", `rgb(${darker.join(",")})`);
 
-    let inhex = rgb.map(c => ((c).toString(16).length == 1 ? "0"+(c).toString(16) : (c).toString(16)))
+  
+    let inhex = rgb.map(c => ((c).toString(16).length == 1 ? "0" + (c).toString(16) : (c).toString(16)))
     levelList[listLenght]["color"] = "#" + inhex.join("");
 
     // Sets the color of the added card
@@ -188,6 +216,58 @@ function addLevel() {
     });
 
     $(".cardLVideo" + listLenght).on("change", function () {
+        let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+        levelList[position]["video"] = selection;
+    });
+}
+
+function loadLevel(pos) {
+    $("#mainContent").append(card(pos))
+    refreshCardDetails(pos)
+
+    let chosenColor = levelList[pos]["color"];
+    let rgb = [];
+    for (j = 1; j < 6; j += 2) {
+        rgb.push(parseInt("0x" + chosenColor.slice(j, j + 2)) - 40);
+    }
+    $("#top" + pos).css("border-color", `rgb(${rgb.join(",")})`);
+    $("#lineSplit" + pos).css("background-color", `rgb(${rgb.join(",")})`);
+
+    // Setting card buttons
+    $("#colorPicker" + pos).on("change", function () {
+        let chosenColor = $(this).val()
+        let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
+        let rgb = [];
+        for (i = 1; i < 6; i += 2) {
+            rgb.push(parseInt("0x" + chosenColor.slice(i, i + 2)) - 40);
+        }
+        $("#top" + cardSelected).css("background-color", chosenColor);
+        $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
+        $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
+
+        levelList[cardSelected]["color"] = chosenColor;
+    });
+
+    $(".idbox" + pos).on("change", function () {
+        let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+        levelList[position]["levelID"] = selection;
+    });
+
+    $(".cardLName" + pos).on("change", function () {
+        let selection = $(".cardLName" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+        levelList[position]["levelName"] = selection;
+    });
+
+    $(".cardLCreator" + pos).on("change", function () {
+        let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+        levelList[position]["creator"] = selection;
+    });
+
+    $(".cardLVideo" + pos).on("change", function () {
         let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
         let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
         levelList[position]["video"] = selection;
@@ -400,7 +480,19 @@ function openHelp() {
 
 
 $(function () {
+
+    // Disabling input boxes when editing a list
+    let listID = location.search.slice(1).split(/[=&]/g);
+    if (listID.indexOf("edit") != -1) {
+        $(".uploadTitle").text("Upravování");
+        $("#listnm").attr("disabled", "true");
+        $("#creatornm").attr("disabled", "true");
+        $("#submitbutton").text("Aktualizovat")
+        $("#submitbutton").attr("onclick","updateList()")
+    }
+
     $(window).on("resize", function () {
+        // Editor disable on portrait orientaton
         if ($(window).width() < $(window).height()) {
             $(".headerTitle").text("Pro použití editoru si otoč mobil ;).");
             $("#mainContent").hide()
@@ -412,7 +504,3 @@ $(function () {
 
     })
 })
-
-function updateTitImg() {
-    levelList["titleImg"] = $(".titImgInp").val()
-}
