@@ -155,7 +155,7 @@ function generateList(boards) {
 	`);
 	};
 	// Removing stuff if list is empty
-	if ($(".box").length == 0) {
+	if ($(".box").length == 0 & location.pathname.match(/(upload)/g) == null) {
 		$(".titles").append("<p>Nepodarilo se nacíst seznam!</p>");
 		$(".password").remove();
 		$("#crown").remove();
