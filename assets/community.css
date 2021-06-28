@@ -43,8 +43,7 @@
     font-family: "pusab";
     src: url("assets/PUSAB.TTF");
     font-size: 3vw;
-    -webkit-text-stroke: black 2px;
-    line-height: 3vw;
+    -webkit-text-stroke: black 0.17vw;
 }
 
 .uploadTitle {
@@ -53,10 +52,10 @@
     padding: 5px 0px 5px 0px;
     float: none;
     display: block;
-    text-shadow: 2px 2px rgb(61, 131, 79),
-    -2px -2px rgb(61, 131, 79),
-    -2px 2px rgb(61, 131, 79),
-     2px -2px rgb(61, 131, 79);
+    text-shadow: 0.17vw 0.17vw rgb(61, 131, 79),
+    -0.17vw -0.17vw rgb(61, 131, 79),
+    -0.17vw 0.17vw rgb(61, 131, 79),
+     0.17vw -0.17vw rgb(61, 131, 79);
 
 }
 
@@ -76,7 +75,7 @@ input:not(.cardButton, .cardInput) {
 
     font-family: "pusab";
     font-size: 3vw;
-    -webkit-text-stroke: black 2px;
+    -webkit-text-stroke: black 0.17vw;
     display: flex;
     justify-content: center;
 }
@@ -95,7 +94,7 @@ input:not(.cardButton, .cardInput) {
     font-family: "pusab";
     src: url("assets/PUSAB.TTF");
     font-size: 3vw;
-    -webkit-text-stroke: black 2px;
+    -webkit-text-stroke: black 0.17vw;
 }
 
 input::-webkit-input-placeholder {
@@ -103,13 +102,13 @@ input::-webkit-input-placeholder {
     color: white;
     font-family: "pusab";
     font-size: 3vw;
-    -webkit-text-stroke: black 2px;
+    -webkit-text-stroke: black 0.17vw;
 }
 input::-moz-placeholder {
     color: white;
     font-family: "pusab";
     font-size: 3vw;
-    -webkit-text-stroke: black 2px;
+    -webkit-text-stroke: black 0.17vw;
 }
 
 #jsonBox {

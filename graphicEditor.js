@@ -178,6 +178,7 @@ function addLevel() {
     $("#smtop" + listLenght).css("border-color", `rgb(${darker.join(",")})`);
     $("#lineSplit" + listLenght).css("background-color", `rgb(${darker.join(",")})`);
 
+  
     let inhex = rgb.map(c => ((c).toString(16).length == 1 ? "0" + (c).toString(16) : (c).toString(16)))
     levelList[listLenght]["color"] = "#" + inhex.join("");
 
