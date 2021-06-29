@@ -506,21 +506,25 @@ $(function () {
     let listID = location.search.slice(1).split(/[=&]/g);
     if (listID.indexOf("edit") != -1) {
         $(".uploadTitle").text("Upravování");
+
         $("#listnm").attr("disabled", "true");
         $("#creatornm").attr("disabled", "true");
-        $("#submitbutton").text("Aktualizovat")
+
+        $("#submitbutton").attr("value", "Aktualizovat")
         $("#submitbutton").attr("onclick","updateList()")
     }
 
     $(window).on("resize", function () {
         // Editor disable on portrait orientaton
         if ($(window).width() < $(window).height()) {
-            $(".headerTitle").text("Pro použití editoru si otoč mobil ;).");
+            $(".headerTitle").text("Pro použití editoru si otoc mobil ;).");
             $("#mainContent").hide()
+            $(".headerButtons").hide()
         }
         else {
             $(".headerTitle").html(`Levely`);
             $("#mainContent").show()
+            $(".headerButtons").show()
         }
 
     })

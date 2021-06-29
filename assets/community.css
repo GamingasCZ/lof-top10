@@ -111,6 +111,23 @@ input::-moz-placeholder {
     -webkit-text-stroke: black 0.17vw;
 }
 
+input:disabled {
+    opacity: 0.5;
+}
+
+#submitarea {
+    display: flex;
+    justify-content: center;
+}
+#submitbutton {
+	width: auto;
+	padding: 2% 2% 4% 2%;
+    background-color: rgb(113, 212, 113);
+    border: none;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
 #jsonBox {
     background-color: rgb(36, 36, 36);
     border:rgb(36, 36, 36) 5px solid;
