@@ -110,6 +110,11 @@ span {
   width: 250px;
 }
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 .button {
   display: inline;
   float: right;
