@@ -512,6 +512,8 @@ $(function () {
 
         $("#submitbutton").attr("value", "Aktualizovat")
         $("#submitbutton").attr("onclick","updateList()")
+
+        $("#submitarea").append('<input onclick="removeList()" type="button" id="removebutton" value="Smazat">')
     }
 
     $(window).on("resize", function () {

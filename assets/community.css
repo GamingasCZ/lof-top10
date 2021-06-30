@@ -127,6 +127,15 @@ input:disabled {
     margin-left: 2%;
     margin-right: 2%;
 }
+#removebutton {
+    width: auto;
+	padding: 2% 2% 4% 2%;
+    background-color: rgb(212, 113, 113);
+    color: rgb(255, 0, 0);
+    border: none;
+    margin-left: 2%;
+    margin-right: 2%;
+}
 
 #jsonBox {
     background-color: rgb(36, 36, 36);
@@ -316,4 +325,30 @@ input:disabled {
     margin-top: -4%;
     margin-bottom: 0;
     margin-left: 1%;
+}
+
+.killList {
+    transition-duration: 4s;
+    transform: scaleY(0.0) scaleX(2);
+    filter: invert(100%);
+    transition-timing-function: ease-out;
+}
+.boom {
+    background-color: white ;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    opacity: 0;
+    display: none;
+}
+.removeImg {
+    transition-duration: 0.5s;
+    margin-left: 13em;
+}
+#rmbutton {
+    width: 15%;
+    height: 15%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
 }
