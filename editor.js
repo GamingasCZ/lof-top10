@@ -72,7 +72,6 @@ function updateList() {
     }
 }
 
-
 $(function () {
     if (location.search != "") {
         let password = location.search.slice(1).split(/[=&]/g);
@@ -161,8 +160,8 @@ $(function () {
     // Mobile optimzations
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         $(".uploadBG").css("margin", "0")
-        $(".uploadBG").css("border","none")
-        $("body").css("margin","0")
+        $(".uploadBG").css("border", "none")
+        $("body").css("margin", "0")
     }
 })
 
@@ -173,4 +172,65 @@ function hideUploader() {
 function showUploader() {
     $(".uploaderDialog").show()
     $(".smallUploaderDialog").hide();
+}
+
+
+function closeRmScreen() {
+    $(".removeScreen").fadeOut(100)
+    $(".boom").animate({ "opacity": 0 }, 500, function () {
+        $(".boom").css("background-color", "white")
+        $(".boom").css("display", "none")
+        $(".removeScreen").remove()
+    })   
+}
+function confirmDelete() {
+    closeRmScreen()
+    setInterval(function () {
+        let data = location.search.slice(1).split(/[=&]/g);
+        let postData = {
+            "id": data[1],
+            "pwdEntered": data[3]
+        }
+        murderList();
+        $.post("./php/removeList.php", postData, function (data) {
+            murderList();
+        })  
+    }, 600)
+}
+
+function removeList() {
+    // Confirm remove
+    $(".boom").append(`<div class="uploadText removeScreen">
+    <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.png"><br />
+    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -1.64em;" src="./images/szn1.png">
+    <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">Opravdu chces smazat svuj seznam?</p>
+    <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
+        <img id="rmbutton" onclick="confirmDelete()" class="button" src="./images/yeees.png">
+        <img id="rmbutton" onclick="closeRmScreen()" class="button" src="./images/ne.png">
+    <div>
+    </div>`);
+
+    $(".boom").css("background-color", "black");
+    $(".boom").css("display", "initial");
+    $(".boom").animate({ "opacity": 1 }, 500, function() {
+        $("#removeText").fadeIn(2000);
+        $(".rmButSet").animate({ "opacity": 1 }, 2000);
+    })
+
+    $("#rmbutton").on("mouseover", function () {
+        $("#rmimg1").css("transform","translateY(-10%)");
+        $("#rmimg2").css("transform","translateY(10%)");
+        $(".boom").css("background-color","rgb(11, 0, 0)");
+    })
+    $("#rmbutton").on("mouseout", function () {
+        $("#rmimg1").css("transform","translateY(0%)");
+        $("#rmimg2").css("transform","translateY(0%)");
+        $(".boom").css("background-color","rgb(0, 0, 0)");
+    })
+}
+function murderList() {
+    $(".boom").css("display", "initial");
+
+    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.replace("./upload.html"));
+    $("#levelUpload").addClass("killList");
 }
