@@ -72,7 +72,26 @@ function updateList() {
     }
 }
 
+var sorting = false;
 $(function () {
+    $("#sortBut").on("click", function () {
+        if (sorting) {
+            $("#sortBut").css("transform", "scaleY(1)");
+            $("#sortBut").attr("title", "Nejnovější")
+        }
+        else {
+            $("#sortBut").css("transform", "scaleY(-1)");
+            $("#sortBut").attr("title", "Nejstarší")
+        }
+        sorting = !sorting
+
+        var commLists = $(".customLists").children()
+        for (i = 0; i < commLists.length; i++) {
+            $(commLists[i]).before(commLists[i+1]);
+        }
+        commLists = $(".customLists").children()
+    })
+
     if (location.search != "") {
         let password = location.search.slice(1).split(/[=&]/g);
 
@@ -124,6 +143,10 @@ $(function () {
         try {
             if (data.match(/\|/g).length > 0) {
                 let listsArray = data.split("|");
+                if (sorting) {
+                    listsArray.reverse()
+                }
+
                 for (i = 0; i < listsArray.length; i++) {
                     let listData = (listsArray[i]).split(";");
                     $(".customLists").append(`
@@ -181,7 +204,7 @@ function closeRmScreen() {
         $(".boom").css("background-color", "white")
         $(".boom").css("display", "none")
         $(".removeScreen").remove()
-    })   
+    })
 }
 function confirmDelete() {
     closeRmScreen()
@@ -194,7 +217,7 @@ function confirmDelete() {
         murderList();
         $.post("./php/removeList.php", postData, function (data) {
             murderList();
-        })  
+        })
     }, 600)
 }
 
@@ -212,20 +235,20 @@ function removeList() {
 
     $(".boom").css("background-color", "black");
     $(".boom").css("display", "initial");
-    $(".boom").animate({ "opacity": 1 }, 500, function() {
+    $(".boom").animate({ "opacity": 1 }, 500, function () {
         $("#removeText").fadeIn(2000);
         $(".rmButSet").animate({ "opacity": 1 }, 2000);
     })
 
     $("#rmbutton").on("mouseover", function () {
-        $("#rmimg1").css("transform","translateY(-10%)");
-        $("#rmimg2").css("transform","translateY(10%)");
-        $(".boom").css("background-color","rgb(11, 0, 0)");
+        $("#rmimg1").css("transform", "translateY(-10%)");
+        $("#rmimg2").css("transform", "translateY(10%)");
+        $(".boom").css("background-color", "rgb(11, 0, 0)");
     })
     $("#rmbutton").on("mouseout", function () {
-        $("#rmimg1").css("transform","translateY(0%)");
-        $("#rmimg2").css("transform","translateY(0%)");
-        $(".boom").css("background-color","rgb(0, 0, 0)");
+        $("#rmimg1").css("transform", "translateY(0%)");
+        $("#rmimg2").css("transform", "translateY(0%)");
+        $(".boom").css("background-color", "rgb(0, 0, 0)");
     })
 }
 function murderList() {
