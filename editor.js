@@ -150,9 +150,13 @@ $(function () {
                 for (i = 0; i < listsArray.length; i++) {
                     let listData = (listsArray[i]).split(";");
                     let listColor = JSON.parse(listData[2])["1"]["color"]
+                    let rgb = [];
+                    for (j = 1; j < 6; j += 2) {
+                        rgb.push(parseInt("0x" + listColor.slice(j, j + 2)) - 40);
+                    }
                     $(".customLists").append(`
                 <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
-                    <div id="listPreview" class="button" style="background-color: ${listColor};">
+                    <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(",")})">
                         <div class="uploadText">${listData[1]}</div>
                         <div class="uploadText">Od: ${listData[0]}</div>
                     </div>
