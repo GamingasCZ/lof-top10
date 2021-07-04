@@ -93,9 +93,20 @@
 
   </form>
   <p class="titles" style="margin-top: 10vh;">- Komunitní seznamy -</p>
-  <div class="searchTools uploadText">
+  <div class="searchTools uploadText" style="justify-content: center;">
     <span style="font-size: 3vw; padding-right: 2%;">Razení: </span>
     <img src="images/sort.png" id="sortBut" class="button" style="float: none; width: 5%; transition-duration: 0s;">
+    <div class="page">
+      <span style="font-size: 3vw; padding-right: 2%;">Strana: </span>
+      <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="pageSwitch(-1)">
+      <input autocomplete="off" class="pageIndicator" value="1">
+      <span style="font-size: 3.5vw" id="maxPage">/1</span>
+      <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="pageSwitch(1)">
+    </div>
+    <div class="search">
+      <input placeholder="Hledání" autocomplete="off" class="pageIndicator" id="searchBar">
+      <img src="./images/getStats.png" class="button passImg" style="float: none" onclick="search()">
+    </div>
   </div>
   <div class="customLists"></div>
 
