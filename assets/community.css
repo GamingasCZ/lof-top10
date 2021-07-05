@@ -59,7 +59,7 @@
 
 }
 
-input:not(.cardButton, .cardInput) {
+input:not(.cardButton, .cardInput, .pageIndicator, .searchBar) {
     margin-left: auto;
     margin-right: auto;
     margin-top: 2%;
@@ -360,4 +360,43 @@ input:disabled {
     padding: 1%;
     display: flex;
     align-items: center;
+    /*flex-wrap: wrap;*/
+}
+
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.pageIndicator {
+    width: 10%;
+    margin: 0.5%;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+    min-height: 3.4vw;
+    border: none;
+    background-color: #111;
+    border-radius: 10px;
+    font-size: 3vw;
+    font-family: "pusab";
+    color: white;
+    -webkit-text-stroke: black 0.17vw;
+}
+
+.pageBut {
+    width: 5%;
+    height: 5%;
+    align-self: center;
+    margin: 1%;
+}
+#searchBar {
+    width: 80%;
 }
