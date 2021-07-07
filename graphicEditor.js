@@ -352,7 +352,7 @@ function removeLevel(id) {
 
     // Adds the tutorial, when the list is empty
     if ((Object.keys(levelList)).length == 1) {
-        $("#mainContent").html(`<p class="helpText">Kliknutím na <img width=5% id="plusSign" src="images/add.png"> pridáš level!</p>`);
+        $("#mainContent").html(`<p class="helpText">Kliknutím na <img width=5% id="plusSign" src="images/add.png"> přidáš level!</p>`);
         $(".previewButton").addClass("disabled");
     }
 
@@ -413,7 +413,7 @@ function card(index, rndColor) {
         </button>
         
         <img id="posInputPics" src="./images/bytost.png">
-        <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="Tvurce" style="width: 15vw;display: inline-flex;"><br />
+        <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="Tvůrce" style="width: 15vw;display: inline-flex;"><br />
 
         <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="Video">
 
@@ -519,7 +519,7 @@ $(function () {
     $(window).on("resize", function () {
         // Editor disable on portrait orientaton
         if ($(window).width() < $(window).height()) {
-            $(".headerTitle").text("Pro použití editoru si otoc mobil ;).");
+            $(".headerTitle").text("Pro použití editoru si otoč mobil ;).");
             $("#mainContent").hide()
             $(".headerButtons").hide()
         }

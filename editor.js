@@ -289,7 +289,7 @@ function removeList() {
     $(".boom").append(`<div class="uploadText removeScreen">
     <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.png"><br />
     <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -1.64em;" src="./images/szn1.png">
-    <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">Opravdu chces smazat svuj seznam?</p>
+    <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">Opravdu chceš smazat svůj seznam?</p>
     <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
         <img id="rmbutton" onclick="confirmDelete()" class="button" src="./images/yeees.png">
         <img id="rmbutton" onclick="closeRmScreen()" class="button" src="./images/ne.png">

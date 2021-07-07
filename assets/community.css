@@ -44,6 +44,7 @@
     src: url("assets/PUSAB.TTF");
     font-size: 3vw;
     -webkit-text-stroke: black 0.17vw;
+    line-height: 84%;
 }
 
 .uploadTitle {
