@@ -339,7 +339,7 @@ function search() {
         displayComLists(deeta);
     }
     else {
-        let regex = new RegExp(";.+(" + query + ").+;", "ig"); // Matches all strings that contain "query"
+        let regex = new RegExp(";.*(" + query + ").*;", "ig"); // Matches all strings that contain "query"
         let splitData = deeta.split("|");
         let filteredData = splitData.filter((val) => val.match(regex));
         if (filteredData.length == 0) {
