@@ -48,6 +48,86 @@ function checkJson(data) {
     }
 }
 
+var page = 0;
+var maxPage = 0;
+var listNames = [];
+function displayComLists(data) {
+    // Zbavení se line breaku
+    data = data.slice(0, -2);
+
+    $(".customLists").children().remove()
+
+    try {
+        if (data.match(/\|/g).length > 0) {
+            let listsArray = data.split("|");
+
+            // Deleteee  e e
+            if (listsArray.indexOf("") != -1) { listsArray.splice(listsArray.indexOf(""),1) }
+            if (listsArray.indexOf("\n") != -1) { listsArray.splice(listsArray.indexOf("\n"),1) }
+
+            maxPage = Math.ceil(listsArray.length / 4);
+            $("#maxPage").text("/" + maxPage);
+
+            // List sorting
+            if (!sorting) {
+                listsArray.reverse();
+            }
+
+            // Appends list names (only needs to be done once)
+            if (listNames.length == 0) {
+                listsArray.forEach((val) => listNames.push(val.split(";")[1]));
+            }
+
+
+            for (i = 4 * page; i < 4 * page + 4; i++) {
+                let listData = (listsArray[i]).split(";");
+                let listColor = JSON.parse(listData[2])["1"]["color"]
+                let rgb = [];
+                for (j = 1; j < 6; j += 2) {
+                    rgb.push(parseInt("0x" + listColor.slice(j, j + 2)) - 40);
+                }
+                $(".customLists").append(`
+        <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
+            <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(",")})">
+                <div class="uploadText">${listData[1]}</div>
+                <div class="uploadText">Od: ${listData[0]}</div>
+            </div>
+        </a>
+                `);
+            }
+        }
+        else {
+            throw ("ok");
+        }
+    }
+
+    catch (error) {
+        if (data.match(/\|/g) == null || data.endsWith("|\n")) {
+            let listData = (data).split(";");
+
+            let listColor = JSON.parse(listData[2])["1"]["color"]
+            let rgb = [];
+            for (j = 1; j < 6; j += 2) {
+                rgb.push(parseInt("0x" + listColor.slice(j, j + 2)) - 40);
+            }
+
+            if (listNames.length == 0) {
+                listNames.push(listData[1]);
+            }
+
+            $(".customLists").append(`
+        <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
+        <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(',')})">
+            <div class="uploadText">${listData[1]}</div>
+            <div class="uploadText">Od: ${listData[0]}</div>
+        </div>
+    </a>
+                `);
+        }
+
+    }
+}
+
 function uploadList() {
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
@@ -72,9 +152,32 @@ function updateList() {
     }
 }
 
+var debug_mode = false;
+
+var deeta = '';
+var ogDeeta = '';
+
+// List generator
+if (debug_mode) {
+    for (let i = 0; i < 4; i++) {
+        deeta += `${i};${btoa(i * 48514654894984 / 1.848564)};{"1":{"color":"rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})"}};45;10|`
+    
+    }
+}
+
+
 var sorting = false;
 $(function () {
+    $("#pageSwitcher").on("change", function () {
+        page = parseInt($(this).val()) - 1;
+        if (page > maxPage) { page = maxPage-1; $("#pageSwitcher").val(maxPage) }
+        if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
+        displayComLists(deeta);
+    })
+
+    // Sort button action
     $("#sortBut").on("click", function () {
+        displayComLists(deeta.split("|").reverse().join("|"))
         if (sorting) {
             $("#sortBut").css("transform", "scaleY(1)");
             $("#sortBut").attr("title", "Nejnovější")
@@ -84,12 +187,6 @@ $(function () {
             $("#sortBut").attr("title", "Nejstarší")
         }
         sorting = !sorting
-
-        var commLists = $(".customLists").children()
-        for (i = 0; i < commLists.length; i++) {
-            $(commLists[i]).before(commLists[i+1]);
-        }
-        commLists = $(".customLists").children()
     })
 
     if (location.search != "") {
@@ -136,53 +233,14 @@ $(function () {
     }
 
     $(".smallUploaderDialog").hide();
+
+    // Generates stuff
+    if (debug_mode) { displayComLists(deeta) }
+    
     $.get("./php/getLists.php", function (data) {
-        // Zbavení se line breaku
-        data = data.slice(0, -2);
-
-        try {
-            if (data.match(/\|/g).length > 0) {
-                let listsArray = data.split("|");
-                if (sorting) {
-                    listsArray.reverse()
-                }
-
-                for (i = 0; i < listsArray.length; i++) {
-                    let listData = (listsArray[i]).split(";");
-                    let listColor = JSON.parse(listData[2])["1"]["color"]
-                    let rgb = [];
-                    for (j = 1; j < 6; j += 2) {
-                        rgb.push(parseInt("0x" + listColor.slice(j, j + 2)) - 40);
-                    }
-                    $(".customLists").append(`
-                <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
-                    <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(",")})">
-                        <div class="uploadText">${listData[1]}</div>
-                        <div class="uploadText">Od: ${listData[0]}</div>
-                    </div>
-                </a>
-                        `);
-                }
-            }
-            else {
-                throw ("ok");
-            }
-        }
-
-        catch (error) {
-            if (data.match(/\|/g) == null || data.endsWith("|\n")) {
-                let listData = (data).split(";");
-                $(".customLists").append(`
-                <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
-                <div id="listPreview" class="button">
-                    <div class="uploadText">${listData[1]}</div>
-                    <div class="uploadText">Od: ${listData[0]}</div>
-                </div>
-            </a>
-                        `);
-            }
-
-        }
+        deeta = data;
+        ogDeeta = data;
+        displayComLists(deeta);
     });
 
     // Mobile optimzations
@@ -261,4 +319,49 @@ function murderList() {
 
     $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.replace("./upload.html"));
     $("#levelUpload").addClass("killList");
+}
+
+function pageSwitch(num) {
+    if (page + num < 0) {
+        page = 0
+    }
+    else if (page + num > maxPage - 1) {
+        page = maxPage - 1;
+    }
+    else {
+        page += num;
+        $("#pageSwitcher").val(page + 1);
+        displayComLists(deeta);
+    }
+}
+
+function search() {
+    deeta = ogDeeta;
+    let query = $("#searchBar").val();
+    if (query == "") {
+        // Reset stuff
+        page = 0;
+        $("#pageSwitcher").val("1");
+        displayComLists(deeta);
+    }
+    else {
+        let regex = new RegExp(";.*(" + query + ").*;{", "ig"); // Matches all strings that contain "query"
+        let splitData = deeta.split("|");
+        let filteredData = splitData.filter((val) => val.match(regex));
+        if (filteredData.length == 0) {
+            $(".customLists").children().remove()
+            page = 0;
+            $("#pageSwitcher").val("1");
+            $("#maxPage").text("/1")
+            $(".customLists").append("<p align=center>- Žádné výsledky -</p>");
+        }
+        else {
+            page = 0;
+            $("#pageSwitcher").val("1");
+            deeta = "";
+            filteredData.forEach((val) => deeta += val + "|");
+
+            displayComLists(filteredData.join("|"));
+        }
+    }
 }
