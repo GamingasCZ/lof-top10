@@ -171,6 +171,7 @@ $(function () {
 
     // Sort button action
     $("#sortBut").on("click", function () {
+        displayComLists(deeta.split("|").reverse().join("|"))
         if (sorting) {
             $("#sortBut").css("transform", "scaleY(1)");
             $("#sortBut").attr("title", "Nejnovější")
@@ -180,8 +181,6 @@ $(function () {
             $("#sortBut").attr("title", "Nejstarší")
         }
         sorting = !sorting
-
-        displayComLists(deeta.split("|").reverse().join("|"))
     })
 
     if (location.search != "") {
@@ -339,7 +338,7 @@ function search() {
         displayComLists(deeta);
     }
     else {
-        let regex = new RegExp(";.*(" + query + ").*;", "ig"); // Matches all strings that contain "query"
+        let regex = new RegExp(";.*(" + query + ").*;{", "ig"); // Matches all strings that contain "query"
         let splitData = deeta.split("|");
         let filteredData = splitData.filter((val) => val.match(regex));
         if (filteredData.length == 0) {
