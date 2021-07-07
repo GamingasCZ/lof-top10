@@ -63,6 +63,7 @@ function displayComLists(data) {
 
             // Deleteee  e e
             if (listsArray.indexOf("") != -1) { listsArray.splice(listsArray.indexOf(""),1) }
+            if (listsArray.indexOf("\n") != -1) { listsArray.splice(listsArray.indexOf("\n"),1) }
 
             maxPage = Math.ceil(listsArray.length / 4);
             $("#maxPage").text("/" + maxPage);
@@ -151,14 +152,19 @@ function updateList() {
     }
 }
 
-// list generator (TESTING) REMOVEE!!!!!!!!!!!!!!!!!!!!!!!!
+var debug_mode = false;
+
 var deeta = '';
 var ogDeeta = '';
-for (let i = 0; i < 99; i++) {
-    deeta += `${i};${btoa(i * 48514654894984 / 1.848564)};{"1":{"color":"rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})"}};45;10|`
 
+// List generator
+if (debug_mode) {
+    for (let i = 0; i < 4; i++) {
+        deeta += `${i};${btoa(i * 48514654894984 / 1.848564)};{"1":{"color":"rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})"}};45;10|`
+    
+    }
 }
-ogDeeta = deeta;
+
 
 var sorting = false;
 $(function () {
@@ -228,8 +234,9 @@ $(function () {
 
     $(".smallUploaderDialog").hide();
 
-    //Get rid of this!!! testing :D
-    displayComLists(deeta);
+    // Generates stuff
+    if (debug_mode) { displayComLists(deeta) }
+    
     $.get("./php/getLists.php", function (data) {
         deeta = data;
         ogDeeta = data;
