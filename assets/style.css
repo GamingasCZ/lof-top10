@@ -22,7 +22,7 @@ body {
 
 @font-face {
     font-family: pusab;
-    src: url("../assets/PUSAB.otf") format("opentype");
+    src: url("../assets/PusabFIX.otf") format("opentype");
 }
 
 .shade {
