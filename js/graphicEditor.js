@@ -42,6 +42,12 @@ function generateFromJSON() {
         else {
             let lData = $("#listData").html(data).text()
             lData = lData.split(";")
+            // Is the list hidden?
+            if (lData[3] != "0") {
+                $(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
+                $(`input[name="${changeVal}"]`).attr("checked", true)
+            }
+
             // Removing tutorial
             $("#mainContent").text("");
             $(".previewButton").removeClass("disabled");
