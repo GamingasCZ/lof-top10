@@ -137,7 +137,7 @@ function uploadList() {
 }
 function updateList() {
     let isValid = checkJson(JSON.stringify(levelList));
-    if (!isValid) {
+    if (isValid) {
         // Is the "hidden" checkbox checked?
         if ($("input[name='hidden']").attr("checked") == "checked") { var listHidden = "1" }
         else { var listHidden = "0" }
@@ -150,7 +150,6 @@ function updateList() {
             "pwdEntered": data[3],
             "hidden": listHidden
         }
-        console.log(postData)
         $.post("./php/updateList.php", postData, function (data) {
             let updateData = data.split(";")
             window.location.replace(`http://www.gamingas.wz.cz/lofttop10/upload.html?update=1`);
