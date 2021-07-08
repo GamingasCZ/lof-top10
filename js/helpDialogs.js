@@ -7,7 +7,7 @@ var help = {
     },
     "hidden": {
         "title": "Skryté seznamy",
-        "content": `Skryté seznamy se <b style="color: lime">nezobrazí veřejně</b> a nejde je vyhledat.<br />
+        "content": `Skryté seznamy se <b style="color: lime">nezobrazí veřejně</b> a nejde je vyhledat.<br /><br />
         Kdokoliv je ale může zobrazit pomocí odkazu nebo ID.`
     }
 }
