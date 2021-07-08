@@ -60,7 +60,7 @@
 
 }
 
-input:not(.cardButton, .cardInput, .pageIndicator, .searchBar) {
+input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox) {
     margin-left: auto;
     margin-right: auto;
     margin-top: 2%;
@@ -352,6 +352,32 @@ input:disabled {
     height: 15%;
     margin-left: 2.5%;
     margin-right: 2.5%;
+}
+.settingsBG {
+    background-color: rgb(36, 36, 36);
+    margin: 0% 25% 3%;
+    padding: 2%;
+    border-radius: inherit;
+    display: flex;
+    flex-direction: column;
+}
+.setting {
+    display: flex;
+    align-items: center;
+}
+.setLabel {
+    margin: 0%;
+    margin-top: 1%;
+}
+.setHelp {
+    width: 2vw;
+    margin-left: 2%;
+    margin-bottom: 4%;
+}
+
+.setCheckbox {
+    width: 10%;
+    margin-right: 2%;
 }
 
 .searchTools {

@@ -62,8 +62,8 @@ function displayComLists(data) {
             let listsArray = data.split("|");
 
             // Deleteee  e e
-            if (listsArray.indexOf("") != -1) { listsArray.splice(listsArray.indexOf(""),1) }
-            if (listsArray.indexOf("\n") != -1) { listsArray.splice(listsArray.indexOf("\n"),1) }
+            if (listsArray.indexOf("") != -1) { listsArray.splice(listsArray.indexOf(""), 1) }
+            if (listsArray.indexOf("\n") != -1) { listsArray.splice(listsArray.indexOf("\n"), 1) }
 
             maxPage = Math.ceil(listsArray.length / 4);
             $("#maxPage").text("/" + maxPage);
@@ -138,12 +138,17 @@ function uploadList() {
 function updateList() {
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
+        // Is the "hidden" checkbox checked?
+        if ($("input[name='hidden']").attr("checked") == "checked") { var listHidden = "1" }
+        else { var listHidden = "0" }
+
         // will later also update uploadList()
         let data = location.search.slice(1).split(/[=&]/g);
         let postData = {
             "listData": JSON.stringify(levelList),
             "id": data[1],
-            "pwdEntered": data[3]
+            "pwdEntered": data[3],
+            "hidden": listHidden
         }
         $.post("./php/updateList.php", postData, function (data) {
             let updateData = data.split(";")
@@ -161,7 +166,7 @@ var ogDeeta = '';
 if (debug_mode) {
     for (let i = 0; i < 4; i++) {
         deeta += `${i};${btoa(i * 48514654894984 / 1.848564)};{"1":{"color":"rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})"}};45;10|`
-    
+
     }
 }
 
@@ -170,7 +175,7 @@ var sorting = false;
 $(function () {
     $("#pageSwitcher").on("change", function () {
         page = parseInt($(this).val()) - 1;
-        if (page > maxPage) { page = maxPage-1; $("#pageSwitcher").val(maxPage) }
+        if (page > maxPage) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
         if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
         displayComLists(deeta);
     })
@@ -236,7 +241,7 @@ $(function () {
 
     // Generates stuff
     if (debug_mode) { displayComLists(deeta) }
-    
+
     $.get("./php/getLists.php", function (data) {
         deeta = data;
         ogDeeta = data;
@@ -364,4 +369,16 @@ function search() {
             displayComLists(filteredData.join("|"));
         }
     }
+}
+
+function checkCheckbox(changeVal) {
+    if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
+        $(`img[for="${changeVal}"]`).attr("src", "images/check-off.png")
+        $(`input[name="${changeVal}"]`).attr("checked", false)
+    }
+    else {
+        $(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
+        $(`input[name="${changeVal}"]`).attr("checked", true)
+    }
+
 }

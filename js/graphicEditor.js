@@ -42,6 +42,12 @@ function generateFromJSON() {
         else {
             let lData = $("#listData").html(data).text()
             lData = lData.split(";")
+            // Is the list hidden?
+            if (lData[3] != "0") {
+                $(`img[for="hidden"]`).attr("src", "images/check-on.png")
+                $(`input[name="hidden"]`).attr("checked", true)
+            }
+
             // Removing tutorial
             $("#mainContent").text("");
             $(".previewButton").removeClass("disabled");
@@ -489,16 +495,6 @@ function preview() {
         }
     }
 }
-
-function closeHelp() {
-    $(".popupHelp").slideUp();
-    $(".helpBG").fadeOut();
-}
-function openHelp() {
-    $(".popupHelp").slideDown()
-    $(".helpBG").fadeIn();
-}
-
 
 $(function () {
 

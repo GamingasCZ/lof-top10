@@ -25,10 +25,19 @@ foreach ($fuckupData as $post) {
 }
 
 $timestamp = $time -> getTimestamp();
+
+if (isset($_POST["hidden"])) { $hidden = "1"; }
+else { $hidden = "0"; }
+
 $pass = passwordGenerator($_POST["lName"], $_POST["creator"], $timestamp);
 
 
-$query = sprintf("INSERT INTO `lists`(`creator`,`name`,`data`,`timestamp`) VALUES ('%s','%s','%s','%s')",$fuckupData[0],$fuckupData[1],$fuckupData[2],$timestamp);
+$query = sprintf("INSERT INTO `lists`(`creator`,`name`,`data`,`timestamp`,`hidden`) VALUES ('%s','%s','%s','%s',%s)",
+                $fuckupData[0],
+                $fuckupData[1],
+                $fuckupData[2],
+                $timestamp,
+                $hidden);
 $result = $mysqli -> query($query);
 $listIDquery = $mysqli -> query("SELECT LAST_INSERT_ID()");
 $rows = $listIDquery -> fetch_all(MYSQLI_ASSOC);
