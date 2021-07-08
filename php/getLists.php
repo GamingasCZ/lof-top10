@@ -48,7 +48,7 @@ if (count($_GET) != 0) {
   }
 }
 else {
-  $result = $mysqli -> query("SELECT * FROM lists");
+  $result = $mysqli -> query("SELECT * FROM `lists` WHERE `hidden` = 0");
 
   $rows = $result->fetch_all(MYSQLI_ASSOC);
   foreach ($rows as $row) {

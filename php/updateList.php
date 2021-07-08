@@ -47,7 +47,7 @@ if ($listPass != $fuckupData[1]) {
 }
 
 // Updating list data
-$query = sprintf("UPDATE `lists` SET `data`='%s' WHERE `id`=%s",$_POST["listData"],$_POST["id"]);
+$query = sprintf("UPDATE `lists` SET `data`='%s', `hidden`=%s WHERE `id`=%s",$_POST["listData"],$_POST["id"],$_POST["hidden"]);
 $result = $mysqli -> query($query);
 $ok = $result -> fetch_assoc();
 print_r($ok);

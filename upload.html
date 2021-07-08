@@ -11,9 +11,10 @@
   <link rel="icon" href="./images/gdbrowser.png">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script rel="text/javascript" src="generator.js"></script>
-  <script rel="text/javascript" src="editor.js"></script>
-  <script rel="text/javascript" src="graphicEditor.js"></script>
+  <script rel="text/javascript" src="./js/generator.js"></script>
+  <script rel="text/javascript" src="./js/editor.js"></script>
+  <script rel="text/javascript" src="./js/graphicEditor.js"></script>
+  <script rel="text/javascript" src="./js/helpDialogs.js"></script>
 
   <title>Nahrávání seznamů</title>
 </head>
@@ -40,11 +41,8 @@
   <div class="helpBG" style="display: none;"></div>
   <div class="popupHelp uploadText" style="display: none;">
     <img src="./images/delete.png" class="button" style="width: 10%;" onclick="closeHelp()">
-    <p style="text-align: center;">Obrázky seznamu</p>
-    <div>
-      Jestli chceš svůj seznam pořádně vyzdobit, můžeš k němu přidat obrázek, který se u něho zobrazí!<br />
-      <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
-      <b style="color: tomato;">Nemusíš přidávat žádný obrázek!</b>
+    <p style="text-align: center;" id="helpTitle"></p>
+    <div id="helpContent">
     </div>
   </div>
 
@@ -66,7 +64,7 @@
     <input name="creator" type="text" id="creatornm" placeholder="Tvůrce"><br />
     <div style="display: flex;">
       <input type="text" onchange="updateTitImg()" class="titImgInp" placeholder="Obrázek seznamu">
-      <img src="images/help.png" class="button helpButton" onclick="openHelp()">
+      <img src="images/help.png" class="button helpButton" onclick="openHelp('upload')">
     </div>
     <br />
     <div class="editorHeader uploadText">
@@ -87,11 +85,24 @@
       <p class="helpText">Kliknutím na<img width=5% id="plusSign" src="images/add.png">přidáš level!</p>
     </div>
     <p class="errorBox" style="color: rgb(255, 255, 255);"></p>
+
+    <p class="uploadText" align="center">Nastavení</p>
+    <div class="settingsBG">
+      <div class="setting">
+        <input type="checkbox" style="display: none;" name="hidden">
+        <img src="images/check-off.png" onclick='checkCheckbox("hidden")' for="hidden" class="setCheckbox button"
+          style="float: none;">
+        <label for="hidden" class="uploadText setLabel">Skrytý seznam</label>
+        <img src="images/help.png" class="button setHelp" onclick="openHelp('hidden')">
+      </div>
+    </div>
+
     <div id="submitarea">
       <input onclick="uploadList()" type="button" id="submitbutton" value="Nahrát">
     </div>
 
   </form>
+
   <p class="titles" style="margin-top: 10vh;">- Komunitní seznamy -</p>
   <div class="searchTools uploadText" style="justify-content: center;">
     <span style="font-size: 3vw; padding-right: 2%;">Řazení: </span>

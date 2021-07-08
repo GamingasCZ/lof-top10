@@ -490,16 +490,6 @@ function preview() {
     }
 }
 
-function closeHelp() {
-    $(".popupHelp").slideUp();
-    $(".helpBG").fadeOut();
-}
-function openHelp() {
-    $(".popupHelp").slideDown()
-    $(".helpBG").fadeIn();
-}
-
-
 $(function () {
 
     // Disabling input boxes when editing a list
