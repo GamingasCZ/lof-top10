@@ -44,8 +44,8 @@ function generateFromJSON() {
             lData = lData.split(";")
             // Is the list hidden?
             if (lData[3] != "0") {
-                $(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
-                $(`input[name="${changeVal}"]`).attr("checked", true)
+                $(`img[for="hidden"]`).attr("src", "images/check-on.png")
+                $(`input[name="hidden"]`).attr("checked", true)
             }
 
             // Removing tutorial
