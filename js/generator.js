@@ -1,3 +1,5 @@
+const ADDIT_VALS = 1;
+
 // Default 2019 board
 var boards = {
 	"titleImg": "./images/title.png",
@@ -120,21 +122,27 @@ function onYTClick(link, index) {
 }
 
 function generateList(boards) {
-	for (i = 1; i < Object.keys(boards).length; i++) {
+	for (i = 1; i < Object.keys(boards).length - ADDIT_VALS; i++) {
 
 		let bIndex = (i).toString();
 
+		// Disabling card buttons
 		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = "disabled"; }
 		else { var ID = ""; }
 
 		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = "disabled"; }
 		else { var video = ""; }
 
+		// Glow depending on level position
 		var cardBG = `background-color: ${boards[bIndex]["color"]}`;
-
 		if (i == 1) { cardBG += ";box-shadow: 5px 5px 40px yellow, -5px -5px 40px green, 5px -5px 40px aqua, -5px 5px 40px red;"; }
 		if (i == 2) { cardBG += `;box-shadow: 2px 2px 30px ${boards[bIndex]["color"]}`; }
 		if (i == 3) { cardBG += `;box-shadow: 2px 2px 20px ${boards[bIndex]["color"]}`; }
+
+		// Setting page BG from list
+		if (Object.keys(boards).indexOf("pageBGcolor") != -1) {
+			$("body").css("background-color", boards["pageBGcolor"])
+		}
 
 		$(".boards").append(`
 		<div class="box" style="${cardBG}"><span>${boards[bIndex]["levelName"]}</span>

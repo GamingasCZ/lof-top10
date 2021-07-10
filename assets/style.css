@@ -18,6 +18,8 @@
 
 body {
   background-image: url("../images/bg.png");
+  background-color: #020202;
+  margin: 0;
 }
 
 @font-face {

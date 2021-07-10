@@ -92,6 +92,7 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox) {
     position: relative;
     top: -10vh;
     left: 21%;
+    pointer-events: none;
 }
 
 .cardInput {

@@ -22,7 +22,7 @@ function checkJson(data) {
         $(".errorBox").css("background-color", "rgba(73, 255, 103, 0.8)");
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
-        for (i = 1; i < Object.keys(parsedData).length; i++) {
+        for (i = 1; i < Object.keys(parsedData).length - ADDIT_VALS; i++) {
             if (parsedData[i] == undefined) {
                 throw (i + ". místo neexistuje. Bug mi nahlaš (nebo si nehrej s JSONem :D).")
             }
