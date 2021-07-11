@@ -29,6 +29,37 @@ function getDetailsFromName(id) {
     updateSmPos()
 }
 
+function colorizePage() {
+    let selColor = $("#bgcolorPicker").val()
+
+    let rgb = [];
+    for (i = 1; i < 6; i += 2) {
+        rgb.push(parseInt("0x" + selColor.slice(i, i + 2))/255);;
+    }
+    var maxCol = Math.max(...rgb);
+    var minCol = Math.min(...rgb);
+
+    if (rgb.indexOf(maxCol) == 0) {
+        var hue = (rgb[1]-rgb[2])/(maxCol-minCol); // Red
+    }
+    else if (rgb.indexOf(maxCol) == 1) {
+        var hue = 2+(rgb[2]-rgb[0])/(maxCol-minCol); // Blue
+    }
+    else if (rgb.indexOf(maxCol) == 2) {
+        var hue = 4+(rgb[0]-rgb[1])/(maxCol-minCol); // Green
+    }
+    if (hue < 0) { hue += 360 }
+    hue *= 60;
+
+    levelList["pageBGcolor"] = selColor;
+
+    $("body").css("background-color",selColor)
+    $(".editorHeader").css("background-color", "hsl("+hue+",40.7%,54%)")
+    $("#mainContent").css("background-color", "hsl("+hue+",40.7%,25%)")
+    $(".uploadBG").css("background-color", "hsl("+hue+",11.5%,22.2%)")
+    $("#submitbutton").css("background-color", "hsl("+hue+",53.5%,63.7%)")
+}
+
 function generateFromJSON() {
     let listID = location.search.slice(1).split(/[=&]/g);
     $.post("./php/pwdCheckAction.php", { "id": listID[1], "pwdEntered": listID[3], "retData": "1" }, function (data) {
@@ -53,6 +84,8 @@ function generateFromJSON() {
 
             levelList = JSON.parse(lData[2]);
             $(".titImgInp").val(levelList["titleImg"])
+            $("#bgcolorPicker").val(levelList["pageBGcolor"])
+            colorizePage()
 
             for (i = 0; i < Object.keys(levelList).length - 1 - ADDIT_VALS; i++) {
                 loadLevel(i + 1)
@@ -525,35 +558,6 @@ $(function () {
     })
 
     $("#bgcolorPicker").on("change", function () {
-        let rgb = [];
-        for (i = 1; i < 6; i += 2) {
-            rgb.push(parseInt("0x" + $(this).val().slice(i, i + 2))/255);;
-        }
-        var maxCol = Math.max(...rgb);
-        var minCol = Math.min(...rgb);
-
-        if ((minCol+maxCol)/2 <= 0.5) {var changeSat = (maxCol-minCol)/(maxCol+minCol);}
-        else {var changeSat = (maxCol-minCol)/(2-maxCol-minCol);}
-
-        if (rgb.indexOf(maxCol) == 0) {
-            var hue = (rgb[1]-rgb[2]+changeSat-1)/(maxCol-minCol); // Red
-        }
-        else if (rgb.indexOf(maxCol) == 1) {
-            var hue = 2+(rgb[2]-rgb[0]+changeSat-1)/(maxCol-minCol); // Blue
-        }
-        else if (rgb.indexOf(maxCol) == 2) {
-            var hue = 4+(rgb[0]+rgb[1]+changeSat-1)/(maxCol-minCol); // Green
-        }
-        if (hue < 0) { hue += 360 }
-        hue *= 60;
-
-        if (maxCol - minCol == 0) { var sat = "0%"; hue = "0"; }
-        else {var sat = "41%";}
-
-        levelList["pageBGcolor"] = $(this).val();
-
-        $("body").css("background-color",$(this).val())
-        $(".editorHeader").css("background-color", "hsl("+hue+","+sat+",54%)")
-        $("#mainContent").css("background-color", "hsl("+hue+","+sat+",25%)")
+        colorizePage()
     })
 })
