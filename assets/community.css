@@ -81,6 +81,21 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox) {
     justify-content: center;
 }
 
+#bgcolorPicker {
+    display: flex;
+    border: none;
+    width: 10vw;
+    padding: 0.4%;
+    height: 7vh;
+    margin-left: 2%;
+    margin-right: 0;
+}
+
+.colorLabel {
+    display: flex;
+    pointer-events: none;
+}
+
 .cardInput {
     margin: 15px 30%;
     background-color: rgb(36, 36, 36);
