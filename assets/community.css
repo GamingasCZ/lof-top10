@@ -90,7 +90,7 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox) {
 
 .colorLabel {
     position: relative;
-    top: -10vh;
+    top: -8.5vh;
     left: 21%;
     pointer-events: none;
 }
