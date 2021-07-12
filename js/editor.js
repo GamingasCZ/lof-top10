@@ -194,6 +194,30 @@ $(function () {
         sorting = !sorting
     })
 
+    
+    // List image preview action
+    $("#imageArrow").on("click", function () {
+        $("#imgError").text("")
+        $("#imagePrev").css("width", "10%")
+        if ($(this).css("transform").match("-1")) {
+            $("#imageArrow").css("transform", "scaleY(1)");
+            $("#imageArrow").attr("title", "Ukázat náhled obrázku")
+            $(".imgPreview").slideUp(200)
+        }
+        else {
+            $("#imageArrow").css("transform", "scaleY(-1)");
+            $("#imageArrow").attr("title", "Skrýt náhled obrázku")
+            $("#imagePrev").attr("src",$(".titImgInp").val())
+            $("#imagePrev").css("width", "inherit")
+            $(".imgPreview").slideDown(200)
+        }
+    })
+    $("#imagePrev").on("error", function () {
+        $("#imagePrev").css("width", "10%")
+        $("#imagePrev").attr("src","./images/error.png")
+        $("#imgError").text("Obrázek nenalezen :/")
+    })
+
     if (location.search != "") {
         let password = location.search.slice(1).split(/[=&]/g);
 
