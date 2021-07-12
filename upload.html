@@ -62,8 +62,9 @@
     <input name="listData" id="listData" type="hidden" value="">
     <input name="lName" type="text" id="listnm" placeholder="Jméno seznamu"><br />
     <input name="creator" type="text" id="creatornm" placeholder="Tvůrce"><br />
-    <div style="display: flex;">
-      <input type="text" onchange="updateTitImg()" class="titImgInp" placeholder="Obrázek seznamu">
+    <div style="display: flex; justify-content: center; margin-right: 1.7vw;">
+      <img src="images/arrow.png" id="imageArrow" class="button">
+      <input type="text" onchange="updateTitImg()" id="tImgMargin" class="titImgInp" placeholder="Obrázek seznamu">
       <img src="images/help.png" class="button helpButton" onclick="openHelp('upload')">
     </div>
     <br />
