@@ -6,8 +6,14 @@
   <link rel="stylesheet" href="./assets/style.css">
   <link rel="stylesheet" href="./assets/community.css">
   <link rel="icon" href="./images/gdbrowser.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script rel="text/javascript" src="./js/generator.js"></script>
+  <script rel="text/javascript" src="./js/comments.js"></script>
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Seznam levelů">
@@ -31,15 +37,40 @@
       </a>
     </button>
   </div>
+
   <div class="titles"></div>
+
   <div style="margin-left: 59%;" class="password">
     <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 15px 1%;">
     <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="float: none">
     <p class="uploadText passText"></p>
   </div>
+
   <img class="titleImage">
-  <img src="./images/crown.png" id="crown" align="center">
-  <div class="boards"></div>
+
+  <div class="searchTools uploadText" style="justify-content: left;">
+    <div style="justify-content: left;">
+      <img src="images/list.png" onclick="listList()" class="button lList disabled" style="float: none; width: 20%;" title="Seznam levelů">
+      <img src="images/comments.png" onclick="listComments()" class="button lComm" style="float: none; width: 20%;" title="Komentáře">
+    </div>
+  </div>
+  
+  <div class="comments">
+    <p class="titles">- Komentáře -</p>
+    <div class="positionEdit" id="commentMaker">
+      <div>
+        <img src="images/bytost.png">
+        <input class="cardInput" id="posInputBox" type="text" placeholder="Jméno">
+        <hr class="lineSplitGeneral">
+        <textarea class="uploadText comTextArea" id="comFont"></textarea>
+      </div>
+    </div>
+    <div id="commentList"></div>
+  </div>
+
+  <div class="boards">
+    <img src="./images/crown.png" id="crown" align="center">
+  </div>
 </body>
 
 </html>

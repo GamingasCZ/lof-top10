@@ -16,6 +16,8 @@
     }
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
+
 body {
   background-image: url("../images/bg.png");
   background-color: #020202;
@@ -169,4 +171,20 @@ html, body {
   margin-right: auto;
 }
 
+.comments { display: none;}
 
+#commentMaker {
+  margin: 2vw 5vw;
+}
+.comTextArea {
+  background-color: salmon;
+  border: salmon solid 5px;
+  width: 95%;
+  height: 50%;
+  resize: none;
+  
+}
+#comFont {
+  -webkit-text-stroke: black 0px;
+  font-family: 'Baloo 2', cursive;
+}
