@@ -198,7 +198,6 @@ $(function () {
     // List image preview action
     $("#imageArrow").on("click", function () {
         $("#imgError").text("")
-        $("#imagePrev").css("width", "10%")
         if ($(this).css("transform").match("-1")) {
             // Hide preview
             $("#imageArrow").css("transform", "scaleY(1)");
@@ -209,8 +208,8 @@ $(function () {
             // Show preview
             $("#imageArrow").css("transform", "scaleY(-1)");
             $("#imageArrow").attr("title", "Skrýt náhled obrázku")
+            $("#imagePrev").css("width", "40vw")
             $("#imagePrev").attr("src", $(".titImgInp").val())
-            $("#imagePrev").css("width", "inherit")
             $(".imgPreview").slideDown(200)
         }
     })
@@ -222,7 +221,9 @@ $(function () {
     })
     // Change preview image on URL change
     $(".titImgInp").on("change", function () {
-        if ($(".imgPreview").css("transform").match("-1")) {
+        if ($("#imageArrow").css("transform").match("-1")) {
+            $("#imgError").text("")
+            $("#imagePrev").css("width", "40vw")
             $("#imagePrev").attr("src", $(".titImgInp").val())
         }
     })
