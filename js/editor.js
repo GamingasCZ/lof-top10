@@ -194,6 +194,41 @@ $(function () {
         sorting = !sorting
     })
 
+
+    // List image preview action
+    $("#imageArrow").on("click", function () {
+        $("#imgError").text("")
+        if ($(this).css("transform").match("-1")) {
+            // Hide preview
+            $("#imageArrow").css("transform", "scaleY(1)");
+            $("#imageArrow").attr("title", "Ukázat náhled obrázku")
+            $(".imgPreview").slideUp(200)
+        }
+        else {
+            // Show preview
+            $("#imageArrow").css("transform", "scaleY(-1)");
+            $("#imageArrow").attr("title", "Skrýt náhled obrázku")
+            $("#imagePrev").css("width", "40vw")
+            $("#imagePrev").attr("src", $(".titImgInp").val())
+            $(".imgPreview").slideDown(200)
+        }
+    })
+    // When the image failed to load (sad crying emoji)
+    $("#imagePrev").on("error", function () {
+        $("#imagePrev").css("width", "10%")
+        $("#imagePrev").attr("src", "./images/error.png")
+        $("#imgError").text("Obrázek nenalezen :/")
+    })
+    // Change preview image on URL change
+    $(".titImgInp").on("change", function () {
+        if ($("#imageArrow").css("transform").match("-1")) {
+            $("#imgError").text("")
+            $("#imagePrev").css("width", "40vw")
+            $("#imagePrev").attr("src", $(".titImgInp").val())
+        }
+    })
+
+
     if (location.search != "") {
         let password = location.search.slice(1).split(/[=&]/g);
 
