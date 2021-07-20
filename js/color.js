@@ -2,7 +2,7 @@ function HEXtoRGB(color, subtract = 0) {
     // Returns an array with RGB values: [255, 128, 59]
 
     // Is "hexColor" a hex color?
-    if (color.lenght != 7) {
+    if (color.length != 7) {
         throw "Parameter is not a hex color code";
     }
     let rgb = [];
@@ -26,8 +26,8 @@ function randomColor() {
 function getHueFromHEX(color) {
     // Returns a hex color's hue: 54
 
-    // Is "hexColor" a hex color?
-    if (hexColor.lenght != 7) {
+    // Is "color" a hex color?
+    if (color.length != 7) {
         throw "Parameter is not a hex color code";
     }
 
