@@ -182,17 +182,44 @@ html, body {
 }
 .comTextArea {
   background-color: salmon;
-  border: salmon solid 5px;
+  border: none;
   width: 95%;
   height: 15vw;
   border-radius: 10px;
   resize: none;
-  
-  /*Will redo later maybe?*/
-  margin-left: 1.5%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 #comFont {
   -webkit-text-stroke: black 0px;
   font-family: chatFont, serif;
   line-height: 1.1;
+}
+
+#comBoxHeader {
+  display: flex;
+  margin: 0;
+  align-content: flex-end;
+  background-color: crimson;
+  height: 4vw;
+  justify-content: space-between;
+
+  /*i despise css.*/
+  width: 80.8vw;
+  margin-left: 2.4%;
+  margin-bottom: -2vw;
+  padding: 0 2%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+.comBoxFooter {
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+#comBoxHeader > h3 {
+  position: relative;
+  bottom: 2.5vw;
 }

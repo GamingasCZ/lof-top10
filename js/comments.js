@@ -25,4 +25,9 @@ var placeholders = [
 $(function () {
     let selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
     $(".comTextArea").attr("placeholder", selectPholder);
+
+    $(".comTextArea").on("keyup", () => {
+        let charLimit = $(".comTextArea").val().length
+        $("#charLimit").text(charLimit+"/300")
+    })
 })

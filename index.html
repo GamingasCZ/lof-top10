@@ -14,6 +14,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script rel="text/javascript" src="./js/generator.js"></script>
   <script rel="text/javascript" src="./js/comments.js"></script>
+  <script rel="text/javascript" src="./js/color.js"></script>
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Seznam levelů">
@@ -62,8 +63,18 @@
         <img src="images/bytost.png">
         <input class="cardInput" id="posInputBox" type="text" placeholder="Jméno">
         <hr class="lineSplitGeneral">
-        <div class="uploadText">Komentář</div>
-        <textarea class="uploadText comTextArea" id="comFont"></textarea>
+        <div class="uploadText" id="comBoxHeader">
+          <h3>Komentář</h3>
+          <h3 id="charLimit">0/300</h3>
+        </div>
+
+        <div style="display: flex; justify-content: center;">
+          <textarea class="uploadText comTextArea" id="comFont"></textarea>
+          <div class="uploadText comBoxFooter" id="comBoxHeader">
+            <h3>Komentář</h3>
+            <h3 id="charLimit">0/300</h3>
+          </div>
+        </div>
         <div style="display: flex; justify-content: flex-end;">
             <img src="./images/colorSelect.png" class="button cardButton" style="padding: 0">
         </div>
