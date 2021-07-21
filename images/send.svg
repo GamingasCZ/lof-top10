@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="90mm"
+   height="55mm"
+   viewBox="0 0 90 55"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c4e8f9ed74, 2021-05-24)"
+   sodipodi:docname="send.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="true"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.5682576"
+     inkscape:cx="147.61606"
+     inkscape:cy="130.3995"
+     inkscape:window-width="1558"
+     inkscape:window-height="872"
+     inkscape:window-x="42"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="powermask"
+       id="path-effect1998"
+       is_visible="true"
+       lpeversion="1"
+       uri="#mask-powermask-path-effect1998"
+       invert="false"
+       hide_mask="false"
+       background="true"
+       background_color="#ffffffff" />
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask-powermask-path-effect1998">
+      <path
+         id="mask-powermask-path-effect1998_box"
+         style="fill:#ffffff;fill-opacity:1"
+         d="M 3.0485152,14.925734 H 46.478499 V 40.746976 H 3.0485152 Z" />
+      <g
+         id="g1996"
+         style="fill:none">
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1.265;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 4.2944936,16.171713 C 45.232521,39.501 45.232521,39.501 45.232521,39.501"
+           id="path1990" />
+        <g
+           id="g1994"
+           style="fill:none">
+          <path
+             style="fill:none;stroke:#000000;stroke-width:1.265;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             d="M 45.232521,16.171713 4.2944936,39.501 v 0"
+             id="path1992" />
+        </g>
+      </g>
+    </mask>
+    <filter
+       id="mask-powermask-path-effect1998_inverse"
+       inkscape:label="filtermask-powermask-path-effect1998"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect1998_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect1998_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Vrstva 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <path
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.491957;stroke-linejoin:round"
+       id="rect846"
+       width="40.938026"
+       height="23.329285"
+       x="4.2944937"
+       y="16.171713"
+       ry="1.2717274"
+       sodipodi:type="rect"
+       d="M 5.5662211,16.171713 H 43.960793 c 0.704537,0 1.271727,0.56719 1.271727,1.271727 v 20.78583 c 0,0.704537 -0.56719,1.271728 -1.271727,1.271728 H 5.5662211 c -0.704537,0 -1.2717274,-0.567191 -1.2717274,-1.271728 V 17.44344 c 0,-0.704537 0.5671904,-1.271727 1.2717274,-1.271727 z"
+       mask="url(#mask-powermask-path-effect1998)"
+       inkscape:path-effect="#path-effect1998" />
+    <rect
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.497417;stroke-linejoin:round"
+       id="rect870"
+       width="25.895374"
+       height="9.7757254"
+       x="48.24736"
+       y="22.753727"
+       ry="0" />
+    <path
+       style="fill:#ffffff;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 74.433392,13.05251 V 42.993659 L 89.055476,28.371577 Z"
+       id="path960" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Vrstva 2"
+     style="opacity:1;mix-blend-mode:normal" />
+</svg>

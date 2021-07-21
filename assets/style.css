@@ -183,43 +183,66 @@ html, body {
 .comTextArea {
   background-color: salmon;
   border: none;
-  width: 95%;
-  height: 15vw;
+  height: 10vw;
   border-radius: 10px;
   resize: none;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+  width: 102%;
 }
 #comFont {
   -webkit-text-stroke: black 0px;
   font-family: chatFont, serif;
+  font-size: 2.5vw;
   line-height: 1.1;
 }
 
-#comBoxHeader {
+.comBoxThings {
   display: flex;
   margin: 0;
   align-content: flex-end;
   background-color: crimson;
-  height: 4vw;
   justify-content: space-between;
-
+  width: inherit;
   /*i despise css.*/
-  width: 80.8vw;
-  margin-left: 2.4%;
-  margin-bottom: -2vw;
+  height: 4.2vw;
   padding: 0 2%;
+}
+
+#comBoxHeader {
+  margin-bottom: -2vw !important;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
-.comBoxFooter {
-  border-top-left-radius: 0px !important;
-  border-top-right-radius: 0px !important;
+
+#comBoxFooter {
+  margin-top: -2.2vw !important;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+  justify-content: right !important;
 }
 
-#comBoxHeader > h3 {
+.comBoxThings > h3 {
   position: relative;
   bottom: 2.5vw;
+}
+
+.pIconInp {
+  transform: translateY(0) !important;
+  margin: 0 0.5vw 0 1vw !important;
+}
+
+.comBox {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}
+
+.comFooterButton {
+  background: none;
+  border: white solid 0.3vw;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 0.5% 2% 0.5% 0;
 }

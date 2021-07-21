@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+
   <link rel="stylesheet" href="./assets/style.css">
   <link rel="stylesheet" href="./assets/community.css">
   <link rel="icon" href="./images/gdbrowser.png">
@@ -51,33 +52,58 @@
 
   <div class="searchTools uploadText" style="justify-content: left;">
     <div style="justify-content: left;">
-      <img src="images/list.png" onclick="listList()" class="button lList disabled" style="float: none; width: 20%;" title="Seznam levelů">
-      <img src="images/comments.png" onclick="listComments()" class="button lComm" style="float: none; width: 20%;" title="Komentáře">
+      <img src="images/list.png" onclick="listList()" class="button lList disabled" style="float: none; width: 20%;"
+        title="Seznam levelů">
+      <img src="images/comments.png" onclick="listComments()" class="button lComm" style="float: none; width: 20%;"
+        title="Komentáře">
     </div>
   </div>
-  
+
   <div class="comments">
     <p class="titles">- Komentáře -</p>
     <div class="positionEdit" id="commentMaker">
-      <div>
-        <img src="images/bytost.png">
-        <input class="cardInput" id="posInputBox" type="text" placeholder="Jméno">
-        <hr class="lineSplitGeneral">
-        <div class="uploadText" id="comBoxHeader">
-          <h3>Komentář</h3>
-          <h3 id="charLimit">0/300</h3>
+      <div style="margin: 1vw;">
+        <div style="display: flex; align-items: center;">
+          <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 4vw;">
+          <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno">
+          <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg"
+            style="float: none; height: max-content;">
         </div>
 
-        <div style="display: flex; justify-content: center;">
-          <textarea class="uploadText comTextArea" id="comFont"></textarea>
-          <div class="uploadText comBoxFooter" id="comBoxHeader">
+        <div class="comBox">
+          <div class="uploadText comBoxThings" id="comBoxHeader">
             <h3>Komentář</h3>
             <h3 id="charLimit">0/300</h3>
           </div>
+
+          <div style="display: flex; width: inherit;">
+            <textarea class="uploadText comTextArea" id="comFont"></textarea>
+          </div>
+
+          <div class="uploadText comBoxThings" id="comBoxFooter">
+
+            <button class="comFooterButton" title="Barva komentáře">
+              <svg width="110" height="60">
+                <image xlink:href="./images/color.svg" width="110" height="60" />
+              </svg>
+            </button>
+            <button class="comFooterButton" title="Emotikony">
+              <svg width="90" height="40">
+                <image xlink:href="./images/emoji.svg" width="90" height="40" />
+              </svg>
+            </button>
+            <button class="comFooterButton" title="Odeslat komentář">
+              <svg width="90" height="40">
+                <image xlink:href="./images/send.svg" width="90" height="40" />
+              </svg>
+            </button>
+
+          </div>
         </div>
+
         <div style="display: flex; justify-content: flex-end;">
-            <img src="./images/colorSelect.png" class="button cardButton" style="padding: 0">
         </div>
+
       </div>
     </div>
     <div id="commentList"></div>

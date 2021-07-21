@@ -14,6 +14,24 @@ function HEXtoRGB(color, subtract = 0) {
 
 }
 
+function RGBtoHEX(rgbArray) {
+    if (rgbArray.length != 3) {
+        throw "RGB array does not have a valid length";
+    }
+
+    var hex = []
+
+    rgbArray.forEach(element => {
+        let inHex = (element).toString(16);
+        if (inHex.length == 1) {
+            inHex = "0"+inHex;
+        }
+        hex.push(inHex)
+    });
+
+    return "#"+hex.join("")
+}
+
 function randomColor() {
     // Returns an array with RGB values: [255, 128, 59]
     let rgb = [];
@@ -33,7 +51,7 @@ function getHueFromHEX(color) {
 
     let rgb = [];
     for (i = 1; i < 6; i += 2) {
-        rgb.push(parseInt("0x" + color.slice(i, i + 2))/255);;
+        rgb.push(parseInt("0x" + color.slice(i, i + 2))/255);
     }
     var maxCol = Math.max(...rgb);
     var minCol = Math.min(...rgb);
