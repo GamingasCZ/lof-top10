@@ -23,11 +23,29 @@ var placeholders = [
 ]
 
 $(function () {
-    let selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
-    $(".comTextArea").attr("placeholder", selectPholder);
+    var selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
+    $(".comTextArea").text(selectPholder);
+    $("#comFont").css("color", "rgba(255,255,255,0.5)")
+
+
+    $(".comTextArea").on("blur", () => {
+        if ($(".comTextArea").text().length == 0) {
+            $(".comTextArea").text(selectPholder)
+            $("#comFont").css("color", "rgba(255,255,255,0.5)")
+        }
+    })
+
+    $(".comTextArea").on("click", () => {
+        if (placeholders.indexOf($(".comTextArea").text()) != -1) {
+            $(".comTextArea").text("")
+        }
+
+        $("#comFont").css("color", "rgba(255,255,255,1)")
+    })
+
 
     $(".comTextArea").on("keyup keypress", () => {
-        var charLimit = $(".comTextArea").val().length
+        var charLimit = $(".comTextArea").text().length
 
         // I finally got to use the switch statement!!! (so exciting)
         switch (Math.floor(charLimit / 50)) {
@@ -52,11 +70,25 @@ $(function () {
         }
 
         if (charLimit > 300) {
-            $(".comTextArea").val($(".comTextArea").val().slice(0, 300))
-            charLimit = $(".comTextArea").val().length
+            $(".comTextArea").text($(".comTextArea").text().slice(0, 300))
+            charLimit = $(".comTextArea").text().length
         }
 
         $("#charLimit").text(charLimit + "/300")
+
+        /*
+        var newLinesArr = Object.keys($(".comTextArea").children()).slice(0, -2)
+        var newLines = $(".comTextArea").children()
+        if (newLinesArr.length != 0) {
+            newLinesArr.forEach(element => {
+                if (newLines[element].localName == "div" & element != "0") {
+                    newLines[element].remove()
+                    $(".comTextArea").append("<br />")
+                }
+            });
+        }
+        */
+
     })
 
     let commentColor = RGBtoHEX(randomColor())
@@ -84,12 +116,28 @@ $(function () {
 
 function getPlayerIcon() {
     let player = $(".pIconInp").val();
-    $("#pIcon").attr("src", "https://gdbrowser.com/icon/" + player);
+    $.get("https://gdbrowser.com/api/profile/" + player, (data, res) => {
+        if (data == "-1") {
+            $(".comUserError").text("Geodeš účet neexistuje :/")
+            setTimeout(() => $(".comUserError").fadeOut(1000), 3000)
+        }
+        else if (res == "success") {
+            $("#pIcon").attr("src", "https://gdbrowser.com/icon/" + player);
+        }
+        else {
+            $(".comUserError").text("Nepodařilo se připojit k GDBrowseru :/")
+            setTimeout(() => $(".comUserError").fadeOut(1000), 3000)
+        }
+    })
+    
 }
 
 function addEmoji() {
+    /*
     let line = 2.6 * Math.ceil($(".comTextArea").val().length / 56)
     let left = 2 + ((($(".comTextArea").val().length) * 1.5) - (76.5 * (line / 2.6 - 1)))
     $(".emojis").append(`<img src='./images/check.png' style='left: ${Math.abs(left)}vw; bottom: ${17.3 - line}vw'>`)
     $(".comTextArea").val($(".comTextArea").val() + "  ")
+    */
+    $(".comTextArea").append("<img class='emojis' src='./images/check.png'>")
 }

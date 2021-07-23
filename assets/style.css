@@ -30,7 +30,7 @@ body {
 }
 @font-face {
     font-family: chatFont;
-    src: url("../assets/chatFont.ttf");
+    src: url("../assets/JetBrainsMono-Regular.ttf");
 }
 
 .shade {
@@ -175,11 +175,15 @@ html, body {
   margin-right: auto;
 }
 
+/* List always shows by default */
 .comments { display: none;}
 
+/* Entire comment box, including user input box */
 #commentMaker {
   margin: 2vw 5vw;
 }
+
+/* Comment text area */
 .comTextArea {
   background-color: salmon;
   border: none;
@@ -189,7 +193,10 @@ html, body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   width: 102%;
+  padding: 1%;
+  overflow: auto;
 }
+
 #comFont {
   -webkit-text-stroke: black 0px;
   font-family: chatFont, serif;
@@ -197,6 +204,7 @@ html, body {
   line-height: 1.1;
 }
 
+/* Header and footer of the comment text area */
 .comBoxThings {
   display: flex;
   margin: 0;
@@ -209,12 +217,12 @@ html, body {
   padding: 0 2%;
 }
 
+/* Specific stuff relating to the cbox footer and header */
 #comBoxHeader {
   margin-bottom: -2vw !important;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
-
 #comBoxFooter {
   margin-top: -2.2vw !important;
   border-bottom-left-radius: 15px;
@@ -222,22 +230,26 @@ html, body {
   justify-content: right !important;
 }
 
+/* Text placement in the cbox footer and header */
 .comBoxThings > h3 {
   position: relative;
   bottom: 2.5vw;
 }
 
+/* User input box */
 .pIconInp {
   transform: translateY(0) !important;
   margin: 0 0.5vw 0 1vw !important;
 }
 
+/* Placement of the entire comment box */
 .comBox {
   display: flex;
   flex-direction: column;
   justify-items: center;
 }
 
+/* Hypermodern buttons in cbox footer */
 .comFooterButton {
   background: none;
   border: white solid 0.3vw;
@@ -245,4 +257,32 @@ html, body {
   border-radius: 10px;
   cursor: pointer;
   margin: 0.5% 2% 0.5% 0;
+}
+
+/* Comment color picker */
+#comCPicker {
+  transform: translateY(0);
+  width: 114%;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  right: 101%;
+  bottom: 26%;
+  height: 3.8vw;
+  cursor: pointer;
+}
+
+/* laughing crying emoji yes XDDDDDDDD */
+.emojis {
+  width: 2.2vw;
+  pointer-events: none;
+  user-select: text;
+}
+
+/* Error when fetching from GD Browser (in comment box) */
+.comUserError {
+  color: tomato !important;
+  padding-left: 1vw;
+  font-size: 2vw !important;
+  -webkit-text-stroke: black 0.1vw !important;
 }
