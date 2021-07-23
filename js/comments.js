@@ -30,24 +30,24 @@ $(function () {
         var charLimit = $(".comTextArea").val().length
 
         // I finally got to use the switch statement!!! (so exciting)
-        switch (Math.floor(charLimit/50)) {
+        switch (Math.floor(charLimit / 50)) {
             case 2:
-                $("#charLimit").css("color","#fce8e8")
+                $("#charLimit").css("color", "#fce8e8")
                 break;
             case 3:
-                $("#charLimit").css("color","#fcc4c4")
+                $("#charLimit").css("color", "#fcc4c4")
                 break;
             case 4:
-                $("#charLimit").css("color","#f49f9f")
+                $("#charLimit").css("color", "#f49f9f")
                 break;
             case 5:
-                $("#charLimit").css("color","#ef6969")
+                $("#charLimit").css("color", "#ef6969")
                 break;
             case 6:
-                $("#charLimit").css("color","#b50e0e")
+                $("#charLimit").css("color", "#b50e0e")
                 break;
             default:
-                $("#charLimit").css("color","#ffffff")
+                $("#charLimit").css("color", "#ffffff")
                 break;
         }
 
@@ -60,8 +60,8 @@ $(function () {
     })
 
     let commentColor = RGBtoHEX(randomColor())
-    let boxColor = HEXtoRGB(commentColor, 40);
-    let darkerBoxColor = HEXtoRGB(commentColor, 80);
+    let boxColor = HEXtoRGB(commentColor, 30);
+    let darkerBoxColor = HEXtoRGB(commentColor, 50);
 
     $("#commentMaker").css("background-color", commentColor)
     $("#commentMaker").css("border-color", "rgb(" + boxColor.join(",") + ")")
@@ -84,5 +84,12 @@ $(function () {
 
 function getPlayerIcon() {
     let player = $(".pIconInp").val();
-    $("#pIcon").attr("src","https://gdbrowser.com/icon/"+player);
+    $("#pIcon").attr("src", "https://gdbrowser.com/icon/" + player);
+}
+
+function addEmoji() {
+    let line = 2.6 * Math.ceil($(".comTextArea").val().length / 56)
+    let left = 2 + ((($(".comTextArea").val().length) * 1.5) - (76.5 * (line / 2.6 - 1)))
+    $(".emojis").append(`<img src='./images/check.png' style='left: ${Math.abs(left)}vw; bottom: ${17.3 - line}vw'>`)
+    $(".comTextArea").val($(".comTextArea").val() + "  ")
 }
