@@ -24,7 +24,7 @@ var placeholders = [
 
 function updateCharLimit() {
     var charLimit = actualText.length
-    
+
     // I finally got to use the switch statement!!! (so exciting)
     switch (Math.floor(charLimit / 50)) {
         case 2:
@@ -54,14 +54,14 @@ function updateCharLimit() {
         charLimit = $(".comTextArea").text().length
     }
     */
-    
+
     $("#charLimit").text(charLimit + "/300")
 }
 
 var actualText = "";
 $(function () {
     var selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
-    
+
     $(".comTextArea").text(selectPholder);
     $("#comFont").css("color", "rgba(255,255,255,0.5)")
 
@@ -83,9 +83,10 @@ $(function () {
 
 
     $(".comTextArea").on("keyup keypress", (k) => {
-        
+
         if (k.type == "keyup") {
-            
+
+            /*
             // Special keys
             if ((k.key).length > 1) {
                 switch (k.key) {
@@ -111,6 +112,20 @@ $(function () {
             else {
                 actualText += k.key
             }
+            updateCharLimit()
+            */
+            let text = $(".comTextArea").html()
+
+            text = text.replace(/<div>/g, "")
+            text = text.replace(/<\/div>/g, "\n")
+            text = text.replace(/<br>/g, "\n")
+            text = text.replace(/<img class="emojis" src=".\/images\/emoji\/\d+.png">/g, "&01")
+
+            if (text.endsWith("\n")) {
+                text = text.slice(0, -2)
+            }
+
+            actualText = text
             updateCharLimit()
         }
     })
@@ -153,17 +168,17 @@ function getPlayerIcon() {
             setTimeout(() => $(".comUserError").fadeOut(1000), 3000)
         }
     })
-    
+
 }
 
 function addEmoji(id) {
     let emojiIDs = ["&01"]
-        
+
     if (actualText.length + emojiIDs[id].length < 300) {
-            actualText += emojiIDs[id]
-            actualText.length+"/300"
-            updateCharLimit()
-    
-            $(".comTextArea").append("<img class='emojis' src='./images/check.png'>")
-        }
+        actualText += emojiIDs[id]
+        actualText.length + "/300"
+        updateCharLimit()
+
+        $(".comTextArea").append(`<img class='emojis' src='./images/emoji/${emojiIDs[id].slice(1)}.png'>`)
+    }
 }
