@@ -22,8 +22,46 @@ var placeholders = [
     "Mrkni se i na můj seznam..."
 ]
 
+function updateCharLimit() {
+    var charLimit = actualText.length
+    
+    // I finally got to use the switch statement!!! (so exciting)
+    switch (Math.floor(charLimit / 50)) {
+        case 2:
+            $("#charLimit").css("color", "#fce8e8")
+            break;
+        case 3:
+            $("#charLimit").css("color", "#fcc4c4")
+            break;
+        case 4:
+            $("#charLimit").css("color", "#f49f9f")
+            break;
+        case 5:
+            $("#charLimit").css("color", "#ef6969")
+            break;
+        case 6:
+            $("#charLimit").css("color", "#b50e0e")
+            break;
+        default:
+            $("#charLimit").css("color", "#ffffff")
+            break;
+    }
+
+    // Maybe not neccessary? Unless a hyperhacker hacks the matrix.
+    /*
+    if (charLimit > 300) {
+        $(".comTextArea").text($(".comTextArea").text().slice(0, 300))
+        charLimit = $(".comTextArea").text().length
+    }
+    */
+    
+    $("#charLimit").text(charLimit + "/300")
+}
+
+var actualText = "";
 $(function () {
     var selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
+    
     $(".comTextArea").text(selectPholder);
     $("#comFont").css("color", "rgba(255,255,255,0.5)")
 
@@ -44,51 +82,37 @@ $(function () {
     })
 
 
-    $(".comTextArea").on("keyup keypress", () => {
-        var charLimit = $(".comTextArea").text().length
-
-        // I finally got to use the switch statement!!! (so exciting)
-        switch (Math.floor(charLimit / 50)) {
-            case 2:
-                $("#charLimit").css("color", "#fce8e8")
-                break;
-            case 3:
-                $("#charLimit").css("color", "#fcc4c4")
-                break;
-            case 4:
-                $("#charLimit").css("color", "#f49f9f")
-                break;
-            case 5:
-                $("#charLimit").css("color", "#ef6969")
-                break;
-            case 6:
-                $("#charLimit").css("color", "#b50e0e")
-                break;
-            default:
-                $("#charLimit").css("color", "#ffffff")
-                break;
-        }
-
-        if (charLimit > 300) {
-            $(".comTextArea").text($(".comTextArea").text().slice(0, 300))
-            charLimit = $(".comTextArea").text().length
-        }
-
-        $("#charLimit").text(charLimit + "/300")
-
-        /*
-        var newLinesArr = Object.keys($(".comTextArea").children()).slice(0, -2)
-        var newLines = $(".comTextArea").children()
-        if (newLinesArr.length != 0) {
-            newLinesArr.forEach(element => {
-                if (newLines[element].localName == "div" & element != "0") {
-                    newLines[element].remove()
-                    $(".comTextArea").append("<br />")
+    $(".comTextArea").on("keyup keypress", (k) => {
+        
+        if (k.type == "keyup") {
+            
+            // Special keys
+            if ((k.key).length > 1) {
+                switch (k.key) {
+                    case "Enter":
+                        actualText += "\n";
+                        break;
+                    case "Backspace":
+                        // TODO: remove emojis properly, update properly when deleting a selection!!!!!!!!!!!!!
+                        let lenCheck = actualText
+                        lenCheck = lenCheck.replace("\n","")
+                        lenCheck = lenCheck.replace(/&\d+/g, "")
+                        
+                        if ($(".comTextArea").text().length != lenCheck.length) {
+                            actualText = $(".comTextArea").text()
+                        }
+                        else { actualText = actualText.slice(0, -1); }
+                        break;
+                    default:
+                        break;
                 }
-            });
+            }
+            
+            else {
+                actualText += k.key
+            }
+            updateCharLimit()
         }
-        */
-
     })
 
     let commentColor = RGBtoHEX(randomColor())
@@ -132,12 +156,14 @@ function getPlayerIcon() {
     
 }
 
-function addEmoji() {
-    /*
-    let line = 2.6 * Math.ceil($(".comTextArea").val().length / 56)
-    let left = 2 + ((($(".comTextArea").val().length) * 1.5) - (76.5 * (line / 2.6 - 1)))
-    $(".emojis").append(`<img src='./images/check.png' style='left: ${Math.abs(left)}vw; bottom: ${17.3 - line}vw'>`)
-    $(".comTextArea").val($(".comTextArea").val() + "  ")
-    */
-    $(".comTextArea").append("<img class='emojis' src='./images/check.png'>")
+function addEmoji(id) {
+    let emojiIDs = ["&01"]
+        
+    if (actualText.length + emojiIDs[id].length < 300) {
+            actualText += emojiIDs[id]
+            actualText.length+"/300"
+            updateCharLimit()
+    
+            $(".comTextArea").append("<img class='emojis' src='./images/check.png'>")
+        }
 }

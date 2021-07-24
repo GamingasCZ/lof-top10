@@ -30,7 +30,7 @@ body {
 }
 @font-face {
     font-family: chatFont;
-    src: url("../assets/JetBrainsMono-Regular.ttf");
+    src: url("../assets/chatFont.ttf");
 }
 
 .shade {
@@ -195,6 +195,7 @@ html, body {
   width: 102%;
   padding: 1%;
   overflow: auto;
+  white-space: pre-wrap;
 }
 
 #comFont {
