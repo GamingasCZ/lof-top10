@@ -48,12 +48,10 @@ function updateCharLimit() {
     }
 
     // Maybe not neccessary? Unless a hyperhacker hacks the matrix.
-    /*
     if (charLimit > 300) {
         $(".comTextArea").text($(".comTextArea").text().slice(0, 300))
         charLimit = $(".comTextArea").text().length
     }
-    */
 
     $("#charLimit").text(charLimit + "/300")
 }
@@ -83,49 +81,26 @@ $(function () {
 
 
     $(".comTextArea").on("keyup keypress", (k) => {
-
+        // Only perform stuff once
         if (k.type == "keyup") {
-
-            /*
-            // Special keys
-            if ((k.key).length > 1) {
-                switch (k.key) {
-                    case "Enter":
-                        actualText += "\n";
-                        break;
-                    case "Backspace":
-                        // TODO: remove emojis properly, update properly when deleting a selection!!!!!!!!!!!!!
-                        let lenCheck = actualText
-                        lenCheck = lenCheck.replace("\n","")
-                        lenCheck = lenCheck.replace(/&\d+/g, "")
-                        
-                        if ($(".comTextArea").text().length != lenCheck.length) {
-                            actualText = $(".comTextArea").text()
-                        }
-                        else { actualText = actualText.slice(0, -1); }
-                        break;
-                    default:
-                        break;
-                }
-            }
-            
-            else {
-                actualText += k.key
-            }
-            updateCharLimit()
-            */
             let text = $(".comTextArea").html()
 
-            text = text.replace(/<div>/g, "")
-            text = text.replace(/<\/div>/g, "\n")
-            text = text.replace(/<br>/g, "\n")
+            text = text.replace(/<div>/g, "\n") // Div tag is most likely newline
+            text = text.replace(/<\/div>/g, "") // Remove div tag end
+            
+            // TODO: Replace with proper emoji ID
             text = text.replace(/<img class="emojis" src=".\/images\/emoji\/\d+.png">/g, "&01")
+            
+            // Remove excess tags
+            text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "")
 
+            // Remove excess newline
             if (text.endsWith("\n")) {
-                text = text.slice(0, -2)
+                text = text.slice(0, -1)
             }
 
             actualText = text
+            $(".test").text(text) // Remove later
             updateCharLimit()
         }
     })
