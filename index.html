@@ -60,64 +60,72 @@
   </div>
 
   <div class="comments">
-    <p class="titles">- Komentáře -</p>
     <div class="positionEdit" id="commentMaker">
-      <div style="margin: 1vw;">
-        <div style="display: flex; align-items: center;">
-          <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 4vw;">
-          <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno">
-          <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg"
-            style="float: none; height: max-content;">
-          <h5 class="uploadText comUserError"></h5>
-        </div>
-
-        <div class="comBox">
-          <div class="uploadText comBoxThings" id="comBoxHeader">
-            <h3>Komentář</h3>
-            <h3 id="charLimit">0/300</h3>
-          </div>
-
-          <div style="display: flex; width: inherit;">
-            <div contenteditable="" class="uploadText comTextArea" id="comFont"></div>
-          </div>
-
-          <div class="uploadText comBoxThings" id="comBoxFooter">
-
-            <button class="comFooterButton" title="Barva komentáře">
-              <svg width="110" height="60">
-                <image xlink:href="./images/color.svg" width="110" height="60" />
-              </svg>
-              <input type="color" class="cpicker cardButton" id="comCPicker">
-            </button>
-
-            <button class="comFooterButton" title="Emotikony" onclick="addEmoji(0)">
-              <svg width="90" height="40">
-                <image xlink:href="./images/emoji.svg" width="90" height="40" />
-              </svg>
-            </button>
-
-            <button class="comFooterButton" title="Odeslat komentář">
-              <svg width="90" height="40">
-                <image xlink:href="./images/send.svg" width="90" height="40" />
-              </svg>
-            </button>
-
-          </div>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end;">
-        </div>
-
+      <div style="display: flex; align-items: center; padding-left: 1%;">
+        <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 4vw;">
+        <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno">
+        <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg"
+          style="float: none; height: max-content;">
+        <h5 class="uploadText comUserError"></h5>
       </div>
-    </div>
-    <div id="commentList">
-        <div>
-            <div class="comBoxThings uploadText" id="comBoxHeader">
-                <h3>Gamingas</h3>
-            </div>
-            <div class="comTextArea test">Ahoj</div>
+
+      <div class="comBox">
+        <div class="uploadText comBoxThings comInpThings" id="comBoxHeader">
+          <h3>Komentář</h3>
+          <h3 id="charLimit">0/300</h3>
         </div>
+
+        <div style="display: flex; width: inherit;">
+          <div contenteditable="" class="uploadText comTextArea comInpArea" id="comFont"></div>
+        </div>
+
+        <div class="uploadText comBoxThings comInpThings" id="comBoxFooter">
+
+          <button class="comFooterButton" title="Barva komentáře">
+            <svg width="110" height="60">
+              <image xlink:href="./images/color.svg" width="110" height="60" />
+            </svg>
+            <input type="color" class="cpicker cardButton" id="comCPicker">
+          </button>
+
+          <button class="comFooterButton" title="Emotikony" onclick="displayEmojiPanel()">
+            <svg width="90" height="40">
+              <image xlink:href="./images/emoji.svg" width="90" height="40" />
+            </svg>
+          </button>
+
+          <button class="comFooterButton" title="Odeslat komentář" onclick="sendComment()">
+            <svg width="90" height="40">
+              <image xlink:href="./images/send.svg" width="90" height="40" />
+            </svg>
+          </button>
+
+        </div>
+      </div>
+
+      <div class="emojiPanel">
+        <img src="./images/emoji/01.png" class="listEmoji" onclick="addEmoji(0)">
+        <img src="./images/emoji/02.png" class="listEmoji" onclick="addEmoji(1)">
+        <img src="./images/emoji/03.png" class="listEmoji" onclick="addEmoji(2)">
+        <img src="./images/emoji/04.png" class="listEmoji" onclick="addEmoji(3)">
+      </div>
+
     </div>
+
+    <p class="titles">- Komentáře -</p>
+
+    <div class="searchTools uploadText" id="commentTool" style="justify-content: center;">
+      <div class="page">
+        <span style="font-size: 3vw; padding-right: 2%;">Strana: </span>
+        <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="pageSwitch(-1)">
+        <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
+        <span style="font-size: 3.5vw" id="maxPage">/1</span>
+        <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="pageSwitch(1)">
+      </div>
+      <img src="images/refresh.png" id="refreshBut" class="button" style="float: none; width: 6vw;">
+    </div>
+
+    <div id="commentList"></div>
   </div>
 
   <div class="boards">

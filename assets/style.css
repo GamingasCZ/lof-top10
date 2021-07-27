@@ -181,6 +181,7 @@ html, body {
 /* Entire comment box, including user input box */
 #commentMaker {
   margin: 2vw 5vw;
+  padding: 1vw;
 }
 
 /* Comment text area */
@@ -203,6 +204,7 @@ html, body {
   font-family: chatFont, serif;
   font-size: 2.5vw;
   line-height: 1.1;
+  color: white;
 }
 
 /* Header and footer of the comment text area */
@@ -215,7 +217,7 @@ html, body {
   width: inherit;
   /*i despise css.*/
   height: 4.2vw;
-  padding: 0 2%;
+  padding: 0 1%;
 }
 
 /* Specific stuff relating to the cbox footer and header */
@@ -287,3 +289,36 @@ html, body {
   font-size: 2vw !important;
   -webkit-text-stroke: black 0.1vw !important;
 }
+
+.emojiPanel {
+  background-color: coral;
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: auto;
+}
+.listEmoji {
+  padding: 0.5vw;
+  width: 3.5vw;
+}
+
+#commentList {
+  margin: 2vw 6vw;
+  transform: scale(0.9) translateY(-5%);
+}
+
+.clickable {
+  cursor: pointer;
+  transform: none;
+  transition-duration: 0.2s;
+  filter: saturate(100%);
+}
+.clickable:hover {
+  filter: saturate(250%);
+}
+
+#commentTool {
+  justify-content: center;
+  width: 45%;
+  margin-left: auto;
+  margin-right: auto;
+} 
