@@ -25,14 +25,14 @@
      showgrid="false"
      units="px"
      inkscape:zoom="18.586756"
-     inkscape:cx="2.3403762"
-     inkscape:cy="7.3977407"
+     inkscape:cx="-2.0175656"
+     inkscape:cy="7.3977406"
      inkscape:window-width="1558"
      inkscape:window-height="872"
      inkscape:window-x="42"
      inkscape:window-y="28"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="g1109" />
   <defs
      id="defs836" />
   <g
@@ -42,24 +42,28 @@
     <g
        id="g1109"
        transform="translate(0.03206675,-0.60060372)">
-      <circle
-         style="fill:#ff5555;stroke-width:1.265;stroke-linecap:round;stroke-linejoin:round"
-         id="path944"
-         cx="1.5095884"
-         cy="2.6640506"
-         r="0.72269279" />
-      <circle
-         style="fill:#5557ff;fill-opacity:1;stroke-width:1.265;stroke-linecap:round;stroke-linejoin:round"
-         id="path944-3"
-         cx="2.088551"
-         cy="1.547933"
-         r="0.72269279" />
-      <circle
-         style="fill:#55ff5d;fill-opacity:1;stroke-width:1.265;stroke-linecap:round;stroke-linejoin:round"
-         id="path944-6"
-         cx="2.6596115"
-         cy="2.7228875"
-         r="0.72269279" />
+      <g
+         id="g862"
+         transform="translate(0.04001689,0.00867064)">
+        <circle
+           style="mix-blend-mode:multiply;fill:#ff5555;stroke-width:2.09859;stroke-linecap:round;stroke-linejoin:round"
+           id="path944"
+           cx="1.2627181"
+           cy="3.5163283"
+           r="1.1989189" />
+        <circle
+           style="mix-blend-mode:multiply;fill:#5557ff;fill-opacity:1;stroke-width:2.09859;stroke-linecap:round;stroke-linejoin:round"
+           id="path944-3"
+           cx="2.0164785"
+           cy="1.899192"
+           r="1.1989189" />
+        <circle
+           style="mix-blend-mode:multiply;fill:#55ff5d;fill-opacity:1;stroke-width:2.09859;stroke-linecap:round;stroke-linejoin:round"
+           id="path944-6"
+           cx="2.826448"
+           cy="3.5180075"
+           r="1.1989189" />
+      </g>
     </g>
   </g>
 </svg>

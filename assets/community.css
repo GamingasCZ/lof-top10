@@ -45,6 +45,7 @@
     font-size: 3vw;
     -webkit-text-stroke: black 0.17vw;
     line-height: 84%;
+    text-shadow: rgba(0,0,0,0.5) 3px 3px 4px;
 }
 
 .uploadTitle {

@@ -57,6 +57,7 @@ function updateCharLimit() {
 }
 
 var actualText = "";
+var midText = ""
 $(function () {
     $(".emojiPanel").hide();
     displayComments(fakeDeeta);
@@ -86,24 +87,29 @@ $(function () {
     $(".comInpArea").on("keyup keypress", (k) => {
         // Only perform stuff once
         if (k.type == "keyup") {
-            let text = $(".comTextArea").html()
+            //$(".comTextArea").html($(".comTextArea").html().replace(/<br>/g, ""))
 
-            text = text.replace(/<div>/g, "\n") // Div tag is most likely newline
-            text = text.replace(/<\/div>/g, "") // Remove div tag end
+            let text = $(".comTextArea").html();
+
+            text = text.replace(/<div>/g, "\n"); // Div tag is most likely newline
+            text = text.replace(/<\/div>/g, ""); // Remove div tag end
+            let keepImgs = text;
+            keepImgs = keepImgs.replace(/<br>/g,"")
 
             // TODO: Replace with proper emoji ID
-            text = text.replace(/<img class="emojis" src=".\/images\/emoji\/\d+.png">/g, "&01")
+            text = text.replace(/<img class="emojis" src=".\/images\/emoji\/\d+.png">/g, "&01");
 
             // Remove excess tags
-            text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "")
+            text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "");
 
             // Remove excess newline
             if (text.startsWith("\n")) {
-                text = text.slice(1)
+                text = text.slice(1);
+                keepImgs = keepImgs.slice(1);
             }
 
-            actualText = text
-            $(".test").text(text) // Remove later
+            actualText = text;
+            midText = keepImgs;
             updateCharLimit()
         }
     })
@@ -154,10 +160,20 @@ function getPlayerIcon() {
 var emojiIDs = ["&01", "&02", "&03", "&04"]
 function addEmoji(id) {
     if (actualText.length + emojiIDs[id].length < 300) {
+        midText += `<img class='emojis' src='./images/emoji/${emojiIDs[id].slice(1)}.png'>`
+        $(".comTextArea").html(midText)
+
         actualText += emojiIDs[id]
         updateCharLimit()
-
-        $(".comTextArea").append(`<img class='emojis' src='./images/emoji/${emojiIDs[id].slice(1)}.png'>`)
+        /*
+        if ($(".comTextArea > div").length == 0) {
+            $(".comTextArea").append(`<img class='emojis' src='./images/emoji/${emojiIDs[id].slice(1)}.png'>`);
+        }
+        else {
+            let lastDiv = $(".comTextArea > div").length-1;
+            $(".comTextArea > div")[lastDiv].after(`<img class='emojis' src='./images/emoji/${emojiIDs[id].slice(1)}.png'>`);
+        }
+        */
     }
 }
 
@@ -182,7 +198,7 @@ function sendComment() {
 }
 
 
-var fakeDeeta = "Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;1|Bytos;Ahoj;0;#d456D3;0;1|Test;Ahoj;0;#3d6637;0;1|okey;Ahoj;0;#ea5495;0;1"
+var fakeDeeta = "Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Bytos;Ahoj;0;#d456D3;0;0|Test;Ahoj;0;#3d6637;0;0|okey;Ahoj;0;#ea5495;0;0"
 
 function comBox(cd, dcc, edcc) {
     let profPic = "";
