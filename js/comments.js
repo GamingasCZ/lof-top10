@@ -1,3 +1,4 @@
+const EMOJI_AM = 8;
 
 function listList() {
     // What a shitty function name bruh
@@ -60,7 +61,11 @@ var actualText = "";
 var midText = ""
 $(function () {
     $(".emojiPanel").hide();
-    displayComments(fakeDeeta);
+
+    displayComments(fakeDeeta); // DELETE LATER!!!
+    $.get("./php/getComments.php", function (data) {
+        displayComments(data)
+    })
 
     var selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
 
@@ -69,8 +74,8 @@ $(function () {
 
 
     $(".comInpArea").on("blur", () => {
-        if ($(".comTextArea")["0"].innerText.length == 1) {
-            $(".comTextArea")["0"].innerText = selectPholder
+        if (actualText.length == 1) {
+            $(".comInpArea").text(selectPholder)
             $("#comFont").css("color", "rgba(255,255,255,0.5)")
         }
     })
@@ -94,7 +99,7 @@ $(function () {
             text = text.replace(/<div>/g, "\n"); // Div tag is most likely newline
             text = text.replace(/<\/div>/g, ""); // Remove div tag end
             let keepImgs = text;
-            keepImgs = keepImgs.replace(/<br>/g,"")
+            keepImgs = keepImgs.replace(/<br>/g, "")
 
             // TODO: Replace with proper emoji ID
             text = text.replace(/<img class="emojis" src=".\/images\/emoji\/\d+.png">/g, "&01");
@@ -157,23 +162,15 @@ function getPlayerIcon() {
 
 }
 
-var emojiIDs = ["&01", "&02", "&03", "&04"]
 function addEmoji(id) {
-    if (actualText.length + emojiIDs[id].length < 300) {
-        midText += `<img class='emojis' src='./images/emoji/${emojiIDs[id].slice(1)}.png'>`
+    id++
+    let emoji = "&" + (id > 9 ? id : "0"+id);
+    if (actualText.length + emoji.length < 300) {
+        midText += `<img class='emojis' src='./images/emoji/${emoji.slice(1)}.png'>`
         $(".comTextArea").html(midText)
 
-        actualText += emojiIDs[id]
+        actualText += emoji
         updateCharLimit()
-        /*
-        if ($(".comTextArea > div").length == 0) {
-            $(".comTextArea").append(`<img class='emojis' src='./images/emoji/${emojiIDs[id].slice(1)}.png'>`);
-        }
-        else {
-            let lastDiv = $(".comTextArea > div").length-1;
-            $(".comTextArea > div")[lastDiv].after(`<img class='emojis' src='./images/emoji/${emojiIDs[id].slice(1)}.png'>`);
-        }
-        */
     }
 }
 
@@ -218,7 +215,7 @@ function comBox(cd, dcc, edcc) {
         let sel = cd[1].indexOf(cd[1].match(/&\d+/));
         let selStart = cd[1].slice(0, sel);
         let emojiID = cd[1].slice(sel + 1, sel + 3);
-        if (emojiID > emojiIDs.length) { emojiID = "sad" }
+        if (emojiID > EMOJI_AM) { emojiID = "sad" }
 
         // fix this if you add more than 100 emojis :O
         let selEnd = cd[1].slice(sel + 3);
