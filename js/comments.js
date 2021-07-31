@@ -61,18 +61,25 @@ var actualText = "";
 var midText = ""
 $(function () {
     $(".emojiPanel").hide();
+    
+    // Adds emojis into the emoji panel
+    for (let i = 0; i < EMOJI_AM; i++) {
+        let em = (i+1 < 10) ? "0"+(i+1) : i+1
+        $(".emojiPanel").append(`<img class="listEmoji" src="./images/emoji/${em}.png" onclick="addEmoji(${i})">`)
+    }
 
+    // Fetch comments
     displayComments(fakeDeeta); // DELETE LATER!!!
     $.get("./php/getComments.php", function (data) {
         displayComments(data)
     })
 
+    // Adds a placeholder to the comment area
     var selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
-
     $(".comInpArea").text(selectPholder);
     $("#comFont").css("color", "rgba(255,255,255,0.5)")
 
-
+    // Placeholder related stuff 
     $(".comInpArea").on("blur", () => {
         if (actualText.length == 1) {
             $(".comInpArea").text(selectPholder)
@@ -88,12 +95,10 @@ $(function () {
         $("#comFont").css("color", "rgba(255,255,255,1)")
     })
 
-
+    // MAIN comment handling stuff
     $(".comInpArea").on("keyup keypress", (k) => {
         // Only perform stuff once
         if (k.type == "keyup") {
-            //$(".comTextArea").html($(".comTextArea").html().replace(/<br>/g, ""))
-
             let text = $(".comTextArea").html();
 
             text = text.replace(/<div>/g, "\n"); // Div tag is most likely newline
@@ -119,6 +124,7 @@ $(function () {
         }
     })
 
+    // Pick a random comment color
     let commentColor = RGBtoHEX(randomColor())
     let boxColor = HEXtoRGB(commentColor, 30);
     let darkerBoxColor = HEXtoRGB(commentColor, 50);
@@ -279,5 +285,16 @@ function displayComments(data) {
 }
 
 function profile(name) {
-    window.open("https://gdbrowser.com/u/" + name)
+    window.open("https://gdbrowser.com/u/" + name);
+}
+
+function refreshComments() {
+    if ($("#refreshBut")["0"].className.match("disabled") == null) {
+         $("#refreshBut").addClass("disabled");
+         $.get("./php/getComments.php", function (data) {
+            displayComments(data);
+         })
+         setTimeout(() => { $("#refreshBut").removeClass("disabled") }, 3000)
+        
+    }
 }

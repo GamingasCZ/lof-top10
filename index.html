@@ -106,16 +106,7 @@
         </div>
       </div>
 
-      <div class="emojiPanel">
-        <img src="./images/emoji/01.png" class="listEmoji" onclick="addEmoji(0)">
-        <img src="./images/emoji/02.png" class="listEmoji" onclick="addEmoji(1)">
-        <img src="./images/emoji/03.png" class="listEmoji" onclick="addEmoji(2)">
-        <img src="./images/emoji/04.png" class="listEmoji" onclick="addEmoji(3)">
-        <img src="./images/emoji/05.png" class="listEmoji" onclick="addEmoji(4)">
-        <img src="./images/emoji/06.png" class="listEmoji" onclick="addEmoji(5)">
-        <img src="./images/emoji/07.png" class="listEmoji" onclick="addEmoji(6)">
-        <img src="./images/emoji/08.png" class="listEmoji" onclick="addEmoji(7)">
-      </div>
+      <div class="emojiPanel"></div>
 
     </div>
 
@@ -129,7 +120,7 @@
         <span style="font-size: 3.5vw" id="maxPage">/1</span>
         <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="pageSwitch(1)">
       </div>
-      <img src="images/refresh.png" id="refreshBut" class="button" style="float: none; width: 6vw;">
+      <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button" style="float: none; width: 6vw;">
     </div>
 
     <div id="commentList"></div>
