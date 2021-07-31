@@ -78,7 +78,7 @@ $(function () {
 
     // Fetch comments
     displayComments(fakeDeeta); // DELETE LATER!!!
-    $.get("./php/getComments.php", function (data) {
+    $.get("./php/getComments.php?listid="+LIST_ID, function (data) {
         displayComments(data)
     })
 
