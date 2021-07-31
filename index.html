@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="./assets/style.css">
   <link rel="stylesheet" href="./assets/community.css">
@@ -82,7 +83,7 @@
         <div class="uploadText comBoxThings comInpThings" id="comBoxFooter">
 
           <button class="comFooterButton" title="Barva komentáře">
-            <svg width="110" height="60">
+            <svg width="90" height="40">
               <image xlink:href="./images/color.svg" width="90" height="40" style="transform: translateX(1vw);" />
             </svg>
             <input type="color" class="cpicker cardButton" id="comCPicker">
@@ -93,6 +94,8 @@
               <image xlink:href="./images/emoji.svg" width="90" height="40" />
             </svg>
           </button>
+
+            <hr id="verticalLine">
 
           <button class="comFooterButton" title="Odeslat komentář" onclick="sendComment()">
             <svg width="90" height="40">

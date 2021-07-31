@@ -128,6 +128,7 @@ $(function () {
     $(".comInpArea").css("background-color", "rgb(" + boxColor.join(",") + ")")
     $(".comInpThings").css("background-color", "rgb(" + darkerBoxColor.join(",") + ")")
     $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")")
+    $("#verticalLine").css("border-color", commentColor)
 
 
     $(".cpicker").on("change", () => {
@@ -141,6 +142,7 @@ $(function () {
         $(".comInpArea").css("background-color", "rgb(" + boxColor.join(",") + ")")
         $(".comInpThings").css("background-color", "rgb(" + darkerBoxColor.join(",") + ")")
         $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")")
+        $("#verticalLine").css("border-color", col)
     })
 })
 
