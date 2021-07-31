@@ -1,4 +1,12 @@
-const EMOJI_AM = 8;
+const EMOJI_AM = 11;
+try {
+    var lID = (window.location.search).match(/id=\d+/)["0"].split("=")[1];
+}
+catch {
+    var lID = "-1";
+}
+const LIST_ID = lID;
+
 
 function listList() {
     // What a shitty function name bruh
@@ -61,10 +69,10 @@ var actualText = "";
 var midText = ""
 $(function () {
     $(".emojiPanel").hide();
-    
+
     // Adds emojis into the emoji panel
     for (let i = 0; i < EMOJI_AM; i++) {
-        let em = (i+1 < 10) ? "0"+(i+1) : i+1
+        let em = (i + 1 < 10) ? "0" + (i + 1) : i + 1
         $(".emojiPanel").append(`<img class="listEmoji" src="./images/emoji/${em}.png" onclick="addEmoji(${i})">`)
     }
 
@@ -172,7 +180,7 @@ function getPlayerIcon() {
 
 function addEmoji(id) {
     id++
-    let emoji = "&" + (id > 9 ? id : "0"+id);
+    let emoji = "&" + (id > 9 ? id : "0" + id);
     if (actualText.length + emoji.length < 300) {
         midText += `<img class='emojis' src='./images/emoji/${emoji.slice(1)}.png'>`
         $(".comTextArea").html(midText)
@@ -192,14 +200,22 @@ function displayEmojiPanel() {
 }
 
 function sendComment() {
-    let postData = {
-        "creator": $(".pIconInp").val(),
-        "comment": actualText,
-        "comType": 0 // Change when I eventually add replies
+    if (actualText.length <= 10) {
+        $(".comUserError").text("Komentář by měl mít víc než 10 znaků!")
+        setTimeout(() => $(".comUserError").fadeOut(1000), 3000)
     }
-    $.post("../php/sendComment.php", postData, () => {
+    else {
+        let postData = {
+            "creator": $(".pIconInp").val(),
+            "comment": actualText,
+            "comType": 0, // Change when I eventually add replies,
+            "listID": LIST_ID,
+            "comColor": $("#comCPicker").val()
+        }
+        $.post("../php/sendComment.php", postData, () => {
 
-    })
+        })
+    }
 }
 
 
@@ -290,11 +306,11 @@ function profile(name) {
 
 function refreshComments() {
     if ($("#refreshBut")["0"].className.match("disabled") == null) {
-         $("#refreshBut").addClass("disabled");
-         $.get("./php/getComments.php", function (data) {
+        $("#refreshBut").addClass("disabled");
+        $.get("./php/getComments.php", function (data) {
             displayComments(data);
-         })
-         setTimeout(() => { $("#refreshBut").removeClass("disabled") }, 3000)
-        
+        })
+        setTimeout(() => { $("#refreshBut").removeClass("disabled") }, 3000)
+
     }
 }

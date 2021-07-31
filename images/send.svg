@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="true"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.5682576"
-     inkscape:cx="147.61606"
-     inkscape:cy="130.3995"
+     inkscape:zoom="0.7841288"
+     inkscape:cx="96.285202"
+     inkscape:cy="105.21231"
      inkscape:window-width="1558"
      inkscape:window-height="872"
      inkscape:window-x="42"
@@ -34,6 +34,16 @@
      inkscape:current-layer="layer1" />
   <defs
      id="defs2">
+    <inkscape:path-effect
+       effect="powermask"
+       id="path-effect1850"
+       is_visible="true"
+       lpeversion="1"
+       uri="#mask-powermask-path-effect1850"
+       invert="false"
+       hide_mask="false"
+       background="true"
+       background_color="#ffffffff" />
     <inkscape:path-effect
        effect="powermask"
        id="path-effect1998"
@@ -47,10 +57,6 @@
     <mask
        maskUnits="userSpaceOnUse"
        id="mask-powermask-path-effect1998">
-      <path
-         id="mask-powermask-path-effect1998_box"
-         style="fill:#ffffff;fill-opacity:1"
-         d="M 3.0485152,14.925734 H 46.478499 V 40.746976 H 3.0485152 Z" />
       <g
          id="g1996"
          style="fill:none">
@@ -68,21 +74,42 @@
         </g>
       </g>
     </mask>
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask-powermask-path-effect1850">
+      <path
+         id="mask-powermask-path-effect1850_box"
+         style="fill:#ffffff;fill-opacity:1"
+         d="M 2.5328207,14.819027 H 45.470851 V 40.148314 H 2.5328207 Z" />
+      <g
+         id="g1848"
+         transform="translate(-0.7616729,-0.35268458)"
+         style="">
+        <path
+           style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 4.2944936,39.501 45.232521,16.171713 4.2944936,39.501"
+           id="path1844" />
+        <path
+           style="display:inline;fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 45.232521,39.501 4.2944936,16.171713 45.232521,39.501"
+           id="path1846" />
+      </g>
+    </mask>
     <filter
-       id="mask-powermask-path-effect1998_inverse"
-       inkscape:label="filtermask-powermask-path-effect1998"
+       id="mask-powermask-path-effect1850_inverse"
+       inkscape:label="filtermask-powermask-path-effect1850"
        style="color-interpolation-filters:sRGB"
        height="100"
        width="100"
        x="-50"
        y="-50">
       <feColorMatrix
-         id="mask-powermask-path-effect1998_primitive1"
+         id="mask-powermask-path-effect1850_primitive1"
          values="1"
          type="saturate"
          result="fbSourceGraphic" />
       <feColorMatrix
-         id="mask-powermask-path-effect1998_primitive2"
+         id="mask-powermask-path-effect1850_primitive2"
          values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
          in="fbSourceGraphic" />
     </filter>
@@ -92,18 +119,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      style="display:inline">
-    <path
-       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.491957;stroke-linejoin:round"
-       id="rect846"
-       width="40.938026"
-       height="23.329285"
-       x="4.2944937"
-       y="16.171713"
-       ry="1.2717274"
-       sodipodi:type="rect"
-       d="M 5.5662211,16.171713 H 43.960793 c 0.704537,0 1.271727,0.56719 1.271727,1.271727 v 20.78583 c 0,0.704537 -0.56719,1.271728 -1.271727,1.271728 H 5.5662211 c -0.704537,0 -1.2717274,-0.567191 -1.2717274,-1.271728 V 17.44344 c 0,-0.704537 0.5671904,-1.271727 1.2717274,-1.271727 z"
-       mask="url(#mask-powermask-path-effect1998)"
-       inkscape:path-effect="#path-effect1998" />
     <rect
        style="fill:#ffffff;stroke:#ffffff;stroke-width:0.497417;stroke-linejoin:round"
        id="rect870"
@@ -116,6 +131,18 @@
        style="fill:#ffffff;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 74.433392,13.05251 V 42.993659 L 89.055476,28.371577 Z"
        id="path960" />
+    <path
+       style="fill:#ffffff;fill-rule:evenodd;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect1034"
+       width="40.93803"
+       height="23.329287"
+       x="3.5328207"
+       y="15.819027"
+       ry="1.2717277"
+       sodipodi:type="rect"
+       mask="url(#mask-powermask-path-effect1850)"
+       inkscape:path-effect="#path-effect1850"
+       d="M 4.8045484,15.819027 H 43.199123 c 0.704537,0 1.271728,0.56719 1.271728,1.271728 v 20.785831 c 0,0.704537 -0.567191,1.271728 -1.271728,1.271728 H 4.8045484 c -0.7045372,0 -1.2717277,-0.567191 -1.2717277,-1.271728 V 17.090755 c 0,-0.704538 0.5671905,-1.271728 1.2717277,-1.271728 z" />
   </g>
   <g
      inkscape:groupmode="layer"

@@ -263,7 +263,7 @@ html, body {
   border-radius: 10px;
   cursor: pointer;
   margin: 0.5% 1% 0.5% 1%;
-  height: fit-content;
+  height: min-content;
 }
 
 #verticalLine {
@@ -282,7 +282,7 @@ html, body {
   position: relative;
   right: 101%;
   bottom: 26%;
-  height: 3.8vw;
+  height: 2.7vw;
   cursor: pointer;
 }
 

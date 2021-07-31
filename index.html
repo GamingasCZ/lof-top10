@@ -64,7 +64,7 @@
     <div class="positionEdit" id="commentMaker">
       <div style="display: flex; align-items: center; padding-left: 1%;">
         <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 4vw;">
-        <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno">
+        <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno" maxlength="20">
         <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg"
           style="float: none; height: max-content;">
         <h5 class="uploadText comUserError"></h5>
@@ -84,7 +84,7 @@
 
           <button class="comFooterButton" title="Barva komentáře">
             <svg width="90" height="40">
-              <image xlink:href="./images/color.svg" width="90" height="40" style="transform: translateX(1vw);" />
+              <image xlink:href="./images/color.svg" width="90" height="40"/>
             </svg>
             <input type="color" class="cpicker cardButton" id="comCPicker">
           </button>
