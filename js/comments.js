@@ -77,8 +77,8 @@ $(function () {
     }
 
     // Fetch comments
-    displayComments(fakeDeeta); // DELETE LATER!!!
-    $.get("./php/getComments.php?listid="+LIST_ID, function (data) {
+    $.get("./php/getComments.php?listid=" + LIST_ID, function (data) {
+        deeta = data
         displayComments(data)
     })
 
@@ -114,8 +114,9 @@ $(function () {
             let keepImgs = text;
             keepImgs = keepImgs.replace(/<br>/g, "")
 
-            // TODO: Replace with proper emoji ID
-            text = text.replace(/<img class="emojis" src=".\/images\/emoji\/\d+.png">/g, "&01");
+            // this is the worst fix imaginable
+            text = text.replace(/<img class="emojis" src=".\/images\/emoji\//g, "&");
+            text = text.replace(/.png">/g, "")
 
             // Remove excess tags
             text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "");
@@ -144,7 +145,7 @@ $(function () {
     $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")")
     $("#verticalLine").css("border-color", commentColor)
 
-
+    // Comment color picker
     $(".cpicker").on("change", () => {
         let col = $(".cpicker").val();
 
@@ -157,14 +158,14 @@ $(function () {
         $(".comInpThings").css("background-color", "rgb(" + darkerBoxColor.join(",") + ")")
         $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")")
         $("#verticalLine").css("border-color", col)
-    
-    // Page switching FIX!!!!
+    })
+
+    // Page switching
     $("#pageSwitcher").on("change", function () {
         page = parseInt($(this).val()) - 1;
-        if (page > maxPage) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
+        if (page > maxPage-1) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
         if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
-        displayComLists(deeta);
-    })
+        displayComments(deeta);
     })
 })
 
@@ -230,26 +231,24 @@ function sendComment() {
                     setTimeout(() => {
                         $(".comUserError").fadeOut(100);
                         $(".comUserError").css("color", "tomato");
-                        }, 3000);
-                        
+                    }, 3000);
+
                     refreshComments()
-                    
+
                     // 10 second comment rate limit
-                    setTimeout(() => {$(".sendBut").removeClass("disabled")}, 10000)
-                    
+                    setTimeout(() => { $(".sendBut").removeClass("disabled") }, 10000)
+
                 }
                 else {
                     // Comment send error
-                    $(".comUserError").text("Nepodařilo se odeslat komentář! Kód: "+data);
+                    $(".comUserError").text("Nepodařilo se odeslat komentář! Kód: " + data);
                     setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
                 }
             })
-        }   
+        }
     }
 }
 
-
-var fakeDeeta = "Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0| "
 
 function comBox(cd, dcc, edcc) {
     let profPic = "";
@@ -296,12 +295,15 @@ function comBox(cd, dcc, edcc) {
 }
 
 var page = 0;
+var maxPage = 1;
+var deeta = "";
 
 function displayComments(data) {
     const PER_PAGE = 5
     data = data.slice(0, -2);
 
     $("#commentList").html("")
+    $(".noComm").hide()
 
     try {
         if (data.match(/\|/g).length > 0) {
@@ -314,9 +316,10 @@ function displayComments(data) {
             if (comArray.indexOf("\n") != -1) { comArray.splice(comArray.indexOf("\n"), 1) }
 
             // Max page
-            $("#maxPage").text("/"+Math.ceil(comArray.length/PER_PAGE))
+            maxPage = Math.ceil(comArray.length / PER_PAGE);
+            $("#maxPage").text("/" + maxPage);
 
-            for (x = 0; x < comArray.length + 1; x++) {
+            for (x = page * PER_PAGE; x < page * PER_PAGE + PER_PAGE; x++) {
                 let commentData = (comArray[x]).split(";");
 
                 let darkerComColor = HEXtoRGB(commentData[3], 40)
@@ -331,6 +334,11 @@ function displayComments(data) {
     }
 
     catch (error) {
+        if (data == 2 || data == "") {
+            $(".noComm").show()
+            return null
+        }
+
         if (data.match(/\|/g) == null || data.endsWith("|\n")) {
             let commentData = (data).split(";");
 
@@ -365,6 +373,7 @@ function refreshComments() {
     if ($("#refreshBut")["0"].className.match("disabled") == null) {
         $("#refreshBut").addClass("disabled");
         $.get("./php/getComments.php", function (data) {
+            deeta = data
             displayComments(data);
         })
         setTimeout(() => { $("#refreshBut").removeClass("disabled") }, 3000)
