@@ -333,3 +333,10 @@ html, body {
   margin-left: auto;
   margin-right: auto;
 } 
+
+.password {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-grow: 1;
+}

@@ -195,12 +195,12 @@ $(function () {
 			$.get("./php/getLists.php?id=" + listID[1], function (data) {
 				if (data == 1) {
 					$(".titles").append("<p>Seznam neexistuje :/!</p>");
-					$(".password").remove();
+					$(".searchTools").remove();
 					$("#crown").remove();
 				}
 				else if (data == 2) {
 					$(".titles").append("<p>Jakej génius hodil slovo namísto IDcka :D</p>");
-					$(".password").remove();
+					$(".searchTools").remove();
 					$("#crown").remove();
 				}
 				else {
@@ -227,18 +227,25 @@ $(function () {
 function checkPassword() {
 	let listID = location.search.slice(1).split("=");
 	let passEntered = $(".passInput").val();
+	
+	$(".passInput").attr("disabled",true);
+	$(".passInput").val("Kontrolování...");
+	$(".passInput").css("background-color","#82fc80")
+	
 	$(".passImg").addClass("disabled");
-	$(".passText").css("color","#82fc80")
-	$(".passText").text("Kontrolování hesla...")
 	$.post("./php/pwdCheckAction.php", { "id": listID[1], "pwdEntered": $(".passInput").val(),"retData": "0"}, function (data) {
 		// Incorrect pwd
 		if (data == 2) {
 			//testing
-			$(".passImg").removeClass("disabled");
-			$(".passText").css("color","#fc8093")
-			$(".passText").text("Heslo je nesprávné!")
+			$(".passInp").css("background-color","#fc8093")
+			$(".passInp").val("Heslo je nesprávné!")
+			setInterval(() => {
+				$(".passImp").attr("disabled", false);
+				$(".passImg").removeClass("disabled");
+				$(".passInp").val("")
+				}, 1000)
 		}
-		if (data == 3) {
+		else if (data == 3 || data == 1) {
 			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?edit=${listID[1]}&pass=${$(".passInput").val()}`;
 		}
 	})

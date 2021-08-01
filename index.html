@@ -43,12 +43,6 @@
 
   <div class="titles"></div>
 
-  <div style="margin-left: 59%;" class="password">
-    <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 15px 1%;">
-    <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="float: none">
-    <p class="uploadText passText"></p>
-  </div>
-
   <img class="titleImage">
 
   <div class="searchTools uploadText" style="justify-content: left;">
@@ -57,6 +51,11 @@
         title="Seznam levelů">
       <img src="images/comments.png" onclick="listComments()" class="button lComm" style="float: none; width: 20%;"
         title="Komentáře">
+    </div>
+    
+    <div style="" class="password">
+      <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 0% 2% -1%;">
+      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="float: none; height: fit-content;">
     </div>
   </div>
 
@@ -97,7 +96,7 @@
 
             <hr id="verticalLine">
 
-          <button class="comFooterButton" title="Odeslat komentář" onclick="sendComment()">
+          <button class="comFooterButton sendBut" title="Odeslat komentář" onclick="sendComment()">
             <svg width="90" height="40">
               <image xlink:href="./images/send.svg" width="90" height="40" />
             </svg>

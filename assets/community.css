@@ -362,9 +362,9 @@ input:disabled {
 }
 
 .passText {
-    margin-top: -4%;
-    margin-bottom: 0;
-    margin-left: 1%;
+    position: absolute;
+    left: 61.5vw;
+    top: 48vw;
 }
 
 .killList {

@@ -58,8 +58,8 @@ function updateCharLimit() {
 
     // Maybe not neccessary? Unless a hyperhacker hacks the matrix.
     if (charLimit > 300) {
-        $(".comTextArea").html($(".comTextArea").html().slice(0, 300))
-        charLimit = $(".comTextArea").text().length
+        $(".comInpArea").html($(".comInpArea").html().slice(0, 300))
+        charLimit = $(".comInpArea").text().length
     }
 
     $("#charLimit").text(charLimit + "/300")
@@ -96,8 +96,8 @@ $(function () {
     })
 
     $(".comInpArea").on("click", () => {
-        if (placeholders.indexOf($(".comTextArea")["0"].innerText) != -1) {
-            $(".comTextArea")["0"].innerText = ""
+        if (placeholders.indexOf($(".comInpArea")["0"].innerText) != -1) {
+            $(".comInpArea")["0"].innerText = ""
         }
 
         $("#comFont").css("color", "rgba(255,255,255,1)")
@@ -107,7 +107,7 @@ $(function () {
     $(".comInpArea").on("keyup keypress", (k) => {
         // Only perform stuff once
         if (k.type == "keyup") {
-            let text = $(".comTextArea").html();
+            let text = $(".comInpArea").html();
 
             text = text.replace(/<div>/g, "\n"); // Div tag is most likely newline
             text = text.replace(/<\/div>/g, ""); // Remove div tag end
@@ -157,6 +157,14 @@ $(function () {
         $(".comInpThings").css("background-color", "rgb(" + darkerBoxColor.join(",") + ")")
         $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")")
         $("#verticalLine").css("border-color", col)
+    
+    // Page switching FIX!!!!
+    $("#pageSwitcher").on("change", function () {
+        page = parseInt($(this).val()) - 1;
+        if (page > maxPage) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
+        if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
+        displayComLists(deeta);
+    })
     })
 })
 
@@ -164,15 +172,15 @@ function getPlayerIcon() {
     let player = $(".pIconInp").val();
     $.get("https://gdbrowser.com/api/profile/" + player, (data, res) => {
         if (data == "-1") {
-            $(".comUserError").text("Geodeš účet neexistuje :/")
-            setTimeout(() => $(".comUserError").fadeOut(1000), 3000)
+            $(".comUserError").text("Geodeš účet neexistuje :/");
+            setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
         else if (res == "success") {
             $("#pIcon").attr("src", "https://gdbrowser.com/icon/" + player);
         }
         else {
-            $(".comUserError").text("Nepodařilo se připojit k GDBrowseru :/")
-            setTimeout(() => $(".comUserError").fadeOut(1000), 3000)
+            $(".comUserError").text("Nepodařilo se připojit k GDBrowseru :/");
+            setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
     })
 
@@ -182,44 +190,66 @@ function addEmoji(id) {
     id++
     let emoji = "&" + (id > 9 ? id : "0" + id);
     if (actualText.length + emoji.length < 300) {
-        midText += `<img class='emojis' src='./images/emoji/${emoji.slice(1)}.png'>`
-        $(".comTextArea").html(midText)
+        midText += `<img class='emojis' src='./images/emoji/${emoji.slice(1)}.png'>`;
+        $(".comInpArea").html(midText);
 
-        actualText += emoji
-        updateCharLimit()
+        actualText += emoji;
+        updateCharLimit();
     }
 }
 
 function displayEmojiPanel() {
     if ($(".emojiPanel").css("display") == "none") {
-        $(".emojiPanel").slideDown(50)
+        $(".emojiPanel").slideDown(50);
     }
     else {
-        $(".emojiPanel").slideUp(50)
+        $(".emojiPanel").slideUp(50);
     }
 }
 
 function sendComment() {
-    if (actualText.length <= 10) {
-        $(".comUserError").text("Komentář by měl mít víc než 10 znaků!")
-        setTimeout(() => $(".comUserError").fadeOut(1000), 3000)
-    }
-    else {
-        let postData = {
-            "creator": $(".pIconInp").val(),
-            "comment": actualText,
-            "comType": 0, // Change when I eventually add replies,
-            "listID": LIST_ID,
-            "comColor": $("#comCPicker").val()
+    if ($(".sendBut")["0"].className.match("disabled") == "1") {
+        if (actualText.length <= 10) {
+            $(".comUserError").text("Komentář by měl mít víc než 10 znaků!");
+            setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
-        $.post("../php/sendComment.php", postData, () => {
-
-        })
+        else {
+            $(".sendBut").addClass("disabled");
+            let postData = {
+                "creator": $(".pIconInp").val(),
+                "comment": actualText,
+                "comType": 0, // Change when I eventually add replies,
+                "listID": LIST_ID,
+                "comColor": $("#comCPicker").val()
+            }
+            $.post("../php/sendComment.php", postData, data => {
+                if (data.match("6")) {
+                    // Success text
+                    $(".comUserError").text("Odesláno!");
+                    $(".comUserError").css("color", "#5df469")
+                    setTimeout(() => {
+                        $(".comUserError").fadeOut(100);
+                        $(".comUserError").css("color", "tomato");
+                        }, 3000);
+                        
+                    refreshComments()
+                    
+                    // 10 second comment rate limit
+                    setTimeout(() => {$(".sendBut").removeClass("disabled")}, 10000)
+                    
+                }
+                else {
+                    // Comment send error
+                    $(".comUserError").text("Nepodařilo se odeslat komentář! Kód: "+data);
+                    setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
+                }
+            })
+        }   
     }
 }
 
 
-var fakeDeeta = "Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Bytos;Ahoj;0;#d456D3;0;0|Test;Ahoj;0;#3d6637;0;0|okey;Ahoj;0;#ea5495;0;0"
+var fakeDeeta = "Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0|Gamingas;Ahoj &01&05 ok?;0;#1757b7;0;0| "
 
 function comBox(cd, dcc, edcc) {
     let profPic = "";
@@ -264,16 +294,27 @@ function comBox(cd, dcc, edcc) {
     </div>
     `
 }
+
+var page = 0;
+
 function displayComments(data) {
+    const PER_PAGE = 5
     data = data.slice(0, -2);
+
+    $("#commentList").html("")
 
     try {
         if (data.match(/\|/g).length > 0) {
             let comArray = data.split("|");
 
+            comArray.reverse()
+
             // Deleteee  e e
             if (comArray.indexOf("") != -1) { comArray.splice(comArray.indexOf(""), 1) }
             if (comArray.indexOf("\n") != -1) { comArray.splice(comArray.indexOf("\n"), 1) }
+
+            // Max page
+            $("#maxPage").text("/"+Math.ceil(comArray.length/PER_PAGE))
 
             for (x = 0; x < comArray.length + 1; x++) {
                 let commentData = (comArray[x]).split(";");
@@ -281,7 +322,6 @@ function displayComments(data) {
                 let darkerComColor = HEXtoRGB(commentData[3], 40)
                 let evenDarkerComColor = HEXtoRGB(commentData[3], 40)
 
-                console.log(i)
                 $("#commentList").append(comBox(commentData, darkerComColor, evenDarkerComColor));
             }
         }
@@ -294,9 +334,26 @@ function displayComments(data) {
         if (data.match(/\|/g) == null || data.endsWith("|\n")) {
             let commentData = (data).split(";");
 
+            let darkerComColor = HEXtoRGB(commentData[3], 40)
+            let evenDarkerComColor = HEXtoRGB(commentData[3], 40)
+
             $("#commentList").append(comBox(commentData, darkerComColor, evenDarkerComColor));
         }
 
+    }
+}
+
+function pageSwitch(num) {
+    if (page + num < 0) {
+        page = 0
+    }
+    else if (page + num > maxPage - 1) {
+        page = maxPage - 1;
+    }
+    else {
+        page += num;
+        $("#pageSwitcher").val(page + 1);
+        displayComments(deeta);
     }
 }
 
