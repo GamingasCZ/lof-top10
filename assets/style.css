@@ -60,9 +60,18 @@ span {
     color: white;
     margin: auto;
     text-align: center;
-    font-family: pusab;
-    
+    font-family: pusab;  
 }
+
+/* just so stuff doesn't break :D*/
+.comTitles {
+  font-size: 5vw;
+  color: white;
+  margin: auto;
+  text-align: center;
+  font-family: pusab;  
+}
+
 
 .title {
   width: 90vw;

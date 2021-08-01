@@ -189,6 +189,7 @@ $(function () {
 			let boards = JSON.parse(decodedData);
 			$(".titles").append("<p>(Náhled)</p>");
 			$(".titleImage").attr("src", boards["titleImg"]);
+			$(".searchTools").remove();
 			generateList(boards);
 		}
 		else if (listID[0] == "id") {
@@ -228,6 +229,8 @@ function checkPassword() {
 	let listID = location.search.slice(1).split("=");
 	let passEntered = $(".passInput").val();
 	
+	// POLISH THIS LATER!!!
+
 	$(".passInput").attr("disabled",true);
 	$(".passInput").val("Kontrolování...");
 	$(".passInput").css("background-color","#82fc80")
@@ -237,12 +240,12 @@ function checkPassword() {
 		// Incorrect pwd
 		if (data == 2) {
 			//testing
-			$(".passInp").css("background-color","#fc8093")
-			$(".passInp").val("Heslo je nesprávné!")
+			$(".passInput").css("background-color","#fc8093")
+			$(".passInput").val("Heslo je nesprávné!")
 			setInterval(() => {
-				$(".passImp").attr("disabled", false);
+				$(".passInput").attr("disabled", false);
 				$(".passImg").removeClass("disabled");
-				$(".passInp").val("")
+				$(".passInput").val("")
 				}, 1000)
 		}
 		else if (data == 3 || data == 1) {

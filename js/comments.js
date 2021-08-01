@@ -3,7 +3,8 @@ try {
     var lID = (window.location.search).match(/id=\d+/)["0"].split("=")[1];
 }
 catch {
-    var lID = "-1";
+    if (window.location.search == "") { var lID = "-2"; }
+    else { var lID = "-1"; }
 }
 const LIST_ID = lID;
 
@@ -144,6 +145,7 @@ $(function () {
     $(".comInpThings").css("background-color", "rgb(" + darkerBoxColor.join(",") + ")")
     $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")")
     $("#verticalLine").css("border-color", commentColor)
+    $(".cpicker").val(commentColor);
 
     // Comment color picker
     $(".cpicker").on("change", () => {
@@ -163,7 +165,7 @@ $(function () {
     // Page switching
     $("#pageSwitcher").on("change", function () {
         page = parseInt($(this).val()) - 1;
-        if (page > maxPage-1) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
+        if (page > maxPage - 1) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
         if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
         displayComments(deeta);
     })
@@ -173,6 +175,7 @@ function getPlayerIcon() {
     let player = $(".pIconInp").val();
     $.get("https://gdbrowser.com/api/profile/" + player, (data, res) => {
         if (data == "-1") {
+            $(".comUserError").show()
             $(".comUserError").text("Geodeš účet neexistuje :/");
             setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
@@ -180,6 +183,7 @@ function getPlayerIcon() {
             $("#pIcon").attr("src", "https://gdbrowser.com/icon/" + player);
         }
         else {
+            $(".comUserError").show()
             $(".comUserError").text("Nepodařilo se připojit k GDBrowseru :/");
             setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
@@ -209,11 +213,19 @@ function displayEmojiPanel() {
 }
 
 function sendComment() {
-    if ($(".sendBut")["0"].className.match("disabled") == "1") {
+    if ($(".sendBut")["0"].className.match("disabled") == null) {
         if (actualText.length <= 10) {
+            $(".comUserError").show()
             $(".comUserError").text("Komentář by měl mít víc než 10 znaků!");
             setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
+
+        else if ($(".pIconInp").val().length <= 4) {
+            $(".comUserError").show()
+            $(".comUserError").text("Tvé jméno by mělo mít víc než 4 znaky!");
+            setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
+        }
+
         else {
             $(".sendBut").addClass("disabled");
             let postData = {
@@ -223,13 +235,14 @@ function sendComment() {
                 "listID": LIST_ID,
                 "comColor": $("#comCPicker").val()
             }
-            $.post("../php/sendComment.php", postData, data => {
+            $.post("./php/sendComment.php", postData, data => {
                 if (data.match("6")) {
                     // Success text
+                    $(".comUserError").show()
+                    $(".comUserError").css("color", "#5df469 !important")
                     $(".comUserError").text("Odesláno!");
-                    $(".comUserError").css("color", "#5df469")
                     setTimeout(() => {
-                        $(".comUserError").fadeOut(100);
+                        $(".comUserError").fadeOut(3000);
                         $(".comUserError").css("color", "tomato");
                     }, 3000);
 
@@ -241,6 +254,8 @@ function sendComment() {
                 }
                 else {
                     // Comment send error
+                    $(".sendBut").removeClass("disabled")
+                    $(".comUserError").show()
                     $(".comUserError").text("Nepodařilo se odeslat komentář! Kód: " + data);
                     setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
                 }
@@ -256,7 +271,7 @@ function comBox(cd, dcc, edcc) {
     let comColor = "#b9efb1";
 
     // Is user verified?
-    if (cd[5] == 1) {
+    if (cd[6] == 1) {
         profPic = `<img class="pIcon " style="padding: 0.5vw;" src="https://gdbrowser.com/icon/${cd[0]}">`;
         clickable[0] = "clickable";
         clickable[1] = `onclick="profile('${cd[0]}')`;
@@ -372,7 +387,7 @@ function profile(name) {
 function refreshComments() {
     if ($("#refreshBut")["0"].className.match("disabled") == null) {
         $("#refreshBut").addClass("disabled");
-        $.get("./php/getComments.php", function (data) {
+        $.get("./php/getComments.php?listid=" + LIST_ID, function (data) {
             deeta = data
             displayComments(data);
         })
