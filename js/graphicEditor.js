@@ -32,24 +32,7 @@ function getDetailsFromName(id) {
 function colorizePage() {
     let selColor = $("#bgcolorPicker").val()
 
-    let rgb = [];
-    for (i = 1; i < 6; i += 2) {
-        rgb.push(parseInt("0x" + selColor.slice(i, i + 2))/255);;
-    }
-    var maxCol = Math.max(...rgb);
-    var minCol = Math.min(...rgb);
-
-    if (rgb.indexOf(maxCol) == 0) {
-        var hue = (rgb[1]-rgb[2])/(maxCol-minCol); // Red
-    }
-    else if (rgb.indexOf(maxCol) == 1) {
-        var hue = 2+(rgb[2]-rgb[0])/(maxCol-minCol); // Blue
-    }
-    else if (rgb.indexOf(maxCol) == 2) {
-        var hue = 4+(rgb[0]-rgb[1])/(maxCol-minCol); // Green
-    }
-    if (hue < 0) { hue += 360 }
-    hue *= 60;
+    let hue = getHueFromHEX(selColor)
 
     levelList["pageBGcolor"] = selColor;
 
@@ -200,10 +183,7 @@ function addLevel() {
     $("#top" + listLenght).css("transform", "scaleY(1)");
 
     // Random color generation
-    let rgb = [];
-    for (i = 0; i < 3; i++) {
-        rgb.push(parseInt(Math.random() * 255));
-    }
+    let rgb = randomColor()
 
     let darker = rgb.map(c => c - 40);
 
@@ -221,10 +201,9 @@ function addLevel() {
     $("#colorPicker" + listLenght).on("change", function () {
         let chosenColor = $(this).val()
         let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
-        let rgb = [];
-        for (i = 1; i < 6; i += 2) {
-            rgb.push(parseInt("0x" + chosenColor.slice(i, i + 2)) - 40);
-        }
+
+        let rgb = HEXtoRGB(chosenColor, 40)
+
         $("#top" + cardSelected).css("background-color", chosenColor);
         $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
         $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
@@ -273,10 +252,8 @@ function loadLevel(pos) {
     refreshCardDetails(pos)
 
     let chosenColor = levelList[pos]["color"];
-    let rgb = [];
-    for (j = 1; j < 6; j += 2) {
-        rgb.push(parseInt("0x" + chosenColor.slice(j, j + 2)) - 40);
-    }
+    let rgb = HEXtoRGB(chosenColor, 40)
+
     $("#top" + pos).css("border-color", `rgb(${rgb.join(",")})`);
     $("#lineSplit" + pos).css("background-color", `rgb(${rgb.join(",")})`);
 
@@ -284,10 +261,9 @@ function loadLevel(pos) {
     $("#colorPicker" + pos).on("change", function () {
         let chosenColor = $(this).val()
         let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
-        let rgb = [];
-        for (i = 1; i < 6; i += 2) {
-            rgb.push(parseInt("0x" + chosenColor.slice(i, i + 2)) - 40);
-        }
+        
+        let rgb = HEXtoRGB(chosenColor, 40)
+
         $("#top" + cardSelected).css("background-color", chosenColor);
         $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
         $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
