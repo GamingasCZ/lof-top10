@@ -265,14 +265,18 @@ function sendComment() {
 }
 
 function chatDate(stamp) {
-    let currStamp = Math.floor(new Date().getTime()/1000)
-    let seconds = currStamp - stamp*10
+    let currStamp = Math.floor(new Date().getTime() / 1000)
+    let seconds = currStamp - stamp * 10
+    // Why does this happen ? >:(
+    if (seconds < 0) {
+        seconds = currStamp - stamp
+    }
 
-    if (seconds > 31557600) { return `před ${Math.floor(seconds/31557600)} ${Math.floor(seconds/31557600) == 1 ? "rokem" : "lety"}`; }
-    else if (seconds > 2629800) { return `před ${Math.floor(seconds/2629800)} ${Math.floor(seconds/2629800) == 1 ? "měsícem" : "měsíci"}`; }
-    else if (seconds > 86400) { return `před ${Math.floor(seconds/86400)} ${Math.floor(seconds/86400) == 1 ? "dnem" : "dny"}`; }
-    else if (seconds > 3600) { return `před ${Math.floor(seconds/3600)} ${Math.floor(seconds/3600) == 1 ? "hodinou" : "hodinami"}`; }
-    else if (seconds > 60) { return `před ${Math.floor(seconds/60)} ${Math.floor(seconds/60) == 1 ? "minutou" : "minutami"}`; }
+    if (seconds > 31557600) { return `před ${Math.floor(seconds / 31557600)} ${Math.floor(seconds / 31557600) == 1 ? "rokem" : "lety"}`; }
+    else if (seconds > 2629800) { return `před ${Math.floor(seconds / 2629800)} ${Math.floor(seconds / 2629800) == 1 ? "měsícem" : "měsíci"}`; }
+    else if (seconds > 86400) { return `před ${Math.floor(seconds / 86400)} ${Math.floor(seconds / 86400) == 1 ? "dnem" : "dny"}`; }
+    else if (seconds > 3600) { return `před ${Math.floor(seconds / 3600)} ${Math.floor(seconds / 3600) == 1 ? "hodinou" : "hodinami"}`; }
+    else if (seconds > 60) { return `před ${Math.floor(seconds / 60)} ${Math.floor(seconds / 60) == 1 ? "minutou" : "minutami"}`; }
     else if (seconds < 10) { return "před pár sekundami"; }
 }
 
