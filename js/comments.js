@@ -264,11 +264,23 @@ function sendComment() {
     }
 }
 
+function chatDate(stamp) {
+    let currStamp = Math.floor(new Date().getTime()/1000)
+    let seconds = currStamp - stamp
+
+    if (seconds > 31557600) { return `před ${Math.floor(seconds/31557600)} ${Math.floor(seconds/31557600) == 1 ? "rokem" : "lety"}`; }
+    else if (seconds > 2629800) { return `před ${Math.floor(seconds/2629800)} ${Math.floor(seconds/2629800) == 1 ? "měsícem" : "měsíci"}`; }
+    else if (seconds > 86400) { return `před ${Math.floor(seconds/86400)} ${Math.floor(seconds/86400) == 1 ? "dnem" : "dny"}`; }
+    else if (seconds > 3600) { return `před ${Math.floor(seconds/3600)} ${Math.floor(seconds/3600) == 1 ? "hodinou" : "hodinami"}`; }
+    else if (seconds > 60) { return `před ${Math.floor(seconds/60)} ${Math.floor(seconds/60) == 1 ? "minutou" : "minutami"}`; }
+    else if (seconds < 10) { return "před pár sekundami"; }
+}
 
 function comBox(cd, dcc, edcc) {
     let profPic = "";
     let clickable = ["", ""];
     let comColor = "#b9efb1";
+    let time = chatDate(cd[7])
 
     // Is user verified?
     if (cd[6] == 1) {
@@ -301,6 +313,7 @@ function comBox(cd, dcc, edcc) {
                     border: solid ${"rgb(" + edcc.join(",") + ")"} 10px">
             ${profPic}
             <h3 style="margin-left: 1%; color: ${comColor};">${cd[0]}</h3>
+            <h3 id="comFont" style="margin: 3.3vw 0 0 auto; font-size: 2vw;">${time}</h3>
         </div>
     
         <div class="comTextArea" id="comFont" style="width: 98%; background-color: ${cd[3]};">${cd[1]}</div>
