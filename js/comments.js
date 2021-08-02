@@ -277,6 +277,7 @@ function chatDate(stamp) {
     else if (seconds > 86400) { return `před ${Math.floor(seconds / 86400)} ${Math.floor(seconds / 86400) == 1 ? "dnem" : "dny"}`; }
     else if (seconds > 3600) { return `před ${Math.floor(seconds / 3600)} ${Math.floor(seconds / 3600) == 1 ? "hodinou" : "hodinami"}`; }
     else if (seconds > 60) { return `před ${Math.floor(seconds / 60)} ${Math.floor(seconds / 60) == 1 ? "minutou" : "minutami"}`; }
+    else if (seconds >= 10) { return `před ${Math.floor(seconds)} sekundami`; }
     else if (seconds < 10) { return "před pár sekundami"; }
 }
 
