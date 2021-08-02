@@ -266,7 +266,7 @@ function sendComment() {
 
 function chatDate(stamp) {
     let currStamp = Math.floor(new Date().getTime()/1000)
-    let seconds = currStamp - stamp
+    let seconds = currStamp - stamp*10
 
     if (seconds > 31557600) { return `před ${Math.floor(seconds/31557600)} ${Math.floor(seconds/31557600) == 1 ? "rokem" : "lety"}`; }
     else if (seconds > 2629800) { return `před ${Math.floor(seconds/2629800)} ${Math.floor(seconds/2629800) == 1 ? "měsícem" : "měsíci"}`; }
