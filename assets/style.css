@@ -185,6 +185,8 @@ html, body {
   margin-right: auto;
 }
 
+.boards { margin-top: -5vw; }
+
 /* List always shows by default */
 .comments { display: none;}
 
