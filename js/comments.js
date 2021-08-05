@@ -287,8 +287,8 @@ function comBox(cd, dcc, edcc) {
     let comColor = "#b9efb1";
     let time = chatDate(cd[7])
     
+    if (cd[7].length == 9) { cd[7] *= 10; } // First comment's date is not in milliseconds
     let nT = new Date(cd[7]*1000)
-    if (nT.length == 9) { nT *= 10; } // First comment's date is not in milliseconds
 
     // Is user verified?
     if (cd[6] == 1) {
