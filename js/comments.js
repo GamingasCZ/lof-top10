@@ -286,6 +286,8 @@ function comBox(cd, dcc, edcc) {
     let clickable = ["", ""];
     let comColor = "#b9efb1";
     let time = chatDate(cd[7])
+    
+    let nT = new Date(cd[7]*1000)
 
     // Is user verified?
     if (cd[6] == 1) {
@@ -318,7 +320,9 @@ function comBox(cd, dcc, edcc) {
                     border: solid ${"rgb(" + edcc.join(",") + ")"} 10px">
             ${profPic}
             <h3 style="margin-left: 1%; color: ${comColor};">${cd[0]}</h3>
-            <h3 id="comFont" style="margin: 3.3vw 0 0 auto; font-size: 2vw;">${time}</h3>
+            <h3 id="comFont" 
+                style="margin: 3.3vw 0 0 auto; font-size: 2vw; cursor: help;"
+                title="${nT.getDay()}.${nT.getMonth()}.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
         </div>
     
         <div class="comTextArea" id="comFont" style="width: 98%; background-color: ${cd[3]};">${cd[1]}</div>
