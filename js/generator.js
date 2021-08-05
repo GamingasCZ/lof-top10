@@ -208,7 +208,9 @@ $(function () {
 					let listData = data.split(";");
 					listData[3].replace("&quot;", "\"");
 					let boards = JSON.parse(listData[2]);
-					$(".titles").append("<p>Seznam: " + listData[1] + "</p><p>Od: " + listData[0] + "</p>");
+					$(".titles").append(`<p>${listData[1]}</p>
+					<hr class="lineSplitGeneral" style="margin: -2% 10%;">
+					<p style="font-size: 3vw;">- ${listData[0]} -</p>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
 					generateList(boards);
 				}

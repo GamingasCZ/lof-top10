@@ -1,4 +1,4 @@
-const EMOJI_AM = 12;
+const EMOJI_AM = 14;
 try {
     var lID = (window.location.search).match(/id=\d+/)["0"].split("=")[1];
 }
