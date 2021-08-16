@@ -106,6 +106,14 @@
         <label for="hidden" class="uploadText setLabel">Skrytý seznam</label>
         <img src="images/help.png" class="button setHelp" onclick="openHelp('hidden')">
       </div>
+
+      <div class="setting">
+        <input type="checkbox" style="display: none;" name="private">
+        <img src="images/check-off.png" onclick='checkCheckbox("private")' for="private" class="setCheckbox button"
+          style="float: none;">
+        <label for="private" class="uploadText setLabel">Soukromý seznam</label>
+        <img src="images/help.png" class="button setHelp" onclick="openHelp('private')">
+      </div>
     </div>
 
     <div id="submitarea">
