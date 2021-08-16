@@ -5,10 +5,9 @@ var help = {
         <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
         <b style="color: tomato;">Nemusíš přidávat žádný obrázek!</b>`
     },
-    "hidden": {
-        "title": "Skryté seznamy",
-        "content": `Skryté seznamy se <b style="color: lime">nezobrazí veřejně</b> a nejde je vyhledat.<br /><br />
-        Kdokoliv je ale může zobrazit pomocí odkazu nebo ID.`
+    "private": {
+        "title": "Soukromé seznamy",
+        "content": `Soukromé seznamy mají se nezobrazí veřejně a mají speciální odkaz`
     }
 }
 
