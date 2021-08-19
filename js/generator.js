@@ -251,7 +251,7 @@ function checkPassword() {
 				}, 1000)
 		}
 		else if (data == 3 || data == 1) {
-			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?edit=${listID[1]}&pass=${$(".passInput").val()}`;
+			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?edit=${listID[1]}&pass=${passEntered}`;
 		}
 	})
 }
