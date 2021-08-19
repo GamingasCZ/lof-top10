@@ -238,7 +238,7 @@ function checkPassword() {
 	$(".passInput").css("background-color","#82fc80")
 	
 	$(".passImg").addClass("disabled");
-	$.post("./php/pwdCheckAction.php", { "id": listID[1], "pwdEntered": $(".passInput").val(),"retData": "0"}, function (data) {
+	$.post("./php/pwdCheckAction.php", { "id": listID[1], "pwdEntered": passEntered,"retData": "0"}, function (data) {
 		// Incorrect pwd
 		if (data == 2) {
 			//testing
