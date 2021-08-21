@@ -205,7 +205,7 @@ $(function () {
 					$("#crown").remove();
 				}
 				else {
-					let listData = data.split(";");
+					let listData = data.split(";-!-;");
 					listData[3].replace("&quot;", "\"");
 					let boards = JSON.parse(listData[2]);
 					$(".titles").append(`<p>${listData[1]}</p>

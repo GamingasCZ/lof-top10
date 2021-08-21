@@ -345,7 +345,7 @@ function displayComments(data) {
 
     try {
         if (data.match(/\|/g).length > 0) {
-            let comArray = data.split("|");
+            let comArray = data.split("|-!-|");
 
             comArray.reverse()
 
@@ -358,7 +358,7 @@ function displayComments(data) {
             $("#maxPage").text("/" + maxPage);
 
             for (x = page * PER_PAGE; x < page * PER_PAGE + PER_PAGE; x++) {
-                let commentData = (comArray[x]).split(";");
+                let commentData = (comArray[x]).split(";-!-;");
 
                 let darkerComColor = HEXtoRGB(commentData[3], 40)
                 let evenDarkerComColor = HEXtoRGB(commentData[3], 40)
@@ -378,7 +378,7 @@ function displayComments(data) {
         }
 
         if (data.match(/\|/g) == null || data.endsWith("|\n")) {
-            let commentData = (data).split(";");
+            let commentData = (data).split(";-!-;");
 
             let darkerComColor = HEXtoRGB(commentData[3], 40)
             let evenDarkerComColor = HEXtoRGB(commentData[3], 40)

@@ -59,7 +59,7 @@ function displayComLists(data) {
 
     try {
         if (data.match(/\|/g).length > 0) {
-            let listsArray = data.split("|");
+            let listsArray = data.split("|-!-|");
 
             // Deleteee  e e
             if (listsArray.indexOf("") != -1) { listsArray.splice(listsArray.indexOf(""), 1) }
@@ -75,12 +75,12 @@ function displayComLists(data) {
 
             // Appends list names (only needs to be done once)
             if (listNames.length == 0) {
-                listsArray.forEach((val) => listNames.push(val.split(";")[1]));
+                listsArray.forEach((val) => listNames.push(val.split(";-!-;")[1]));
             }
 
 
             for (i = 4 * page; i < 4 * page + 4; i++) {
-                let listData = (listsArray[i]).split(";");
+                let listData = (listsArray[i]).split(";-!-;");
                 let listColor = JSON.parse(listData[2])["1"]["color"]
                 let rgb = [];
                 for (j = 1; j < 6; j += 2) {
@@ -103,7 +103,7 @@ function displayComLists(data) {
 
     catch (error) {
         if (data.match(/\|/g) == null || data.endsWith("|\n")) {
-            let listData = (data).split(";");
+            let listData = (data).split(";-!-;");
 
             let listColor = JSON.parse(listData[2])["1"]["color"]
             let rgb = [];
@@ -151,7 +151,7 @@ function updateList() {
             "hidden": listHidden
         }
         $.post("./php/updateList.php", postData, function (data) {
-            let updateData = data.split(";")
+            let updateData = data.split(";-!-;")
             window.location.replace(`http://www.gamingas.wz.cz/lofttop10/upload.html?update=1`);
         })
     }
@@ -182,7 +182,7 @@ $(function () {
 
     // Sort button action
     $("#sortBut").on("click", function () {
-        displayComLists(deeta.split("|").reverse().join("|"))
+        displayComLists(deeta.split("|-!-|").reverse().join("|-!-|"))
         if (sorting) {
             $("#sortBut").css("transform", "scaleY(1)");
             $("#sortBut").attr("title", "Nejnovější")
@@ -386,7 +386,7 @@ function search() {
     }
     else {
         let regex = new RegExp(";.*(" + query + ").*;{", "ig"); // Matches all strings that contain "query"
-        let splitData = deeta.split("|");
+        let splitData = deeta.split("|-!-|");
         let filteredData = splitData.filter((val) => val.match(regex));
         if (filteredData.length == 0) {
             $(".customLists").children().remove()
@@ -399,9 +399,9 @@ function search() {
             page = 0;
             $("#pageSwitcher").val("1");
             deeta = "";
-            filteredData.forEach((val) => deeta += val + "|");
+            filteredData.forEach((val) => deeta += val + "|-!-|");
 
-            displayComLists(filteredData.join("|"));
+            displayComLists(filteredData.join("|-!-|"));
         }
     }
 }

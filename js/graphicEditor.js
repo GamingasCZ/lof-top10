@@ -70,8 +70,8 @@ function generateFromJSON() {
             $("#bgcolorPicker").val(levelList["pageBGcolor"])
             colorizePage()
 
-            for (i = 0; i < Object.keys(levelList).length - 1 - ADDIT_VALS; i++) {
-                loadLevel(i + 1)
+            for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
+                loadLevel(y + 1)
             }
             updateSmPos()
             displayCard("1")
