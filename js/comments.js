@@ -338,7 +338,7 @@ var deeta = "";
 
 function displayComments(data) {
     const PER_PAGE = 5
-    data = data.slice(0, -2);
+    data = data.slice(0, -5);
 
     $("#commentList").html("")
     $(".noComm").hide()
