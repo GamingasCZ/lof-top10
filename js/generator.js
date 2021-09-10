@@ -359,61 +359,15 @@ $(function () {
 				$("#crown").remove();
 			}
 			else {
-				if (YEAR == "2021") {
-					if (Date.now() / 1000 > 1630530000) {
-						$(".eventDialog").show();
-						$(".searchTools:first").append(`
-						<div style="flex-grow: 1;display: flex;justify-content: center;align-items: center;">
-	  <img class="button disabled" style="float: none;width: 3%;height: max-content;" src="images/arrow-left.png">
-	  <h1 class="uploadText" style="margin: 0% 2%;">Tvůrce: GamingasCZ</h1>
-	  <img class="button disabled" style="float: none;width: 3%;height: max-content;" src="images/arrow-right.png">
-	</div>
-						`);
-
-						generateList(boards);
-					}
-					else {
-						$(".titles").append(`<p>Seznam a event<br>se zobrazí ve 23:00 :).</p>
-						<img src="images/refresh.png" class="button" onclick="window.location.reload();" style="float: none;width: 10%;">
-						`)
-						$(".searchTools").remove();
-						$(".eventDialog").remove();
-						$(".comments").remove();
-						$(".boards").remove();
-						$("#crown").remove();
-					}
+				$(".password").remove()
+				generateList(boards);
 				}
-				else {
-					$(".password").remove()
-					generateList(boards);
-				}
-			}
 		}
 	}
 	else if (YEAR == "2019") {
 		$(".password").remove()
 		generateList(boards);
 	}
-
-	// Event countdown
-	var timer = setInterval(() => {
-		let finalStamp = 1631134800;
-		let currTime = Date.now() / 1000;
-
-		let timeLeft = finalStamp - currTime;
-
-		let days = ("0" + parseInt(timeLeft / 60 / 60 / 24)).slice(-2);
-		let hours = ("0" + parseInt((timeLeft - 86400 * days) / 60 / 60)).slice(-2);
-		let mins = ("0" + parseInt((timeLeft - 86400 * days - hours * 3600) / 60)).slice(-2);
-		let secs = ("0" + parseInt(timeLeft - 86400 * days - hours * 3600 - mins * 60)).slice(-2);
-		$(".timer").text(`${days}:${hours}:${mins}:${secs}`);
-	}, 1000);
-
-	if (1631134800 < Date.now() / 1000) {
-		$(".timer").text("00:00:00:00");
-		clearInterval(timer);
-	}
-
 });
 
 function checkPassword() {
