@@ -9,6 +9,10 @@ var help = {
         "title": "Skryté seznamy",
         "content": `Skryté seznamy se <b style="color: lime">nezobrazí veřejně</b> a nejde je vyhledat.<br /><br />
         Kdokoliv je ale může zobrazit pomocí odkazu nebo ID.`
+    },
+    "event": {
+        "title": "Event - Lepší seznam",
+        "content": `Když necháš tohle <b style="color: tomato">zaškrtlé</b>, tvůj určitě mnohem lepší seznam se zobrazí <b style="color: lime">vedlé mého 2021 seznamu.</b>`
     }
 }
 

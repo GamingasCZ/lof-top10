@@ -1,9 +1,11 @@
 const EMOJI_AM = 15;
 try {
     var lID = (window.location.search).match(/id=\d+/)["0"].split("=")[1];
+    var yID = (window.location.search).match(/year=\d+/)["0"].split("=")[1];
 }
 catch {
-    if (window.location.search == "") { var lID = "-2"; }
+    if (window.location.search == "" || yID == "2019") { var lID = "-2"; }
+    else if (yID == "2021") { var lID = "-3"; }
     else { var lID = "-1"; }
 }
 const LIST_ID = lID;
@@ -227,6 +229,7 @@ function sendComment() {
         }
 
         else {
+            console.log(LIST_ID);
             $(".sendBut").addClass("disabled");
             let postData = {
                 "creator": $(".pIconInp").val(),
@@ -286,9 +289,9 @@ function comBox(cd, dcc, edcc) {
     let clickable = ["", ""];
     let comColor = "#b9efb1";
     let time = chatDate(cd[7])
-    
+
     if (cd[7].length == 9) { cd[7] *= 10; } // First comment's date is not in milliseconds
-    let nT = new Date(cd[7]*1000)
+    let nT = new Date(cd[7] * 1000)
 
     // Is user verified?
     if (cd[6] == 1) {
@@ -323,7 +326,7 @@ function comBox(cd, dcc, edcc) {
             <h3 style="margin-left: 1%; color: ${comColor};">${cd[0]}</h3>
             <h3 id="comFont" 
                 style="margin: 3.3vw 0 0 auto; font-size: 2vw; cursor: help;"
-                title="${nT.getDay()+1}.${nT.getMonth()+1}.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
+                title="${nT.getDay() + 1}.${nT.getMonth() + 1}.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
         </div>
     
         <div class="comTextArea" id="comFont" style="width: 98%; background-color: ${cd[3]};">${cd[1]}</div>
