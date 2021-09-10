@@ -246,6 +246,11 @@ $(function () {
             
             `);
         }
+        else if (password[0] == "event") {
+            if (password[1] == 1) { checkCheckbox("event"); }
+            else { checkCheckbox("event"); generateFromJSON(boards); }
+            $("#listnm").val("Lepší seznam");
+        }
         else {
             // Change depending on your website
             let currWebsite = `http://gamingas.wz.cz/lofttop10/?id=${password[3]}`;
@@ -410,10 +415,11 @@ function checkCheckbox(changeVal) {
     if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
         $(`img[for="${changeVal}"]`).attr("src", "images/check-off.png")
         $(`input[name="${changeVal}"]`).attr("checked", false)
+
     }
     else {
         $(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
         $(`input[name="${changeVal}"]`).attr("checked", true)
-    }
 
+    }
 }

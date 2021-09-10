@@ -29,12 +29,16 @@
   <div align="center">
 
     <button id="yearButton" class="button">
-      <a href="index.html">
+      <a href="index.html?year=2019">
         <img class="yearButtonImg" src="images/button1.png">
       </a>
     </button>
 
-    <button id="yearButton" class="button disabled"><img class="yearButtonImg" src="images/locked.png"></button>
+    <button id="yearButton" class="button">
+      <a href="index.html?year=2021">
+        <img class="yearButtonImg" src="images/locked.png">
+      </a>
+    </button>
 
     <button id="yearButton" class="button"><img class="yearButtonImg" src="images/community.png"></button>
   </div>
@@ -105,6 +109,14 @@
           style="float: none;">
         <label for="hidden" class="uploadText setLabel">Skrytý seznam</label>
         <img src="images/help.png" class="button setHelp" onclick="openHelp('hidden')">
+      </div>
+
+      <div class="setting">
+        <input type="checkbox" style="display: none;" name="event">
+        <img src="images/check-off.png" onclick='checkCheckbox("event")' for="event" class="setCheckbox button"
+          style="float: none;">
+        <label for="event" class="uploadText setLabel">Event - Lepší seznam</label>
+        <img src="images/help.png" class="button setHelp" onclick="openHelp('event')">
       </div>
     </div>
 

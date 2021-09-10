@@ -16,6 +16,7 @@
   <script rel="text/javascript" src="./js/generator.js"></script>
   <script rel="text/javascript" src="./js/comments.js"></script>
   <script rel="text/javascript" src="./js/color.js"></script>
+  <script rel="text/javascript" src="./js/helpDialogs.js"></script>
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Seznam levelů">
@@ -31,8 +32,16 @@
     <img class="title" src="./images/title.png">
   </div>
   <div align="center">
-    <button id="yearButton" class="button"><img class="yearButtonImg" src="images/button1.png"></button>
-    <button id="yearButton" class="button disabled"><img class="yearButtonImg" src="images/locked.png"></button>
+    <button id="yearButton" class="button">
+      <a href="index.html?year=2019">
+        <img class="yearButtonImg" src="images/button1.png">
+      </a>
+    </button>
+    <button id="yearButton" class="button">
+      <a href="index.html?year=2021">
+        <img class="yearButtonImg" src="images/locked.png">
+      </a>
+    </button>
     <button id="yearButton" class="button">
       <a href="upload.html">
         <img class="yearButtonImg" src="images/community.png">
@@ -51,10 +60,31 @@
       <img src="images/comments.png" onclick="listComments()" class="button lComm" style="float: none; width: 20%;"
         title="Komentáře">
     </div>
-    
+
     <div class="password">
       <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 0% 2% -1%;">
-      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="float: none; height: fit-content;">
+      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg"
+        style="float: none; height: fit-content;">
+    </div>
+  </div>
+
+  <div class="uploadBG eventDialog"
+    style="display: none; padding: 0% 2%; background-image: linear-gradient(0deg, rgba(96,255,118,1) 0%, rgba(10,154,30,1) 100%); border-color: #a6ffb3;">
+    <h1 class="uploadText" style="text-align: center; font-size: 5vw;">
+      Event - Lepší seznam</h1>
+    <h2 class="uploadText timer" style="text-align: center; font-size: 5vw; color: rgb(233, 140, 194);">00:00:00:00</h2>
+    <div class="uploadText" style="text-align: center;">
+      <b style="color: rgb(247, 127, 72);">Můj výběr levelů je samozřejmě příšernej, takže je na tobě, abys ho
+        opravil!</b><br><br>
+      <b style="color: rgb(72, 212, 247);">Do svého seznamu dávej jen levely z LoF.</b><br><br>
+      <b style="color: rgb(247, 230, 72);">Tvůj seznam bude po nahrání skrytý. Na konci eventu se všechny odkryjí a
+        budeš si je moct prohlédnout :)!</b>
+    </div>
+    <div style="display: flex; justify-content: center;">
+      <button onclick="window.location.replace('upload.html?event=2')" class="button eventButton uploadText"
+        style="float: none;">Zkopírovat seznam</button>
+      <button onclick="window.location.replace('upload.html?event=1')" class="button eventButton uploadText"
+        style="float: none;">Vytvořit nový seznam</button>
     </div>
   </div>
 
@@ -82,7 +112,7 @@
 
           <button class="comFooterButton" title="Barva komentáře">
             <svg width="90" height="40">
-              <image xlink:href="./images/color.svg" width="90" height="40"/>
+              <image xlink:href="./images/color.svg" width="90" height="40" />
             </svg>
             <input type="color" class="cpicker cardButton" id="comCPicker">
           </button>
@@ -93,7 +123,7 @@
             </svg>
           </button>
 
-            <hr id="verticalLine">
+          <hr id="verticalLine">
 
           <button class="comFooterButton sendBut" title="Odeslat komentář" onclick="sendComment()">
             <svg width="90" height="40">
@@ -118,7 +148,8 @@
         <span style="font-size: 3.5vw" id="maxPage">/1</span>
         <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="pageSwitch(1)">
       </div>
-      <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button" style="float: none; width: 6vw;">
+      <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button"
+        style="float: none; width: 6vw;">
     </div>
 
     <div id="commentList"></div>

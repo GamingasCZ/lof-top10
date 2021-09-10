@@ -26,7 +26,8 @@ foreach ($fuckupData as $post) {
 
 $timestamp = $time -> getTimestamp();
 
-if (isset($_POST["hidden"])) { $hidden = "1"; }
+if (isset($_POST["event"])) { $hidden = "2"; }
+elseif (isset($_POST["hidden"])) { $hidden = "1"; }
 else { $hidden = "0"; }
 
 $pass = passwordGenerator($_POST["lName"], $_POST["creator"], $timestamp);
