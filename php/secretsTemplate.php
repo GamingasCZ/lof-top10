@@ -21,5 +21,5 @@ function privateIDGenerator($listName, $creator, $timestamp) {
     return substr(sha1($str),0,10);
 }
 
-echo privateIDGenerator("myname","helpme","123456790");
+echo privateIDGenerator("myniame","helpme","123456790");
 ?>
