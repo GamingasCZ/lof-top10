@@ -253,14 +253,9 @@ $(function () {
         }
         else {
             // Change depending on your website
-            let currWebsite = `http://gamingas.wz.cz/lofttop10/?id=${password[3]}`;
+            let currWebsite = `http://gamingas.wz.cz/lofttop10/?${isNaN(password[3]) ? "pid" : "id"}=${password[3]}`;
 
-            if (isNaN(parseInt(password[1]))) {
-                var pstr = `Tvé heslo je ale hypergay. <b style="color: tomato;">Nehraj si se stránkou >:(</b>.`;
-            }
-            else {
-                var pstr = `Schovej si heslo, protože pomocí neho mužeš upravit/smazat seznam!: <b style="color: lime;">${password[1]}</b>`;
-            }
+            var pstr = `Schovej si heslo, protože pomocí neho mužeš upravit/smazat seznam!: <b style="color: lime;">${password[1]}</b>`;
 
             $(".uploaderDialog").html(`
 <img style="padding-left: 3%" src=./images/check.png>

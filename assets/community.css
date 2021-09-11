@@ -403,6 +403,7 @@ input:disabled {
 .setting {
     display: flex;
     align-items: center;
+    margin-top: 1%;
 }
 .setLabel {
     margin: 0%;
