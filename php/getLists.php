@@ -43,7 +43,7 @@ if (count($_GET) == 1) {
     }
     else {
       foreach ($rows as $row) {
-        echo htmlspecialchars_decode(join(";",$row));
+        echo htmlspecialchars_decode(join(";-!-;",$row));
       }
     }
   }
