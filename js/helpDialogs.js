@@ -7,7 +7,8 @@ var help = {
     },
     "private": {
         "title": "Soukromé seznamy",
-        "content": `Soukromé seznamy mají se nezobrazí veřejně a mají speciální odkaz`
+	"content": `Soukromé seznamy se <b style="color: lime;">nezobrazí veřejně</b> a mají <b style="color: tomato">speciální odkaz</b> k přístupu.<br><br>
+	    <b style="color:yellow">Kdykoliv můžeš upravit seznam a udělat ho veřejný.</b>`
     }
 }
 
