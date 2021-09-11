@@ -27,11 +27,11 @@ It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Lev
 - [X] List editing
 - [X] Comments
 - [X] Searching through online lists
+- [X] Private lists
 
 #### Todo:
 
 - [ ] Comment replies
-- [ ] Private lists
 - [ ] Movable lists
 - [ ] Tick off finished levels
 - [ ] Saving lists
