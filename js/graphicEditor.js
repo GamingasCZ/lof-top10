@@ -43,40 +43,42 @@ function colorizePage() {
     $("#submitbutton").css("background-color", "hsl("+hue+",53.5%,63.7%)")
 }
 
-function generateFromJSON() {
+function generateFromJSON(event=null) {
     let listID = location.search.slice(1).split(/[=&]/g);
     $.post("./php/pwdCheckAction.php", { "id": listID[1], "pwdEntered": listID[3], "retData": "1" }, function (data) {
         if (data == 2) {
             window.location.replace("./upload.html")
-        }
-        else {
-            let lData = $("#listData").html(data).text()
-            lData = lData.split(";")
-            // Is the list hidden?
-            if (lData[3] != "0") {
-                $(`img[for="hidden"]`).attr("src", "images/check-on.png")
-                $(`input[name="hidden"]`).attr("checked", true)
-            }
+        }})
+    if (event) {
+        var data = JSON.stringify(boards);
+        data = ";;"+data+";0";
+    }
 
-            // Removing tutorial
-            $("#mainContent").text("");
-            $(".previewButton").removeClass("disabled");
+    let lData = $("#listData").html(data).text()
+    lData = lData.split(";")
+    // Is the list hidden?
+    if (lData[3] != "0") {
+        $(`img[for="hidden"]`).attr("src", "images/check-on.png")
+        $(`input[name="hidden"]`).attr("checked", true)
+    }
 
-            $("#listnm").val(lData[0])
-            $("#creatornm").val(lData[1])
+    // Removing tutorial
+    $("#mainContent").text("");
+    $(".previewButton").removeClass("disabled");
 
-            levelList = JSON.parse(lData[2]);
-            $(".titImgInp").val(levelList["titleImg"])
-            $("#bgcolorPicker").val(levelList["pageBGcolor"])
-            colorizePage()
+    $("#listnm").val(lData[0])
+    $("#creatornm").val(lData[1])
 
-            for (i = 0; i < Object.keys(levelList).length - 1 - ADDIT_VALS; i++) {
-                loadLevel(i + 1)
-            }
-            updateSmPos()
-            displayCard("1")
-        }
-    })
+    levelList = JSON.parse(lData[2]);
+    $(".titImgInp").val(levelList["titleImg"])
+    $("#bgcolorPicker").val(levelList["pageBGcolor"])
+    colorizePage()
+
+    for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
+        loadLevel(y + 1)
+    }
+    updateSmPos()
+    displayCard("1")
 }
 
 function refreshCardDetails(lp) {

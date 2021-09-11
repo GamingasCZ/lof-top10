@@ -42,7 +42,7 @@ if (count($rows) == 0) {
 }
 
 foreach ($rows as $row) {
-    echo htmlspecialchars_decode(join(";", $row)) . "|";
+    echo htmlspecialchars_decode(join(";-!-;", $row)) . "|-!-|";
 }
 
 $mysqli -> close();

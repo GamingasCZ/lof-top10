@@ -27,7 +27,7 @@ if (count($_GET) == 1) {
       }
       else {
         foreach ($rows as $row) {
-          echo htmlspecialchars_decode(join(";",$row));
+          echo htmlspecialchars_decode(join(";-!-;",$row));
         }
       }
   }
@@ -61,7 +61,7 @@ if (count($_GET) == 1) {
     }
     else {
       foreach ($rows as $row) {
-        echo htmlspecialchars_decode(join(";",$row)) . "|";
+        echo htmlspecialchars_decode(join(";-!-;",$row)) . "|-!-|";
       }
     }
   }
@@ -76,7 +76,7 @@ else {
 
   $rows = $result->fetch_all(MYSQLI_ASSOC);
   foreach ($rows as $row) {
-    echo htmlspecialchars_decode(join(";",$row)) . "|";
+    echo htmlspecialchars_decode(join(";-!-;",$row)) . "|-!-|";
         
     }
       

@@ -5,10 +5,16 @@ var help = {
         <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
         <b style="color: tomato;">Nemusíš přidávat žádný obrázek!</b>`
     },
+
     "private": {
         "title": "Soukromé seznamy",
-	"content": `Soukromé seznamy se <b style="color: lime;">nezobrazí veřejně</b> a mají <b style="color: tomato">speciální odkaz</b> k přístupu.<br><br>
-	    <b style="color:yellow">Kdykoliv můžeš upravit seznam a udělat ho veřejný.</b>`
+	      "content": `Soukromé seznamy se <b style="color: lime;">nezobrazí veřejně</b> a mají <b style="color: tomato">speciální odkaz</b> k přístupu.<br><br>
+	      <b style="color:yellow">Kdykoliv můžeš upravit seznam a udělat ho veřejný.</b>`
+    },
+      
+    "event": {
+        "title": "Event - Lepší seznam",
+        "content": `Když necháš tohle <b style="color: tomato">zaškrtlé</b>, tvůj určitě mnohem lepší seznam se zobrazí <b style="color: lime">vedlé mého 2021 seznamu.</b>`
     }
 }
 

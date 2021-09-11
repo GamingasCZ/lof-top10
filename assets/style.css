@@ -131,6 +131,7 @@ span {
 html, body {
     max-width: 100%;
     overflow-x: hidden;
+    height: 100%;
 }
 
 .button {
@@ -350,4 +351,11 @@ html, body {
     justify-content: flex-end;
     align-items: flex-end;
     flex-grow: 1;
+}
+
+.eventButton {
+  background-color: #2d6da6 !important;
+  padding: 1%;
+  margin: 2%;
+  border-radius: 10%;
 }

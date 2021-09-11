@@ -1,9 +1,47 @@
-# Top 10 Fan Levels
-This is a website containing Top 10 GD Fan Levels
-![Screenshot_2021-05-30 Top 10 Levelů od Fanoušků](https://user-images.githubusercontent.com/51487573/120117380-35143b80-c18d-11eb-87ad-aa5cf458b8ac.png)
-[Check it out!](http://gamingas.wz.cz/lofttop10/)
+# Geometry Dash Level Lists
+Hi, this is the code for my website where you can create your own lists of GD levels.
 
-## Assets
+It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Level Request series :).
+
+### Check it out [here](http://gamingas.wz.cz/lofttop10/) (Note that the site is in Czech (not English))
+
+# Screenshots
+![list](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/Screenshot_20210820_235638.png)
+![editor](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/Screenshot_20210820_235838.png)
+
+
+# Features
+ - Simple to use editor for creating lists
+ - Online functionality for easy sharing
+ - Comments
+ - Customizable level cards
+# Todo
+#### Done:
+
+- [X] List image previews
+- [X] Automatic YT link shortening
+- [X] Sorting uploaded lists
+- [X] Deleting uploaded lists
+- [X] Custom list BG color
+- [X] Hidden lists
+- [X] List editing
+- [X] Comments
+- [X] Searching through online lists
+
+#### Todo:
+
+- [ ] Comment replies
+- [ ] Private lists
+- [ ] Movable lists
+- [ ] Tick off finished levels
+- [ ] Saving lists
+- [ ] Languages
+- [ ] Linking your GD account
+- [ ] Card backgrounds
+- [ ] Responsive layout
+- [ ] Tournaments
+
+# Assets
 Most of the assest belong to [RobTop Games](http://robtopgames.com)
 
 Pusab ([License](https://www.fontsquirrel.com/license/Pusab))
