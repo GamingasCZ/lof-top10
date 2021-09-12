@@ -9,16 +9,16 @@ function checkJson(data) {
         let listName = $("#listnm").val();
         let listCreator = $("#creatornm").val();
 
-        if (listName.length < 3) { throw ("Jméno tvého seznamu by mělo být delší :)."); }
-        if (listName.length > 40) { throw ("Jméno tvého seznamu je delší, než doba, kterou mi trvá zeditovat video :D."); }
+        if (listName.length < 3) { throw (jsStr["LIST_L"][LANG]); }
+        if (listName.length > 40) { throw (jsStr["LIST_TOOL"][LANG]); }
 
-        if (listCreator.length < 3) { throw ("Tvé jméno by mělo být delší :)."); }
-        if (listCreator.length > 20) { throw ("Lidi musí psat slohovky, aby tě oslovili :D?"); }
-        if (listCreator.toLowerCase().includes("gamingas")) { throw ("Nikdy nebudeš Gamingasem :)."); }
+        if (listCreator.length < 3) { throw (jsStr["CREA_L"][LANG]); }
+        if (listCreator.length > 20) { throw (jsStr["CREA_TOOL"][LANG]); }
+        if (listCreator.toLowerCase().includes("gamingas")) { throw (jsStr["GG_NEVER"][LANG]); }
 
         // 1/3 Je to vůbec JSON?
         var parsedData = JSON.parse(data);
-        $(".errorBox").text("Všechno je v pořádku!");
+        $(".errorBox").text(jsStr["SUCC_UPL"][LANG]);
         $(".errorBox").css("background-color", "rgba(73, 255, 103, 0.8)");
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
@@ -39,7 +39,7 @@ function checkJson(data) {
         $(".errorBox").css("background-color", "rgba(255, 73, 73, 0.8)");
 
         if (data == "") {
-            $(".errorBox").text("Nic jsi nezadal... :D");
+            $(".errorBox").text(jsStr["NO_JSON"][LANG]);
         }
         else {
             $(".errorBox").text(error);
@@ -90,7 +90,7 @@ function displayComLists(data) {
         <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
             <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(",")})">
                 <div class="uploadText">${listData[1]}</div>
-                <div class="uploadText">Od: ${listData[0]}</div>
+                <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}: ${listData[0]}</div>
             </div>
         </a>
                 `);
@@ -119,7 +119,7 @@ function displayComLists(data) {
         <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
         <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(',')})">
             <div class="uploadText">${listData[1]}</div>
-            <div class="uploadText">Od: ${listData[0]}</div>
+            <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}: ${listData[0]}</div>
         </div>
     </a>
                 `);
@@ -185,11 +185,11 @@ $(function () {
         displayComLists(deeta.split("|-!-|").reverse().join("|-!-|"))
         if (sorting) {
             $("#sortBut").css("transform", "scaleY(1)");
-            $("#sortBut").attr("title", "Nejnovější")
+            $("#sortBut").attr("title", jsStr["NEWEST"][LANG])
         }
         else {
             $("#sortBut").css("transform", "scaleY(-1)");
-            $("#sortBut").attr("title", "Nejstarší")
+            $("#sortBut").attr("title", jsStr["OLDEST"][LANG])
         }
         sorting = !sorting
     })
@@ -201,13 +201,13 @@ $(function () {
         if ($(this).css("transform").match("-1")) {
             // Hide preview
             $("#imageArrow").css("transform", "scaleY(1)");
-            $("#imageArrow").attr("title", "Ukázat náhled obrázku")
+            $("#imageArrow").attr("title", jsStr["SH_IMPREV"][LANG])
             $(".imgPreview").slideUp(200)
         }
         else {
             // Show preview
             $("#imageArrow").css("transform", "scaleY(-1)");
-            $("#imageArrow").attr("title", "Skrýt náhled obrázku")
+            $("#imageArrow").attr("title", jsStr["HI_IMPREV"][LANG])
             $("#imagePrev").css("width", "40vw")
             $("#imagePrev").attr("src", $(".titImgInp").val())
             $(".imgPreview").slideDown(200)
@@ -217,7 +217,7 @@ $(function () {
     $("#imagePrev").on("error", function () {
         $("#imagePrev").css("width", "10%")
         $("#imagePrev").attr("src", "./images/error.png")
-        $("#imgError").text("Obrázek nenalezen :/")
+        $("#imgError").text(jsStr["IM_NOTFOUND"][LANG])
     })
     // Change preview image on URL change
     $(".titImgInp").on("change", function () {
@@ -239,7 +239,7 @@ $(function () {
 
             $(".uploaderDialog").html(`
             <img style="padding-left: 3%" src=./images/check.png>
-            <p class="uploadText" style="padding: 0 3% 0 3%">Seznam byl aktualizovan!</p>
+            <p class="uploadText" style="padding: 0 3% 0 3%">${jsStr["LIST_UPDATED"][LANG]}</p>
 
             </div>
             </div>
@@ -255,14 +255,14 @@ $(function () {
             // Change depending on your website
             let currWebsite = `http://gamingas.wz.cz/lofttop10/?${isNaN(password[3]) ? "pid" : "id"}=${password[3]}`;
 
-            var pstr = `Schovej si heslo, protože pomocí neho mužeš upravit/smazat seznam!: <b style="color: lime;">${password[1]}</b>`;
+            var pstr = `${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${password[1]}</b>`;
 
             $(".uploaderDialog").html(`
 <img style="padding-left: 3%" src=./images/check.png>
-<p class="uploadText" style="padding: 0 3% 0 3%">Seznam byl nahran! ${pstr}</p>
+<p class="uploadText" style="padding: 0 3% 0 3%">${jsStr["LIST_SUCC_UPL"][LANG]} ${pstr}</p>
 
 <div style="margin-top: 5%;">
-<h6 class="shareTitle uploadText">Sdílet</h6>
+<h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
 <div class="shareBG uploadText" style="float: none;">${currWebsite}
 <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
 </div>
@@ -329,10 +329,10 @@ function removeList() {
     $(".boom").append(`<div class="uploadText removeScreen">
     <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.png"><br />
     <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -1.74em;" src="./images/szn1.png">
-    <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">Opravdu chceš smazat svůj seznam?</p>
+    <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">${jsStr["CONF_DEL"][LANG]}</p>
     <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
-        <img id="rmbutton" onclick="confirmDelete()" class="button" src="./images/yeees.png">
-        <img id="rmbutton" onclick="closeRmScreen()" class="button" src="./images/ne.png">
+        <img id="rmbutton" onclick="confirmDelete()" class="button" src="${jsStr["YES_IMG"][LANG]}">
+        <img id="rmbutton" onclick="closeRmScreen()" class="button" src="${jsStr["NO_IMG"][LANG]}">
     <div>
     </div>`);
 
@@ -393,7 +393,7 @@ function search() {
             page = 0;
             $("#pageSwitcher").val("1");
             $("#maxPage").text("/1")
-            $(".customLists").append("<p align=center>- Žádné výsledky -</p>");
+            $(".customLists").append(`<p align=center>${jsStr['NO_RES']}</p>`);
         }
         else {
             page = 0;

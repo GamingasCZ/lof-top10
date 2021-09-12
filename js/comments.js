@@ -26,14 +26,6 @@ function listComments() {
     $(".lList").removeClass("disabled")
 }
 
-var placeholders = [
-    "Tvůj seznam je...",
-    "Líbí se mi tvůj seznam, protože...",
-    "Máš jiný názor než já. Už nikdy nebudeš klidně spát, protože...",
-    "Tvůj seznam stojí za prd, protože...",
-    "Mrkni se i na můj seznam..."
-]
-
 function updateCharLimit() {
     var charLimit = actualText.length
 
@@ -71,6 +63,14 @@ function updateCharLimit() {
 var actualText = "";
 var midText = ""
 $(function () {
+    var placeholders = [
+        jsStr["PHOLD1"][LANG],
+        jsStr["PHOLD2"][LANG],
+        jsStr["PHOLD3"][LANG],
+        jsStr["PHOLD4"][LANG],
+        jsStr["PHOLD5"][LANG]
+    ]
+
     $(".emojiPanel").hide();
 
     // Adds emojis into the emoji panel
@@ -178,7 +178,7 @@ function getPlayerIcon() {
     $.get("https://gdbrowser.com/api/profile/" + player, (data, res) => {
         if (data == "-1") {
             $(".comUserError").show()
-            $(".comUserError").text("Geodeš účet neexistuje :/");
+            $(".comUserError").text(jsStr["GDACC_NOEX"][LANG]);
             setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
         else if (res == "success") {
@@ -186,7 +186,7 @@ function getPlayerIcon() {
         }
         else {
             $(".comUserError").show()
-            $(".comUserError").text("Nepodařilo se připojit k GDBrowseru :/");
+            $(".comUserError").text(jsStr["GDB_FAIL"][LANG]);
             setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
     })
@@ -218,13 +218,13 @@ function sendComment() {
     if ($(".sendBut")["0"].className.match("disabled") == null) {
         if (actualText.length <= 10) {
             $(".comUserError").show()
-            $(".comUserError").text("Komentář by měl mít víc než 10 znaků!");
+            $(".comUserError").text(jsStr["COM_L"][LANG]);
             setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
 
         else if ($(".pIconInp").val().length <= 4) {
             $(".comUserError").show()
-            $(".comUserError").text("Tvé jméno by mělo mít víc než 4 znaky!");
+            $(".comUserError").text(jsStr["COMU_L"][LANG]);
             setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
 
@@ -243,7 +243,7 @@ function sendComment() {
                     // Success text
                     $(".comUserError").show()
                     $(".comUserError").css("color", "#5df469 !important")
-                    $(".comUserError").text("Odesláno!");
+                    $(".comUserError").text(jsStr["C_SENT"][LANG]);
                     setTimeout(() => {
                         $(".comUserError").fadeOut(3000);
                         $(".comUserError").css("color", "tomato");
@@ -259,7 +259,7 @@ function sendComment() {
                     // Comment send error
                     $(".sendBut").removeClass("disabled")
                     $(".comUserError").show()
-                    $(".comUserError").text("Nepodařilo se odeslat komentář! Kód: " + data);
+                    $(".comUserError").text(jsStr["C_ERR"][LANG] + data);
                     setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
                 }
             })
@@ -275,13 +275,13 @@ function chatDate(stamp) {
         seconds = currStamp - stamp
     }
 
-    if (seconds > 31557600) { return `před ${Math.floor(seconds / 31557600)} ${Math.floor(seconds / 31557600) == 1 ? "rokem" : "lety"}`; }
-    else if (seconds > 2629800) { return `před ${Math.floor(seconds / 2629800)} ${Math.floor(seconds / 2629800) == 1 ? "měsícem" : "měsíci"}`; }
-    else if (seconds > 86400) { return `před ${Math.floor(seconds / 86400)} ${Math.floor(seconds / 86400) == 1 ? "dnem" : "dny"}`; }
-    else if (seconds > 3600) { return `před ${Math.floor(seconds / 3600)} ${Math.floor(seconds / 3600) == 1 ? "hodinou" : "hodinami"}`; }
-    else if (seconds > 60) { return `před ${Math.floor(seconds / 60)} ${Math.floor(seconds / 60) == 1 ? "minutou" : "minutami"}`; }
-    else if (seconds >= 10) { return `před ${Math.floor(seconds)} sekundami`; }
-    else if (seconds < 10) { return "před pár sekundami"; }
+    if (seconds > 31557600) { return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 31557600)} ${Math.floor(seconds / 31557600) == 1 ? jsStr["YEAR"][LANG] : jsStr["YEARS"][LANG]}`; }
+    else if (seconds > 2629800) { return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 2629800)} ${Math.floor(seconds / 2629800) == 1 ? jsStr["MONTH"][LANG] : jsStr["MONTHS"][LANG]}`; }
+    else if (seconds > 86400) { return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 86400)} ${Math.floor(seconds / 86400) == 1 ? jsStr["DAY"][LANG] : jsStr["DAYS"][LANG]}`; }
+    else if (seconds > 3600) { return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 3600)} ${Math.floor(seconds / 3600) == 1 ? jsStr["HOUR"][LANG] : jsStr["HOURS"][LANG]}`; }
+    else if (seconds > 60) { return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 60)} ${Math.floor(seconds / 60) == 1 ? jsStr["MINUTE"][LANG] : jsStr["MINUTES"][LANG]}`; }
+    else if (seconds >= 10) { return `${jsStr["AGO"][LANG]}${Math.floor(seconds)} ${jsStr["SECONDS"][LANG]}`; }
+    else if (seconds < 10) { return jsStr["FEWSECS"][LANG]; }
 }
 
 function comBox(cd, dcc, edcc) {

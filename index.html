@@ -13,6 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script rel="text/javascript" src="./js/languages.js"></script>
   <script rel="text/javascript" src="./js/generator.js"></script>
   <script rel="text/javascript" src="./js/comments.js"></script>
   <script rel="text/javascript" src="./js/color.js"></script>
@@ -29,24 +30,17 @@
 <body>
   <div class="shade">
     <a href="https://github.com/GamingasCZ/lof-top10"><img class="github" src="images/github.png"></a>
-    <img class="title" src="./images/title.png">
   </div>
-  <div align="center">
-    <button id="yearButton" class="button">
-      <a href="index.html?year=2019">
-        <img class="yearButtonImg" src="images/button1.png">
-      </a>
-    </button>
-    <button id="yearButton" class="button">
-      <a href="index.html?year=2021">
-        <img class="yearButtonImg" src="images/locked.png">
-      </a>
-    </button>
-    <button id="yearButton" class="button">
-      <a href="upload.html">
-        <img class="yearButtonImg" src="images/community.png">
-      </a>
-    </button>
+  <div align="center" id="submitarea">
+    <img class="yearButtonImg button" src="images/button1.png"
+         onclick="window.location.assign('index.html?year=2019')">
+    <img class="yearButtonImg button" src="images/locked.png"
+         onclick="window.location.assign('index.html?year=2021')">
+    <img class="yearButtonImg button commBut" src=""
+         onclick="window.location.assign('upload.html')">
+    <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;"
+         onclick="changeLang()">
+    <div style="display: none;" class="notify" onclick="$(this).hide()"><br><br><br><pre class="uploadText">   Jazyk/Language</pre></div>
   </div>
 
   <div class="titles"></div>
@@ -122,7 +116,7 @@
 
     <div class="searchTools uploadText" id="commentTool" style="justify-content: center;">
       <div class="page">
-        <span style="font-size: 3vw; padding-right: 2%;">Strana: </span>
+        <span id="pageStr" style="font-size: 3vw; padding-right: 2%;">Strana: </span>
         <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="pageSwitch(-1)">
         <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
         <span style="font-size: 3.5vw" id="maxPage">/1</span>
