@@ -104,7 +104,7 @@ span {
 
 .popup {
   display: block;
-  margin-left: 50%;
+  margin-left: 37%;
   margin-right: 5%;
   margin-bottom: auto;
   opacity: 0;
@@ -112,6 +112,7 @@ span {
   border-radius: 8px;
   padding: 8px 5px 5px 5px;
   text-align: center;
+  width: 60%;
 }
 
 .popupAnim {
@@ -125,7 +126,27 @@ span {
   float: none;
 }
 .yearButtonImg {
-  width: 250px;
+  width: 16vw;
+  height: max-content;
+  margin: 2vw;
+}
+
+.notify {
+  position: relative;
+  right: 1vw;
+  transform: scale(0.6);
+  bottom: -9vw;
+  margin: -17vw !important;
+  background: url("../images/notify.png");
+  background-position-y: 0%;
+  background-repeat: repeat;
+  background-size: auto;
+  background-size: contain;
+  padding: 7%;
+  background-repeat: no-repeat;
+  background-position-y: -7px;
+  height: 95px;
+  cursor: pointer;
 }
 
 html, body {

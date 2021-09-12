@@ -36,26 +36,27 @@ function colorizePage() {
 
     levelList["pageBGcolor"] = selColor;
 
-    $("body").css("background-color",selColor)
-    $(".editorHeader").css("background-color", "hsl("+hue+",40.7%,54%)")
-    $("#mainContent").css("background-color", "hsl("+hue+",40.7%,25%)")
-    $(".uploadBG").css("background-color", "hsl("+hue+",11.5%,22.2%)")
-    $("#submitbutton").css("background-color", "hsl("+hue+",53.5%,63.7%)")
+    $("body").css("background-color", selColor)
+    $(".editorHeader").css("background-color", "hsl(" + hue + ",40.7%,54%)")
+    $("#mainContent").css("background-color", "hsl(" + hue + ",40.7%,25%)")
+    $(".uploadBG").css("background-color", "hsl(" + hue + ",11.5%,22.2%)")
+    $("#submitbutton").css("background-color", "hsl(" + hue + ",53.5%,63.7%)")
 }
 
-function generateFromJSON(event=null) {
+function generateFromJSON(event = null) {
     let listID = location.search.slice(1).split(/[=&]/g);
     $.post("./php/pwdCheckAction.php", { "id": listID[1], "pwdEntered": listID[3], "retData": "1" }, function (data) {
         if (data == 2) {
             window.location.replace("./upload.html")
-        }})
+        }
+    })
     if (event) {
         var data = JSON.stringify(boards);
-        data = ";;"+data+";0";
+        data = ";;" + data + ";0";
     }
 
     let lData = $("#listData").html(data).text()
-    lData = lData.split(";")
+    lData = lData.split(";-!-;")
     // Is the list hidden?
     if (lData[3] != "0") {
         $(`img[for="hidden"]`).attr("src", "images/check-on.png")
@@ -159,7 +160,7 @@ function addLevel() {
     else if (listLenght > 50) { return null }
     else if (listLenght > 49) { $(".addCardButton").addClass("disabled") }
 
-    $(".headerTitle").text("Levely");
+    $(".headerTitle").text(jsStr["LEVELS"][LANG]);
     fupPos = 0;
 
     // Skryje všechny rozbalené karty
@@ -195,7 +196,7 @@ function addLevel() {
     $("#smtop" + listLenght).css("border-color", `rgb(${darker.join(",")})`);
     $("#lineSplit" + listLenght).css("background-color", `rgb(${darker.join(",")})`);
 
-  
+
     let inhex = rgb.map(c => ((c).toString(16).length == 1 ? "0" + (c).toString(16) : (c).toString(16)))
     levelList[listLenght]["color"] = "#" + inhex.join("");
 
@@ -263,7 +264,7 @@ function loadLevel(pos) {
     $("#colorPicker" + pos).on("change", function () {
         let chosenColor = $(this).val()
         let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
-        
+
         let rgb = HEXtoRGB(chosenColor, 40)
 
         $("#top" + cardSelected).css("background-color", chosenColor);
@@ -443,42 +444,6 @@ function card(index, rndColor) {
     `;
 }
 
-var fuckupMessages = [
-    "Přidej prosím level :).",
-    "Nejdřív přidej level!",
-    "Tím klikáním nic neuděláš :D.",
-    "Oho, snažíš se mě vyzvat na zápas?",
-    "Mám času dost! Klikej dál.",
-    "Svůj náhled ale nedostaneš.",
-    "Je zábava tě sledovat :D.",
-    "Jdu si udělat chutný nápoj!",
-    "Zelený, nebo černý čaj?",
-    "Asi se nemusím ptát...",
-    "Jen klikej dál!",
-    "Energií tvého prstu ohřívám konvici :D.",
-    "Konvice již vaří.",
-    "A mám čaj připravený.",
-    "Klikáš vážně dobře!",
-    "Je poznat, že jsi Geodeš hráč.",
-    "...",
-    "Oh né! Co jsem to udělal!",
-    "Mohu za to všechno já!",
-    "Zasekl jsem tě do nekonečné smyčky klikání.",
-    "Jak tě ale mám zastavit?",
-    "Mohl bych být hnusák a nechat tě tu... :<'",
-    "Čaj už mám skoro dopitý.",
-    "Vařící čaj...",
-    "To je jedno!",
-    "Hohó! Pokračuj, protože odcházím.",
-    "Ano! Toto je můj poslední dialog!",
-    "Úplně poslední!",
-    "Spočítejme to spolu!",
-    "Tři!",
-    "Dva.",
-    "Jedna.",
-    "Zahraj si SuperGamingasBros. :D.",
-    "Konec!"
-];
 var fupPos = 0;
 function preview() {
     if (checkJson(JSON.stringify(levelList)) == false) {
@@ -504,31 +469,45 @@ function preview() {
     }
 }
 
+
+var fuckupMessages;
 $(function () {
+    fuckupMessages = [
+        jsStr["FUP1"][LANG], jsStr["FUP2"][LANG], jsStr["FUP3"][LANG], jsStr["FUP4"][LANG],
+        jsStr["FUP5"][LANG], jsStr["FUP6"][LANG], jsStr["FUP7"][LANG], jsStr["FUP8"][LANG],
+        jsStr["FUP9"][LANG], jsStr["FUP10"][LANG], jsStr["FUP11"][LANG], jsStr["FUP12"][LANG],
+        jsStr["FUP13"][LANG], jsStr["FUP14"][LANG], jsStr["FUP15"][LANG], jsStr["FUP16"][LANG], "...",
+        jsStr["FUP17"][LANG], jsStr["FUP18"][LANG], jsStr["FUP19"][LANG], jsStr["FUP20"][LANG],
+        jsStr["FUP21"][LANG], jsStr["FUP22"][LANG], jsStr["FUP23"][LANG], jsStr["FUP24"][LANG],
+        jsStr["FUP25"][LANG], jsStr["FUP26"][LANG], jsStr["FUP27"][LANG], jsStr["FUP28"][LANG],
+        jsStr["FUP29"][LANG], jsStr["FUP30"][LANG], jsStr["FUP31"][LANG], jsStr["FUP32"][LANG], jsStr["FUP33"][LANG]
+    ];
+
+    $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
 
     // Disabling input boxes when editing a list
     let listID = location.search.slice(1).split(/[=&]/g);
     if (listID.indexOf("edit") != -1) {
-        $(".uploadTitle").text(jsStr["EDITING"]);
+        $(".uploadTitle").text(jsStr["EDITING"][LANG]);
 
         $("#listnm").attr("disabled", "true");
         $("#creatornm").attr("disabled", "true");
 
-        $("#submitbutton").attr("value", jsStr["L_UPDATE"])
-        $("#submitbutton").attr("onclick","updateList()")
+        $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
+        $("#submitbutton").attr("onclick", "updateList()")
 
-        $("#submitarea").append(`<input onclick="removeList()" type="button" id="removebutton" value="${jsStr["DELETE"]}">`)
+        $("#submitarea").append(`<input onclick="removeList()" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
     }
 
     $(window).on("resize", function () {
         // Editor disable on portrait orientaton
         if ($(window).width() < $(window).height()) {
-            $(".headerTitle").text(jsStr["MOBILE_ED"]);
+            $(".headerTitle").text(jsStr["MOBILE_ED"][LANG]);
             $("#mainContent").hide()
             $(".headerButtons").hide()
         }
         else {
-            $(".headerTitle").html(jsStr["LEVELS"]);
+            $(".headerTitle").html(jsStr["LEVELS"][LANG]);
             $("#mainContent").show()
             $(".headerButtons").show()
         }

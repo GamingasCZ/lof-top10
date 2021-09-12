@@ -331,8 +331,8 @@ function removeList() {
     <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -1.74em;" src="./images/szn1.png">
     <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">${jsStr["CONF_DEL"][LANG]}</p>
     <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
-        <img id="rmbutton" onclick="confirmDelete()" class="button" src="./images/yeees.png">
-        <img id="rmbutton" onclick="closeRmScreen()" class="button" src="./images/ne.png">
+        <img id="rmbutton" onclick="confirmDelete()" class="button" src="${jsStr["YES_IMG"][LANG]}">
+        <img id="rmbutton" onclick="closeRmScreen()" class="button" src="${jsStr["NO_IMG"][LANG]}">
     <div>
     </div>`);
 

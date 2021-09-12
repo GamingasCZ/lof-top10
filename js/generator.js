@@ -294,6 +294,8 @@ function generateList(boards) {
 
 var listData = "";
 $(function () {
+	$(".shade").append(`<img class="title" src="${jsStr["TIT_IMG"][LANG]}">`);
+	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
 	if (location.search != "") {
 		var listID = location.search.slice(1).split("=");
 

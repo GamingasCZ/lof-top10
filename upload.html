@@ -24,24 +24,17 @@
 <body>
   <div class="shade">
     <a href="https://github.com/GamingasCZ/lof-top10"><img class="github" src="images/github.png"></a>
-    <img class="title" src="./images/title.png">
   </div>
 
-  <div align="center">
-
-    <button id="yearButton" class="button">
-      <a href="index.html?year=2019">
-        <img class="yearButtonImg" src="images/button1.png">
-      </a>
-    </button>
-
-    <button id="yearButton" class="button">
-      <a href="index.html?year=2021">
-        <img class="yearButtonImg" src="images/locked.png">
-      </a>
-    </button>
-
-    <button id="yearButton" class="button"><img class="yearButtonImg" src="images/community.png"></button>
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <img class="yearButtonImg button" src="images/button1.png"
+         onclick="window.location.assign('index.html?year=2019')">
+    <img class="yearButtonImg button" src="images/locked.png"
+         onclick="window.location.assign('index.html?year=2021')">
+    <img class="yearButtonImg button commBut" src=""
+         onclick="window.location.assign('upload.html')">
+    <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;"
+         onclick="changeLang()">
   </div>
 
   <div class="helpBG" style="display: none;"></div>
@@ -52,7 +45,7 @@
     </div>
   </div>
 
-  <div class="uploadBG smallUploaderDialog">
+  <div class="uploadBG smallUploaderDialog" style="display: none;">
     <button align="center" class="button uploadText uploadTitle" onclick="showUploader()" type="button"
       title="Ukázat nahrávací dialog">
       Nahrávání
@@ -98,7 +91,6 @@
     </div>
 
     <div class="editorHeader uploadText" id="mainContent">
-      <p class="helpText">Kliknutím na<img width=5% id="plusSign" src="images/add.png">přidáš level!</p>
     </div>
     <p class="errorBox" style="color: rgb(255, 255, 255);"></p>
 
