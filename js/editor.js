@@ -90,7 +90,7 @@ function displayComLists(data) {
         <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
             <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(",")})">
                 <div class="uploadText">${listData[1]}</div>
-                <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}: ${listData[0]}</div>
+                <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}${listData[0]}</div>
             </div>
         </a>
                 `);
@@ -119,7 +119,7 @@ function displayComLists(data) {
         <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
         <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(',')})">
             <div class="uploadText">${listData[1]}</div>
-            <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}: ${listData[0]}</div>
+            <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}${listData[0]}</div>
         </div>
     </a>
                 `);
