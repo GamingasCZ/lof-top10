@@ -202,7 +202,7 @@ function onGDBClick(pos, index) {
 		$(".popup").fadeTo(100, 0);
 		if (pos == null) {
 			$("#cpopup" + index).css("background-color", "rgba(255,128,128,0.5)");
-			$("#cpopup" + index).text("Level neexistuje!");
+			$("#cpopup" + index).text(jsStr["LEV_NOEXIST"][LANG]);
 			$("#cpopup" + index).fadeTo(100, 1);
 			$("#cpopup" + index).fadeTo(500, 0);
 		}
@@ -217,7 +217,7 @@ function onIDCopyClick(pos, index) {
 		$(".popup").fadeTo(100, 0);
 		if (pos == null || pos == "") {
 			$("#cpopup" + index).css("background-color", "rgba(255,128,128,0.5)");
-			$("#cpopup" + index).text("Level neexistuje!");
+			$("#cpopup" + index).text(jsStr["LEV_NOEXIST"][LANG]);
 			$("#cpopup" + index).fadeTo(100, 1);
 			$("#cpopup" + index).fadeTo(500, 0);
 		}
@@ -233,7 +233,7 @@ function onYTClick(link, index) {
 		$(".popup").fadeTo(100, 0);
 		if (link == "null" || link == "") {
 			$("#cpopup" + index).css("background-color", "rgba(255,128,128,0.5)");
-			$("#cpopup" + index).text("Video neexistuje!");
+			$("#cpopup" + index).text(jsStr["VID_NOEXIST"][LANG]);
 			$("#cpopup" + index).fadeTo(100, 1);
 			$("#cpopup" + index).fadeTo(500, 0);
 		}
@@ -268,25 +268,25 @@ function generateList(boards) {
 
 		$(".boards").append(`
 		<div class="box" style="${cardBG}"><span>${boards[bIndex]["levelName"]}</span>
-		<button class="button ${video}" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="Zobrazit epizodu">
+		<button class="button ${video}" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">
 			<img class="boxLink" src="./images/yticon.png">
 		</button>
-		<button class="button ${ID}" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="Zobrazit v GDBrowseru">
+		<button class="button ${ID}" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">
 			<img class="boxLink" src="./images/gdbrowser.png">
 		</button>
-		<button class="button ${ID}" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="Zkopírovat ID levelu">
+		<button class="button ${ID}" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">
 			<img class="boxLink" src="./images/copyID.png">
 		</button>
 
-		<p>Od: ${boards[bIndex]["creator"]}</p>
-		<h3 class="popup" id="cpopup${bIndex}">ID zkopírováno</h3>
+		<p>${jsStr["CREATOR_BY"][LANG]}${boards[bIndex]["creator"]}</p>
+		<h3 class="popup" id="cpopup${bIndex}">${jsStr["ID_COPIED"]}</h3>
 
 		</div>
 	`);
 	};
 	// Removing stuff if list is empty
 	if ($(".box").length == 0 & location.pathname.match(/(upload)/g) == null) {
-		$(".titles").append("<p>Nepodarilo se nacíst seznam!</p>");
+		$(".titles").append(jsStr["LLOAD_FAIL"][LANG]);
 		$(".password").remove();
 		$("#crown").remove();
 	}
@@ -309,7 +309,7 @@ $(function () {
 				decodedData += String.fromCharCode(decodeData[i]);
 			}
 			let boards = JSON.parse(decodedData);
-			$(".titles").append("<p>(Náhled)</p>");
+			$(".titles").append(jsStr["PREVIEW"][LANG]);
 			$(".titleImage").attr("src", boards["titleImg"]);
 			$(".searchTools").remove();
 			generateList(boards);
@@ -317,12 +317,12 @@ $(function () {
 		else if (listID[0] == "id") {
 			$.get("./php/getLists.php?id=" + listID[1], function (data) {
 				if (data == 1) {
-					$(".titles").append("<p>Seznam neexistuje :/!</p>");
+					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
 					$(".searchTools").remove();
 					$("#crown").remove();
 				}
 				else if (data == 2) {
-					$(".titles").append("<p>Jakej génius hodil slovo namísto IDcka :D</p>");
+					$(".titles").append(jsStr["L_INVID"][LANG]);
 					$(".searchTools").remove();
 					$("#crown").remove();
 				}
@@ -350,7 +350,7 @@ $(function () {
 		else if (listID[0] == "pid") {
 			$.get("./php/getLists.php?pid=" + listID[1], function (data) {
 				if (data == 1) {
-					$(".titles").append("<p>Seznam neexistuje :/!</p>");
+					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
 					$(".searchTools").remove();
 					$("#crown").remove();
 				}
@@ -370,12 +370,12 @@ $(function () {
 
 		else if (location.pathname.match(/(upload)/g) == null) {
 			if (YEAR == undefined) {
-				$(".titles").append("<p>Ježišmarja, dyť to ani není číslo :D</p>");
+				$(".titles").append(jsStr["L_NONUM"][LANG]);
 				$(".searchTools").remove();
 				$("#crown").remove();
 			}
 			else if (YEAR != "2019" & YEAR != "2021") {
-				$(".titles").append("<p>Tenhle rok neexistuje :D</p>");
+				$(".titles").append(jsStr["L_NOYEAR"][LANG]);
 				$(".searchTools").remove();
 				$("#crown").remove();
 			}
@@ -398,7 +398,7 @@ function checkPassword() {
 	// POLISH THIS LATER!!!
 
 	$(".passInput").attr("disabled", true);
-	$(".passInput").val("Kontrolování...");
+	$(".passInput").val(jsStr["CHECKING"][LANG]);
 	$(".passInput").css("background-color", "#82fc80")
 
 	$(".passImg").addClass("disabled");
@@ -407,7 +407,7 @@ function checkPassword() {
 		if (data == 2) {
 			//testing
 			$(".passInput").css("background-color", "#fc8093")
-			$(".passInput").val("Heslo je nesprávné!")
+			$(".passInput").val(jsStr["INC_PWD"][LANG])
 			setTimeout(() => {
 				$(".passInput").attr("disabled", false);
 				$(".passImg").removeClass("disabled");

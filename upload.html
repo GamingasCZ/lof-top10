@@ -11,6 +11,7 @@
   <link rel="icon" href="./images/gdbrowser.png">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script rel="text/javascript" src="./js/languages.js"></script>
   <script rel="text/javascript" src="./js/generator.js"></script>
   <script rel="text/javascript" src="./js/editor.js"></script>
   <script rel="text/javascript" src="./js/graphicEditor.js"></script>
@@ -101,7 +102,7 @@
     </div>
     <p class="errorBox" style="color: rgb(255, 255, 255);"></p>
 
-    <p class="uploadText" align="center">- Nastavení -</p>
+    <p class="uploadText setTitle" align="center"> Nastavení -</p>
     <div class="settingsBG">
       <div class="setting">
         <input type="checkbox" style="display: none;" name="hidden">
@@ -120,10 +121,10 @@
 
   <p class="titles" style="margin-top: 10vh;">- Komunitní seznamy -</p>
   <div class="searchTools uploadText" style="justify-content: center;">
-    <span style="font-size: 3vw; padding-right: 2%;">Řazení: </span>
+    <span style="font-size: 3vw; padding-right: 2%;" id="sortStr">Řazení: </span>
     <img src="images/sort.png" id="sortBut" class="button" style="float: none; width: 5%; transition-duration: 0s;">
     <div class="page">
-      <span style="font-size: 3vw; padding-right: 2%;">Strana: </span>
+      <span style="font-size: 3vw; padding-right: 2%;" id="pageStr">Strana: </span>
       <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="pageSwitch(-1)">
       <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
       <span style="font-size: 3.5vw" id="maxPage">/1</span>

@@ -127,7 +127,7 @@ function updateSmPos() {
         $("#smtop" + i).css("border-color", chosenColor);
 
         if (levelList[i]["levelName"] == "") {
-            $("#smtop" + i.toString()).text(`#${i} - Bezejmenný`);
+            $("#smtop" + i.toString()).text(`#${i} - ${jsStr["UNNAMED"][LANG]}`);
         }
         else if (levelList[i]["creator"] == "" & levelList[i]["levelName"] != "") {
             $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]}`);
@@ -365,7 +365,7 @@ function removeLevel(id) {
 
     // Adds the tutorial, when the list is empty
     if ((Object.keys(levelList)).length - ADDIT_VALS == 1) {
-        $("#mainContent").html(`<p class="helpText">Kliknutím na <img width=5% id="plusSign" src="images/add.png"> přidáš level!</p>`);
+        $("#mainContent").html(jsStr["HELP_TEXT"][LANG]);
         $(".previewButton").addClass("disabled");
     }
 
@@ -407,36 +407,36 @@ function card(index, rndColor) {
             </div>
 
             <div class="positionButtons">
-                <button title="Přesunout level níž" type="button" onclick="moveCard('up',${index})" class="button upmover${index}" style="float: none;">
+                <button title="${jsStr["L_MOVE_D"][LANG]}" type="button" onclick="moveCard('up',${index})" class="button upmover${index}" style="float: none;">
                     <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(90deg);">
                 </button>
 
                 <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" disabled="true" value="${index}">
 
-                <button title="Přesunout level výš" type="button" onclick="moveCard('down',${index})" class="button downmover${index}" style="float: none;">
+                <button title="${jsStr["L_MOVE_U"][LANG]}" type="button" onclick="moveCard('down',${index})" class="button downmover${index}" style="float: none;">
                     <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(-90deg);">
                 </button>
             </div>
         </div>
 
         <hr id="lineSplit${index}" class="lineSplitGeneral">
-        <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="Jméno levelu">
+        <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr["L_NAME"][LANG]}">
 
         <button type="button" onclick="getDetailsFromName(${index})" class="button nameDetailGetter${index}" style="float: none;">
             <img id="fillButton" src="./images/getStats.png">
         </button>
         
         <img id="posInputPics" src="./images/bytost.png">
-        <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="Tvůrce" style="width: 15vw;display: inline-flex;"><br />
+        <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
 
-        <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="Video">
+        <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
 
-        <button title="Smazat kartu" onclick="removeLevel(${index})" type="button" class="removerButton${index} button cardButton">
+        <button title="${jsStr["DEL_CARD"][LANG]}" onclick="removeLevel(${index})" type="button" class="removerButton${index} button cardButton">
             <img src="./images/delete.png" style="width: inherit; height: inherit;">
         </button>
         <button type="button" class="button cardButton">
             <img src="./images/colorSelect.png" style="width: inherit; height: inherit;">
-            <input title="Barva karty" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
+            <input title="${jsStr["CARD_COL"][LANG]}" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
         </button>
     </div>
 </div>
@@ -509,26 +509,26 @@ $(function () {
     // Disabling input boxes when editing a list
     let listID = location.search.slice(1).split(/[=&]/g);
     if (listID.indexOf("edit") != -1) {
-        $(".uploadTitle").text("Upravování");
+        $(".uploadTitle").text(jsStr["EDITING"]);
 
         $("#listnm").attr("disabled", "true");
         $("#creatornm").attr("disabled", "true");
 
-        $("#submitbutton").attr("value", "Aktualizovat")
+        $("#submitbutton").attr("value", jsStr["L_UPDATE"])
         $("#submitbutton").attr("onclick","updateList()")
 
-        $("#submitarea").append('<input onclick="removeList()" type="button" id="removebutton" value="Smazat">')
+        $("#submitarea").append(`<input onclick="removeList()" type="button" id="removebutton" value="${jsStr["DELETE"]}">`)
     }
 
     $(window).on("resize", function () {
         // Editor disable on portrait orientaton
         if ($(window).width() < $(window).height()) {
-            $(".headerTitle").text("Pro použití editoru si otoč mobil ;).");
+            $(".headerTitle").text(jsStr["MOBILE_ED"]);
             $("#mainContent").hide()
             $(".headerButtons").hide()
         }
         else {
-            $(".headerTitle").html(`Levely`);
+            $(".headerTitle").html(jsStr["LEVELS"]);
             $("#mainContent").show()
             $(".headerButtons").show()
         }
