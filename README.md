@@ -3,7 +3,7 @@ Hi, this is the code for my website where you can create your own lists of GD le
 
 It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Level Request series :).
 
-### Check it out [here](http://gamingas.wz.cz/lofttop10/) (Note that the site is in Czech (not English))
+### Check it out [here](http://gamingas.wz.cz/lofttop10/)
 
 # Screenshots
 ![list](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/Screenshot_20210820_235638.png)
@@ -28,6 +28,7 @@ It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Lev
 - [X] Comments
 - [X] Searching through online lists
 - [X] Private lists
+- [X] Languages
 
 #### Todo:
 
@@ -35,7 +36,6 @@ It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Lev
 - [ ] Movable lists
 - [ ] Tick off finished levels
 - [ ] Saving lists
-- [ ] Languages
 - [ ] Linking your GD account
 - [ ] Card backgrounds
 - [ ] Responsive layout
