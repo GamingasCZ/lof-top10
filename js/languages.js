@@ -24,7 +24,6 @@ var strings = [
     [".headerTitle", "upload.html", 0, ["Levely", "Levels"]],
     [".addCardButton", "upload.html", "title", ["Přidat level do seznamu", "Add level to list"]],
     [".previewButton", "upload.html", "title", ["Náhled seznamu", "Preview list"]],
-    [".helpText", "upload.html", 0, ["Kliknutím na ", "Click on"]],
     [".setTitle", "upload.html", 0, ["- Nastavení -", "- Settings -"]],
     ["#submitbutton", "upload.html", "value", ["Nahrát", "Upload"]],
     ["label[for='private']", "upload.html", 0, ["Soukromý seznam", "Private List"]],
@@ -191,8 +190,6 @@ $(function () {
         localStorage.setItem("lang", currLang);
     }
     LANG = currLang;
-
-    translate();
 })
 
 function changeLang() {
