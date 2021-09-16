@@ -1,4 +1,4 @@
-const EMOJI_AM = 15;
+const EMOJI_AM = 17;
 try {
     var lID = (window.location.search).match(/id=\d+/)["0"].split("=")[1];
     var yID = (window.location.search).match(/year=\d+/)["0"].split("=")[1];
