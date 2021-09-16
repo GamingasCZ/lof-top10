@@ -209,9 +209,13 @@ function translate() {
 3 - Strings array
 
     */
+
     strings.forEach(i => {
+        // Replace depending on the directory
+        let isIndex = location.pathname == "/lofttop10/" & i[1] == "index.html";
+
         // Apply only to current page
-        if (location.pathname.match(i[1]) != null || i[1] == 0) {
+        if (location.pathname.match(i[1]) != null || i[1] == 0 || isIndex) {
             if (i[2] == 0) {
                 // Replacing tag content (text)
                 $(i[0]).text(i[3][LANG])
