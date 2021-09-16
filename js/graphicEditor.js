@@ -49,37 +49,37 @@ function generateFromJSON(event = null) {
         if (data == 2) {
             window.location.replace("./upload.html")
         }
+        if (event) {
+            var data = JSON.stringify(boards);
+            data = ";;" + data + ";0";
+        }
+
+        let lData = $("#listData").html(data).text()
+        lData = lData.split(";-!-;")
+        // Is the list hidden?
+        if (lData[3] != "0") {
+            $(`img[for="hidden"]`).attr("src", "images/check-on.png")
+            $(`input[name="hidden"]`).attr("checked", true)
+        }
+
+        // Removing tutorial
+        $("#mainContent").text("");
+        $(".previewButton").removeClass("disabled");
+
+        $("#listnm").val(lData[0])
+        $("#creatornm").val(lData[1])
+
+        levelList = JSON.parse(lData[2]);
+        $(".titImgInp").val(levelList["titleImg"])
+        $("#bgcolorPicker").val(levelList["pageBGcolor"])
+        colorizePage()
+
+        for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
+            loadLevel(y + 1)
+        }
+        updateSmPos()
+        displayCard("1")
     })
-    if (event) {
-        var data = JSON.stringify(boards);
-        data = ";;" + data + ";0";
-    }
-
-    let lData = $("#listData").html(data).text()
-    lData = lData.split(";-!-;")
-    // Is the list hidden?
-    if (lData[3] != "0") {
-        $(`img[for="hidden"]`).attr("src", "images/check-on.png")
-        $(`input[name="hidden"]`).attr("checked", true)
-    }
-
-    // Removing tutorial
-    $("#mainContent").text("");
-    $(".previewButton").removeClass("disabled");
-
-    $("#listnm").val(lData[0])
-    $("#creatornm").val(lData[1])
-
-    levelList = JSON.parse(lData[2]);
-    $(".titImgInp").val(levelList["titleImg"])
-    $("#bgcolorPicker").val(levelList["pageBGcolor"])
-    colorizePage()
-
-    for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
-        loadLevel(y + 1)
-    }
-    updateSmPos()
-    displayCard("1")
 }
 
 function refreshCardDetails(lp) {

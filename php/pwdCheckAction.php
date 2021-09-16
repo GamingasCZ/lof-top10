@@ -33,7 +33,7 @@ if ($_POST["pwdEntered"] != $listPwd) {
 }
 else {
     if ($_POST["retData"] == "1") {
-        echo sprintf("%s;%s;%s;%s",$listData["name"],$listData["creator"],$listData["data"],$listData["hidden"]);
+        echo sprintf("%s;-!-;%s;-!-;%s;-!-;%s",$listData["name"],$listData["creator"],$listData["data"],$listData["hidden"]);
     }
     else {
         echo "3";
