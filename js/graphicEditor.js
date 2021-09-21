@@ -2,10 +2,17 @@ function getDetailsFromID(id) {
     // Tohle budeš pak muset předělat, až bude všechno fungovat :D
     let givenID = $(".idbox" + id).val();
     $.get("https://gdbrowser.com/api/level/" + givenID, function (data) {
-        $(".cardLName" + id).val(data["name"]);
-        levelList[id]["levelName"] = data["name"];
-        $(".cardLCreator" + id).val(data["author"]);
-        levelList[id]["creator"] = data["author"];
+        if (data != -1) {
+            $(".cardLName" + id).val(data["name"]);
+            levelList[id]["levelName"] = data["name"];
+            $(".cardLCreator" + id).val(data["author"]);
+            levelList[id]["creator"] = data["author"];
+        }
+        else {
+            $(".idbox"+id).addClass("inputErr")
+            setTimeout(() => { $(".idbox"+id).removeClass("inputErr") }, 500)
+            // TODO: Add flickering or something....
+        }
     })
     updateSmPos()
 }
@@ -17,14 +24,17 @@ function getDetailsFromName(id) {
 
     // Hledání nejlikovanějšího levelu
     $.get("https://gdbrowser.com/api/search/" + givenName + "?count=1", function (data) {
-        console.log(data);
-        console.log("https://gdbrowser.com/api/search/" + givenName + "?count=1");
-        $(".cardLName" + id).val(data[0]["name"]);
-        levelList[id]["levelName"] = data[0]["name"];
-        $(".cardLCreator" + id).val(data[0]["author"]);
-        levelList[id]["creator"] = data[0]["author"];
-        $(".idbox" + id).val(data[0]["id"]);
-        levelList[id]["levelID"] = data[0]["id"]
+        if (data != -1) {
+            $(".cardLName" + id).val(data[0]["name"]);
+            levelList[id]["levelName"] = data[0]["name"];
+            $(".cardLCreator" + id).val(data[0]["author"]);
+            levelList[id]["creator"] = data[0]["author"];
+            $(".idbox" + id).val(data[0]["id"]);
+            levelList[id]["levelID"] = data[0]["id"]
+        }
+        else {
+            // TODO: Add flickering or something....
+        }
     })
     updateSmPos()
 }
@@ -214,10 +224,16 @@ function addLevel() {
         levelList[cardSelected]["color"] = chosenColor;
     });
 
-    $(".idbox" + listLenght).on("change", function () {
-        let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["levelID"] = selection;
+    $(".idbox" + listLenght).on("change keydown", function (k) {
+        if (k.type == "change") {
+            let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+            let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+            levelList[position]["levelID"] = selection;
+        }
+        else {
+            if ($(this).val() == "") { $("fillID").removeClass("disabled") }
+            else { $("fillID").addClass("disabled") }
+        }
     });
 
     $(".cardLName" + listLenght).on("change", function () {
@@ -274,10 +290,16 @@ function loadLevel(pos) {
         levelList[cardSelected]["color"] = chosenColor;
     });
 
-    $(".idbox" + pos).on("change", function () {
-        let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["levelID"] = selection;
+    $(".idbox" + pos).on("change keydown", function (k) {
+        if (k.type == "change") {
+            let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+            let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+            levelList[position]["levelID"] = selection;
+        }
+        else {
+            if ($(this).val() == "") { $("fillID").addClass("disabled") }
+            else { $("fillID").removeClass("disabled") }
+        }
     });
 
     $(".cardLName" + pos).on("change", function () {
@@ -398,47 +420,61 @@ function card(index, rndColor) {
     </div>
     <div class="positionEdit" id="top${index}">
         <div style="display: flex">
-            <div>
-                <img id="posInputPics" src="./images/idtext.png">
-                <input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text">
+            <div style="display: flex; align-items: center;">
+                <p style="margin: 2%;">ID:</p>
+                <input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text" style=" margin-left: 4%; transform: translateY(0%);">
 
-                <button type="button" onclick="getDetailsFromID(${index})" style="float: none;" class="button idDetailGetter${index}">
-                    <img id="fillButton" src="./images/getStats.png">
-                </button>
+                <img id="fillButton" src="./images/getStats.png" onclick="getDetailsFromID(${index})" style="float: none;" class="fillID button disabled idDetailGetter${index}">
             </div>
 
             <div class="positionButtons">
-                <button title="${jsStr["L_MOVE_D"][LANG]}" type="button" onclick="moveCard('up',${index})" class="button upmover${index}" style="float: none;">
-                    <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(90deg);">
-                </button>
+                <img title="${jsStr["L_MOVE_D"][LANG]}" onclick="moveCard('up',${index})" 
+                     class="button upmover${index}" style="float: none; transform: rotate(90deg);" id="moveLPosButton"
+                     src="./images/arrow.png">
 
                 <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" disabled="true" value="${index}">
 
-                <button title="${jsStr["L_MOVE_U"][LANG]}" type="button" onclick="moveCard('down',${index})" class="button downmover${index}" style="float: none;">
-                    <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(-90deg);">
-                </button>
+                <img title="${jsStr["L_MOVE_U"][LANG]}" onclick="moveCard('down',${index})"
+                        class="button downmover${index}" style="float: none; transform: rotate(-90deg);" id="moveLPosButton"
+                        src="./images/arrow.png">
             </div>
         </div>
 
         <hr id="lineSplit${index}" class="lineSplitGeneral">
-        <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr["L_NAME"][LANG]}">
 
-        <button type="button" onclick="getDetailsFromName(${index})" class="button nameDetailGetter${index}" style="float: none;">
-            <img id="fillButton" src="./images/getStats.png">
-        </button>
-        
-        <img id="posInputPics" src="./images/bytost.png">
-        <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="display: flex; flex-wrap: wrap; width: 100%; align-items: center;">
+                <img id="posInputPics" src="./images/gauntlet.png">
+                <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr["L_NAME"][LANG]}">
 
-        <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
+                <hr class="availFill" style="margin-left: 2%">
 
-        <button title="${jsStr["DEL_CARD"][LANG]}" onclick="removeLevel(${index})" type="button" class="removerButton${index} button cardButton">
-            <img src="./images/delete.png" style="width: inherit; height: inherit;">
-        </button>
-        <button type="button" class="button cardButton">
-            <img src="./images/colorSelect.png" style="width: inherit; height: inherit;">
-            <input title="${jsStr["CARD_COL"][LANG]}" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
-        </button>
+                <button type="button" onclick="getDetailsFromName(${index})" class="button nameDetailGetter${index}" style="float: none;">
+                    <img id="fillButton" src="./images/getStats.png">
+                </button>
+                
+                <hr class="availFill" style="margin-right: 2%">
+
+                <img id="posInputPics" src="./images/bytost.png">
+                <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
+                <img class="button" style="float: none; width: 3vw;filter: hue-rotate(90deg);" src="./images/add.png">
+            </div>
+
+            <div style="display: flex; width: 100%;">
+                <div style="display: flex; align-items: center;">
+                    <img id="posInputPics" src="./images/yticon.png">
+                    <input style="margin: 5%;" class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
+                </div>
+                
+                <div style="display: flex; justify-content: right; flex-grow: 1; align-items: center;">
+                    <img title="${jsStr["DEL_CARD"][LANG]}" class="removerButton${index} button cardButton"
+                        onclick="removeLevel(${index})" src="./images/delete.png">
+
+                    <img class="button cardButton" src="./images/colorSelect.png">
+                    <input style="display: none;" title="${jsStr["CARD_COL"][LANG]}" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
+                </div>
+            </div>   
+        </div>
     </div>
 </div>
     `;
