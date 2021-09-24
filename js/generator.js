@@ -414,7 +414,7 @@ function checkPassword() {
     
 	$.post("./php/pwdCheckAction.php", postReq, function (data) {
 		// Incorrect pwd
-		if (data == 2) {
+		if ([1,2].includes(data)) {
 			//testing
 			$(".passInput").css("background-color", "#fc8093")
 			$(".passInput").val(jsStr["INC_PWD"][LANG])
@@ -424,7 +424,7 @@ function checkPassword() {
 				$(".passInput").val("")
 			}, 1000)
 		}
-		else if (data == 3 || data == 1) {
+		else if (data == 3) {
             let page = listType == "id" ? "edit" : "pedit";
 			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?${page}=${listID[1]}&pass=${passEntered}`;
 		}

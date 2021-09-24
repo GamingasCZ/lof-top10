@@ -53,7 +53,7 @@ function generateFromJSON(event = null) {
     postReq[listType] = listID[1];
     
     $.post("./php/pwdCheckAction.php", postReq, function (data) {
-        if (data == 2) {
+        if ([1,2].includes(data)) {
             window.location.replace("./upload.html")
         }
         if (event) {
