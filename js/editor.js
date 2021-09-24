@@ -48,6 +48,7 @@ function checkJson(data) {
     }
 }
 
+var isHidden = $("input[name='hidden']").attr("checked") == "checked";
 var page = 0;
 var maxPage = 0;
 var listNames = [];
@@ -148,7 +149,8 @@ function updateList() {
             "listData": JSON.stringify(levelList),
             "id": data[1],
             "pwdEntered": data[3],
-            "hidden": listHidden
+            "hidden": listHidden,
+            "isNowHidden": isHidden
         }
         $.post("./php/updateList.php", postData, function (data) {
             let updateData = data.split(";-!-;")
@@ -234,6 +236,7 @@ $(function () {
 
         if (["edit", "pedit"].includes(password[0]) & password[2] == "pass") {
             generateFromJSON()
+            isHidden = $("input[name='hidden']").attr("checked") == "checked";
         }
         else if (password[0] == "update") {
 

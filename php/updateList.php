@@ -20,7 +20,7 @@ if ($mysqli -> connect_errno) {
 // Checking request
 error_reporting(0);
 
-$fuckupData = array($_POST["id"],$_POST["pwdEntered"],$_POST["listData"]);
+$fuckupData = array($_POST["id"],$_POST["pwdEntered"],$_POST["listData"],$_POST["isNowHidden"]);
 $i = 0;
 foreach ($fuckupData as $post) {
   if ($fuckupData[$i] == "") {
@@ -35,7 +35,16 @@ foreach ($fuckupData as $post) {
 error_reporting(1);
 
 // Password check
-$check = $mysqli -> query("SELECT * FROM `lists` WHERE `id`=".join("",array_slice($fuckupData,0,1)));
+if (in_array($_POST["hidden"], Array(0,1)) and $_POST["isNowHidden"] == "true") {
+    $check = $mysqli -> query(sprintf("SELECT * FROM `lists` WHERE `hidden`='%s'", $fuckupData[0]));
+}
+elseif (in_array($_POST["hidden"], Array(0,1)) and $_POST["isNowHidden"] == "false") {
+    $check = $mysqli -> query(sprintf("SELECT * FROM `lists` WHERE `id`='%s'", $fuckupData[0]));
+}
+else {
+    $check = $mysqli -> query("SELECT * FROM `lists` WHERE `id`=".join("",array_slice($fuckupData,0,1)));
+}
+
 $listData = $check -> fetch_assoc();
 $listPass = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
 
@@ -47,15 +56,21 @@ if ($listPass != $fuckupData[1]) {
 }
 
 // Private list settings
-if ($_POST["hidden"] == 1) {
+if ($_POST["hidden"] == 1 and $_POST["isNowHidden"] == "true") {
+    $query = sprintf("UPDATE `lists` SET `data`='%s' WHERE `hidden`='%s'",$_POST["listData"], $_POST["id"]);
+}
+elseif ($_POST["hidden"] == 1 and $_POST["isNowHidden"] == "false") {
     $hidden = privateIDGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
+    $query = sprintf("UPDATE `lists` SET `data`='%s', `hidden`='%s' WHERE `id`='%s'",$_POST["listData"], $hidden, $_POST["id"]);
+}
+elseif ($_POST["hidden"] == 0 and $_POST["isNowHidden"] == "false") {
+    $query = sprintf("UPDATE `lists` SET `data`='%s' WHERE `id`='%s'",$_POST["listData"], $_POST["id"]);
 }
 else {
-    $hidden = 0;
+    $query = sprintf("UPDATE `lists` SET `data`='%s', `hidden`='0' WHERE `hidden`='%s'",$_POST["listData"],$_POST["id"]);
 }
 
 // Updating list data
-$query = sprintf("UPDATE `lists` SET `data`='%s', `hidden`=%s WHERE `id`=%s",$_POST["listData"], $hidden ,$_POST["id"]);
 $result = $mysqli -> query($query);
 $ok = $result -> fetch_assoc();
 print_r($ok);

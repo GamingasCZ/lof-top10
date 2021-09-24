@@ -86,6 +86,8 @@ function generateFromJSON(event = null) {
         }
         updateSmPos()
         displayCard("1")
+        
+        isHidden = lData[3] != "0";
     })
 }
 

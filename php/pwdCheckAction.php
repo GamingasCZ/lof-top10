@@ -32,7 +32,7 @@ if (in_array("", $datacheck)) {
     exit();
 }
 
-$getList = $mysqli -> query(sprintf("SELECT * FROM `lists` WHERE %s=%s", $listType[1], $datacheck[0]));
+$getList = $mysqli -> query(sprintf("SELECT * FROM `lists` WHERE `%s`='%s'", $listType[1], $datacheck[0]));
 $listData = $getList -> fetch_assoc();
 
 $listPwd = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
