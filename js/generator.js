@@ -414,7 +414,7 @@ function checkPassword() {
     
 	$.post("./php/pwdCheckAction.php", postReq, function (data) {
 		// Incorrect pwd
-		if ([1,2].includes(data)) {
+		if (["1","2"].includes(data)) {
 			//testing
 			$(".passInput").css("background-color", "#fc8093")
 			$(".passInput").val(jsStr["INC_PWD"][LANG])
