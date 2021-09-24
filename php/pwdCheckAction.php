@@ -5,7 +5,7 @@ require("secrets.php");
 /*
 Return codes:
 0 - Error connecting to database
-1 - Empty request
+1 - Empty/incomplete request
 2 - Incorrect password
 */
 
@@ -15,13 +15,24 @@ if ($mysqli -> connect_errno) {
     exit();
 }
 
-$datacheck = [$_POST["id"], $_POST["pwdEntered"], $_POST["retData"]];
+if (isset($_POST["id"])) {
+    $listType = Array($_POST["id"], "id");
+}
+elseif (isset($_POST["pid"])) {
+    $listType = Array($_POST["pid"], "hidden");
+}
+else {
+    echo "1";
+    exit();
+}
+
+$datacheck = [$listType[0], $_POST["pwdEntered"], $_POST["retData"]];
 if (in_array("", $datacheck)) {
     echo "1";
     exit();
 }
 
-$getList = $mysqli -> query("SELECT * FROM `lists` WHERE id=" . join("",array_slice($datacheck,0,1)));
+$getList = $mysqli -> query(sprintf("SELECT * FROM `lists` WHERE %s=%s", $listType[1], $datacheck[0]));
 $listData = $getList -> fetch_assoc();
 
 $listPwd = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);

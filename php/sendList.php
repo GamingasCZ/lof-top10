@@ -12,16 +12,6 @@ if ($mysqli -> connect_errno) {
   exit();
 }
 
-function privateIDGenerator($listName, $creator, $timestamp) {
-    $str = "";
-    for ($i=0; $i < 4; $i++) { 
-        $str = $str . substr($listName, 0+$i, 0+$i);
-        $str = $str . substr($creator, 0+$i, 0+$i);
-        $str = $str . substr($timestamp, 0+$i, 0+$i);
-    }
-    return substr(sha1($str),0,10);
-}
-
 $fuckupData = array($_POST["creator"],$_POST["lName"],$_POST["listData"]);
 $i = 0;
 foreach ($fuckupData as $post) {

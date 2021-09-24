@@ -232,7 +232,7 @@ $(function () {
     if (location.search != "") {
         let password = location.search.slice(1).split(/[=&]/g);
 
-        if (password[0] == "edit" & password[2] == "pass") {
+        if (["edit", "pedit"].includes(password[0]) & password[2] == "pass") {
             generateFromJSON()
         }
         else if (password[0] == "update") {

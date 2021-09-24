@@ -46,8 +46,16 @@ if ($listPass != $fuckupData[1]) {
   exit();
 }
 
+// Private list settings
+if ($_POST["hidden"] == 1) {
+    $hidden = privateIDGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
+}
+else {
+    $hidden = 0;
+}
+
 // Updating list data
-$query = sprintf("UPDATE `lists` SET `data`='%s', `hidden`=%s WHERE `id`=%s",$_POST["listData"],$_POST["hidden"],$_POST["id"]);
+$query = sprintf("UPDATE `lists` SET `data`='%s', `hidden`=%s WHERE `id`=%s",$_POST["listData"], $hidden ,$_POST["id"]);
 $result = $mysqli -> query($query);
 $ok = $result -> fetch_assoc();
 print_r($ok);

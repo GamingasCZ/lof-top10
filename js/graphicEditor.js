@@ -45,7 +45,14 @@ function colorizePage() {
 
 function generateFromJSON(event = null) {
     let listID = location.search.slice(1).split(/[=&]/g);
-    $.post("./php/pwdCheckAction.php", { "id": listID[1], "pwdEntered": listID[3], "retData": "1" }, function (data) {
+    let listType = "id";
+    if (listID[0] == "pedit") {
+        listType = "pid";
+    }
+    let postReq = { "pwdEntered": listID[3], "retData": "1" };
+    postReq[listType] = listID[1];
+    
+    $.post("./php/pwdCheckAction.php", postReq, function (data) {
         if (data == 2) {
             window.location.replace("./upload.html")
         }
@@ -487,7 +494,7 @@ $(function () {
 
     // Disabling input boxes when editing a list
     let listID = location.search.slice(1).split(/[=&]/g);
-    if (listID.indexOf("edit") != -1) {
+    if (["edit","pedit"].includes(listID[0])) {
         $(".uploadTitle").text(jsStr["EDITING"][LANG]);
 
         $("#listnm").attr("disabled", "true");

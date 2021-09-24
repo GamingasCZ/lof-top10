@@ -300,7 +300,7 @@ $(function () {
 		var listID = location.search.slice(1).split("=");
 
 		// Password input removal
-		if (listID[0] != "id") {
+		if (!["id", "pid"].includes(listID[0])) {
 			$(".password").remove()
 		}
 
@@ -404,7 +404,15 @@ function checkPassword() {
 	$(".passInput").css("background-color", "#82fc80")
 
 	$(".passImg").addClass("disabled");
-	$.post("./php/pwdCheckAction.php", { "id": listID[1], "pwdEntered": passEntered, "retData": "0" }, function (data) {
+    
+    let listType = "id";
+    if (listID[0] == "pid") {
+        listType = "pid";
+    }
+    let postReq = { "pwdEntered": passEntered, "retData": "0" };
+    postReq[listType] = listID[1];
+    
+	$.post("./php/pwdCheckAction.php", postReq, function (data) {
 		// Incorrect pwd
 		if (data == 2) {
 			//testing
@@ -417,7 +425,8 @@ function checkPassword() {
 			}, 1000)
 		}
 		else if (data == 3 || data == 1) {
-			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?edit=${listID[1]}&pass=${passEntered}`;
+            let page = listType == "id" ? "edit" : "pedit";
+			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?${page}=${listID[1]}&pass=${passEntered}`;
 		}
 	})
 }
