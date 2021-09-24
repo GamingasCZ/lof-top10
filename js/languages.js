@@ -13,6 +13,7 @@ var strings = [
     [".comTitles", "index.html", 0, ["- Komentáře -", "- Comments -"]],
     ["#pageStr", 0, 0, ["Strana: ", "Page: "]],
     [".noComm", "index.html", 0, ["- Žádné komentáře -", "- No Comments -"]],
+    [".passInput", "index.html", "placeholder", ["Heslo", "Password"]],
 
     ["title", "upload.html", 0, ["Komunitní seznamy", "Community Lists"]],
     [".uploadTitle", "upload.html", 0, ["Nahrávání", "Upload"]],
