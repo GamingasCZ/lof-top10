@@ -9,8 +9,8 @@ function getDetailsFromID(id) {
             levelList[id]["creator"] = data["author"];
         }
         else {
-            $(".idbox"+id).addClass("inputErr")
-            setTimeout(() => { $(".idbox"+id).removeClass("inputErr") }, 500)
+            $(".idbox" + id).addClass("inputErr")
+            setTimeout(() => { $(".idbox" + id).removeClass("inputErr") }, 500)
             // TODO: Add flickering or something....
         }
     })
@@ -37,6 +37,19 @@ function getDetailsFromName(id) {
         }
     })
     updateSmPos()
+}
+
+function showCollabTools(id) {
+    $("#collabTools").css("background-color", $("#top" + id).css("background-color"))
+    $("#collabTools").css("border-color", $("#top" + id).css("background-color"))
+
+    $("#collabTools").fadeIn(50);
+    $("#collabTools").css("transform", "scaleY(1)")
+}
+
+function hideCollabTools() {
+    $("#collabTools").fadeOut(50);
+    $("#collabTools").css("transform", "scaleY(0.7)")
 }
 
 function colorizePage() {
@@ -101,7 +114,7 @@ function refreshCardDetails(lp) {
 }
 function moveCard(position, currID) {
     let listPlacement = parseInt($(".listPosition" + currID.toString()).val());
-    if (position == "up") {
+    if (position == "up" & currID >= 0) {
         if (listPlacement > 1) {
             refreshCardDetails(listPlacement)
             $(".card" + (listPlacement - 1)).before($(".card" + (listPlacement)));
@@ -114,7 +127,7 @@ function moveCard(position, currID) {
             listPlacement--
         }
     }
-    else {
+    else if (position == "down" & currID < Object.keys(levelList).length - ADDIT_VALS) {
         if (listPlacement < Object.keys(levelList).length - 1 - ADDIT_VALS) {
             refreshCardDetails(listPlacement)
             $(".card" + (listPlacement + 1)).after($(".card" + (listPlacement)));
@@ -127,8 +140,11 @@ function moveCard(position, currID) {
             listPlacement++
         }
     }
+    else { return false; }
+
     updateSmPos();
     document.getElementById("top" + listPlacement).scrollIntoView();
+    return true;
 }
 
 function updateSmPos() {
@@ -150,13 +166,15 @@ function updateSmPos() {
 }
 
 function displayCard(id) {
-    $(".smallPosEdit").show();
-    $("#smtop" + id.toString()).hide();
-    $(".positionEdit").hide();
-    $("#top" + id.toString()).css("transform", "scaleY(0.8)");
-    $("#top" + id.toString()).show();
-    $("#top" + id.toString()).css("transform", "scaleY(1)");
-    updateSmPos()
+    if (id > 0 & id < Object.keys(levelList).length - ADDIT_VALS) {
+        $(".smallPosEdit").show();
+        $("#smtop" + id.toString()).hide();
+        $(".positionEdit").hide();
+        $("#top" + id.toString()).css("transform", "scaleY(0.8)");
+        $("#top" + id.toString()).show();
+        $("#top" + id.toString()).css("transform", "scaleY(1)");
+        updateSmPos()
+    }
 }
 
 
@@ -360,6 +378,8 @@ function updateCardData(prevID, newID) {
     $(".removerButton" + prevID).attr("onclick", "removeLevel(" + newID + ")");
     $(".removerButton" + prevID).attr("class", "button cardButton removerButton" + newID);
     $("#colorPicker" + prevID).attr("id", "colorPicker" + newID);
+    $(".colButton" + prevID).attr("onclick", "showCollabTools(" + newID + ")");
+    $(".colButton" + prevID).attr("class", "button colButton" + newID);
 
     if (parseInt(prevID) != parseInt(newID)) {
         levelList[prevID] = levelList[newID + "waiting"];
@@ -455,9 +475,8 @@ function card(index, rndColor) {
                 
                 <hr class="availFill" style="margin-right: 2%">
 
-                <img id="posInputPics" src="./images/bytost.png">
                 <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
-                <img class="button" style="float: none; width: 3vw;filter: hue-rotate(90deg);" src="./images/add.png">
+                <img class="button colButton${index}" style="float: none;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
@@ -470,7 +489,7 @@ function card(index, rndColor) {
                     <img title="${jsStr["DEL_CARD"][LANG]}" class="removerButton${index} button cardButton"
                         onclick="removeLevel(${index})" src="./images/delete.png">
 
-                    <img class="button cardButton" src="./images/colorSelect.png">
+                    <img class="button cardButton" onclick="document.querySelector("#colorPicker${index}").click();" src="./images/colorSelect.png">
                     <input style="display: none;" title="${jsStr["CARD_COL"][LANG]}" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
                 </div>
             </div>   
@@ -520,6 +539,26 @@ $(function () {
     ];
 
     $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
+
+    // Keyboard stuff
+
+    $("html").on("keydown", k => {
+        let currCardShown = parseInt($(".positionEdit:not(:hidden)")[0].id.match(/[0-9]/g));
+        $(".positionEdit:not(:hidden)")[0].focus()
+        if (k.key == "ArrowDown") {
+            displayCard(currCardShown + 1) // Key: W
+        }
+        else if (k.key == "ArrowUp") {
+            displayCard(currCardShown - 1) // Key: S
+        }
+        else if (k.key == "ArrowLeft") {
+            if (moveCard("up", currCardShown)) { currCardShown-- } // Key: A
+        }
+        else if (k.key == "ArrowRight") {
+            if (moveCard("down", currCardShown)) { currCardShown++ } // Key: D
+        }
+    })
+
 
     // Disabling input boxes when editing a list
     let listID = location.search.slice(1).split(/[=&]/g);

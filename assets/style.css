@@ -376,7 +376,7 @@ html, body {
 
 .eventButton {
   background-color: #2d6da6 !important;
-  padding: 1%;
-  margin: 2%;
+  padding: 0.3% 1%;
+  margin: 0.5%;
   border-radius: 10%;
 }

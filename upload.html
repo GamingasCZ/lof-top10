@@ -27,14 +27,35 @@
   </div>
 
   <div style="display: flex; justify-content: center; align-items: center;">
-    <img class="yearButtonImg button" src="images/button1.png"
-         onclick="window.location.assign('index.html?year=2019')">
-    <img class="yearButtonImg button" src="images/locked.png"
-         onclick="window.location.assign('index.html?year=2021')">
-    <img class="yearButtonImg button commBut" src=""
-         onclick="window.location.assign('upload.html')">
-    <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;"
-         onclick="changeLang()">
+    <img class="yearButtonImg button" src="images/button1.png" onclick="window.location.assign('index.html?year=2019')">
+    <img class="yearButtonImg button" src="images/locked.png" onclick="window.location.assign('index.html?year=2021')">
+    <img class="yearButtonImg button commBut" src="" onclick="window.location.assign('upload.html')">
+    <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;" onclick="changeLang()">
+  </div>
+
+  <!-- Collab tools -->
+  <div class="uploadBG uploadText" id="collabTools" style="position: fixed;">
+    <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
+      <p style="margin: 0 auto;">- Nastavení collabu -</p>
+      <img src="./images/delete.png" class="button" style="width: 6%; height: max-content;" onclick="hideCollabTools()">
+    </div>
+    <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 12%;">
+      <img class="colButton${index}" id="posInputPics" src="./images/bytost.png">
+      <input id="posInputBox" autocomplete="off" type="text" placeholder="Verifikátor" style="width: 25vw;">
+    </div>
+
+    <div class="editorHeader uploadText">Role
+    </div>
+    <div class="collabBG" style="padding: 0.2% 2%;">Příklady:
+      <button style="float: none;" class="button uploadText eventButton">Dekorace</button>
+      <button style="float: none;" class="button uploadText eventButton">Layout</button>
+      <button style="float: none;" class="button uploadText eventButton">Tester</button>
+    </div>
+
+    <div class="editorHeader uploadText">Členové
+    </div>
+    <div class="collabBG">ddsdsd</div>
+
   </div>
 
   <div class="helpBG" style="display: none;"></div>
@@ -132,6 +153,6 @@
   <!--Explosion-->
   <div class="boom"></div>
 </body>
-<script>$(function() { translate(); })</script>
+<script>$(function () { translate(); })</script>
 
 </html>

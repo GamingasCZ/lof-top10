@@ -70,6 +70,21 @@
 
 }
 
+#collabTools {
+	position: fixed;
+	width: 95%;
+	height: 90vh;
+	right: -8%;
+	bottom: 0%;
+    display: none;
+    z-index: 1;
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    transform: scaleY(0.7);
+    transition-duration: 0.1s;
+}
+
 input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox) {
     margin-left: auto;
     margin-right: auto;
@@ -277,7 +292,7 @@ input:disabled {
     text-align: center;
 }
 
-#mainContent {
+#mainContent, .collabBG {
     background-color: rgb(44, 99, 44);
     text-align: left;
     background-image: url("../images/fade.png");
