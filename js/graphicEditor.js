@@ -39,15 +39,23 @@ function getDetailsFromName(id) {
     updateSmPos()
 }
 
+var currEditing;
 function showCollabTools(id) {
-    $("#collabTools").css("background-color", $("#top" + id).css("background-color"))
-    $("#collabTools").css("border-color", $("#top" + id).css("background-color"))
+    let cardCol = $("#top" + id).css("background-color");
+    let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
+    $("#collabTools").css("background-color", cardCol)
+    $("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
+    $(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
 
     $("#collabTools").fadeIn(50);
     $("#collabTools").css("transform", "scaleY(1)")
+
+    $(".verifier").val(levelList[id]["creator"])
 }
 
 function hideCollabTools() {
+    $(".cardLCreator" + currEditing).val($(".verifier").val())
+
     $("#collabTools").fadeOut(50);
     $("#collabTools").css("transform", "scaleY(0.7)")
 }

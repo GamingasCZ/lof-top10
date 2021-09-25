@@ -41,20 +41,30 @@
     </div>
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 12%;">
       <img class="colButton${index}" id="posInputPics" src="./images/bytost.png">
-      <input id="posInputBox" autocomplete="off" type="text" placeholder="Verifikátor" style="width: 25vw;">
+      <input id="posInputBox" class="verifier" autocomplete="off" type="text" placeholder="Verifikátor" style="width: 25vw;">
     </div>
 
-    <div class="editorHeader uploadText">Role
+    <div class="editorHeader collabHeader uploadText" style="display: flex; justify-content: space-between; flex-direction: row; align-items: center;">Role
+      <div style="padding: 0.2% 2%; display: flex;">
+        <button style="float: none;" class="button uploadText eventButton">Dekorace</button>
+        <button style="float: none;" class="button uploadText eventButton">Layout</button>
+        <button style="float: none;" class="button uploadText eventButton">Tester</button>
+      </div>
+      <img class="button" style="float: none; width: 5%;" src="images/add.png">
     </div>
-    <div class="collabBG" style="padding: 0.2% 2%;">Příklady:
-      <button style="float: none;" class="button uploadText eventButton">Dekorace</button>
-      <button style="float: none;" class="button uploadText eventButton">Layout</button>
-      <button style="float: none;" class="button uploadText eventButton">Tester</button>
+    <div class="collabBG collabHeader">
+      <table style="border: solid black 10px;">
+        <tr style="border: solid black 10px;">
+          <th style="border: solid black 10px;">Jméno</th>
+          <th style="border: solid black 10px;">Má %</th>
+          <th style="border: solid black 10px;">Vrstva</th>
+        </tr>
+      </table>
     </div>
 
-    <div class="editorHeader uploadText">Členové
+    <div class="editorHeader collabHeader uploadText">Členové
     </div>
-    <div class="collabBG">ddsdsd</div>
+    <div class="collabBG collabHeader">ddsdsd</div>
 
   </div>
 
