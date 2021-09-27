@@ -34,7 +34,7 @@
   </div>
 
   <!-- Collab tools -->
-  <div class="uploadBG uploadText" id="collabTools" style="position: fixed;">
+  <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
       <p style="margin: 0 auto;">- Nastavení collabu -</p>
       <img src="./images/delete.png" class="button" style="width: 6%; height: max-content;" onclick="hideCollabTools()">
@@ -44,27 +44,38 @@
       <input id="posInputBox" class="verifier" autocomplete="off" type="text" placeholder="Verifikátor" style="width: 25vw;">
     </div>
 
-    <div class="editorHeader collabHeader uploadText" style="display: flex; justify-content: space-between; flex-direction: row; align-items: center;">Role
+    <div class="editorHeader collabHeader uploadText collabBar">Role
       <div style="padding: 0.2% 2%; display: flex;">
-        <button style="float: none;" class="button uploadText eventButton">Dekorace</button>
-        <button style="float: none;" class="button uploadText eventButton">Layout</button>
-        <button style="float: none;" class="button uploadText eventButton">Tester</button>
+        <button style="float: none;" class="button uploadText eventButton" onclick="addRole(0)">Dekorace</button>
+        <button style="float: none;" class="button uploadText eventButton" onclick="addRole(1)">Layout</button>
+        <button style="float: none;" class="button uploadText eventButton" onclick="addRole(2)">Tester</button>
       </div>
-      <img class="button" style="float: none; width: 5%;" src="images/add.png">
+      <img class="button" onclick="addRole()" style="float: none; width: 5%;" src="images/add.png">
     </div>
     <div class="collabBG collabHeader">
-      <table style="border: solid black 10px;">
-        <tr style="border: solid black 10px;">
-          <th style="border: solid black 10px;">Jméno</th>
-          <th style="border: solid black 10px;">Má %</th>
-          <th style="border: solid black 10px;">Vrstva</th>
+      <table class="collabTables collabRoles">
+        <tr class="collabTables">
+          <th class="collabTables" style="width: 50%;">Jméno</th>
+          <th class="collabTables">Má část?</th>
+          <th class="collabTables">Barva</th>
+          <th class="collabTables"></th>
         </tr>
       </table>
     </div>
 
-    <div class="editorHeader collabHeader uploadText">Členové
+    <div class="editorHeader collabHeader uploadText collabBar">Členové
+      <img class="button" onclick="addCollabHuman()" style="float: none; width: 5%;" src="images/add.png">
     </div>
-    <div class="collabBG collabHeader">ddsdsd</div>
+    <div class="collabBG collabHeader">
+      <table class="collabTables collabHumans">
+        <tr class="collabTables">
+          <th class="collabTables" style="width: 50%;">Jméno</th>
+          <th class="collabTables" style="width: 25%;">Role</th>
+          <th class="collabTables" style="width: 20%;">Rozsah</th>
+          <th class="collabTables"></th>
+        </tr>
+      </table>
+    </div>
 
   </div>
 

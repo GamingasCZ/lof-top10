@@ -70,19 +70,73 @@
 
 }
 
+
 #collabTools {
 	position: fixed;
 	width: 95%;
 	height: 90vh;
 	right: -8%;
 	bottom: 0%;
-    display: none;
     z-index: 1;
     display: flex;
     padding: 0;
     flex-direction: column;
     transform: scaleY(0.7);
     transition-duration: 0.1s;
+}
+
+.collabBar {
+    display: flex;
+    justify-content: space-between !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    overflow-y: hidden !important;
+    min-height: 8%;
+}
+
+.collabTables {
+    border: none;
+    text-align: center;
+    width: 100%;
+    background: url("../images/fade.png") repeat-x;
+}
+
+td > * {
+    vertical-align: middle;
+}
+
+.collabTables:nth-child(even) {
+    filter: brightness(1.2);
+}
+
+#collabInp::placeholder {
+    font-size: 2vw;
+}
+
+#collabInp {
+    display: inline;
+    transform: none;
+    width: 15vw;
+    margin: 0.5%;
+    font-size: 2vw;
+    height: 28%;
+    background-color: #FFFFFF50;
+    border-color: #FFFFFF50;
+    -webkit-text-stroke: black 1.5px;
+}
+
+.collabHeader {
+    max-height: auto;
+    overflow-y: auto;
+}
+
+.roleList {
+    border: none;
+    border-radius: 0.5vw;
+    padding: 1%;
+    font-size: 2vw;
+    -webkit-text-stroke: black 1.5px;
+    margin: 0;
 }
 
 input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox) {
