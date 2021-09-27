@@ -55,7 +55,13 @@ function showCollabTools(id) {
     $("#collabTools").fadeIn(50);
     $("#collabTools").css("transform", "scaleY(1)")
 
-    $(".verifier").val(levelList[id]["creator"])
+    if (typeof levelList[id]["creator"] == "object") {
+        $(".verifier").val(levelList[id]["creator"][0][0])
+    }
+    else {
+        $(".verifier").val(levelList[id]["creator"])
+    }
+    
 }
 
 function hideCollabTools() {
@@ -77,7 +83,23 @@ function hideCollabTools() {
 
 function refreshRoleList() {
     $(".roleList").children().remove();
-    $(".roleList").append("<option></option>");
+    roleArray.forEach(x => {
+        if (x.name != "") {
+            $(".roleList").append(`<option>${x.name}</option>`);
+        }
+    })
+
+    // Enable/disable creator
+    if (roleArray.length > 0) {
+        $(".addHumanButton").removeClass("disabled");
+        $(".collabHumans").show();
+        $(".noRoles").hide();
+    }
+    else {
+        $(".addHumanButton").addClass("disabled");
+        $(".collabHumans").hide();
+        $(".noRoles").show();
+    }
 }
 
 class Role {
@@ -86,13 +108,15 @@ class Role {
         this.hasPer = hasPer;
         this.color = color;
         this.HTMLobject = HTMLobject[0];
-        this.id = levelList[currEditing]["creator"][1].length-1;
+        this.id = levelList[currEditing]["creator"][1].length - 1;
     }
 
     removeRole() {
         roleArray.splice(this.id, 1);
         this.HTMLobject.remove();
         levelList[currEditing]["creator"][1].splice(this.id, 1);
+
+        refreshRoleList();
     }
 }
 
@@ -113,7 +137,7 @@ function addRole(preset = null) {
 
     let roleAm = levelList[currEditing]["creator"][1].length
     let roleCode = $(`
-    <tr>
+    <tr class="tableRow">
         <td>
 <input id="collabInp" placeholder="Jméno" value=${presetName}></input>
         </td>
@@ -126,18 +150,20 @@ function addRole(preset = null) {
         <td>
 <img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="roleArray[${roleAm}].removeRole()">
         </td>
-    <tr>
+    </tr>
     `).appendTo($(".collabRoles"));
     levelList[currEditing]["creator"][1].push([presetName, false, ""]); // Role name, has %, COLOR (TODO)
     roleArray.push(new Role(presetName, false, "", roleCode))
+
+    refreshRoleList();
 }
 
 function addCollabHuman() {
     $(".collabHumans").append(`
     <tr>
         <td>
-<input id="collabInp" placeholder="Jméno"></input>
-<img class="button" style="float: none; width: 2vw;" src="images/getStats.png">
+            <input id="collabInp" placeholder="Jméno"></input>
+            <img class="button" style="float: none; width: 2vw;" src="images/getStats.png">
         </td>
         <td>
             <select class="uploadText roleList">
@@ -146,14 +172,17 @@ function addCollabHuman() {
             </select>
         </td>
         <td>
-        <input id="collabInp" style="width: 20%;" placeholder="Od"></input>
-        <p class="uploadText" style="display: inline">-</p>
-        <input id="collabInp" style="width: 20%;" placeholder="Do"></input>
+            <input id="collabInp" style="width: 20%;" placeholder="Od"></input>
+            <p class="uploadText" style="display: inline">-</p>
+            <input id="collabInp" style="width: 20%;" placeholder="Do"></input>
         </td>
         <td>
-<img class="button" style="float: none; width: 2.5vw;" src="images/delete.png">
+
         </td>
-    <tr>
+        <td>
+            <img class="button" style="float: none; width: 2.5vw;" src="images/delete.png">
+        </td>
+    </tr>
     `)
 
     let cardCol = $("#top" + currEditing).css("background-color");

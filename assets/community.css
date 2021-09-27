@@ -105,8 +105,16 @@ td > * {
     vertical-align: middle;
 }
 
-.collabTables:nth-child(even) {
-    filter: brightness(1.2);
+ .collabTables th {
+    background: rgba(0,0,0,0.1) !important;
+}
+
+tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+tr > td:nth-child(2n) {
+	background: rgba(0,0,0,0.2);
 }
 
 #collabInp::placeholder {
@@ -351,6 +359,14 @@ input:disabled {
     text-align: left;
     background-image: url("../images/fade.png");
     background-repeat: repeat-x;
+    height: inherit;
+}
+
+.smallHelp {
+    width: 1.7vw;
+    height: auto;
+    vertical-align: top;
+    float: none !important;
 }
 
 
