@@ -53,13 +53,20 @@ function showCollabTools(id) {
     $(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
 
     $("#collabTools").fadeIn(50);
-    $("#collabTools").css("transform", "scaleY(1)")
+    $("#collabTools").css("transform", "scaleY(1)");
+    $(".tableRow").remove();
 
-    if (typeof levelList[id]["creator"] == "object") {
-        $(".verifier").val(levelList[id]["creator"][0][0])
+    let creaArray = levelList[id]["creator"];
+    if (typeof creaArray == "object") {
+        let longer = creaArray[1].length >= creaArray[2].length ? creaArray[1].length : creaArray[0].length
+        $(".verifier").val(creaArray[0][0])
+        for (let i = 0; i < longer; i++) {
+            if (i < creaArray[1].length) { addRole(creaArray[2][i]) }
+            if (i < creaArray[2].length) { addCollabHuman(creaArray[2][i]) }
+        }
     }
     else {
-        $(".verifier").val(levelList[id]["creator"])
+        $(".verifier").val(creaArray)
     }
     
 }
@@ -82,6 +89,7 @@ function hideCollabTools() {
 }
 
 function refreshRoleList() {
+    let roleArray = levelList[currEditing]["creator"][1]
     $(".roleList").children().remove();
     roleArray.forEach(x => {
         if (x.name != "") {
@@ -112,7 +120,6 @@ class Role {
     }
 
     removeRole() {
-        roleArray.splice(this.id, 1);
         this.HTMLobject.remove();
         levelList[currEditing]["creator"][1].splice(this.id, 1);
 
@@ -120,7 +127,18 @@ class Role {
     }
 }
 
-var roleArray = [];
+class Human {
+    constructor(name, role, part, color, HTMLobject, id = 0) {
+        this.name = name;
+        this.role = role;
+        this.part = part;
+        this.color = color
+        this.HTMLobject = HTMLobject[0];
+        this.id = levelList[currEditing]["creator"][2].length - 1;
+        
+    }
+}
+
 function addRole(preset = null) {
     let presets = [["Dekorace", 1], ["Layout", 1], ["Tester", 0]]
 
@@ -135,7 +153,6 @@ function addRole(preset = null) {
         levelList[currEditing]["creator"] = [[currVerifier, 0], [], []];
     }
 
-    let roleAm = levelList[currEditing]["creator"][1].length
     let roleCode = $(`
     <tr class="tableRow">
         <td>
@@ -148,18 +165,20 @@ function addRole(preset = null) {
 
         </td>
         <td>
-<img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="roleArray[${roleAm}].removeRole()">
+<img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="">
         </td>
     </tr>
     `).appendTo($(".collabRoles"));
-    levelList[currEditing]["creator"][1].push([presetName, false, ""]); // Role name, has %, COLOR (TODO)
-    roleArray.push(new Role(presetName, false, "", roleCode))
+    let roleInstance = new Role(presetName, false, "", roleCode)
+    roleCode.children("img").prevObject.attr("onclick", roleInstance.removeRole)
+    
+    levelList[currEditing]["creator"][1].push(roleInstance); // Role name, has %, COLOR (TODO)
 
     refreshRoleList();
 }
 
 function addCollabHuman() {
-    $(".collabHumans").append(`
+    let humanCode = $(`
     <tr>
         <td>
             <input id="collabInp" placeholder="Jméno"></input>
@@ -183,11 +202,14 @@ function addCollabHuman() {
             <img class="button" style="float: none; width: 2.5vw;" src="images/delete.png">
         </td>
     </tr>
-    `)
+    `).appendTo($(".collabHumans"))
 
     let cardCol = $("#top" + currEditing).css("background-color");
     let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
     $(".roleList").css("background", `rgb(${dark.join(",")})`)
+    
+    let creaArray = levelList[currEditing]["creator"]
+    creaArray[2].push(new Human("",creaArray[1][0].name,randomColor(), humanCode));
 }
 
 function colorizePage() {
