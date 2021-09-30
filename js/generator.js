@@ -298,6 +298,9 @@ $(function () {
 	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
 	if (location.search != "") {
 		var listID = location.search.slice(1).split("=");
+		
+		// Setting title image
+		$(".titleImage").attr("src", boards["titleImg"]);
 
 		// Password input removal
 		if (!["id", "pid"].includes(listID[0])) {
@@ -312,7 +315,6 @@ $(function () {
 			}
 			let boards = JSON.parse(decodedData);
 			$(".titles").append(jsStr["PREVIEW"][LANG]);
-			$(".titleImage").attr("src", boards["titleImg"]);
 			$(".searchTools").remove();
 			generateList(boards);
 		}
