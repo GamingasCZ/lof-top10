@@ -247,6 +247,9 @@ function generateList(boards) {
 	for (i = 1; i < Object.keys(boards).length - ADDIT_VALS; i++) {
 
 		let bIndex = (i).toString();
+		
+		// Setting title image
+		$(".titleImage").attr("src", boards["titleImg"]);
 
 		// Disabling card buttons
 		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = "disabled"; }
@@ -298,9 +301,6 @@ $(function () {
 	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
 	if (location.search != "") {
 		var listID = location.search.slice(1).split("=");
-		
-		// Setting title image
-		$(".titleImage").attr("src", boards["titleImg"]);
 
 		// Password input removal
 		if (!["id", "pid"].includes(listID[0])) {
