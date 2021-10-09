@@ -541,6 +541,16 @@ input:disabled {
     margin-right: 2%;
 }
 
+.debugTools {
+    justify-content: center !important;
+    background-image: url('../images/debug.png') !important;
+    max-width: 45vw !important;
+    margin: auto !important;
+    margin: auto !important;
+    margin-top: 1.5% !important;
+    display: none;
+}
+
 .searchTools {
     background-color: #1e1e1e;
     border-radius: 1vw;

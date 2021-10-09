@@ -17,6 +17,7 @@
   <script rel="text/javascript" src="./js/graphicEditor.js"></script>
   <script rel="text/javascript" src="./js/helpDialogs.js"></script>
   <script rel="text/javascript" src="./js/color.js"></script>
+  <script rel="text/javascript" src="./js/collabTools.js"></script>
 
   <title>Nahrávání seznamů</title>
 </head>
@@ -36,12 +37,14 @@
   <!-- Collab tools -->
   <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
-      <p style="margin: 0 auto;">- Nastavení collabu -</p>
+      <p style="margin: 0 auto;" class="collabTTitle">- Nastavení collabu -</p>
       <img src="./images/delete.png" class="button" style="width: 6%; height: max-content;" onclick="hideCollabTools()">
     </div>
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 12%;">
       <img class="colButton${index}" id="posInputPics" src="./images/bytost.png">
-      <input id="posInputBox" class="verifier" autocomplete="off" type="text" placeholder="Verifikátor" style="width: 25vw;">
+      <input id="posInputBox" class="verifier" autocomplete="off" type="text" placeholder="Verifikátor"
+        style="width: 25vw;">
+      <img class="button" style="float: none;" src="images/getStats.png">
     </div>
 
     <div class="editorHeader collabHeader uploadText collabBar">Role
@@ -50,7 +53,7 @@
         <button style="float: none;" class="button uploadText eventButton" onclick="addRole(1)">Layout</button>
         <button style="float: none;" class="button uploadText eventButton" onclick="addRole(2)">Tester</button>
       </div>
-      <img class="button" onclick="addRole()" style="float: none; width: 5%;" src="images/add.png">
+      <img class="button roleAddButton" onclick="addRole()" style="float: none; width: 5%;" src="images/add.png">
     </div>
     <div class="collabBG collabHeader">
       <table class="collabTables collabRoles">
@@ -60,7 +63,7 @@
             Jméno
             <img src="images/help.png" class="button smallHelp helpButton" onclick="openHelp('roleName')">
           </th>
-          <th class="collabTables"  style="width: 25%;">
+          <th class="collabTables" style="width: 25%;">
             <img src="images/part.png" style="width: 2vw;">
             Má část?
             <img src="images/help.png" class="button smallHelp helpButton" onclick="openHelp('roleHasPer')">
@@ -76,7 +79,8 @@
     </div>
 
     <div class="editorHeader collabHeader uploadText collabBar">Členové
-      <img class="button disabled addHumanButton" onclick="addCollabHuman()" style="float: none; width: 5%;" src="images/add.png">
+      <img class="button disabled addHumanButton" onclick="addCollabHuman()" style="float: none; width: 5%;"
+        src="images/add.png">
     </div>
     <div class="collabBG collabHeader">
       <p class="uploadText noRoles">K přidání členů přidej roli.</p>
@@ -86,7 +90,7 @@
           <th class="collabTables" style="width: 25%;">Role</th>
           <th class="collabTables" style="width: 20%;">Rozsah</th>
           <th class="collabTables" style="width: 20%;">Barva</th>
-          <th class="collabTables"></th>
+          <th class="collabTables" style="width: 20%;"></th>
         </tr>
       </table>
     </div>
@@ -168,6 +172,16 @@
   </form>
 
   <p class="titles" style="margin-top: 10vh;">- Komunitní seznamy -</p>
+
+  <!-- Debug Tools -->
+  <div class="searchTools uploadText debugTools">
+    <span style="font-size: 2vw;">Seznamy k vygenerování:</span>
+    <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="debugLists(-1)">
+    <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
+    <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="debugLists(1)">
+    <img class="button pageBut" style="float: none; width: 3vw;" src="images/preview.png" onclick="debugLists(2)">
+  </div>
+
   <div class="searchTools uploadText" style="justify-content: center;">
     <span style="font-size: 3vw; padding-right: 2%;" id="sortStr">Řazení: </span>
     <img src="images/sort.png" id="sortBut" class="button" style="float: none; width: 5%; transition-duration: 0s;">
@@ -183,6 +197,7 @@
       <img src="./images/getStats.png" class="button passImg" style="float: none" onclick="search()">
     </div>
   </div>
+
   <div class="customLists uploadText"></div>
 
   <!--Explosion-->

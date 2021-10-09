@@ -332,6 +332,7 @@ html, body {
   padding-left: 1vw;
   font-size: 2vw !important;
   -webkit-text-stroke: black 0.1vw !important;
+  margin: 0 !important;
 }
 
 .emojiPanel {

@@ -63,6 +63,13 @@
   </div>
 
   <div class="comments">
+    <div class="searchTools uploadText debugTools">
+      <span style="font-size: 2.6vw;">Přidat komentáře:</span>
+      <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="debugComments(-1)">
+      <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
+      <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="debugComments(1)">
+      <img class="button pageBut" style="float: none; width: 3vw;" src="images/preview.png" onclick="debugComments(2)">
+    </div>
     <div class="positionEdit" id="commentMaker">
       <div style="display: flex; align-items: center; padding-left: 1%;">
         <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 4vw;">

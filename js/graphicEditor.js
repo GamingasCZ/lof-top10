@@ -39,179 +39,6 @@ function getDetailsFromName(id) {
     updateSmPos()
 }
 
-var currEditing;
-function showCollabTools(id) {
-    currEditing = id;
-    let cardCol = $("#top" + id).css("background-color");
-    let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
-    $("body").css("overflow-y", "hidden")
-    $(".collabTables").css("background-color", cardCol);
-    $(".collabTables:nth-child(even)").css("background-color", dark);
-
-    $("#collabTools").css("background-color", cardCol);
-    $("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
-    $(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
-
-    $("#collabTools").fadeIn(50);
-    $("#collabTools").css("transform", "scaleY(1)");
-    $(".tableRow").remove();
-
-    let creaArray = levelList[id]["creator"];
-    if (typeof creaArray == "object") {
-        let longer = creaArray[1].length >= creaArray[2].length ? creaArray[1].length : creaArray[0].length
-        $(".verifier").val(creaArray[0][0])
-        for (let i = 0; i < longer; i++) {
-            if (i < creaArray[1].length) { addRole(creaArray[2][i]) }
-            if (i < creaArray[2].length) { addCollabHuman(creaArray[2][i]) }
-        }
-    }
-    else {
-        $(".verifier").val(creaArray)
-    }
-    
-}
-
-function hideCollabTools() {
-    // Collab tools turn creator into an array
-    if (typeof levelList[currEditing]["creator"] == "object") {
-        $(".colButton" + currEditing).css("filter", "hue-rotate(180deg)");
-    }
-    else {
-        $(".colButton" + currEditing).css("filter", "hue-rotate(0deg)");
-    }
-
-    $("body").css("overflow-y", "scroll")
-
-    $(".cardLCreator" + currEditing).val($(".verifier").val())
-
-    $("#collabTools").fadeOut(50);
-    $("#collabTools").css("transform", "scaleY(0.7)");
-}
-
-function refreshRoleList() {
-    let roleArray = levelList[currEditing]["creator"][1]
-    $(".roleList").children().remove();
-    roleArray.forEach(x => {
-        if (x.name != "") {
-            $(".roleList").append(`<option>${x.name}</option>`);
-        }
-    })
-
-    // Enable/disable creator
-    if (roleArray.length > 0) {
-        $(".addHumanButton").removeClass("disabled");
-        $(".collabHumans").show();
-        $(".noRoles").hide();
-    }
-    else {
-        $(".addHumanButton").addClass("disabled");
-        $(".collabHumans").hide();
-        $(".noRoles").show();
-    }
-}
-
-class Role {
-    constructor(name, hasPer, color, HTMLobject, id = 0) {
-        this.name = name;
-        this.hasPer = hasPer;
-        this.color = color;
-        this.HTMLobject = HTMLobject[0];
-        this.id = levelList[currEditing]["creator"][1].length - 1;
-    }
-
-    removeRole() {
-        this.HTMLobject.remove();
-        levelList[currEditing]["creator"][1].splice(this.id, 1);
-
-        refreshRoleList();
-    }
-}
-
-class Human {
-    constructor(name, role, part, color, HTMLobject, id = 0) {
-        this.name = name;
-        this.role = role;
-        this.part = part;
-        this.color = color
-        this.HTMLobject = HTMLobject[0];
-        this.id = levelList[currEditing]["creator"][2].length - 1;
-        
-    }
-}
-
-function addRole(preset = null) {
-    let presets = [["Dekorace", 1], ["Layout", 1], ["Tester", 0]]
-
-    let presetName = preset != null ? presets[preset][0] : "";
-    if (preset != null) {
-        $(this).remove();
-    }
-
-    let currVerifier = levelList[currEditing]["creator"];
-    if (typeof currVerifier != "object") {
-        // TODO: first element verified might need to be fixed
-        levelList[currEditing]["creator"] = [[currVerifier, 0], [], []];
-    }
-
-    let roleCode = $(`
-    <tr class="tableRow">
-        <td>
-<input id="collabInp" placeholder="Jméno" value=${presetName}></input>
-        </td>
-        <td>
-
-        </td>
-        <td>
-
-        </td>
-        <td>
-<img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="">
-        </td>
-    </tr>
-    `).appendTo($(".collabRoles"));
-    let roleInstance = new Role(presetName, false, "", roleCode)
-    roleCode.children("img").prevObject.attr("onclick", roleInstance.removeRole)
-    
-    levelList[currEditing]["creator"][1].push(roleInstance); // Role name, has %, COLOR (TODO)
-
-    refreshRoleList();
-}
-
-function addCollabHuman() {
-    let humanCode = $(`
-    <tr>
-        <td>
-            <input id="collabInp" placeholder="Jméno"></input>
-            <img class="button" style="float: none; width: 2vw;" src="images/getStats.png">
-        </td>
-        <td>
-            <select class="uploadText roleList">
-            <option>ok</option>
-            <option>ok</option>
-            </select>
-        </td>
-        <td>
-            <input id="collabInp" style="width: 20%;" placeholder="Od"></input>
-            <p class="uploadText" style="display: inline">-</p>
-            <input id="collabInp" style="width: 20%;" placeholder="Do"></input>
-        </td>
-        <td>
-
-        </td>
-        <td>
-            <img class="button" style="float: none; width: 2.5vw;" src="images/delete.png">
-        </td>
-    </tr>
-    `).appendTo($(".collabHumans"))
-
-    let cardCol = $("#top" + currEditing).css("background-color");
-    let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
-    $(".roleList").css("background", `rgb(${dark.join(",")})`)
-    
-    let creaArray = levelList[currEditing]["creator"]
-    creaArray[2].push(new Human("",creaArray[1][0].name,randomColor(), humanCode));
-}
-
 function colorizePage() {
     let selColor = $("#bgcolorPicker").val()
 
@@ -649,7 +476,7 @@ function card(index, rndColor) {
                     <img title="${jsStr["DEL_CARD"][LANG]}" class="removerButton${index} button cardButton"
                         onclick="removeLevel(${index})" src="./images/delete.png">
 
-                    <img class="button cardButton" onclick="document.querySelector("#colorPicker${index}").click();" src="./images/colorSelect.png">
+                    <img class="button cardButton" onclick="document.querySelector('#colorPicker${index}').click();" src="./images/colorSelect.png">
                     <input style="display: none;" title="${jsStr["CARD_COL"][LANG]}" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
                 </div>
             </div>   
@@ -707,9 +534,11 @@ $(function () {
         $(".positionEdit:not(:hidden)")[0].focus()
         if (k.key == "ArrowDown") {
             displayCard(currCardShown + 1) // Key: W
+            document.getElementById("top" + currCardShown++).scrollIntoView();
         }
         else if (k.key == "ArrowUp") {
             displayCard(currCardShown - 1) // Key: S
+            document.getElementById("top" + currCardShown--).scrollIntoView();
         }
         else if (k.key == "ArrowLeft") {
             if (moveCard("up", currCardShown)) { currCardShown-- } // Key: A

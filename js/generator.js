@@ -1,5 +1,8 @@
 const ADDIT_VALS = 1;
 
+// These are not real people :<'
+const fakeNames = ["Voiprin", "Sarprong", "ZentricSigma","Darwing","ExpoD", "J0hnram", "Jayuff", "AligaThePeter", "Divpan", "Acidity","Doorami","DanZBro", "FunnyBone"]
+
 if (window.location.search == "") {
 	var yID = "2019";
 }
@@ -12,7 +15,7 @@ const YEAR = yID;
 // Default 2019 board
 if (YEAR == "2019" || window.location.pathname.match("upload") == -1) {
 	var boards = {
-		"titleImg": "./images/title.png",
+		"titleImg": "",
 		"1": {
 			"levelName": "Snowy",
 			"creator": "MurlocGD, PizzaGamerHu",
@@ -292,8 +295,20 @@ function generateList(boards) {
 	}
 }
 
+function debugCards() {
+	// Returns a randomly generated board
+	let str = '{"titleImg": "",';
+	for (let i = 1; i < Math.ceil(Math.random() * 20)+1; i++) {
+		str += `"${i}": {"levelName": "Debug #${i}","creator": "${fakeNames[Math.floor(Math.random() * fakeNames.length)]}","levelID": 128, "video": "9ywnLQywz74","color":"${RGBtoHEX(randomColor())}"},`
+	}
+	str = str.slice(0,-2) + "}}"
+	return JSON.parse(str)
+}
+
 var listData = "";
+var debugPwd = 0;
 $(function () {
+	$(".passInput").val("");
 	$(".shade").append(`<img class="title" src="${jsStr["TIT_IMG"][LANG]}">`);
 	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
 	if (location.search != "") {
@@ -317,6 +332,16 @@ $(function () {
 			generateList(boards);
 		}
 		else if (listID[0] == "id") {
+			if (window.location.protocol.includes("file")) {
+				debugPwd = Math.ceil(Math.random() * 9999999999)
+				$(".titles").append(`<p style="color: tomato">Debug List</p>
+				<hr class="lineSplitGeneral" style="margin: -2% 10%;">
+				<p style="font-size: 3vw;">- Dasher123 -</p>
+				<p style="font-size: 3vw;">Pass: ${debugPwd}</p>`);
+				$(".titleImage").attr("src", boards["titleImg"]);
+				generateList(debugCards()) 
+			}
+
 			$.get("./php/getLists.php?id=" + listID[1], function (data) {
 				if (data == 1) {
 					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
@@ -420,4 +445,10 @@ function checkPassword() {
 			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?edit=${listID[1]}&pass=${passEntered}`;
 		}
 	})
+
+	if (window.location.protocol.includes("file")) {
+		if (passEntered == debugPwd) {
+			window.location.href = `./upload.html?edit=${listID[1]}&pass=${passEntered}`
+		}
+	}
 }
