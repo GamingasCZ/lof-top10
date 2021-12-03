@@ -175,7 +175,7 @@ function addRole(preset = null, loading = 0) {
 
     let roleInstance = new Role(presetName, false, cpickerCol, [0])
     if (loading == 0) {
-        levelList[currEditing]["creator"][1].push(roleInstance); // Role name, has %, COLOR (TODO)
+        levelList[currEditing]["creator"][1].push(roleInstance); // Role name, has %, COLOR
     }
 
     let roleCode = $(`
@@ -314,7 +314,7 @@ function getObjArrayIndex(th, type) {
 function removeColObject(th, type) {
     levelList[currEditing]["creator"][type].forEach(el => {
         if ($(el.HTMLobject).is(th.parent().parent())) {
-            el.remove(getObjArrayIndex(th, 1))
+            el.remove(getObjArrayIndex(th, type))
 
             if (presetNames.indexOf(el.name) != -1) {
                 $(`.eventButton:eq(${presetNames.indexOf(el.name)})`).show()
