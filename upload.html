@@ -47,7 +47,8 @@
       <img class="button" style="float: none;" src="images/getStats.png">
     </div>
 
-    <div class="editorHeader collabHeader uploadText collabBar">Role
+    <div class="editorHeader collabHeader uploadText collabBar">
+      <div class="uploadText button" onclick="rollThing(0)">Role</div>
       <div style="padding: 0.2% 2%; display: flex;">
         <button style="float: none;" class="button uploadText eventButton" onclick="addRole(0)">Dekorace</button>
         <button style="float: none;" class="button uploadText eventButton" onclick="addRole(1)">Layout</button>
@@ -55,8 +56,9 @@
       </div>
       <img class="button roleAddButton" onclick="addRole()" style="float: none; width: 5%;" src="images/add.png">
     </div>
-    <div class="collabBG collabHeader">
-      <table class="collabTables collabRoles">
+    <div class="collabBG collabHeader collabDIV">
+      <table style="display: none;" class="collabTables collabRoles">
+        <p class="uploadText noRolAdded">K přidání role vyber předvolbu, nebo klikni na<img width=3% id="plusSign" src="images/add.png"></p>
         <tr class="collabTables">
           <th class="collabTables" style="width: 50%;">
             <img src="images/bytost.png" style="width: 2vw;">
@@ -78,12 +80,14 @@
       </table>
     </div>
 
-    <div class="editorHeader collabHeader uploadText collabBar">Členové
+    <div class="editorHeader collabHeader uploadText collabBar">
+      <div class="uploadText button" onclick="rollThing(1)">Členové</div>
       <img class="button disabled addHumanButton" onclick="addCollabHuman()" style="float: none; width: 5%;"
         src="images/add.png">
     </div>
-    <div class="collabBG collabHeader">
-      <p class="uploadText noRoles">K přidání členů přidej roli.</p>
+    <div class="collabBG collabHeader collabDIV">
+      <div class="uploadText noRoles">K přidání členů přidej roli.</div>
+      <div style="display: none;" class="uploadText addRoles">K přidání role klikni na<img width=3% id="plusSign" src="images/add.png"></div>
       <table style="display: none;" class="collabTables collabHumans">
         <tr class="collabTables">
           <th class="collabTables" style="width: 50%;">Jméno</th>
@@ -94,6 +98,7 @@
         </tr>
       </table>
     </div>
+    <img style="display: none;" id="emojiMan" src="images/oho.png">
 
   </div>
 
