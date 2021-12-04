@@ -68,8 +68,7 @@ function showCollabTools(id) {
     else {
         $(".verifier").val(creaArray)
     }
-
-    refreshRoleList()
+$
 }
 
 function hideCollabTools() {
@@ -102,15 +101,31 @@ function refreshRoleList() {
     }
 
     var select = ""
+    
+    let roleNames = []
     roleArray.forEach(role => {
-        humArray.forEach(hum => {
-            if (hum.role == role.name) { select = " selected"}
-        });
-
+        roleNames.push(role.name);
+            
         if (role.name != "") {
             $(".roleList").append(`<option${select}>${role.name}</option>`);
-        } 
-    })
+            }
+        else {
+            $(".roleList").append(`<option${select}>(Bezejmenná)</option>`);
+        }
+    });
+    
+    if ($(".roleList").length > 0) {
+        let i = 0
+        humArray.forEach(hum => {        
+            if (roleNames.indexOf(hum.role) != -1 && $(".roleList")[i] != undefined) {
+                
+                let roleIndex = roleNames.indexOf(hum.role);
+                $(".roleList")[i].childNodes[roleIndex+1].setAttribute("selected", true)
+                }
+            i++
+            })
+    }
+        
     // Enable/disable creator
     if (roleArray.length > 0) {
         $(".addHumanButton").removeClass("disabled");
@@ -137,7 +152,7 @@ function refreshRoleList() {
     }
 
     // Roles, but no humans (shocked emoji face yes)
-    if (humArray.length > 0) {
+    if (humArray.length > 0 && roleArray.length > 0) {
         $(".addRoles").hide();
         $(".collabHumans").show();
     }
@@ -181,7 +196,7 @@ function addRole(preset = null, loading = 0) {
     let roleCode = $(`
     <tr class="tableRow">
         <td>
-            <input id="collabInp" onchange="chRoleValue($(this), 'name', 1)" placeholder="Jméno" value=${presetName}></input>
+            <input id="collabInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="Jméno" value=${presetName}></input>
         </td>
         <td>
             <img class="setCheckbox button" for="hasPer" src="images/check-${loadCheck}.png" onclick="checkCollabCheck('hasPer', $(this))"> 
@@ -338,4 +353,12 @@ function rollThing(thing) {
     else {
         $("#emojiMan").hide()
     }
+}
+
+function debugArray() {
+    let roleArray = levelList[currEditing]["creator"][1];
+    let humArray = levelList[currEditing]["creator"][2];
+    
+    console.log(roleArray);
+    console.log(humArray);
 }
