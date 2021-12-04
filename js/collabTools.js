@@ -58,7 +58,7 @@ function showCollabTools(id) {
 
     let creaArray = levelList[id]["creator"];
     if (typeof creaArray == "object") {
-        let longer = creaArray[1].length >= creaArray[2].length ? creaArray[1].length : creaArray[0].length
+        let longer = creaArray[1].length >= creaArray[2].length ? creaArray[1].length : creaArray[2].length
         $(".verifier").val(creaArray[0][0])
         for (let i = 0; i < longer; i++) {
             if (i < creaArray[1].length) { addRole(creaArray[1][i], 1) }
@@ -207,7 +207,7 @@ function addRole(preset = null, loading = 0) {
             <p id="roleColPicker" style="display: inline;">${cpickerCol.slice(1)}</p>
         </td>
         <td>
-            <img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
+            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="removeColObject($(this), 1)"><img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
         </td>
     </tr>
     `).appendTo($(".collabRoles"));
@@ -279,7 +279,7 @@ function addCollabHuman(load = 0) {
         <input type="color" class="tableCpicker button" style="float: none; width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
         </td>
         <td>
-            <img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)" >
+            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="removeColObject($(this), 2)"><img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
         </td>
     </tr>
     `).appendTo($(".collabHumans"))
