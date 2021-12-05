@@ -55,7 +55,10 @@
         <button style="float: none;" class="button uploadText eventButton" onclick="addRole(1)">Layout</button>
         <button style="float: none;" class="button uploadText eventButton" onclick="addRole(2)">Tester</button>
       </div>
-      <img class="button roleAddButton" onclick="addRole()" style="float: none; width: 5%;" src="images/add.png">
+      <div>
+        <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')" style="float: none; width: 5%;" src="images/preview.png">
+        <img class="button roleAddButton" onclick="addRole()" style="float: none; width: 5%;" src="images/add.png">
+      </div>
     </div>
     <div class="collabBG collabHeader collabDIV">
       <table style="display: none;" class="collabTables collabRoles">
@@ -83,8 +86,12 @@
 
     <div class="editorHeader collabHeader uploadText collabBar">
       <div class="uploadText button" onclick="rollThing(1)">Členové</div>
-      <img class="button disabled addHumanButton" onclick="addCollabHuman()" style="float: none; width: 5%;"
-        src="images/add.png">
+      
+      <div>
+          <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)" style="float: none; width: 5%;" src="images/preview.png">
+          <img class="button disabled addHumanButton" onclick="addCollabHuman()" style="float: none; width: 5%;"
+            src="images/add.png">
+      </div>
     </div>
     <div class="collabBG collabHeader collabDIV">
       <div class="uploadText noRoles">K přidání členů přidej roli.</div>

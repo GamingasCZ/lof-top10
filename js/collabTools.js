@@ -1,14 +1,15 @@
 var currEditing;
+var clipboard;
+
 const presets = [["Dekorace", 1], ["Layout", 1], ["Tester", 0]];
 const presetNames = ["Dekorace", "Layout", "Tester"]
 
 class Role {
-    constructor(name, hasPer, color, HTMLobject, id = 0) {
+    constructor(name, hasPer, color, HTMLobject) {
         this.name = name;
         this.hasPer = hasPer;
         this.color = color;
         this.HTMLobject = HTMLobject[0];
-        this.id = levelList[currEditing]["creator"][1].length - 1;
     }
 
     remove(arrIndex) {
@@ -56,6 +57,14 @@ function showCollabTools(id) {
     $("#collabTools").css("transform", "scaleY(1)");
     $(".tableRow").remove();
 
+    // Clipboard loading
+    if (localStorage.getItem("roleclip") == null) {
+        $("#rolepaste").addClass("disabled");
+    }
+    if (localStorage.getItem("humclip") == null) {
+        $("#humpaste").addClass("disabled")
+    }
+
     let creaArray = levelList[id]["creator"];
     if (typeof creaArray == "object") {
         let longer = creaArray[1].length >= creaArray[2].length ? creaArray[1].length : creaArray[2].length
@@ -68,7 +77,6 @@ function showCollabTools(id) {
     else {
         $(".verifier").val(creaArray)
     }
-$
 }
 
 function hideCollabTools() {
@@ -207,7 +215,7 @@ function addRole(preset = null, loading = 0) {
             <p id="roleColPicker" style="display: inline;">${cpickerCol.slice(1)}</p>
         </td>
         <td>
-            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="removeColObject($(this), 1)"><img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
+            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"><img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
         </td>
     </tr>
     `).appendTo($(".collabRoles"));
@@ -279,7 +287,7 @@ function addCollabHuman(load = 0) {
         <input type="color" class="tableCpicker button" style="float: none; width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
         </td>
         <td>
-            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="removeColObject($(this), 2)"><img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
+            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 2)"><img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
         </td>
     </tr>
     `).appendTo($(".collabHumans"))
@@ -361,4 +369,36 @@ function debugArray() {
     
     console.log(roleArray);
     console.log(humArray);
+}
+
+function clipboardTask(task, data, ind=-1) {
+    // task - 1: copy, 2: paste
+    if (task == 1) {
+        let object = levelList[currEditing]["creator"][ind][getObjArrayIndex(data, ind)]
+        let dataName = object.constructor.name == "Role" ? "role" : "hum"
+        
+        localStorage.setItem(dataName+"clip", JSON.stringify(object))
+        $(`#${dataName}paste`).removeClass("disabled")
+    }
+    else {
+        let pasteData = localStorage.getItem(data);
+        if (pasteData == null) { return false }
+        
+        if (data == "roleclip") {
+            let oD = JSON.parse(pasteData)
+            let role = new Role(oD.name, oD.hasPer, oD.color, ["lol"])
+            
+            levelList[currEditing]["creator"][1].push(role)
+            addRole(role, 1);
+            }
+        else {
+            let oD = JSON.parse(pasteData)
+            let hum = new Human(oD.name, oD.role, oD.part, oD.color, ["lol"], oD.verified)
+            
+            levelList[currEditing]["creator"][2].push(hum)
+            addCollabHuman(hum);
+        }
+        refreshRoleList();
+    }
+    
 }
