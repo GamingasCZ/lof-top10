@@ -576,6 +576,12 @@ input:disabled {
     height: 3vw;
 }
 
+.collabHButtons {
+    display: flex;
+    justify-content: right;
+}
+   
+
 .page {
     display: flex;
     justify-content: center;

@@ -58,10 +58,10 @@ function showCollabTools(id) {
     $(".tableRow").remove();
 
     // Clipboard loading
-    if (localStorage.getItem("roleclip") == null) {
+    if (sessionStorage.getItem("roleclip") == null) {
         $("#rolepaste").addClass("disabled");
     }
-    if (localStorage.getItem("humclip") == null) {
+    if (sessionStorage.getItem("humclip") == null) {
         $("#humpaste").addClass("disabled")
     }
 
@@ -109,31 +109,31 @@ function refreshRoleList() {
     }
 
     var select = ""
-    
+
     let roleNames = []
     roleArray.forEach(role => {
         roleNames.push(role.name);
-            
+
         if (role.name != "") {
             $(".roleList").append(`<option${select}>${role.name}</option>`);
-            }
+        }
         else {
             $(".roleList").append(`<option${select}>(Bezejmenná)</option>`);
         }
     });
-    
+
     if ($(".roleList").length > 0) {
         let i = 0
-        humArray.forEach(hum => {        
+        humArray.forEach(hum => {
             if (roleNames.indexOf(hum.role) != -1 && $(".roleList")[i] != undefined) {
-                
+
                 let roleIndex = roleNames.indexOf(hum.role);
-                $(".roleList")[i].childNodes[roleIndex+1].setAttribute("selected", true)
-                }
+                $(".roleList")[i].childNodes[roleIndex + 1].setAttribute("selected", true)
+            }
             i++
-            })
+        })
     }
-        
+
     // Enable/disable creator
     if (roleArray.length > 0) {
         $(".addHumanButton").removeClass("disabled");
@@ -145,6 +145,7 @@ function refreshRoleList() {
         $(".noRoles").hide();
         $(".noRolAdded").hide();
         $(".addRoles").show();
+        $("#humpaste").removeClass("disabled");
     }
     else {
         $(".addHumanButton").addClass("disabled");
@@ -157,6 +158,7 @@ function refreshRoleList() {
         $(".noRoles").show();
         $(".noRolAdded").show();
         $(".addRoles").hide();
+        $("#humpaste").addClass("disabled");
     }
 
     // Roles, but no humans (shocked emoji face yes)
@@ -215,7 +217,8 @@ function addRole(preset = null, loading = 0) {
             <p id="roleColPicker" style="display: inline;">${cpickerCol.slice(1)}</p>
         </td>
         <td>
-            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"><img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
+            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"
+           ><img class="button roleRm" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
         </td>
     </tr>
     `).appendTo($(".collabRoles"));
@@ -243,7 +246,6 @@ function addCollabHuman(load = 0) {
     // name, role, part %, color, element, verified, id
     let humanInstance = new Human("", levelList[currEditing]["creator"][1][0].name, [0, 0], "", [0], 0)
     if (load != 0) {
-        console.log(load)
         humanInstance = load;
     }
     if (load == 0) { var cpickerCol = RGBtoHEX(randomColor()) }
@@ -287,7 +289,8 @@ function addCollabHuman(load = 0) {
         <input type="color" class="tableCpicker button" style="float: none; width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
         </td>
         <td>
-            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 2)"><img class="button" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
+            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 2)"
+           ><img class="button humRm" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
         </td>
     </tr>
     `).appendTo($(".collabHumans"))
@@ -305,7 +308,7 @@ function addCollabHuman(load = 0) {
     refreshRoleList();
 }
 
-function chRoleValue(el, changeValue, type, arr=null) {
+function chRoleValue(el, changeValue, type, arr = null) {
     let index = getObjArrayIndex(el, type);
     if (arr == null) {
         levelList[currEditing]["creator"][type][index][changeValue] = el.val()
@@ -313,7 +316,7 @@ function chRoleValue(el, changeValue, type, arr=null) {
     else {
         levelList[currEditing]["creator"][type][index][changeValue][arr] = el.val()
     }
-    
+
 
     if (changeValue == "color") {
         // Change text next to role color picker
@@ -335,6 +338,7 @@ function getObjArrayIndex(th, type) {
 }
 
 function removeColObject(th, type) {
+    var finished = false
     levelList[currEditing]["creator"][type].forEach(el => {
         if ($(el.HTMLobject).is(th.parent().parent())) {
             el.remove(getObjArrayIndex(th, type))
@@ -342,13 +346,39 @@ function removeColObject(th, type) {
             if (presetNames.indexOf(el.name) != -1) {
                 $(`.eventButton:eq(${presetNames.indexOf(el.name)})`).show()
             }
+
+            finished = true
         }
     })
+
+    if (!finished) {
+        console.log("refreshing...");
+        let deleteIndexR = Object.values($(".roleRm")).indexOf(th[0]);
+        let deleteIndexH = Object.values($(".humRm")).indexOf(th[0]);
+
+        $(".tableRow").remove();
+        let creaArray = levelList[currEditing]["creator"];
+        let longer = creaArray[1].length >= creaArray[2].length ? creaArray[1].length : creaArray[2].length;
+        $(".verifier").val(creaArray[0][0]);
+        for (let i = 0; i < longer; i++) {
+            if (i < creaArray[1].length) { addRole(creaArray[1][i], 1); }
+            if (i < creaArray[2].length) { addCollabHuman(creaArray[2][i]); }
+        }
+        if (type == 1) {
+            $(".tableRow")[deleteIndexR].remove();
+            levelList[currEditing]["creator"][1].splice(deleteIndexR, 1);
+        }
+        else {
+            $(".tableRow")[deleteIndexH + creaArray[1].length].remove();
+            levelList[currEditing]["creator"][2].splice(deleteIndexH, 1);
+        }
+        refreshRoleList();
+    }
 }
 
 function rollThing(thing) {
     if ($('.collabDIV')[thing].style.height != "0px") {
-        
+
         $('.collabDIV')[thing].style.height = 0
     }
     else {
@@ -366,39 +396,41 @@ function rollThing(thing) {
 function debugArray() {
     let roleArray = levelList[currEditing]["creator"][1];
     let humArray = levelList[currEditing]["creator"][2];
-    
+
     console.log(roleArray);
     console.log(humArray);
 }
 
-function clipboardTask(task, data, ind=-1) {
+function clipboardTask(task, data, ind = -1) {
     // task - 1: copy, 2: paste
     if (task == 1) {
         let object = levelList[currEditing]["creator"][ind][getObjArrayIndex(data, ind)]
         let dataName = object.constructor.name == "Role" ? "role" : "hum"
-        
-        localStorage.setItem(dataName+"clip", JSON.stringify(object))
+
+        sessionStorage.setItem(dataName + "clip", JSON.stringify(object))
         $(`#${dataName}paste`).removeClass("disabled")
     }
     else {
-        let pasteData = localStorage.getItem(data);
+        let pasteData = sessionStorage.getItem(data);
         if (pasteData == null) { return false }
-        
+
         if (data == "roleclip") {
-            let oD = JSON.parse(pasteData)
-            let role = new Role(oD.name, oD.hasPer, oD.color, ["lol"])
-            
+            let clip = JSON.parse(pasteData)
+            let role = new Role(clip.name, clip.hasPer, clip.color, ["lol"])
+
             levelList[currEditing]["creator"][1].push(role)
             addRole(role, 1);
-            }
+        }
         else {
-            let oD = JSON.parse(pasteData)
-            let hum = new Human(oD.name, oD.role, oD.part, oD.color, ["lol"], oD.verified)
-            
-            levelList[currEditing]["creator"][2].push(hum)
-            addCollabHuman(hum);
+            if (typeof levelList[currEditing]["creator"] == "object") {
+                let clip = JSON.parse(pasteData)
+                let hum = new Human(clip.name, clip.role, clip.part, clip.color, ["lol"], clip.verified)
+
+                levelList[currEditing]["creator"][2].push(hum)
+                addCollabHuman(hum);
+            }
         }
         refreshRoleList();
     }
-    
+
 }
