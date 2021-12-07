@@ -21,15 +21,14 @@ class Role {
 }
 
 class Human {
-    constructor(name, role, part, color, HTMLobject, verified, id = 0) {
+    constructor(name, role, part, color, socials, HTMLobject, verified) {
         this.name = name;
         this.role = role;
         this.part = part;
-        this.color = color
+        this.color = color;
+        this.socials = socials;
         this.HTMLobject = HTMLobject[0];
         this.verified = verified;
-        this.id = levelList[currEditing]["creator"][2].length - 1;
-
     }
     remove(arrIndex) {
         this.HTMLobject.remove()
@@ -243,8 +242,8 @@ function checkCollabCheck(name, el) {
 }
 
 function addCollabHuman(load = 0) {
-    // name, role, part %, color, element, verified, id
-    let humanInstance = new Human("", levelList[currEditing]["creator"][1][0].name, [0, 0], "", [0], 0)
+    // name, role, part %, color, socials, element, verified, id
+    let humanInstance = new Human("", levelList[currEditing]["creator"][1][0].name, [0, 0], "", [], [0], 0)
     if (load != 0) {
         humanInstance = load;
     }
@@ -274,19 +273,23 @@ function addCollabHuman(load = 0) {
     let humanCode = $(`
     <tr class="tableRow">
         <td>
-            <input onchange="chRoleValue($(this), 'name', 2)" id="collabInp" placeholder="Jméno" value="${humanInstance.name}"></input>
-            <img class="button" style="float: none; width: 2vw;" src="images/getStats.png">
+            <img class="button" style="float: none; width: 2vw;" src="images/bytost.png"
+           ><input onchange="chRoleValue($(this), 'name', 2)" id="collabInp" placeholder="Jméno" value="${humanInstance.name}"></input
+           ><img class="button" style="float: none; width: 2vw;" src="images/getStats.png">
+        </td>
+        <td>
+            <img class="button" style="float: none; width: 2vw;" src="images/add.png">
         </td>
         <td>
             <select onchange="chRoleValue($(this), 'role', 2)" class="uploadText roleList"></select>
         </td>
         <td>
-            <input onchange="chRoleValue($(this), 'part', 2, 0)" id="collabInp" style="width: 20%;" placeholder="Od" value="${humanInstance.part[0]}"></input>
-            <p class="uploadText" style="display: inline">-</p>
-            <input onchange="chRoleValue($(this), 'part', 2, 1)" id="collabInp" style="width: 20%;" placeholder="Do" value="${humanInstance.part[1]}"></input>
+            <input onchange="chRoleValue($(this), 'part', 2, 0)" id="collabInp" style="width: 20%;" placeholder="Od" value="${humanInstance.part[0]}"></input
+           ><p class="uploadText" style="display: inline">-</p
+           ><input onchange="chRoleValue($(this), 'part', 2, 1)" id="collabInp" style="width: 20%;" placeholder="Do" value="${humanInstance.part[1]}"></input>
         </td>
         <td>
-        <input type="color" class="tableCpicker button" style="float: none; width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
+            <input type="color" class="tableCpicker button" style="float: none; width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
         </td>
         <td>
             <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 2)"
@@ -424,7 +427,7 @@ function clipboardTask(task, data, ind = -1) {
         else {
             if (typeof levelList[currEditing]["creator"] == "object") {
                 let clip = JSON.parse(pasteData)
-                let hum = new Human(clip.name, clip.role, clip.part, clip.color, ["lol"], clip.verified)
+                let hum = new Human(clip.name, clip.role, clip.part, clip.color, clip.socials, ["lol"], clip.verified)
 
                 levelList[currEditing]["creator"][2].push(hum)
                 addCollabHuman(hum);
