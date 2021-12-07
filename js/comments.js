@@ -1,14 +1,18 @@
 const EMOJI_AM = 17;
-try {
-    var lID = (window.location.search).match(/id=\d+/)["0"].split("=")[1];
-    var yID = (window.location.search).match(/year=\d+/)["0"].split("=")[1];
+function getID() {
+    try {
+        var lID = (window.location.search).match(/id=\d+/)["0"].split("=")[1];
+        if (lID != undefined) { return lID }
+        
+        var yID = (window.location.search).match(/year=\d+/)["0"].split("=")[1];
+    }
+    catch {
+        if (window.location.search == "" || yID == "2019") { return "-2"; }
+        else if (yID == "2021") { return "-3"; }
+        else { return "-1"; }
+    }
 }
-catch {
-    if (window.location.search == "" || yID == "2019") { var lID = "-2"; }
-    else if (yID == "2021") { var lID = "-3"; }
-    else { var lID = "-1"; }
-}
-const LIST_ID = lID;
+const LIST_ID = getID();
 
 
 function listList() {
