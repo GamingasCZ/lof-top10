@@ -12,7 +12,7 @@ const YEAR = yID;
 // Default 2019 board
 if (YEAR == "2019" || window.location.pathname.match("upload") == -1) {
 	var boards = {
-		"titleImg": "./images/title.png",
+		"titleImg": "",
 		"1": {
 			"levelName": "Snowy",
 			"creator": "MurlocGD, PizzaGamerHu",
