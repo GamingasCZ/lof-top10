@@ -154,7 +154,7 @@ function refreshRoleList() {
         $(".noRoles").hide();
         $(".noRolAdded").hide();
         $(".addRoles").show();
-        $("#humpaste").removeClass("disabled");
+        if (sessionStorage.getItem("humclip") != undefined) { $("#humpaste").removeClass("disabled"); }
     }
     else {
         $(".addHumanButton").addClass("disabled");
@@ -644,8 +644,6 @@ $(function () {
     $(".socialPickerIcon").on("click", selectSocialMedia);
 
     $(".addSocial").on("click", confirmSocial);
-    $(".socInp").on("change",confirmSocial)
-    
     $(".rmSocial").on("click", removeSocial);
 
     $(".socInp").on("input", () => {
