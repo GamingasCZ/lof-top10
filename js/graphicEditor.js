@@ -530,22 +530,25 @@ $(function () {
     // Keyboard stuff
 
     $("html").on("keydown", k => {
-        let currCardShown = parseInt($(".positionEdit:not(:hidden)")[0].id.match(/[0-9]/g));
-        $(".positionEdit:not(:hidden)")[0].focus()
-        if (k.key == "ArrowDown") {
-            displayCard(currCardShown + 1) // Key: W
-            document.getElementById("top" + currCardShown++).scrollIntoView();
+        if (Object.keys(levelList).length-ADDIT_VALS > 2) {
+            let currCardShown = parseInt($(".positionEdit:not(:hidden)")[0].id.match(/[0-9]/g));
+            $(".positionEdit:not(:hidden)")[0].focus()
+            if (k.key == "ArrowDown") {
+                displayCard(currCardShown + 1) // Key: W
+                document.getElementById("top" + currCardShown++).scrollIntoView();
+            }
+            else if (k.key == "ArrowUp") {
+                displayCard(currCardShown - 1) // Key: S
+                document.getElementById("top" + currCardShown--).scrollIntoView();
+            }
+            else if (k.key == "ArrowLeft") {
+                if (moveCard("up", currCardShown)) { currCardShown-- } // Key: A
+            }
+            else if (k.key == "ArrowRight") {
+                if (moveCard("down", currCardShown)) { currCardShown++ } // Key: D
+            }
         }
-        else if (k.key == "ArrowUp") {
-            displayCard(currCardShown - 1) // Key: S
-            document.getElementById("top" + currCardShown--).scrollIntoView();
-        }
-        else if (k.key == "ArrowLeft") {
-            if (moveCard("up", currCardShown)) { currCardShown-- } // Key: A
-        }
-        else if (k.key == "ArrowRight") {
-            if (moveCard("down", currCardShown)) { currCardShown++ } // Key: D
-        }
+
     })
 
 

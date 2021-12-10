@@ -51,6 +51,7 @@ function showCollabTools(id) {
     $("#collabTools").css("background-color", cardCol);
     $("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
     $(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
+    $(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,34%)`)
 
     $("#collabTools").fadeIn(50);
     $("#collabTools").css("transform", "scaleY(1)");
@@ -82,10 +83,19 @@ function hideCollabTools() {
     // Collab tools turn creator into an array
     if (typeof levelList[currEditing]["creator"] == "object") {
         $(".colButton" + currEditing).css("filter", "hue-rotate(180deg)");
+
+        // Remove HTMLobjects from SM arrays
+        levelList[currEditing]["creator"][2].forEach(hum => {
+            hum["socials"].forEach(soc => {
+                soc.splice(2, 1);
+            });
+        });
     }
     else {
         $(".colButton" + currEditing).css("filter", "hue-rotate(0deg)");
     }
+
+    $(".socSettings").css("opacity", 0)
 
     $("body").css("overflow-y", "scroll")
 
@@ -278,8 +288,8 @@ function addCollabHuman(load = 0) {
            ><img class="button" style="float: none; width: 2vw;" src="images/getStats.png">
         </td>
         <td>
-            <img class="button" style="float: none; width: 2vw;" src="images/add.png">
-        </td>
+            <img class="button socAddButton" style="float: none; width: 2vw;" src="images/add.png" onclick="addSocMedia($(this))"
+       ></td>
         <td>
             <select onchange="chRoleValue($(this), 'role', 2)" class="uploadText roleList"></select>
         </td>
@@ -306,6 +316,22 @@ function addCollabHuman(load = 0) {
 
     if (load == 0) {
         levelList[currEditing]["creator"][2].push(humanInstance);
+    }
+    else {
+        // Loading socialMedia
+        let socialCell = $($(humanInstance.HTMLobject).children()[1])
+        if (humanInstance.socials.length >= 5) {
+            socialCell.children().hide()
+        }
+
+        humanInstance["socials"].forEach(soc => {
+            let smallBut = $(`<img class="button" style="float: none; width: 2vw" src=images/${imgs[soc[0]]}.png>`).appendTo(socialCell)
+            smallBut.on("click", changeSocial)
+            smallBut.on("dblclick", x => { changeSocial(x); removeSocial() });
+            // Adds corresponding HTMLelement to array
+            soc[2] = smallBut["0"];
+
+        });
     }
 
     refreshRoleList();
@@ -341,6 +367,11 @@ function getObjArrayIndex(th, type) {
 }
 
 function removeColObject(th, type) {
+    // Hiding socials bar
+    if (th.parent().siblings()[1].childNodes[1].style.filter != "") { // Add socials button
+        $(".socSettings").css("opacity", 0);
+    }
+
     var finished = false
     levelList[currEditing]["creator"][type].forEach(el => {
         if ($(el.HTMLobject).is(th.parent().parent())) {
@@ -380,6 +411,12 @@ function removeColObject(th, type) {
 }
 
 function rollThing(thing) {
+    // 0-Role, 1-Human
+
+    // Socials popup
+    if (thing == 1) { $(".socialPicker").css("opacity", 0) }
+    else { align(); }
+
     if ($('.collabDIV')[thing].style.height != "0px") {
 
         $('.collabDIV')[thing].style.height = 0
@@ -425,7 +462,7 @@ function clipboardTask(task, data, ind = -1) {
             addRole(role, 1);
         }
         else {
-            if (typeof levelList[currEditing]["creator"] == "object") {
+            if (typeof levelList[currEditing]["creator"] == "object" && levelList[currEditing]["creator"][1].length > 0) {
                 let clip = JSON.parse(pasteData)
                 let hum = new Human(clip.name, clip.role, clip.part, clip.color, clip.socials, ["lol"], clip.verified)
 
@@ -437,3 +474,183 @@ function clipboardTask(task, data, ind = -1) {
     }
 
 }
+
+// Adding social media
+var soc_selected
+var soc_array
+var soc_changingInd
+var lock_socChange = false
+
+var names = ["Youtube kanál", "Twitter účet", "Twitch kanál", "Discord tag / server", "Vlastní odkaz"];
+var imgs = ["youtube", "twitter", "twitch", "discord", "cust"];
+
+function align() {
+    // Opens socialPicker popup an aligns it
+    // Function aligns the popup under the socialPickerButton
+    if (!lock_socChange) {
+        $(".socialPicker").css("opacity", 1)
+        $(".socialPicker").fadeToggle(75)
+
+        let soc = $(".openSocPicker").position();
+        $(".socialPicker").css("top", (soc.top + (window.innerWidth / 19)) + "px");
+        $(".socialPicker").css("left", (soc.left + (window.innerHeight / 100)) + "px");
+    }
+}
+
+function addSocMedia(el) {
+    // Called upon clicking (+) in table cell
+    lock_socChange = false
+    soc_selected = getObjArrayIndex(el, 2);
+
+    $(".openSocPicker").removeClass("disabled")
+    $(".addSocial").attr("title", "Přidat")
+    $(".rmSocial").attr("title", "Zrušit")
+
+    $(".socialPickerIcon").show()
+    $(".socialPicker").hide();
+    $(".socAddButton").css("filter", "hue-rotate(0deg)")
+    el.css("filter", "hue-rotate(90deg)");
+
+    $(".socSettings").animate({ "opacity": 1 }, 100);
+    $(".socInp").val("");
+    $(".socInp").focus()
+
+    let addedSM = levelList[currEditing]["creator"][2][soc_selected]["socials"]
+    if (addedSM.length == 5) {
+        // Do not add SM when there's nothing to add
+        return false
+    }
+
+    if (addedSM.length > 0) {
+        // Hide SM already added in socialPicker popup
+        let including = []
+        addedSM.forEach(x => { including.push(x[0]); })
+        let next = null
+        for (let i = 0; i < 5; i++) {
+            if (including.includes(i)) {
+                $(".socialPickerIcon")[i].style.display = "none";
+            }
+            else if (next == null) { next = i }
+
+        }
+
+        if (next != null) {
+            $(".openSocPicker").attr("src", `images/${imgs[next]}.png`)
+            $(".socInp").attr("placeholder", names[next]);
+            soc_array = [next, ""]
+
+        }
+    }
+    else {
+        // When no SM has been added yet
+        soc_array = [0, ""]
+        $(".openSocPicker").attr("src", `images/${imgs[0]}.png`)
+        $(".socInp").attr("placeholder", names[0]);
+    }
+}
+
+function confirmSocial() {
+    // Called upon clicking check in socialMedia settings
+    if (!lock_socChange) {
+        levelList[currEditing]["creator"][2][soc_selected]["socials"].push([...soc_array]);
+
+        // Adds a button to table cell
+        let tableBit = $(".socAddButton")[soc_selected].parentElement
+        let smallBut = $(`<img class="button" style="float: none; width: 2vw" src=images/${imgs[soc_array[0]]}.png>`).appendTo(tableBit)
+        smallBut.on("click", changeSocial)
+        smallBut.on("dblclick", x => { changeSocial(x); removeSocial() });
+
+        // Adds corresponding HTMLelement to array
+        let ok = levelList[currEditing]["creator"][2][soc_selected]["socials"]
+        ok[ok.length - 1].push(smallBut["0"]);
+
+        // Hides (+) when no more SM can be added
+        if (levelList[currEditing]["creator"][2][soc_selected]["socials"].length == 5) {
+            $(".socAddButton")[soc_selected].style.display = "none";
+        }
+    }
+    else {
+        // Edits link, doesn't add new button
+        levelList[currEditing]["creator"][2][soc_selected]["socials"][soc_changingInd[0]][1] = soc_array[1];
+    }
+
+    lock_socChange = false;
+    $(".socAddButton").css("filter", "hue-rotate(0deg)")
+    $(".socSettings").animate({ "opacity": 0 }, 50);
+}
+
+function removeSocial() {
+    // Called upon clicking (X) in socialMedia settings
+    if (lock_socChange) {
+        soc_changingInd[1].remove()
+        levelList[currEditing]["creator"][2][soc_selected]["socials"].splice(soc_changingInd[0], 1)
+
+        // Shows (+) button again in table cell
+        if (levelList[currEditing]["creator"][2][soc_selected]["socials"].length == 4) {
+            $(".socAddButton")[soc_selected].style.display = "inline";
+        }
+    }
+
+    $(".socSettings").animate({ "opacity": 0 }, 50);
+    $(".socAddButton").css("filter", "hue-rotate(0deg)");
+
+}
+
+function selectSocialMedia(what) {
+    // Called upon clicking a SM button in socialPicker popup
+    if (!lock_socChange) {
+        let selected = Object.values($(".socialPicker").children()).indexOf(what.target) - 1;
+
+        $(".openSocPicker").attr("src", `images/${imgs[selected]}.png`);
+        $(".socInp").attr("placeholder", names[selected]);
+
+        soc_array[0] = selected;
+
+        $(".socialPicker").fadeToggle(75);
+    }
+
+}
+
+function changeSocial(but) {
+    // Called upon clicking thumbnail in table cell
+    soc_selected = getObjArrayIndex($(but.target), 2)
+    let target = but.target;
+    $(".socAddButton").css("filter", "hue-rotate(0deg)")
+
+    $(".addSocial").attr("title", "Uložit úpravy")
+    $(".rmSocial").attr("title", "Smazat")
+
+    let i = 0
+    levelList[currEditing]["creator"][2][soc_selected]["socials"].forEach(s => {
+        if (target.isEqualNode(s[2])) {
+            soc_changingInd = [i, target];
+            lock_socChange = true;
+            $(".openSocPicker").attr("src", `images/${imgs[s[0]]}.png`);
+            $(".openSocPicker").addClass("disabled");
+            $(".socInp").val(s[1]);
+            $(".socInp").focus()
+
+            $(target).siblings()[0].style.filter = "hue-rotate(90deg)";
+
+            $(".socSettings").animate({ "opacity": 100 }, 50);
+        }
+        i++
+    });
+}
+
+$(function () {
+    // Ctools human social media picker
+    $(".openSocPicker").on("click", align);
+    $(".socialPickerIcon").on("click", selectSocialMedia);
+
+    $(".addSocial").on("click", confirmSocial);
+    $(".socInp").on("change",confirmSocial)
+    
+    $(".rmSocial").on("click", removeSocial);
+
+    $(".socInp").on("input", () => {
+        soc_array[1] = $(".socInp").val();
+    })
+
+    window.addEventListener("resize", () => { $(".socialPicker").hide() });
+})

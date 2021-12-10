@@ -50,15 +50,15 @@
 
     <div class="editorHeader collabHeader uploadText collabBar">
       <div class="uploadText button" onclick="rollThing(0)">Role</div>
-      <div style="padding: 0.2% 2%; display: flex;">
+      <div class="presetButtonContainer">
         <button style="float: none;" class="button uploadText eventButton" onclick="addRole(0)">Dekorace</button>
         <button style="float: none;" class="button uploadText eventButton" onclick="addRole(1)">Layout</button>
         <button style="float: none;" class="button uploadText eventButton" onclick="addRole(2)">Tester</button>
       </div>
-      <div class="collabHButtons">
-        <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')" style="float: none; width: 19%;"
+      <div class="collabHButtons" style="width: 11vw;">
+        <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')" style="float: none; width: 5vw;"
           src="images/preview.png">
-        <img class="button roleAddButton" onclick="addRole()" style="float: none; width: 19%;margin-left: 1vw;"
+        <img class="button roleAddButton" onclick="addRole()" style="float: none; width: 5vw;margin-left: 1vw;"
           src="images/add.png">
       </div>
     </div>
@@ -90,16 +90,32 @@
     <div class="editorHeader collabHeader uploadText collabBar">
       <div class="uploadText button" onclick="rollThing(1)">Členové</div>
 
-      <div class="collabHButtons">
-        <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)" style="float: none; width: 19%;"
+      <div style="display: flex; align-items: center; opacity: 0;" class="socSettings">
+        <div class="socialPicker">
+          <img src="images/popupArr.png" class="popupArrow">
+          <img src="images/youtube.png" class="socialPickerIcon button" title="YouTube">
+          <img src="images/twitter.png" class="socialPickerIcon button" title="Twitter">
+          <img src="images/twitch.png" class="socialPickerIcon button" title="Twitch">
+          <img src="images/discord.png" class="socialPickerIcon button" title="Discord">
+          <img src="images/cust.png" class="socialPickerIcon button" title="Vlastní odkaz">
+        </div>
+
+        <img src="images/youtube.png" style="float: none; width: 4vw;" class="button openSocPicker">
+        <input id="collabInp" class="socInp" style="width: 50vw;" placeholder="YouTube kanál">
+        <img src="images/check.png" style="float: none; width: 2.5vw;" class="button addSocial" title="Přidat">
+        <img src="images/error.png" style="float: none; width: 2.5vw;" class="button rmSocial" title="Zrušit">
+      </div>
+
+      <div class="collabHButtons" style="width: 11vw;">
+        <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)" style="float: none; width: 5vw;"
           src="images/preview.png">
         <img class="button disabled addHumanButton" onclick="addCollabHuman()"
-          style="float: none; width: 19%;margin-left: 1vw;" src="images/add.png">
+          style="float: none; width: 5vw;margin-left: 1vw;" src="images/add.png">
       </div>
     </div>
     <div class="collabBG collabHeader collabDIV">
       <div class="uploadText noRoles">K přidání členů přidej roli.</div>
-      <div style="display: none;" class="uploadText addRoles">K přidání role klikni na<img width=3% id="plusSign"
+      <div style="display: none;" class="uploadText addRoles">K přidání člena klikni na<img width=3% id="plusSign"
           src="images/add.png"></div>
       <table style="display: none;" class="collabTables collabHumans">
         <tr class="collabTables">
@@ -155,18 +171,15 @@
       <input name="bgcolor" type="color" id="bgcolorPicker" value="#020202">
     </div>
 
-    <div class="editorHeader uploadText">
-      <div>
-        <p class="headerTitle" style="display: inline-flex;">Levely</p>
-        <button onclick="addLevel()" type="button" class="button addCardButton headerButtons"
-          title="Přidat level do seznamu">
-          <img src="images/add.png" class="headerButtonsImgs">
-        </button>
-        <button onclick="preview()" type="button" class="button previewButton disabled headerButtons"
-          title="Náhled seznamu">
-          <img src="images/preview.png" class="headerButtonsImgs">
-        </button>
+    <div class="editorHeader" style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+      <p class="headerTitle uploadText">Levely</p>
+      <div style="display: flex;">
+        <img src="images/preview.png" title="Náhled seznamu" onclick="preview()"
+          class="button previewButton disabled headerButtons">
+        <img src="images/add.png" title="Přidat level do seznamu" onclick="addLevel()"
+          class="button addCardButton headerButtons">
       </div>
+
     </div>
 
     <div class="editorHeader uploadText" id="mainContent">

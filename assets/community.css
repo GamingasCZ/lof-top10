@@ -333,13 +333,9 @@ input:disabled {
 }
 
 .headerButtons {
-    width: 7vw;
-    height: 7vw;
-    padding-right: 8vw;
-}
-.headerButtonsImgs {
-    width: inherit;
-    height: inherit;
+    width: 5vw;
+    height: 5vw;
+    margin-right: 1vw;
 }
 
 .headerText {
@@ -580,7 +576,34 @@ input:disabled {
     display: flex;
     justify-content: right;
 }
-   
+.presetButtonContainer {
+    padding: 0.2% 2%;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.socialPickerIcon {
+    display: inline;
+    width: 4vw;
+    float: none !important;
+}
+
+.popupArrow {
+    position: absolute;
+    top: -1vw; 
+}
+
+.socialPicker {
+    position: absolute;
+    background: #1e1e1e;
+    padding: 1%;
+    z-index: 2;
+    border-radius: 10px;
+    top: 34.8vw;
+    left: 28.5vw;
+    display: none;
+}
 
 .page {
     display: flex;
