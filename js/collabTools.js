@@ -500,6 +500,7 @@ function align() {
 function addSocMedia(el) {
     // Called upon clicking (+) in table cell
     lock_socChange = false
+    $(".socSettings").css("pointer-events","all")
     soc_selected = getObjArrayIndex(el, 2);
 
     $(".openSocPicker").removeClass("disabled")
@@ -575,6 +576,7 @@ function confirmSocial() {
     }
 
     lock_socChange = false;
+    $(".socSettings").css("pointer-events","none")
     $(".socAddButton").css("filter", "hue-rotate(0deg)")
     $(".socSettings").animate({ "opacity": 0 }, 50);
 }
@@ -591,6 +593,7 @@ function removeSocial() {
         }
     }
 
+    $(".socSettings").css("pointer-events","none")
     $(".socSettings").animate({ "opacity": 0 }, 50);
     $(".socAddButton").css("filter", "hue-rotate(0deg)");
 
@@ -632,7 +635,8 @@ function changeSocial(but) {
 
             $(target).siblings()[0].style.filter = "hue-rotate(90deg)";
 
-            $(".socSettings").animate({ "opacity": 100 }, 50);
+            $(".socSettings").css("pointer-events","all")
+            $(".socSettings").animate({ "opacity": 1 }, 50);
         }
         i++
     });
