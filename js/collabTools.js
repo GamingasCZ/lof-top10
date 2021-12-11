@@ -77,6 +77,21 @@ function showCollabTools(id) {
     else {
         $(".verifier").val(creaArray)
     }
+    
+    // Loading a different empty level
+    if (typeof creaArray != "object" || levelList[currEditing]["creator"][1].length == 0) {
+        $(".addHumanButton").addClass("disabled");
+
+        // Entire table elements
+        $(".collabHumans").hide();
+        $(".collabRoles").hide();
+
+        // Help labels
+        $(".noRoles").show();
+        $(".noRolAdded").show();
+        $(".addRoles").hide();
+        $("#humpaste").addClass("disabled");
+    }
 }
 
 function hideCollabTools() {
@@ -257,7 +272,7 @@ function addCollabHuman(load = 0) {
     if (load != 0) {
         humanInstance = load;
     }
-    if (load == 0) { var cpickerCol = RGBtoHEX(randomColor()) }
+    if (load == 0) { var cpickerCol = RGBtoHEX(randomColor()); humanInstance.color = cpickerCol }
     else { var cpickerCol = load.color }
 
     let humanCount = levelList[currEditing]["creator"][2].length
@@ -500,6 +515,7 @@ function align() {
 function addSocMedia(el) {
     // Called upon clicking (+) in table cell
     lock_socChange = false
+    $(".socSettings").css("pointer-events","all")
     soc_selected = getObjArrayIndex(el, 2);
 
     $(".openSocPicker").removeClass("disabled")
@@ -575,6 +591,7 @@ function confirmSocial() {
     }
 
     lock_socChange = false;
+    $(".socSettings").css("pointer-events","none")
     $(".socAddButton").css("filter", "hue-rotate(0deg)")
     $(".socSettings").animate({ "opacity": 0 }, 50);
 }
@@ -591,6 +608,7 @@ function removeSocial() {
         }
     }
 
+    $(".socSettings").css("pointer-events","none")
     $(".socSettings").animate({ "opacity": 0 }, 50);
     $(".socAddButton").css("filter", "hue-rotate(0deg)");
 
@@ -632,7 +650,8 @@ function changeSocial(but) {
 
             $(target).siblings()[0].style.filter = "hue-rotate(90deg)";
 
-            $(".socSettings").animate({ "opacity": 100 }, 50);
+            $(".socSettings").css("pointer-events","all")
+            $(".socSettings").animate({ "opacity": 1 }, 50);
         }
         i++
     });
