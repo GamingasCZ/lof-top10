@@ -77,6 +77,21 @@ function showCollabTools(id) {
     else {
         $(".verifier").val(creaArray)
     }
+    
+    // Loading a different empty level
+    if (typeof creaArray != "object" || levelList[currEditing]["creator"][1].length == 0) {
+        $(".addHumanButton").addClass("disabled");
+
+        // Entire table elements
+        $(".collabHumans").hide();
+        $(".collabRoles").hide();
+
+        // Help labels
+        $(".noRoles").show();
+        $(".noRolAdded").show();
+        $(".addRoles").hide();
+        $("#humpaste").addClass("disabled");
+    }
 }
 
 function hideCollabTools() {
@@ -257,7 +272,7 @@ function addCollabHuman(load = 0) {
     if (load != 0) {
         humanInstance = load;
     }
-    if (load == 0) { var cpickerCol = RGBtoHEX(randomColor()) }
+    if (load == 0) { var cpickerCol = RGBtoHEX(randomColor()); humanInstance.color = cpickerCol }
     else { var cpickerCol = load.color }
 
     let humanCount = levelList[currEditing]["creator"][2].length
