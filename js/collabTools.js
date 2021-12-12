@@ -227,8 +227,9 @@ function addRole(preset = null, loading = 0) {
         levelList[currEditing]["creator"][1].push(roleInstance); // Role name, has %, COLOR
     }
 
+    let rowID = new Date().getTime();
     let roleCode = $(`
-    <tr class="tableRow">
+    <tr class="tableRow">        
         <td>
             <input id="collabInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="Jméno" value=${presetName}></input>
         </td>
@@ -244,6 +245,7 @@ function addRole(preset = null, loading = 0) {
             <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"
            ><img class="button roleRm" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
         </td>
+        <input type="hidden" value="${rowID}">
     </tr>
     `).appendTo($(".collabRoles"));
     roleInstance.HTMLobject = roleCode[0];
@@ -254,13 +256,14 @@ function addRole(preset = null, loading = 0) {
 
 function checkCollabCheck(name, el) {
     let index = getObjArrayIndex(el, 1);
-    if ($(`img[for="${name}"]:eq(${index})`).attr("src").match("off") == null) {
-        $(`img[for="${name}"]:eq(${index})`).attr("src", "images/check-off.png")
+    let check = $(".tableRow")[index].children[1].children[0]
+    if ($(check).attr("src").match("off") == null) {
+        $(check).attr("src", "images/check-off.png")
         levelList[currEditing]["creator"][1][index].hasPer = false;
 
     }
     else {
-        $(`img[for="${name}"]:eq(${index})`).attr("src", "images/check-on.png")
+        $(check).attr("src", "images/check-on.png")
         levelList[currEditing]["creator"][1][index].hasPer = true;
 
     }
@@ -295,6 +298,7 @@ function addCollabHuman(load = 0) {
         $(".collabTTitle").text(`- ${funnyNames[0]} -`);
     }
 
+    let rowID = new Date().getTime();
     let humanCode = $(`
     <tr class="tableRow">
         <td>
@@ -320,6 +324,7 @@ function addCollabHuman(load = 0) {
             <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 2)"
            ><img class="button humRm" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
         </td>
+        <input type="hidden" value="${rowID}">
     </tr>
     `).appendTo($(".collabHumans"))
 
