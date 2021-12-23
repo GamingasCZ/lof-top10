@@ -271,15 +271,18 @@ function generateList(boards) {
 
 		$(".boards").append(`
 		<div class="box" style="${cardBG}"><span>${boards[bIndex]["levelName"]}</span>
-		<button class="button ${video}" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">
-			<img class="boxLink" src="./images/yticon.png">
-		</button>
-		<button class="button ${ID}" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">
-			<img class="boxLink" src="./images/gdbrowser.png">
-		</button>
-		<button class="button ${ID}" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">
-			<img class="boxLink" src="./images/copyID.png">
-		</button>
+		
+		<div style="display:flex">
+			<button class="button ${video}" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">
+				<img class="boxLink" src="./images/yticon.png">
+			</button>
+			<button class="button ${ID}" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">
+				<img class="boxLink" src="./images/gdbrowser.png">
+			</button>
+			<button class="button ${ID}" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">
+				<img class="boxLink" src="./images/copyID.png">
+			</button>
+		</div>
 
 		<p>${jsStr["CREATOR_BY"][LANG]}${boards[bIndex]["creator"]}</p>
 		<h3 class="popup" id="cpopup${bIndex}">${jsStr["ID_COPIED"]}</h3>

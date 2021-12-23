@@ -95,6 +95,7 @@ span {
   color: white;
   -webkit-text-stroke: black 0.17vw;
   text-shadow: rgba(0,0,0,0.5) 3px 3px 4px;
+  display: flex;
 }
 
 .boxLink {

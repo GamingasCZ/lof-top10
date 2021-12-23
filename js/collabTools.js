@@ -5,11 +5,12 @@ const presets = [["Dekorace", 1], ["Layout", 1], ["Tester", 0]];
 const presetNames = ["Dekorace", "Layout", "Tester"]
 
 class Role {
-    constructor(name, hasPer, color, HTMLobject) {
+    constructor(name, hasPer, color, HTMLobject, id = 0) {
         this.name = name;
         this.hasPer = hasPer;
         this.color = color;
         this.HTMLobject = HTMLobject[0];
+        this.id = levelList[currEditing]["creator"][1].length;
     }
 
     remove(arrIndex) {
@@ -73,11 +74,12 @@ function showCollabTools(id) {
             if (i < creaArray[1].length) { addRole(creaArray[1][i], 1) }
             if (i < creaArray[2].length) { addCollabHuman(creaArray[2][i]) }
         }
+        refreshRoleList()
     }
     else {
         $(".verifier").val(creaArray)
     }
-    
+
     // Loading a different empty level
     if (typeof creaArray != "object" || levelList[currEditing]["creator"][1].length == 0) {
         $(".addHumanButton").addClass("disabled");
@@ -134,9 +136,9 @@ function refreshRoleList() {
 
     var select = ""
 
-    let roleNames = []
+    let roleIDs = []
     roleArray.forEach(role => {
-        roleNames.push(role.name);
+        roleIDs.push(role.id);
 
         if (role.name != "") {
             $(".roleList").append(`<option${select}>${role.name}</option>`);
@@ -149,11 +151,13 @@ function refreshRoleList() {
     if ($(".roleList").length > 0) {
         let i = 0
         humArray.forEach(hum => {
-            if (roleNames.indexOf(hum.role) != -1 && $(".roleList")[i] != undefined) {
+            if (roleIDs.indexOf(hum.role) != -1 && $(".roleList")[i] != undefined) {
 
-                let roleIndex = roleNames.indexOf(hum.role);
+                let roleIndex = roleIDs.indexOf(hum.role);
+                hum.role = roleIDs[roleIndex];
                 $(".roleList")[i].childNodes[roleIndex + 1].setAttribute("selected", true)
             }
+            else if (roleIDs.indexOf(hum.role) == -1) { hum.role = 0 }
             i++
         })
     }
@@ -249,21 +253,24 @@ function addRole(preset = null, loading = 0) {
     </tr>
     `).appendTo($(".collabRoles"));
     roleInstance.HTMLobject = roleCode[0];
-    if (loading == 1) { preset.HTMLobject = roleCode[0] }
+    if (loading == 1) { preset.HTMLobject = roleCode[0]; }
+    else { refreshRoleList(); }
 
-    refreshRoleList();
+    rollThing(0, true)
 }
 
 function checkCollabCheck(name, el) {
     let index = getObjArrayIndex(el, 1);
-    let check = $(".tableRow")[index].children[1].children[0]
-    if ($(check).attr("src").match("off") == null) {
-        $(check).attr("src", "images/check-off.png")
+    let check = $(".tableRow")[index].children[1].children
+    if ($(check[0]).attr("src").match("off") == null) {
+        $(check[0]).attr("src", "images/check-off.png")
+        $(check[1]).text("Vypnuto")
         levelList[currEditing]["creator"][1][index].hasPer = false;
 
     }
     else {
-        $(check).attr("src", "images/check-on.png")
+        $(check[0]).attr("src", "images/check-on.png")
+        $(check[1]).text("Zapnuto")
         levelList[currEditing]["creator"][1][index].hasPer = true;
 
     }
@@ -271,7 +278,7 @@ function checkCollabCheck(name, el) {
 
 function addCollabHuman(load = 0) {
     // name, role, part %, color, socials, element, verified, id
-    let humanInstance = new Human("", levelList[currEditing]["creator"][1][0].name, [0, 0], "", [], [0], 0)
+    let humanInstance = new Human("", levelList[currEditing]["creator"][1][0].id, [0, 0], "", [], [0], 0)
     if (load != 0) {
         humanInstance = load;
     }
@@ -315,7 +322,8 @@ function addCollabHuman(load = 0) {
         <td>
             <input onchange="chRoleValue($(this), 'part', 2, 0)" id="collabInp" style="width: 20%;" placeholder="Od" value="${humanInstance.part[0]}"></input
            ><p class="uploadText" style="display: inline">-</p
-           ><input onchange="chRoleValue($(this), 'part', 2, 1)" id="collabInp" style="width: 20%;" placeholder="Do" value="${humanInstance.part[1]}"></input>
+           ><input onchange="chRoleValue($(this), 'part', 2, 1)" id="collabInp" style="width: 20%;" placeholder="Do" value="${humanInstance.part[1]}"></input
+           ><p class="uploadText" style="display: inline">%</p
         </td>
         <td>
             <input type="color" class="tableCpicker button" style="float: none; width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
@@ -336,6 +344,7 @@ function addCollabHuman(load = 0) {
 
     if (load == 0) {
         levelList[currEditing]["creator"][2].push(humanInstance);
+        refreshRoleList();
     }
     else {
         // Loading socialMedia
@@ -354,17 +363,28 @@ function addCollabHuman(load = 0) {
         });
     }
 
-    refreshRoleList();
+    rollThing(1, true)
 }
 
 function chRoleValue(el, changeValue, type, arr = null) {
     let index = getObjArrayIndex(el, type);
-    if (arr == null) {
-        levelList[currEditing]["creator"][type][index][changeValue] = el.val()
+    if (changeValue == "role") {
+        let roleIDs = []
+        levelList[currEditing]["creator"][1].forEach(role => {
+            roleIDs.push(role.name)
+        });
+        levelList[currEditing]["creator"][type][index][changeValue] = roleIDs.indexOf(el.val())
     }
     else {
-        levelList[currEditing]["creator"][type][index][changeValue][arr] = el.val()
+        if (arr == null) {
+            levelList[currEditing]["creator"][type][index][changeValue] = el.val()
+        }
+        else {
+            levelList[currEditing]["creator"][type][index][changeValue][arr] = el.val()
+        }
     }
+
+
 
 
     if (changeValue == "color") {
@@ -430,22 +450,21 @@ function removeColObject(th, type) {
     }
 }
 
-function rollThing(thing) {
+function rollThing(thing, forceOpen = false) {
     // 0-Role, 1-Human
 
     // Socials popup
-    if (thing == 1) { $(".socialPicker").css("opacity", 0) }
-    else { align(); }
+    $(".socialPicker").css("opacity", 0)
 
-    if ($('.collabDIV')[thing].style.height != "0px") {
+    if ($('.collabDIV')[thing].style.display != "none" && !forceOpen) {
 
-        $('.collabDIV')[thing].style.height = 0
+        $($('.collabDIV')[thing]).slideUp(50);
     }
     else {
-        $('.collabDIV')[thing].style.height = "98vh"
+        $($('.collabDIV')[thing]).slideDown(50);
     }
 
-    if ($('.collabDIV')[0].style.height == "0px" && $('.collabDIV')[1].style.height == "0px") {
+    if ($('.collabDIV')[0].style.display == "none" && $('.collabDIV')[1].style.display == "none") {
         $("#emojiMan").show()
     }
     else {
@@ -520,7 +539,7 @@ function align() {
 function addSocMedia(el) {
     // Called upon clicking (+) in table cell
     lock_socChange = false
-    $(".socSettings").css("pointer-events","all")
+    $(".socSettings").css("pointer-events", "all")
     soc_selected = getObjArrayIndex(el, 2);
 
     $(".openSocPicker").removeClass("disabled")
@@ -596,7 +615,7 @@ function confirmSocial() {
     }
 
     lock_socChange = false;
-    $(".socSettings").css("pointer-events","none")
+    $(".socSettings").css("pointer-events", "none")
     $(".socAddButton").css("filter", "hue-rotate(0deg)")
     $(".socSettings").animate({ "opacity": 0 }, 50);
 }
@@ -613,7 +632,7 @@ function removeSocial() {
         }
     }
 
-    $(".socSettings").css("pointer-events","none")
+    $(".socSettings").css("pointer-events", "none")
     $(".socSettings").animate({ "opacity": 0 }, 50);
     $(".socAddButton").css("filter", "hue-rotate(0deg)");
 
@@ -655,7 +674,7 @@ function changeSocial(but) {
 
             $(target).siblings()[0].style.filter = "hue-rotate(90deg)";
 
-            $(".socSettings").css("pointer-events","all")
+            $(".socSettings").css("pointer-events", "all")
             $(".socSettings").animate({ "opacity": 1 }, 50);
         }
         i++

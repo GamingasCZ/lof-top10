@@ -1,7 +1,6 @@
 //Holba buenas hyperhackeře :D. Nyní sleduješ můj hrozný kód :).
 
 function checkJson(data) {
-    $(".errorBox").css("padding", "1% 0.5%");
     try {
         // Kontrola názvů atd.
         let invalidNames = ["Gamingas", "GamingasCZ"];
@@ -19,7 +18,9 @@ function checkJson(data) {
         // 1/3 Je to vůbec JSON?
         var parsedData = JSON.parse(data);
         $(".errorBox").text(jsStr["SUCC_UPL"][LANG]);
-        $(".errorBox").css("background-color", "rgba(73, 255, 103, 0.8)");
+
+        // 1.5/3 Je seznam prázdný?
+        if (Object.keys(parsedData).length-ADDIT_VALS < 2) { throw ("Snažiš se poslat <b style='color:cyan'>prázdný seznam!</b>") }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
         for (i = 1; i < Object.keys(parsedData).length - ADDIT_VALS; i++) {
@@ -27,23 +28,25 @@ function checkJson(data) {
                 throw (i + ". místo neexistuje. Bug mi nahlaš (nebo si nehrej s JSONem :D).")
             }
             if (parsedData[i]["levelName"] == "") {
-                throw ("Level na " + i + ". místě nemá JMÉNO!")
+                throw ("Level na " + i + ". místě nemá <b style='color:lime'>jméno!</b>")
             }
             if (parsedData[i]["creator"] == "") {
-                throw ("Level na " + i + ". místě nemá TVŮRCE!")
+                throw ("Level na " + i + ". místě nemá <b style='color:lime'>tvůrce!</b>")
             }
         }
         return true;
     }
     catch (error) {
-        $(".errorBox").css("background-color", "rgba(255, 73, 73, 0.8)");
+        $(".errNotif").fadeIn(100);
 
         if (data == "") {
-            $(".errorBox").text(jsStr["NO_JSON"][LANG]);
+            $(".errorBox").html(jsStr["NO_JSON"][LANG]);
         }
         else {
-            $(".errorBox").text(error);
+            $(".errorBox").html(error);
         }
+
+        setTimeout(() => {$(".errNotif").fadeOut(200)}, 2000);
         return false
     }
 }

@@ -22,6 +22,12 @@
   <title>Nahrávání seznamů</title>
 </head>
 
+<div class="errNotif">
+  <img src="images/sadNotif.png" style="opacity: 0.8; position: absolute;">
+  <div class="errNotText uploadText" style="top: 2vw;color: tomato;left: 15.5vw;">Jejda!</div>
+  <div class="errNotText uploadText errorBox">Toto je test!</div>
+</div>
+
 <body>
   <div class="shade">
     <a href="https://github.com/GamingasCZ/lof-top10"><img class="github" src="images/github.png"></a>
@@ -119,11 +125,32 @@
           src="images/add.png"></div>
       <table style="display: none;" class="collabTables collabHumans">
         <tr class="collabTables">
-          <th class="collabTables" style="width: 30%;">Jméno</th>
-          <th class="collabTables" style="width: 14%;">Sítě</th>
-          <th class="collabTables" style="width: 25%;">Role</th>
-          <th class="collabTables" style="width: 17%;">Část</th>
-          <th class="collabTables" style="width: 7%;">Barva</th>
+          <th class="collabTables" style="width: 26%;">
+            <img src="images/bytost.png" style="width: 2vw;"
+           ><div style="display:inline">Jméno</div
+           ><img src="images/help.png" class="button smallHelp helpButton"
+              onclick="openHelp('humansHelp')">
+          </th>
+          <th class="collabTables" style="width: 14%;">
+            <img src="images/like.png" style="width: 2vw;"
+           ><div style="display:inline">Sítě</div
+           ><img src="images/help.png" class="button smallHelp helpButton" onclick="openHelp('humansHelp')">
+          </th>
+          <th class="collabTables" style="width: 25%;">
+            <img src="images/part.png" style="width: 2vw;"
+           ><div style="display:inline">Role</div
+           ><img src="images/help.png" class="button smallHelp helpButton" onclick="openHelp('humansHelp')">
+          </th>
+          <th class="collabTables" style="width: 15%;">
+            <img src="images/length.png" style="width: 2vw;"
+           ><div style="display:inline">Část</div
+           ><img src="images/help.png" class="button smallHelp helpButton" onclick="openHelp('humansHelp')">
+          </th>
+          <th class="collabTables" style="width: 13%;">
+            <img src="images/colorSelect.png" style="width: 2vw;"
+           ><div style="display:inline">Barva</div
+           ><img src="images/help.png" class="button smallHelp helpButton" onclick="openHelp('humansHelp')">
+          </th>
           <th class="collabTables"></th>
         </tr>
       </table>
@@ -171,7 +198,8 @@
       <input name="bgcolor" type="color" id="bgcolorPicker" value="#020202">
     </div>
 
-    <div class="editorHeader" style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+    <div class="editorHeader"
+      style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
       <p class="headerTitle uploadText">Levely</p>
       <div style="display: flex;">
         <img src="images/preview.png" title="Náhled seznamu" onclick="preview()"
@@ -184,7 +212,6 @@
 
     <div class="editorHeader uploadText" id="mainContent">
     </div>
-    <p class="errorBox" style="color: rgb(255, 255, 255);"></p>
 
     <p class="uploadText setTitle" align="center"> Nastavení -</p>
     <div class="settingsBG">

@@ -26,6 +26,15 @@ $(function () {
         },
         "roleColor": {
             "title": "Ba"
+        },
+        "humansHelp": {
+            "title": "Členové v collabu",
+            "content": `<b style="color: #ffff00;">Jméno:</b> Sem patří jméno člověka, který měl část v collabu. Lupa najde jeho GD profil a udělá ho jeho profil klikatelný v dokončeném seznamu.<br><br>
+            <b style="color: #ffff00;">Sítě:</b> Slouží k přidávání sociálních sítí, na kterých lze člena najít. Dvojitým klikem na náhled se dá rychle síť smazat.<br><br>
+            <b style="color: #ffff00;">Role:</b> Pomoc není potřeba :D<br><br>
+            <b style="color: #ffff00;">Část:</b> V procentech odkud pokud dělal člen na části.<br><br>
+            <b style="color: #ffff00;">Barva:</b> Barva jména člena, která se objeví v hotovém seznamu.
+            `
         }
     }
 })

@@ -33,7 +33,9 @@
     width: 80%;
     left: 10%;
     padding: 2%;
-    top: 2%;    
+    top: 2%;
+    max-height: 40vw;
+    overflow-y: auto;
 }
 
 
@@ -70,6 +72,22 @@
 
 }
 
+.errNotif {
+    z-index: 2;
+    transform: translate(30vw,20vh);
+    width: 40vw;
+    position: absolute;
+    pointer-events: none;
+    display: none;
+}
+
+.errNotText {
+    z-index: 3;
+    position: relative;
+    top: 4vw;
+    left: 2vw;
+    width: 36vw;
+}
 
 #collabTools {
 	position: fixed;
@@ -105,8 +123,18 @@ td > * {
     vertical-align: middle;
 }
 
- .collabTables th {
+.collabTables th img:nth-child(1) {
+    width: 2vw;
+    vertical-align: middle;
+}
+.collabTables th div {
+    margin: 0vw 0 0 0.5vw;
+}
+
+.collabTables th {
     background: rgba(0,0,0,0.1) !important;
+    font-size: 2vw;
+    -webkit-text-stroke: black 1.5px;
 }
 
 tr:nth-child(odd) {
@@ -145,6 +173,7 @@ tr > td:nth-child(2n) {
     font-size: 2vw;
     -webkit-text-stroke: black 1.5px;
     margin: 0;
+    height: 2.5vw;
 }
 
 input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .tableCpicker) {
@@ -289,12 +318,6 @@ input:disabled {
 .jsonHelp {
     width: 40%;
     height: 40%;
-}
-
-.errorBox {
-    padding: 1% 0.5%;
-    border-radius: 5px;
-    font-size: 200%;
 }
 
 #listPreview {
