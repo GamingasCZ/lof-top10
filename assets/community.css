@@ -159,7 +159,13 @@ tr > td:nth-child(2n) {
     background-color: #FFFFFF50;
     border-color: #FFFFFF50;
     -webkit-text-stroke: black 1.5px;
+    -moz-appearance: textfield;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
 
 .collabHeader {
     max-height: auto;
@@ -340,10 +346,14 @@ input:disabled {
     background-color: tomato;
 }
 
+.hostIcon {
+    width: 5vw;
+}
+
 .editorHeader {
     background-color: rgb(89, 185, 89);
     margin: 0%;
-    padding: 1vw 1%;
+    padding: 0.8vw 1%;
     display: flex;
     justify-content: center;
     flex-direction: column;

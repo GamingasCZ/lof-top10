@@ -1,8 +1,8 @@
 var currEditing;
 var clipboard;
 
-const presets = [["Dekorace", 1], ["Layout", 1], ["Tester", 0]];
-const presetNames = ["Dekorace", "Layout", "Tester"]
+const presets = [[jsStr["DECO"][LANG], 1], [jsStr["LAYOUT"][LANG], 1], [jsStr["TESTER"][LANG], 0]];
+const presetNames = [jsStr["DECO"][LANG], jsStr["LAYOUT"][LANG], jsStr["TESTER"][LANG]]
 
 class Role {
     constructor(name, hasPer, color, HTMLobject, id = 0) {
@@ -10,7 +10,7 @@ class Role {
         this.hasPer = hasPer;
         this.color = color;
         this.HTMLobject = HTMLobject[0];
-        this.id = levelList[currEditing]["creator"][1].length;
+        this.id = new Date().getTime();
     }
 
     remove(arrIndex) {
@@ -49,6 +49,7 @@ function showCollabTools(id) {
     $(".collabTables:nth-child(even)").css("background-color", dark);
     $(".eventButton").show();
 
+    $(".collabTTitle").text(`- ${jsStr["CT_S_TIT_1"][LANG]} -`);
     $("#collabTools").css("background-color", cardCol);
     $("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
     $(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
@@ -66,6 +67,7 @@ function showCollabTools(id) {
         $("#humpaste").addClass("disabled")
     }
 
+    $(".hostIcon").attr("src", "images/bytost.png")
     let creaArray = levelList[id]["creator"];
     if (typeof creaArray == "object") {
         let longer = creaArray[1].length >= creaArray[2].length ? creaArray[1].length : creaArray[2].length
@@ -75,6 +77,10 @@ function showCollabTools(id) {
             if (i < creaArray[2].length) { addCollabHuman(creaArray[2][i]) }
         }
         refreshRoleList()
+
+        if (creaArray[0][1] == 1) { // Is host verified?
+            $(".hostIcon").attr("src", "images/check.png")
+        }
     }
     else {
         $(".verifier").val(creaArray)
@@ -131,7 +137,7 @@ function refreshRoleList() {
     // TODO: roles of humans get overwritten, make sure that doesn't happen
     $(".roleList").children().remove();
     if ($(".roleList").children().length == 0) {
-        $(".roleList").append(`<option disabled>Žádná</option>`);
+        $(".roleList").append(`<option disabled>${jsStr["NO_ROLE"][LANG]}</option>`);
     }
 
     var select = ""
@@ -144,7 +150,7 @@ function refreshRoleList() {
             $(".roleList").append(`<option${select}>${role.name}</option>`);
         }
         else {
-            $(".roleList").append(`<option${select}>(Bezejmenná)</option>`);
+            $(".roleList").append(`<option${select}>(${jsStr["UNN_ROLE"][LANG]})</option>`);
         }
     });
 
@@ -155,9 +161,12 @@ function refreshRoleList() {
 
                 let roleIndex = roleIDs.indexOf(hum.role);
                 hum.role = roleIDs[roleIndex];
-                $(".roleList")[i].childNodes[roleIndex + 1].setAttribute("selected", true)
+                $(".roleList")[i].childNodes[roleIndex + 1].setAttribute("selected", true);
             }
-            else if (roleIDs.indexOf(hum.role) == -1) { hum.role = 0 }
+            else if (roleIDs.indexOf(hum.role) == -1) {
+                if (roleIDs.length > 0) { hum.role = roleIDs[0]; } // Selects the first role
+                else { hum.role = 0; } // When no role is available
+            }
             i++
         })
     }
@@ -235,11 +244,11 @@ function addRole(preset = null, loading = 0) {
     let roleCode = $(`
     <tr class="tableRow">        
         <td>
-            <input id="collabInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="Jméno" value=${presetName}></input>
+            <input id="collabInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="${jsStr["NAME"][LANG]}" value=${presetName}></input>
         </td>
         <td>
             <img class="setCheckbox button" for="hasPer" src="images/check-${loadCheck}.png" onclick="checkCollabCheck('hasPer', $(this))"> 
-            <div style="margin:0; display: inline;" class="uploadText">Vypnuto</div>
+            <div style="margin:0; display: inline;" class="uploadText">${jsStr["ENABLED"][LANG]}</div>
         </td>
         <td>
             <input type="color" class="tableCpicker button" style="float: none;" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 1)">
@@ -260,17 +269,16 @@ function addRole(preset = null, loading = 0) {
 }
 
 function verifyPerson(th) {
-    let index = getObjArrayIndex(th, 2);
+    let index = getObjArrayIndex(th, 2)
     let inp = $(th.siblings()[1]).val(); // Username
-    
-    let nameExists = false
-    $.get("https://gdbrowser.com/api/profile/"+inp, nm => { nameExists = (nm == "-1" ? false : true) })
-    if (nameExists) {
-        $(th.siblings()[0]).attr("src", "https://gdbrowser.com/icon/"+inp)
-    }
-    
-    
-    console.log(index);
+
+    // Verifying person
+    $.get("https://gdbrowser.com/api/profile/" + inp, nm => {
+        if (nm != "-1") {
+            $(th.siblings()[0]).attr("src", "https://gdbrowser.com/icon/" + inp)
+            levelList[currEditing]["creator"][2][index].verified = true
+        }
+    })
 }
 
 function checkCollabCheck(name, el) {
@@ -278,13 +286,13 @@ function checkCollabCheck(name, el) {
     let check = $(".tableRow")[index].children[1].children
     if ($(check[0]).attr("src").match("off") == null) {
         $(check[0]).attr("src", "images/check-off.png")
-        $(check[1]).text("Vypnuto")
+        $(check[1]).text(jsStr["ENABLED"][LANG])
         levelList[currEditing]["creator"][1][index].hasPer = false;
 
     }
     else {
         $(check[0]).attr("src", "images/check-on.png")
-        $(check[1]).text("Zapnuto")
+        $(check[1]).text(jsStr["DISABLED"][LANG])
         levelList[currEditing]["creator"][1][index].hasPer = true;
 
     }
@@ -299,33 +307,37 @@ function addCollabHuman(load = 0) {
     if (load == 0) { var cpickerCol = RGBtoHEX(randomColor()); humanInstance.color = cpickerCol }
     else { var cpickerCol = load.color }
 
+    // messages don't change when deleting, bur i don't care :p
     let humanCount = levelList[currEditing]["creator"][2].length
-    let funnyNames = ["Nastavení collabu", "Nastavení megacollabu", "Nastavení gigacollabu", "Cože", "Správa planety"]
-    if (humanCount >= 74) {
-        $(".collabTTitle").text(`- ${funnyNames[4]} -`);
-    }
-    else if (humanCount > 49) {
-        $(".collabTTitle").text(`- ${funnyNames[3]} -`);
-        $("")
-    }
-    else if (humanCount > 19) {
-        $(".collabTTitle").text(`- ${funnyNames[2]} -`);
-    }
-    else if (humanCount > 4) {
-        $(".collabTTitle").text(`- ${funnyNames[1]} -`);
-    }
-    else if (humanCount == 4) {
-        $("#collabTools").css("background-image", "url('images/sadTroll.jpg')")
+    let funnyNames = [jsStr["CT_S_TIT_1"][LANG], jsStr["CT_S_TIT_2"][LANG], jsStr["CT_S_TIT_3"][LANG], jsStr["CT_S_TIT_4"][LANG], jsStr["CT_S_TIT_5"][LANG]]
+    
+    if (humanCount < 5) {
         $(".collabTTitle").text(`- ${funnyNames[0]} -`);
     }
+    else if (humanCount >= 5 && humanCount < 20) {
+        $(".collabTTitle").text(`- ${funnyNames[1]} -`);
+    }
+    else if (humanCount >= 20 && humanCount < 50) {
+        $(".collabTTitle").text(`- ${funnyNames[2]} -`);
+    }
+    else if (humanCount >= 50 && humanCount < 75) {
+        $(".collabTTitle").text(`- ${funnyNames[3]} -`);
+    }
+    else {
+        $(".collabTTitle").text(`- ${funnyNames[4]} -`);
+    }
+
+    // Is human verified?
+    let verifySign = "images/bytost.png";
+    if (load != 0) { verifySign = humanInstance.verified ? "images/check.png" : "images/bytost.png" }
 
     let rowID = new Date().getTime();
     let humanCode = $(`
     <tr class="tableRow">
         <td>
-            <img class="button" style="float: none; width: 2vw;" src="images/bytost.png"
-           ><input onchange="chRoleValue($(this), 'name', 2)" id="collabInp" placeholder="Jméno" value="${humanInstance.name}"></input
-           ><img class="button" style="float: none; width: 2vw;" src="images/getStats.png" onclick="verifyPerson($(this))">
+            <img class="button" style="float: none; width: 2vw;" src="${verifySign}"
+           ><input onchange="chRoleValue($(this), 'name', 2)" id="collabInp" placeholder="${jsStr["NAME"][LANG]}" value="${humanInstance.name}"></input
+           ><img class="button" style="float: none; width: 2vw;" src="images/getStats.png" onclick="verifyPerson($(this), 1)">
         </td>
         <td>
             <img class="button socAddButton" style="float: none; width: 2vw;" src="images/add.png" onclick="addSocMedia($(this))"
@@ -334,9 +346,9 @@ function addCollabHuman(load = 0) {
             <select onchange="chRoleValue($(this), 'role', 2)" class="uploadText roleList"></select>
         </td>
         <td>
-            <input onchange="chRoleValue($(this), 'part', 2, 0)" id="collabInp" style="width: 20%;" placeholder="Od" value="${humanInstance.part[0]}"></input
+            <input onchange="chRoleValue($(this), 'part', 2, 0)" type="number" min="0" max="100" id="collabInp" style="width: 20%;" placeholder="${jsStr["FROM"][LANG]}" value="${humanInstance.part[0]}"></input
            ><p class="uploadText" style="display: inline">-</p
-           ><input onchange="chRoleValue($(this), 'part', 2, 1)" id="collabInp" style="width: 20%;" placeholder="Do" value="${humanInstance.part[1]}"></input
+           ><input onchange="chRoleValue($(this), 'part', 2, 1)" type="number" min="0" max="100" id="collabInp" style="width: 20%;" placeholder="${jsStr["TO"][LANG]}" value="${humanInstance.part[1]}"></input
            ><p class="uploadText" style="display: inline">%</p
         </td>
         <td>
@@ -383,11 +395,13 @@ function addCollabHuman(load = 0) {
 function chRoleValue(el, changeValue, type, arr = null) {
     let index = getObjArrayIndex(el, type);
     if (changeValue == "role") {
+        let roleNames = []
         let roleIDs = []
         levelList[currEditing]["creator"][1].forEach(role => {
-            roleIDs.push(role.name)
+            roleNames.push(role.name)
+            roleIDs.push(role.id)
         });
-        levelList[currEditing]["creator"][type][index][changeValue] = roleIDs.indexOf(el.val())
+        levelList[currEditing]["creator"][type][index][changeValue] = roleIDs[roleNames.indexOf(el.val())]
     }
     else {
         if (arr == null) {
@@ -402,8 +416,52 @@ function chRoleValue(el, changeValue, type, arr = null) {
         // Change text next to role color picker
         el.siblings().text(el.val().slice(1))
     }
+    if (changeValue == "name" && type == 2 && levelList[currEditing]["creator"][2][index].verified) {
+        // Unverifying person on input change
+        levelList[currEditing]["creator"][2][index].verified = false;
+        $(el.siblings()[0]).attr("src", "images/bytost.png");
+    }
+    if (changeValue == "part") {
+        const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
+        let [from, to] = [el.parent()[0].children[0].value, el.parent()[0].children[2].value]
+        // Make sure "from" and "to" make sense
+        if (arr == 0) { // From
+            if (parseInt(from) > parseInt(to)) { to = clamp(parseInt(from) + 1, 0, 100) }
+        }
+        else { // To
+            if (parseInt(to) < parseInt(from)) { from = clamp(parseInt(to) - 1, 0, 100) }
+        }
+
+        el.parent()[0].children[0].value = from
+        el.parent()[0].children[2].value = to
+        levelList[currEditing]["creator"][2][index].part[0] = from
+        levelList[currEditing]["creator"][2][index].part[1] = to
+
+    }
 
     refreshRoleList();
+}
+
+function chMainName(el, vyb) {
+    if (typeof levelList[currEditing]["creator"] != "object") {
+        let currVerifier = levelList[currEditing]["creator"];
+        levelList[currEditing]["creator"] = [[currVerifier, 0], [], []]
+    }
+
+    if (vyb == 1) {
+        levelList[currEditing]["creator"][0][1] = false;
+        $(el.siblings()[0]).attr("src", "images/bytost.png");
+    }
+    else {
+        // Verifying person
+        $.get("https://gdbrowser.com/api/profile/" + $(".verifier").val(), nm => {
+            if (nm != "-1") {
+                $(".hostIcon").attr("src", "https://gdbrowser.com/icon/" + $(".verifier").val())
+                levelList[currEditing]["creator"][0][1] = true;
+            }
+        })
+    }
+    levelList[currEditing]["creator"][0][0] = $(".verifier").val();
 }
 
 function getObjArrayIndex(th, type) {
@@ -424,11 +482,11 @@ function removeColObject(th, type) {
     }
 
     var finished = false
-    levelList[currEditing]["creator"][type].forEach(el => {
+    levelList[currEditing]["creator"][type].forEach(el => { // Removing element
         if ($(el.HTMLobject).is(th.parent().parent())) {
             el.remove(getObjArrayIndex(th, type))
 
-            if (presetNames.indexOf(el.name) != -1) {
+            if (presetNames.indexOf(el.name) != -1) { // Restore preset
                 $(`.eventButton:eq(${presetNames.indexOf(el.name)})`).show()
             }
 
@@ -436,8 +494,7 @@ function removeColObject(th, type) {
         }
     })
 
-    if (!finished) {
-        console.log("refreshing...");
+    if (!finished) { // When the element fails to remove (happens randomly for some godforsaken reason ;-; )
         let deleteIndexR = Object.values($(".roleRm")).indexOf(th[0]);
         let deleteIndexH = Object.values($(".humRm")).indexOf(th[0]);
 
@@ -483,14 +540,6 @@ function rollThing(thing, forceOpen = false) {
     }
 }
 
-function debugArray() {
-    let roleArray = levelList[currEditing]["creator"][1];
-    let humArray = levelList[currEditing]["creator"][2];
-
-    console.log(roleArray);
-    console.log(humArray);
-}
-
 function clipboardTask(task, data, ind = -1) {
     // task - 1: copy, 2: paste
     if (task == 1) {
@@ -529,10 +578,10 @@ function clipboardTask(task, data, ind = -1) {
 var soc_selected
 var soc_array
 var soc_changingInd
-var lock_socChange = false
+var lock_socChange
 
-var names = ["Youtube kanál", "Twitter účet", "Twitch kanál", "Discord tag / server", "Vlastní odkaz"];
-var imgs = ["youtube", "twitter", "twitch", "discord", "cust"];
+var names
+var imgs
 
 function align() {
     // Opens socialPicker popup an aligns it
@@ -554,8 +603,8 @@ function addSocMedia(el) {
     soc_selected = getObjArrayIndex(el, 2);
 
     $(".openSocPicker").removeClass("disabled")
-    $(".addSocial").attr("title", "Přidat")
-    $(".rmSocial").attr("title", "Zrušit")
+    $(".addSocial").attr("title", jsStr["CONFIRM"][LANG])
+    $(".rmSocial").attr("title", jsStr["CANCEL"][LANG])
 
     $(".socialPickerIcon").show()
     $(".socialPicker").hide();
@@ -661,7 +710,6 @@ function selectSocialMedia(what) {
 
         $(".socialPicker").fadeToggle(75);
     }
-
 }
 
 function changeSocial(but) {
@@ -670,8 +718,8 @@ function changeSocial(but) {
     let target = but.target;
     $(".socAddButton").css("filter", "hue-rotate(0deg)")
 
-    $(".addSocial").attr("title", "Uložit úpravy")
-    $(".rmSocial").attr("title", "Smazat")
+    $(".addSocial").attr("title", jsStr["SAV_CHANG"][LANG])
+    $(".rmSocial").attr("title", jsStr["DELETE"][LANG])
 
     let i = 0
     levelList[currEditing]["creator"][2][soc_selected]["socials"].forEach(s => {
@@ -693,6 +741,9 @@ function changeSocial(but) {
 }
 
 $(function () {
+    names = [jsStr["YT_CHAN"][LANG], jsStr["TW_PROF"][LANG], jsStr["TW_CHAN"][LANG], jsStr["DC_SERV"][LANG], jsStr["CUST_LINK"][LANG]];
+    imgs = ["youtube", "twitter", "twitch", "discord", "cust"];
+
     // Ctools human social media picker
     $(".openSocPicker").on("click", align);
     $(".socialPickerIcon").on("click", selectSocialMedia);

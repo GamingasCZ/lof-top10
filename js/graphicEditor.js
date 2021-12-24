@@ -28,7 +28,10 @@ function getDetailsFromName(id) {
             $(".cardLName" + id).val(data[0]["name"]);
             levelList[id]["levelName"] = data[0]["name"];
             $(".cardLCreator" + id).val(data[0]["author"]);
-            levelList[id]["creator"] = data[0]["author"];
+
+            if (typeof levelList[id]["creator"] == "object") { levelList[id]["creator"][0] = [data[0]["author"], 1] } // Collab tools enabled
+            else { levelList[id]["creator"] = data[0]["author"]; } // Not enabled
+
             $(".idbox" + id).val(data[0]["id"]);
             levelList[id]["levelID"] = data[0]["id"]
         }
@@ -250,7 +253,13 @@ function addLevel() {
     $(".cardLCreator" + listLenght).on("change", function () {
         let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
         let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["creator"] = selection;
+        if (typeof levelList[position]["creator"] == "object") {
+            levelList[position]["creator"][0][0] = selection;
+            levelList[position]["creator"][0][1] = false;
+        }
+        else {
+            levelList[position]["creator"] = selection;
+        }
     });
 
     $(".cardLVideo" + listLenght).on("change", function () {
@@ -316,7 +325,14 @@ function loadLevel(pos) {
     $(".cardLCreator" + pos).on("change", function () {
         let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
         let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["creator"] = selection;
+        if (typeof levelList[position]["creator"] == "object") {
+            levelList[position]["creator"][0][0] = selection;
+            levelList[position]["creator"][0][1] = false;
+        }
+        else {
+            levelList[position]["creator"] = selection;
+        }
+        
     });
 
     $(".cardLVideo" + pos).on("change", function () {
@@ -530,7 +546,7 @@ $(function () {
     // Keyboard stuff
 
     $("html").on("keydown", k => {
-        if (Object.keys(levelList).length-ADDIT_VALS > 2) {
+        if (Object.keys(levelList).length - ADDIT_VALS > 2) {
             let currCardShown = parseInt($(".positionEdit:not(:hidden)")[0].id.match(/[0-9]/g));
             $(".positionEdit:not(:hidden)")[0].focus()
             if (k.key == "ArrowDown") {

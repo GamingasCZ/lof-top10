@@ -29,8 +29,38 @@ var strings = [
     ["label[for='private']", "upload.html", 0, ["Soukromý seznam", "Private List"]],
     [".titles", "upload.html", 0, ["- Komunitní seznamy -", "- Community Lists -"]],
     ["#sortStr", "upload.html", 0, ["Řazení: ", "Sorting: "]],
-    ["#searchBar", "upload.html", "placeholder", ["Hledání", "Search"]]
+    ["#searchBar", "upload.html", "placeholder", ["Hledání", "Search"]],
 
+    [".collabTTitle","upload.html",0,["- Nastavení collabu -","- Collab Settings -"]],
+    [".verifier","upload.html","placeholder",["Host / Verifier","Host / Verifier"]],
+    [".roleHead","upload.html",0,["Role","Roles"]],
+    [".presetButtonContainer > button:nth-child(1)","upload.html",0,["Dekorace","Decoration"]],
+    [".presetButtonContainer > button:nth-child(2)","upload.html",0,["Layout","Layout"]],
+    [".presetButtonContainer > button:nth-child(3)","upload.html",0,["Tester","Tester"]],
+    ["#rolepaste","upload.html","title",["Vložit ze schránky","Paste from clipboard"]],
+    [".roleAddButton","upload.html","title",["Přidat roli","Add role"]],
+    [".noRolAdded","upload.html",1,[
+        `K přidání role vyber předvolbu, nebo klikni na<img style="width: 2.2%" id="plusSign"src="images/add.png">`,
+        `To add a role, pick a preset, or click on<img style="width: 2.2%" id="plusSign"src="images/add.png">`]],
+    ["#r_name","upload.html",0,["Jméno","Name"]],
+    ["#r_hasPart","upload.html",0,["Má část?","Has part?"]],
+    ["#r_color","upload.html",0,["Barva","Color"]],
+    [".humHead","upload.html",0,["Členové","Members"]],
+    [".cLink","upload.html","title",["Vlastní odkaz","Custom Link"]],
+    ["#collabInp","upload.html","placeholder",["YouTube kanál","YouTube Channel"]],
+    [".addSocial","upload.html","title",["Přidat","Add"]],
+    [".rmSocial","upload.html","title",["Zrušit","Cancel"]],
+    ["#humpaste","upload.html","title",["Vložit ze schránky","Paste from clipboard"]],
+    [".addHumanButton","upload.html","title",["Přidat člověka","Add member"]],
+    [".noRoles","upload.html",0,["K\ přidání členů přidej roli.","To add a member, add a role."]],
+    [".addRoles","upload.html",1,[`K přidání člena klikni na<img style="width: 2.2%" id="plusSign" src="images/add.png">`,
+    `To add a member, click on<img style="width: 2.2%" id="plusSign" src="images/add.png">`]],
+    ["#h_name","upload.html",0,["Jméno","Username"]],
+    ["#h_social","upload.html",0,["Sítě","Links"]],
+    ["#h_role","upload.html",0,["Role","Role"]],
+    ["#h_part","upload.html",0,["Část","Part"]],
+    ["#h_color","upload.html",0,["Barva","Color"]],
+    [".errTitle","upload.html",0,["Jejda!","Oh no!"]]
 ]
 
 var jsStr = {
@@ -41,6 +71,7 @@ var jsStr = {
     "NO_IMG": ["./images/ne.png","./images/no.png"],
 
     // editor
+    "EMPT_L": ["Snažiš se poslat <b style='color:cyan'>prázdný seznam!</b>", "You're trying to send an <b style='color:cyan'>empty list!</b>"],
     "LIST_L": ["Jméno tvého seznamu by mělo být delší :).",
         "The name of your list should be longer :)."],
     "LIST_TOOL": ["Jméno tvého seznamu je delší, než doba, kterou mi trvá zeditovat video :D.",
@@ -50,9 +81,6 @@ var jsStr = {
     "GG_NEVER": ["Nikdy nebudeš Gamingasem :).",
         "You will never be Gamingas :)."],
     "SUCC_UPL": ["Všechno je v pořádku!", "Everything is ok!"],
-    "": ["", ""],
-    "": ["", ""],
-    "": ["", ""],
     "NO_JSON": ["Nic jsi nezadal... :D", "You have not entered anything... :D"],
     "CREATOR_BY": ["Od: ", "By: "],
     "NEWEST": ["Nejnovější", "Newest"],
@@ -97,6 +125,26 @@ var jsStr = {
 	      <b style="color:yellow">Kdykoliv můžeš upravit seznam a udělat ho veřejný.</b>`
         , `Private lists <b style="color: lime;">won't show up publicly</b> and you access them with a <b style="color: tomato">special link.</b><br><br>
           <b style="color:yellow">You can edit the list anytime and make it public.</b>`],
+    "ROLE_NM_T": ["Jméno role","Role name"],
+    "ROLE_NM_D": [`<b style="color: #ffff00;">Role je věc, kterou člověk dělal v collabu</b>.<br><br>Do pole jména zadej jméno role.<br><br>Např.: Layout, Dekorace, Hudba, Optimalizace, Testování`,
+                  `<b style="color: #ffff00;">A role is a thing the person's done in the collab</b>.<br><br>Add a role name in the input.<br><br>Examples: Layout, Deco, Music, Optimization, Testing`],
+    "ROLE_HP_T": ["Má část v collabu?","Has a collab part?"],
+    "ROLE_HP_D": [`V dokončeném seznamu se vizuálně ukáží části na kterých lidé pracovali. Pokud tohle pro roli nedává smysl, nezašktrávej políčko.`,
+                  `The finished list will visually show parts creators have worked on. Do not check if this doesn't make sense for the role.`],
+    "ROLE_CO_T": ["Barva role","Role color"],
+    "ROLE_CO_D": ["Barva různých věcí v dokončeném seznamu...",
+                  "The color of different elements in the finished list..."],
+    "HUM_T": ["Členové v collabu","Collab members"],
+    "HUM_D": [`<b style="color: #ffff00;">Jméno:</b> Sem patří jméno člověka, který měl část v collabu. Lupa najde jeho GD profil a udělá ho jeho profil klikatelný v dokončeném seznamu.<br><br>
+    <b style="color: #ffff00;">Sítě:</b> Slouží k přidávání sociálních sítí, na kterých lze člena najít. Dvojitým klikem na náhled se dá rychle síť smazat.<br><br>
+    <b style="color: #ffff00;">Role:</b> Pomoc není potřeba :D<br><br>
+    <b style="color: #ffff00;">Část:</b> V procentech odkud pokud dělal člen na části.<br><br>
+    <b style="color: #ffff00;">Barva:</b> Barva jména člena, která se objeví v hotovém seznamu.`,
+            `<b style="color: #ffff00;">Name:</b> Here goes the GD username of the creator who was taken part in the collab. The search icon will find their profile and make it visitable in the finished list.<br><br>
+            <b style="color: #ffff00;">Links:</b> Used for adding the creator's social media sites. Double-clicking a finished icon will quickly delete the link.<br><br>
+            <b style="color: #ffff00;">Role:</b> No help needed :D<br><br>
+            <b style="color: #ffff00;">Part:</b> Where the creator started and ended making his part, in percentage.<br><br>
+            <b style="color: #ffff00;">Color:</b> Color of the creator's name in the finished list.`],
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],
@@ -177,7 +225,33 @@ var jsStr = {
     "MINUTES": ["minutami", "minutes ago"],
     "SECONDS": ["sekundami", "seconds ago"],
     "FEWSECS": ["před pár sekundami", "a few seconds ago"],
-    "AGO": ["před ", ""]
+    "AGO": ["před ", ""],
+
+    // Collab tools
+    "DECO": ["Dekorace", "Decoration"],
+    "LAYOUT": ["Layout", "Layout"],
+    "TESTER": ["Tester", "Tester"],
+    "NO_ROLE": ["Žádná", "None"],
+    "UNN_ROLE": ["Bezejmenná", "Unnamed"],
+    "NAME": ["Jméno", "Username"],
+    "DISABLED": ["Zapnuto", "Enabled"], // This is not a mistake :P
+    "ENABLED": ["Vypnuto", "Disabled"],
+    "CT_S_TIT_1": ["Nastavení collabu", "Collab Settings"],
+    "CT_S_TIT_2": ["Nastavení megacollabu", "Megacollab Settings"],
+    "CT_S_TIT_3": ["Nastavení gigacollabu", "Gigacollab Settings"],
+    "CT_S_TIT_4": ["Cože", "What"],
+    "CT_S_TIT_5": ["Správa planety", "Planet Management"],
+    "FROM": ["Od", "Fr."],
+    "TO": ["Do", "To"],
+    "YT_CHAN": ["Youtube kanál", "YouTube Channel"],
+    "TW_PROF": ["Twitter účet", "Twitter Account"],
+    "TW_CHAN": ["Twitch kanál", "Twitch Channel"],
+    "DC_SERV": ["Discord tag / server", "Discord tag / server"],
+    "CUST_LINK": ["Vlastní odkaz", "Custom Link"],
+    "SAV_CHANG": ["Uložit úpravy", "Save changes"],
+    "DELETE": ["Smazat", "Delete"],
+    "CONFIRM": ["Přidat", "Add"],
+    "CANCEL": ["Zrušit", "Cancel"]
 }
 
 $(function () {
@@ -219,6 +293,10 @@ function translate() {
             if (i[2] == 0) {
                 // Replacing tag content (text)
                 $(i[0]).text(i[3][LANG])
+            }
+            else if (i[2] == 1) {
+                // Replacing tag content (html)
+                $(i[0]).html(i[3][LANG])
             }
             else {
                 // Replacing tag attribute

@@ -20,7 +20,7 @@ function checkJson(data) {
         $(".errorBox").text(jsStr["SUCC_UPL"][LANG]);
 
         // 1.5/3 Je seznam prázdný?
-        if (Object.keys(parsedData).length-ADDIT_VALS < 2) { throw ("Snažiš se poslat <b style='color:cyan'>prázdný seznam!</b>") }
+        if (Object.keys(parsedData).length-ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
         for (i = 1; i < Object.keys(parsedData).length - ADDIT_VALS; i++) {
