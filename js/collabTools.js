@@ -259,6 +259,20 @@ function addRole(preset = null, loading = 0) {
     rollThing(0, true)
 }
 
+function verifyPerson(th) {
+    let index = getObjArrayIndex(th, 2);
+    let inp = $(th.siblings()[1]).val(); // Username
+    
+    let nameExists = false
+    $.get("https://gdbrowser.com/api/profile/"+inp, nm => { nameExists = (nm == "-1" ? false : true) })
+    if (nameExists) {
+        $(th.siblings()[0]).attr("src", "https://gdbrowser.com/icon/"+inp)
+    }
+    
+    
+    console.log(index);
+}
+
 function checkCollabCheck(name, el) {
     let index = getObjArrayIndex(el, 1);
     let check = $(".tableRow")[index].children[1].children
@@ -311,7 +325,7 @@ function addCollabHuman(load = 0) {
         <td>
             <img class="button" style="float: none; width: 2vw;" src="images/bytost.png"
            ><input onchange="chRoleValue($(this), 'name', 2)" id="collabInp" placeholder="Jméno" value="${humanInstance.name}"></input
-           ><img class="button" style="float: none; width: 2vw;" src="images/getStats.png">
+           ><img class="button" style="float: none; width: 2vw;" src="images/getStats.png" onclick="verifyPerson($(this))">
         </td>
         <td>
             <img class="button socAddButton" style="float: none; width: 2vw;" src="images/add.png" onclick="addSocMedia($(this))"
@@ -383,9 +397,6 @@ function chRoleValue(el, changeValue, type, arr = null) {
             levelList[currEditing]["creator"][type][index][changeValue][arr] = el.val()
         }
     }
-
-
-
 
     if (changeValue == "color") {
         // Change text next to role color picker
