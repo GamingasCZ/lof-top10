@@ -182,14 +182,19 @@ html, body {
   cursor: pointer;
 }
 
+.gamLink {
+  text-decoration: underline;
+  color: #58D2FF !important;
+  cursor: pointer;
+  margin: 0 0.5em;
+}
+
 .github {
-  float: right;
-  display: block;
-  padding: 2% 2%;
+  width: 4vw;
 }
 
 .github:hover {
-  transform: rotate(360deg);
+  transform: rotate(360deg) scale(1.2);
   transition-duration: 0.5s;
   transition-timing-function: ease-in-out;
 }

@@ -305,6 +305,7 @@ $(function () {
     });
 
     if (window.location.protocol.includes("file")) {
+        $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
         $(".debugTools").show()
     }
 
