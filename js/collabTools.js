@@ -276,6 +276,33 @@ function verifyPerson(th) {
     $.get("https://gdbrowser.com/api/profile/" + inp, nm => {
         if (nm != "-1") {
             $(th.siblings()[0]).attr("src", "https://gdbrowser.com/icon/" + inp)
+            
+            // Setting social media
+            for (let i = 0; i < levelList[currEditing]["creator"][2][index]["socials"].length; i++) {
+                lock_socChange = true;
+                soc_changingInd = i;
+                removeSocial();
+            }
+            
+            let gdSocials = ["youtube", "twitter", "twitch"];
+            let urls = ["https://youtube.com/channel/",
+                        "https://twitter.com/",
+                        "https://twitch.tv/"]
+            soc_selected = index;
+            gdSocials.forEach(m => {
+                if (nm[m] != null) {
+                    lock_socChange = false
+                    let curr = gdSocials.indexOf(m);
+                    soc_array = [curr, urls[curr]+nm[m]];
+                    confirmSocial();
+                    
+                    // Member color from GD pcol1
+                    let p1col = RGBtoHEX([nm.col1RGB.r, nm.col1RGB.g, nm.col1RGB.b])
+                    levelList[currEditing]["creator"][2][index].color = p1col;
+                    $(".tableCpicker")[levelList[currEditing]["creator"][1].length+index].value = p1col;
+                    }
+                })
+            
             levelList[currEditing]["creator"][2][index].verified = true
         }
     })
