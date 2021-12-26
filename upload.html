@@ -48,20 +48,20 @@
       <img class="hostIcon" src="./images/bytost.png">
       <input id="posInputBox" class="verifier" autocomplete="off" type="text" placeholder="Host / Verifier"
         style="width: 25vw;" onchange="chMainName($(this), 1)">
-      <img class="button" style="float: none;" src="images/getStats.png" onclick="chMainName($(this), 2)">
+      <img class="button"  src="images/getStats.png" onclick="chMainName($(this), 2)">
     </div>
 
     <div class="editorHeader collabHeader uploadText collabBar">
       <div class="uploadText button roleHead" onclick="rollThing(0)">Role</div>
       <div class="presetButtonContainer">
-        <button style="float: none;" class="button uploadText eventButton" onclick="addRole(0)">Dekorace</button>
-        <button style="float: none;" class="button uploadText eventButton" onclick="addRole(1)">Layout</button>
-        <button style="float: none;" class="button uploadText eventButton" onclick="addRole(2)">Tester</button>
+        <button class="button uploadText eventButton" onclick="addRole(0)">Dekorace</button>
+        <button class="button uploadText eventButton" onclick="addRole(1)">Layout</button>
+        <button class="button uploadText eventButton" onclick="addRole(2)">Tester</button>
       </div>
       <div class="collabHButtons" style="width: 11vw;">
-        <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')" style="float: none; width: 5vw;"
+        <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')" style="width: 5vw;"
           src="images/paste.png" title="Vložit ze schránky">
-        <img class="button roleAddButton" onclick="addRole()" style="float: none; width: 5vw;margin-left: 1vw;"
+        <img class="button roleAddButton" onclick="addRole()" style="width: 5vw;margin-left: 1vw;"
           src="images/add.png" title="Přidat roli">
       </div>
     </div>
@@ -102,17 +102,17 @@
           <img src="images/cust.png" class="socialPickerIcon button cLink" title="Vlastní odkaz">
         </div>
 
-        <img src="images/youtube.png" style="float: none; width: 4vw;" class="button openSocPicker">
+        <img src="images/youtube.png" style="width: 4vw;" class="button openSocPicker">
         <input id="collabInp" class="socInp" style="width: 50vw;" placeholder="YouTube kanál">
-        <img src="images/check.png" style="float: none; width: 2.5vw;" class="button addSocial" title="Přidat">
-        <img src="images/error.png" style="float: none; width: 2.5vw;" class="button rmSocial" title="Zrušit">
+        <img src="images/check.png" style="width: 2.5vw;" class="button addSocial" title="Přidat">
+        <img src="images/error.png" style="width: 2.5vw;" class="button rmSocial" title="Zrušit">
       </div>
 
       <div class="collabHButtons" style="width: 11vw;">
-        <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)" style="float: none; width: 5vw;"
+        <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)" style="width: 5vw;"
           src="images/paste.png" title="Vložit ze schránky">
         <img class="button disabled addHumanButton" onclick="addCollabHuman()"
-          style="float: none; width: 5vw;margin-left: 1vw;" src="images/add.png" title="Přidat člověka">
+          style="width: 5vw;margin-left: 1vw;" src="images/add.png" title="Přidat člověka">
       </div>
     </div>
     <div class="collabBG collabHeader collabDIV">
@@ -214,7 +214,7 @@
       <div class="setting">
         <input type="checkbox" style="display: none;" name="hidden">
         <img src="images/check-off.png" onclick='checkCheckbox("hidden")' for="hidden" class="setCheckbox button"
-          style="float: none;">
+          >
         <label for="private" class="uploadText setLabel">Soukromý seznam</label>
         <img src="images/help.png" class="button setHelp" onclick="openHelp('private')">
       </div>
@@ -231,21 +231,21 @@
   <!-- Debug Tools -->
   <div class="searchTools uploadText debugTools">
     <span style="font-size: 2vw;">Seznamy k vygenerování:</span>
-    <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="debugLists(-1)">
+    <img class="button pageBut" src="images/arrow-left.png" onclick="debugLists(-1)">
     <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
-    <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="debugLists(1)">
-    <img class="button pageBut" style="float: none; width: 3vw;" src="images/preview.png" onclick="debugLists(2)">
+    <img class="button pageBut" src="images/arrow-right.png" onclick="debugLists(1)">
+    <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugLists(2)">
   </div>
 
   <div class="searchTools uploadText" style="justify-content: center;">
     <span style="font-size: 3vw; padding-right: 2%;" id="sortStr">Řazení: </span>
-    <img src="images/sort.png" id="sortBut" class="button" style="float: none; width: 5%; transition-duration: 0s;">
+    <img src="images/sort.png" id="sortBut" class="button" style="width: 5%; transition-duration: 0s;">
     <div class="page">
       <span style="font-size: 3vw; padding-right: 2%;" id="pageStr">Strana: </span>
-      <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="pageSwitch(-1)">
+      <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
       <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
       <span style="font-size: 3.5vw" id="maxPage">/1</span>
-      <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="pageSwitch(1)">
+      <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
     </div>
     <div class="search">
       <input placeholder="Hledání" autocomplete="off" class="pageIndicator" id="searchBar">
@@ -259,7 +259,7 @@
   <div class="boom"></div>
 </body>
 
-<footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.8);">
+<footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.5) translateY(4vw);">
   <p class="uploadText">Vytvořil </p>
   <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
   <span class="uploadText"> | 2021-2022 | </span>

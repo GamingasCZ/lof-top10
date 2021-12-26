@@ -255,8 +255,8 @@ function addRole(preset = null, loading = 0) {
             <p id="roleColPicker" style="display: inline;">${cpickerCol.slice(1)}</p>
         </td>
         <td>
-            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"
-           ><img class="button roleRm" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
+            <img class="button" style="width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"
+           ><img class="button roleRm" style="width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
         </td>
         <input type="hidden" value="${rowID}">
     </tr>
@@ -276,33 +276,33 @@ function verifyPerson(th) {
     $.get("https://gdbrowser.com/api/profile/" + inp, nm => {
         if (nm != "-1") {
             $(th.siblings()[0]).attr("src", "https://gdbrowser.com/icon/" + inp)
-            
+
             // Setting social media
             for (let i = 0; i < levelList[currEditing]["creator"][2][index]["socials"].length; i++) {
                 lock_socChange = true;
                 soc_changingInd = i;
                 removeSocial();
             }
-            
+
             let gdSocials = ["youtube", "twitter", "twitch"];
             let urls = ["https://youtube.com/channel/",
-                        "https://twitter.com/",
-                        "https://twitch.tv/"]
+                "https://twitter.com/",
+                "https://twitch.tv/"]
             soc_selected = index;
             gdSocials.forEach(m => {
                 if (nm[m] != null) {
                     lock_socChange = false
                     let curr = gdSocials.indexOf(m);
-                    soc_array = [curr, urls[curr]+nm[m]];
+                    soc_array = [curr, urls[curr] + nm[m]];
                     confirmSocial();
-                    
+
                     // Member color from GD pcol1
                     let p1col = RGBtoHEX([nm.col1RGB.r, nm.col1RGB.g, nm.col1RGB.b])
                     levelList[currEditing]["creator"][2][index].color = p1col;
-                    $(".tableCpicker")[levelList[currEditing]["creator"][1].length+index].value = p1col;
-                    }
-                })
-            
+                    $(".tableCpicker")[levelList[currEditing]["creator"][1].length + index].value = p1col;
+                }
+            })
+
             levelList[currEditing]["creator"][2][index].verified = true
         }
     })
@@ -337,7 +337,7 @@ function addCollabHuman(load = 0) {
     // messages don't change when deleting, bur i don't care :p
     let humanCount = levelList[currEditing]["creator"][2].length
     let funnyNames = [jsStr["CT_S_TIT_1"][LANG], jsStr["CT_S_TIT_2"][LANG], jsStr["CT_S_TIT_3"][LANG], jsStr["CT_S_TIT_4"][LANG], jsStr["CT_S_TIT_5"][LANG]]
-    
+
     if (humanCount < 5) {
         $(".collabTTitle").text(`- ${funnyNames[0]} -`);
     }
@@ -362,12 +362,12 @@ function addCollabHuman(load = 0) {
     let humanCode = $(`
     <tr class="tableRow">
         <td>
-            <img class="button" style="float: none; width: 2vw;" src="${verifySign}"
+            <img class="button" style="width: 2vw;" src="${verifySign}"
            ><input onchange="chRoleValue($(this), 'name', 2)" id="collabInp" placeholder="${jsStr["NAME"][LANG]}" value="${humanInstance.name}"></input
-           ><img class="button" style="float: none; width: 2vw;" src="images/getStats.png" onclick="verifyPerson($(this), 1)">
+           ><img class="button" style="width: 2vw;" src="images/getStats.png" onclick="verifyPerson($(this), 1)">
         </td>
         <td>
-            <img class="button socAddButton" style="float: none; width: 2vw;" src="images/add.png" onclick="addSocMedia($(this))"
+            <img class="button socAddButton" style="width: 2vw;" src="images/add.png" onclick="addSocMedia($(this))"
        ></td>
         <td>
             <select onchange="chRoleValue($(this), 'role', 2)" class="uploadText roleList"></select>
@@ -379,11 +379,11 @@ function addCollabHuman(load = 0) {
            ><p class="uploadText" style="display: inline">%</p
         </td>
         <td>
-            <input type="color" class="tableCpicker button" style="float: none; width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
+            <input type="color" class="tableCpicker button" style="width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
         </td>
         <td>
-            <img class="button" style="float: none; width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 2)"
-           ><img class="button humRm" style="float: none; width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
+            <img class="button" style="width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 2)"
+           ><img class="button humRm" style="width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
         </td>
         <input type="hidden" value="${rowID}">
     </tr>
@@ -407,7 +407,7 @@ function addCollabHuman(load = 0) {
         }
 
         humanInstance["socials"].forEach(soc => {
-            let smallBut = $(`<img class="button" style="float: none; width: 2vw" src=images/${imgs[soc[0]]}.png>`).appendTo(socialCell)
+            let smallBut = $(`<img class="button" style="width: 2vw" src=images/${imgs[soc[0]]}.png>`).appendTo(socialCell)
             smallBut.on("click", changeSocial)
             smallBut.on("dblclick", x => { changeSocial(x); removeSocial() });
             // Adds corresponding HTMLelement to array
@@ -683,7 +683,7 @@ function confirmSocial() {
 
         // Adds a button to table cell
         let tableBit = $(".socAddButton")[soc_selected].parentElement
-        let smallBut = $(`<img class="button" style="float: none; width: 2vw" src=images/${imgs[soc_array[0]]}.png>`).appendTo(tableBit)
+        let smallBut = $(`<img class="button" style="width: 2vw" src=images/${imgs[soc_array[0]]}.png>`).appendTo(tableBit)
         smallBut.on("click", changeSocial)
         smallBut.on("dblclick", x => { changeSocial(x); removeSocial() });
 

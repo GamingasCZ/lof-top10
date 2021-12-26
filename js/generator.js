@@ -1,7 +1,7 @@
 const ADDIT_VALS = 1;
 
 // These are not real people :<'
-const fakeNames = ["Voiprin", "Sarprong", "ZentricSigma","Darwing","ExpoD", "J0hnram", "Jayuff", "AligaThePeter", "Divpan", "Acidity","Doorami","DanZBro", "FunnyBone"]
+const fakeNames = ["Voiprin", "Sarprong", "ZentricSigma", "Darwing", "ExpoD", "J0hnram", "Jayuff", "AligaThePeter", "Divpan", "Acidity", "Doorami", "DanZBro", "FunnyBone"]
 
 if (window.location.search == "") {
 	var yID = "2019";
@@ -18,7 +18,7 @@ if (YEAR == "2019" || window.location.pathname.match("upload") == -1) {
 		"titleImg": "",
 		"1": {
 			"levelName": "Snowy",
-			"creator": "MurlocGD, PizzaGamerHu",
+			"creator": [["MurlocGD",0],[{"name":"Level","hasPer":false,"color":"#fab789","HTMLobject":{},"id":1640454770131}],[{"name":"MurlocGD","role":1640454770131,"part":["41","100"],"color":"#00f9f9","socials":[[0,"https://youtube.com/channel/httpswww.youtube.comchannelUC8"]],"verified":true},{"name":"PizzaGamerHu","role":1640454770131,"part":["0","41"],"color":"#7d7dff","socials":[[0,"https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"],[2,"https://twitch.tv/pizzagamerhu"]],"verified":true}]],
 			"levelID": "39776379",
 			"video": "FBJUt0U4kUw",
 			"color": "#e55b5b"
@@ -160,7 +160,7 @@ else if (YEAR == "2021" || window.location.pathname.match("upload") != -1) {
 			"video": "F0OM9qN8oCI",
 			"color": "#6a1f76"
 		},
-        "11": {
+		"11": {
 			"levelName": "Pichlace",
 			"creator": "Jakubko2005",
 			"levelID": "64609075",
@@ -246,6 +246,29 @@ function onYTClick(link, index) {
 	});
 }
 
+function boxCreator(obj) {
+	if (typeof obj != "object") {
+		return jsStr["CREATOR_BY"][LANG] + obj
+	}
+	else {
+		let names = [];
+		obj[2].forEach(creator => {
+			let icon = "";
+			if (creator.verified) {
+				icon = `<img class="boxIcon" src="https://gdbrowser.com/icon/${creator.name}">`;
+			}
+			names.push(`<div style="color: ${creator.color};" class="collabChild">${icon}${creator.name}</div>`);
+		});
+		return `
+		<div class="uploadText boxCollabHeader">
+			Host: 
+			<img class="boxIcon" style="margin: 0 1vw" src="https://gdbrowser.com/icon/${obj[0][0]}">${obj[0][0]}
+		</div>
+
+		<div class="collabParent">` + names.join("") + "</div>"
+	}
+}
+
 function generateList(boards) {
 	for (i = 1; i < Object.keys(boards).length - ADDIT_VALS; i++) {
 
@@ -270,23 +293,18 @@ function generateList(boards) {
 		}
 
 		$(".boards").append(`
-		<div class="box" style="${cardBG}"><span>${boards[bIndex]["levelName"]}</span>
+		<div class="box" style="${cardBG}">
 		
-		<div style="display:flex">
-			<button class="button ${video}" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">
-				<img class="boxLink" src="./images/yticon.png">
-			</button>
-			<button class="button ${ID}" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">
-				<img class="boxLink" src="./images/gdbrowser.png">
-			</button>
-			<button class="button ${ID}" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">
-				<img class="boxLink" src="./images/copyID.png">
-			</button>
-		</div>
+			<div class="boxHeader">
+				<span>${boards[bIndex]["levelName"]}</span>
+				<div style="display:flex">
+					<img src="./images/yticon.png" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">
+					<img src="./images/gdbrowser.png" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">
+					<img src="./images/copyID.png" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">
+				</div>
+			</div>
 
-		<p>${jsStr["CREATOR_BY"][LANG]}${boards[bIndex]["creator"]}</p>
-		<h3 class="popup" id="cpopup${bIndex}">${jsStr["ID_COPIED"]}</h3>
-
+			${boxCreator(boards[bIndex]["creator"])}
 		</div>
 	`);
 	};
@@ -301,10 +319,10 @@ function generateList(boards) {
 function debugCards() {
 	// Returns a randomly generated board
 	let str = '{"titleImg": "",';
-	for (let i = 1; i < Math.ceil(Math.random() * 20)+1; i++) {
+	for (let i = 1; i < Math.ceil(Math.random() * 20) + 1; i++) {
 		str += `"${i}": {"levelName": "Debug #${i}","creator": "${fakeNames[Math.floor(Math.random() * fakeNames.length)]}","levelID": 128, "video": "9ywnLQywz74","color":"${RGBtoHEX(randomColor())}"},`
 	}
-	str = str.slice(0,-2) + "}}"
+	str = str.slice(0, -2) + "}}"
 	return JSON.parse(str)
 }
 
@@ -342,7 +360,7 @@ $(function () {
 				<p style="font-size: 3vw;">- Dasher123 -</p>
 				<p style="font-size: 3vw;">Pass: ${debugPwd}</p>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
-				generateList(debugCards()) 
+				generateList(debugCards())
 			}
 
 			$.get("./php/getLists.php?id=" + listID[1], function (data) {
@@ -412,7 +430,7 @@ $(function () {
 			else {
 				$(".password").remove()
 				generateList(boards);
-				}
+			}
 		}
 	}
 	else if (YEAR == "2019") {

@@ -63,7 +63,6 @@
     font-size: 7vw;
     margin: auto;
     padding: 5px 0px 5px 0px;
-    float: none;
     display: block;
     text-shadow: 0.17vw 0.17vw rgb(61, 131, 79),
     -0.17vw -0.17vw rgb(61, 131, 79),
@@ -334,7 +333,6 @@ input:disabled {
     border: white 7px solid;
     border-radius: 5px;
     cursor: pointer;
-    float: none;
     display: block;
 }
 
@@ -395,7 +393,6 @@ input:disabled {
     width: 1.7vw;
     height: auto;
     vertical-align: top;
-    float: none !important;
 }
 
 
@@ -619,7 +616,6 @@ input:disabled {
 .socialPickerIcon {
     display: inline;
     width: 4vw;
-    float: none !important;
 }
 
 .popupArrow {

@@ -239,8 +239,8 @@ function addLevel() {
             levelList[position]["levelID"] = selection;
         }
         else {
-            if ($(this).val() == "") { $("fillID").removeClass("disabled") }
-            else { $("fillID").addClass("disabled") }
+            if ($(this).val() == "") { $(".fillID").removeClass("disabled") }
+            else { $(".fillID").addClass("disabled") }
         }
     });
 
@@ -311,8 +311,8 @@ function loadLevel(pos) {
             levelList[position]["levelID"] = selection;
         }
         else {
-            if ($(this).val() == "") { $("fillID").addClass("disabled") }
-            else { $("fillID").removeClass("disabled") }
+            if ($(this).val() == "") { $(".fillID").addClass("disabled") }
+            else { $(".fillID").removeClass("disabled") }
         }
     });
 
@@ -452,13 +452,13 @@ function card(index, rndColor) {
 
             <div class="positionButtons">
                 <img title="${jsStr["L_MOVE_D"][LANG]}" onclick="moveCard('up',${index})" 
-                     class="button upmover${index}" style="float: none; transform: rotate(90deg);" id="moveLPosButton"
+                     class="button upmover${index}" style="transform: rotate(90deg);" id="moveLPosButton"
                      src="./images/arrow.png">
 
                 <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" disabled="true" value="${index}">
 
                 <img title="${jsStr["L_MOVE_U"][LANG]}" onclick="moveCard('down',${index})"
-                        class="button downmover${index}" style="float: none; transform: rotate(-90deg);" id="moveLPosButton"
+                        class="button downmover${index}" style="transform: rotate(-90deg);" id="moveLPosButton"
                         src="./images/arrow.png">
             </div>
         </div>

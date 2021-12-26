@@ -38,7 +38,7 @@
          onclick="window.location.assign('upload.html')">
     <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;"
          onclick="changeLang()">
-    <div style="display: none;" class="notify" onclick="$(this).hide()"><br><br><br><pre class="uploadText">   Jazyk/Language</pre></div>
+    <div class="notify" onclick="$(this).hide()"><br><br><br><pre class="uploadText">   Jazyk/Language</pre></div>
   </div>
 
   <div class="titles"></div>
@@ -47,33 +47,33 @@
 
   <div class="searchTools uploadText" style="justify-content: left;">
     <div style="justify-content: left;">
-      <img src="images/list.png" onclick="listList()" class="button lList disabled" style="float: none; width: 20%;"
+      <img src="images/list.png" onclick="listList()" class="button lList disabled" style="width: 20%;"
         title="Seznam levelů">
-      <img src="images/comments.png" onclick="listComments()" class="button lComm" style="float: none; width: 20%;"
+      <img src="images/comments.png" onclick="listComments()" class="button lComm" style="width: 20%;"
         title="Komentáře">
     </div>
 
     <div class="password">
       <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 0% 2% -1%;">
       <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg"
-        style="float: none; height: fit-content;">
+        style="height: fit-content;">
     </div>
   </div>
 
   <div class="comments">
     <div class="searchTools uploadText debugTools">
       <span style="font-size: 2.6vw;">Přidat komentáře:</span>
-      <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="debugComments(-1)">
+      <img class="button pageBut" src="images/arrow-left.png" onclick="debugComments(-1)">
       <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
-      <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="debugComments(1)">
-      <img class="button pageBut" style="float: none; width: 3vw;" src="images/preview.png" onclick="debugComments(2)">
+      <img class="button pageBut" src="images/arrow-right.png" onclick="debugComments(1)">
+      <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugComments(2)">
     </div>
     <div class="positionEdit" id="commentMaker">
       <div style="display: flex; align-items: center; padding-left: 1%;">
         <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 4vw;">
         <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno" maxlength="20">
         <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg"
-          style="float: none; height: max-content;">
+          style="height: max-content;">
         <h5 class="uploadText comUserError"></h5>
       </div>
 
@@ -122,13 +122,13 @@
     <div class="searchTools uploadText" id="commentTool" style="justify-content: center;">
       <div class="page">
         <span id="pageStr" style="font-size: 3vw; padding-right: 2%;">Strana: </span>
-        <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="pageSwitch(-1)">
+        <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
         <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
         <span style="font-size: 3.5vw" id="maxPage">/1</span>
-        <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="pageSwitch(1)">
+        <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
       </div>
       <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button"
-        style="float: none; width: 6vw;">
+        style="width: 6vw;">
     </div>
 
     <div id="commentList"></div>
@@ -139,7 +139,7 @@
     <img src="./images/crown.png" id="crown" align="center">
   </div>
 </body>
-<footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.8);">
+<footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.5) translateY(4vw);">
     <p class="uploadText">Vytvořil </p>
     <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
     <span class="uploadText"> | 2021-2022 | </span>

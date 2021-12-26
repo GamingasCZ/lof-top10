@@ -286,7 +286,7 @@ $(function () {
 
 <div style="margin-top: 5%;">
 <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
-<div class="shareBG uploadText" style="float: none;">${currWebsite}
+<div class="shareBG uploadText">${currWebsite}
 <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
 </div>
 </div>
