@@ -30,15 +30,32 @@
 <body>
   <div class="shade"></div>
   <div align="center" id="submitarea">
-    <img class="yearButtonImg button" src="images/button1.png"
-         onclick="window.location.assign('index.html?year=2019')">
-    <img class="yearButtonImg button" src="images/locked.png"
-         onclick="window.location.assign('index.html?year=2021')">
-    <img class="yearButtonImg button commBut" src=""
-         onclick="window.location.assign('upload.html')">
-    <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;"
-         onclick="changeLang()">
-    <div class="notify" onclick="$(this).hide()"><br><br><br><pre class="uploadText">   Jazyk/Language</pre></div>
+    <img class="yearButtonImg button" src="images/button1.png" onclick="window.location.assign('index.html?year=2019')">
+    <img class="yearButtonImg button" src="images/locked.png" onclick="window.location.assign('index.html?year=2021')">
+    <img class="yearButtonImg button commBut" src="" onclick="window.location.assign('upload.html')">
+    <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;" onclick="changeLang()">
+    <div class="notify" onclick="$(this).hide()"><br><br><br>
+      <pre class="uploadText">   Jazyk/Language</pre>
+    </div>
+  </div>
+
+  <!-- Collab stats-->
+  <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
+    <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
+      <p style="margin: 0 auto;" class="collabTTitle"></p>
+      <img src="./images/delete.png" class="button" style="width: 6%; height: max-content;" onclick="hideCollabStats()">
+    </div>
+    <div style="min-height: 40%;">
+
+    </div>
+    <div class="editorHeader">
+      <p class="uploadText" style="margin: 0.2% 0%;">Členové</p>
+    </div>
+    <div style="max-height: 48.5%;overflow-y: auto;">
+      <table style="min-height: 48.5%;" class="collabTables statsCreators">
+
+      </table>
+    </div>
   </div>
 
   <div class="titles"></div>
@@ -55,8 +72,7 @@
 
     <div class="password">
       <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 0% 2% -1%;">
-      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg"
-        style="height: fit-content;">
+      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="height: fit-content;">
     </div>
   </div>
 
@@ -72,8 +88,7 @@
       <div style="display: flex; align-items: center; padding-left: 1%;">
         <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 4vw;">
         <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno" maxlength="20">
-        <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg"
-          style="height: max-content;">
+        <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg" style="height: max-content;">
         <h5 class="uploadText comUserError"></h5>
       </div>
 
@@ -127,8 +142,7 @@
         <span style="font-size: 3.5vw" id="maxPage">/1</span>
         <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
       </div>
-      <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button"
-        style="width: 6vw;">
+      <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button" style="width: 6vw;">
     </div>
 
     <div id="commentList"></div>
@@ -140,11 +154,12 @@
   </div>
 </body>
 <footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.5) translateY(4vw);">
-    <p class="uploadText">Vytvořil </p>
-    <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
-    <span class="uploadText"> | 2021-2022 | </span>
-    <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github" src="images/github.png"></a>
+  <p class="uploadText">Vytvořil </p>
+  <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
+  <span class="uploadText"> | 2021-2022 | </span>
+  <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github"
+      src="images/github.png"></a>
 </footer>
-<script>$(function() { translate(); })</script>
+<script>$(function () { translate(); })</script>
 
 </html>

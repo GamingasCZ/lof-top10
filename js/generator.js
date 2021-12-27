@@ -18,7 +18,7 @@ if (YEAR == "2019" || window.location.pathname.match("upload") == -1) {
 		"titleImg": "",
 		"1": {
 			"levelName": "Snowy",
-			"creator": [["MurlocGD",0],[{"name":"Level","hasPer":false,"color":"#fab789","HTMLobject":{},"id":1640454770131}],[{"name":"MurlocGD","role":1640454770131,"part":["41","100"],"color":"#00f9f9","socials":[[0,"https://youtube.com/channel/httpswww.youtube.comchannelUC8"]],"verified":true},{"name":"PizzaGamerHu","role":1640454770131,"part":["0","41"],"color":"#7d7dff","socials":[[0,"https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"],[2,"https://twitch.tv/pizzagamerhu"]],"verified":true}]],
+			"creator": [["MurlocGD", 0, "Nahrál"], [{ "name": "Level", "hasPer": false, "color": "#fab789", "HTMLobject": {}, "id": 1640454770131 }], [{ "name": "MurlocGD", "role": 1640454770131, "part": ["41", "100"], "color": "#00f9f9", "socials": [[0, "https://youtube.com/channel/httpswww.youtube.comchannelUC8"]], "verified": true }, { "name": "PizzaGamerHu", "role": 1640454770131, "part": ["0", "41"], "color": "#7d7dff", "socials": [[0, "https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"], [2, "https://twitch.tv/pizzagamerhu"]], "verified": true }]],
 			"levelID": "39776379",
 			"video": "FBJUt0U4kUw",
 			"color": "#e55b5b"
@@ -246,7 +246,71 @@ function onYTClick(link, index) {
 	});
 }
 
-function boxCreator(obj) {
+const openSocLink = link => { window.open(link) }
+
+function getProfileStats(k, ind) {
+	$(k.target).after("<img src='images/loading.png' class='loading'>")
+	$.get("https://gdbrowser.com/api/profile/gamingas", data => {
+		$(".loading").remove();
+
+		$($(".pStatsContainer")[ind-1]).after(`<p>${data.stars} </p>`)
+		$($(".pStatsContainer")[ind-1]).after(`<p>${data.demons} </p>`)
+		$($(".pStatsContainer")[ind-1]).after(`<p>${data.cp} </p>`)
+		$($(".pStatsContainer")[ind-1]).after(`<p>${data.userCoins}</p>`)
+	})
+
+	k.target.remove()
+}
+
+function showCollabStats(id) {
+	let level = boards[id]["creator"]
+	let names = [jsStr["YT_CHAN"][LANG], jsStr["TW_PROF"][LANG], jsStr["TW_CHAN"][LANG], jsStr["DC_SERV"][LANG], jsStr["CUST_LINK"][LANG]];
+	let imgs = ["youtube", "twitter", "twitch", "discord", "cust"];
+
+	let cardCol = $($(".box")[id - 1]).css("background-color");
+	let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
+
+	$("#collabTools").fadeIn(50);
+	$("#collabTools").css("transform", "scaleY(1)");
+
+	$(".collabTTitle").text(`- ${boards[id].levelName} -`);
+	$("#collabTools").css("background-color", cardCol);
+	$("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
+	$(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
+	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,34%)`)
+
+	$(".statsCreators").text("") // Reset table
+	level[2].forEach(creators => {
+		if (creators.verified) {
+			// Social media
+			let socialTags = "";
+			for (let soc = 0; soc < creators.socials.length; soc++) {
+				socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
+				                    style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
+
+			}
+
+			$(".statsCreators").append(`<tr class='tableRow'>
+			<td style="display: flex; justify-content: left; align-items: center">
+				<img style="width: 4vw;margin: 0.4vw;" src="https://gbrowser.com/icon/${creators.name}">
+				<p style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>
+				${socialTags}
+				<div class="pStatsContainer">
+				<img style="width: 3vw;margin: 0.4vw;" src="images/gdbrowser.png" class="getProfile button" title="Zobrazit profil">
+				</div>
+			</td>
+		</tr>`)
+			$($(".getProfile")[$(".getProfile").length-1]).on("click", k => {getProfileStats(k, $(".getProfile").length-1)} )
+		}
+	});
+}
+
+function hideCollabStats() {
+	$("#collabTools").fadeOut(50);
+	$("#collabTools").css("transform", "scaleY(0.7)");
+}
+
+function boxCreator(obj, index) {
 	if (typeof obj != "object") {
 		return jsStr["CREATOR_BY"][LANG] + obj
 	}
@@ -255,17 +319,18 @@ function boxCreator(obj) {
 		obj[2].forEach(creator => {
 			let icon = "";
 			if (creator.verified) {
-				icon = `<img class="boxIcon" src="https://gdbrowser.com/icon/${creator.name}">`;
+				icon = `<img class="boxIcon" alt=" " style="background: ${creator.color}">`;
 			}
 			names.push(`<div style="color: ${creator.color};" class="collabChild">${icon}${creator.name}</div>`);
 		});
+		// Fix url when ready
 		return `
 		<div class="uploadText boxCollabHeader">
-			Host: 
-			<img class="boxIcon" style="margin: 0 1vw" src="https://gdbrowser.com/icon/${obj[0][0]}">${obj[0][0]}
+		${obj[0][2]}: 
+			<img class="boxIcon" alt=" " style="margin: 0 1vw" src="https://gbrowser.com/icon/${obj[0][0]}">${obj[0][0]}
 		</div>
 
-		<div class="collabParent">` + names.join("") + "</div>"
+		<div onclick="showCollabStats(${index})" class="collabParent button">` + names.join("") + "</div>"
 	}
 }
 
@@ -304,9 +369,30 @@ function generateList(boards) {
 				</div>
 			</div>
 
-			${boxCreator(boards[bIndex]["creator"])}
+			${boxCreator(boards[bIndex]["creator"], bIndex)}
 		</div>
 	`);
+		// Only display icons on hover
+		if (typeof boards[bIndex]["creator"] == "object") {
+			$($(".box")[$(".box").length - 1]).on("mouseover", (k) => {
+				// Player icons
+				let currIndex = "";
+				let boxElements = Object.values($(".box"))
+				for (let box = 0; box < $(".box").length; box++) {
+					if (boxElements[box].isEqualNode(k.target)) {
+						currIndex = box;
+					}
+				}
+				// Fix url when ready
+				for (let icon = 0; icon < ((k.target).children[2].children).length; icon++) {
+					$((k.target).children[2].children[icon].children).css("background", "none")
+					$((k.target).children[2].children[icon].children).attr("src", "https://gbrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
+				}
+
+				$(k.target).off("mouseover")
+			})
+		}
+
 	};
 	// Removing stuff if list is empty
 	if ($(".box").length == 0 & location.pathname.match(/(upload)/g) == null) {

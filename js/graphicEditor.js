@@ -1,20 +1,33 @@
 function getDetailsFromID(id) {
     // Tohle budeš pak muset předělat, až bude všechno fungovat :D
     let givenID = $(".idbox" + id).val();
-    $.get("https://gdbrowser.com/api/level/" + givenID, function (data) {
-        if (data != -1) {
-            $(".cardLName" + id).val(data["name"]);
-            levelList[id]["levelName"] = data["name"];
-            $(".cardLCreator" + id).val(data["author"]);
-            levelList[id]["creator"] = data["author"];
+
+    if (givenID != "") {
+        if (isNaN(parseInt(givenID))) {
+            $(".idbox" + id).css("background-color","rgba(255, 0, 0, 0.5)");
+            setTimeout(() => { $(".idbox" + id).css("background-color","") }, 50);
+
+            $(".idbox" + id).val("");
+            $(".idDetailGetter"+id).addClass("disabled");
+            return false
         }
-        else {
-            $(".idbox" + id).addClass("inputErr")
-            setTimeout(() => { $(".idbox" + id).removeClass("inputErr") }, 500)
-            // TODO: Add flickering or something....
-        }
-    })
-    updateSmPos()
+
+        $.get("https://gdbrowser.com/api/level/" + givenID, function (data, res) {
+            console.log(res)
+            if (data != -1) {
+                $(".cardLName" + id).val(data["name"]);
+                levelList[id]["levelName"] = data["name"];
+                $(".cardLCreator" + id).val(data["author"]);
+                levelList[id]["creator"] = data["author"];
+            }
+            else {
+                $(".idbox" + id).addClass("inputErr");
+                setTimeout(() => { $(".idbox" + id).removeClass("inputErr") }, 500);
+                // TODO: Add flickering or something....
+            }
+        })
+        updateSmPos()
+    }
 }
 
 function getDetailsFromName(id) {
@@ -164,9 +177,72 @@ function displayCard(id) {
         $("#top" + id.toString()).show();
         $("#top" + id.toString()).css("transform", "scaleY(1)");
         updateSmPos()
+
+        // Disable/Enable search buttons depending on if there's text in them
+        if ($(".idbox" + id).val().length != 0) { $(".idDetailGetter" + id).removeClass("disabled") }
+        else { $(".idDetailGetter" + id).addClass("disabled") }
     }
 }
 
+function changeColPicker() {
+    let chosenColor = $(this).val()
+    let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
+
+    let rgb = HEXtoRGB(chosenColor, 40)
+
+    $("#top" + cardSelected).css("background-color", chosenColor);
+    $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
+    $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
+
+    levelList[cardSelected]["color"] = chosenColor;
+}
+
+function changeIDbox(k) {
+    let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+    if (k.type == "change") {
+        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+        levelList[position]["levelID"] = selection;
+    }
+    else {
+        if ((selection).length < 2 && k.key == "Backspace") { $(".fillID").addClass("disabled") }
+        else if ((selection + k.key).length > 0) { $(".fillID").removeClass("disabled") }
+    }
+}
+
+function changeLevelName() {
+    let selection = $(".cardLName" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+    let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+    levelList[position]["levelName"] = selection;
+}
+
+function changeLevelCreator() {
+    let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+    let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+    if (typeof levelList[position]["creator"] == "object") {
+        levelList[position]["creator"][0][0] = selection;
+        levelList[position]["creator"][0][1] = false;
+    }
+    else {
+        levelList[position]["creator"] = selection;
+    }
+}
+
+function changeLevelVideo() {
+    // Link is a regular YT link
+    if ($(this).val().match(/(watch\?v=)/g)) {
+        let linkMatch = $(this).val().match(/(?<=\?v=).+/g);
+        $(this).val(linkMatch);
+    }
+    // Link is most likely a shortened YT link
+    else {
+        let linkMatch = $(this).val().match(/(?<=youtu.be\/).+/g);
+        $(this).val(linkMatch);
+    }
+
+    let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+    let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+    levelList[position]["video"] = selection;
+}
 
 function addLevel() {
     var listLenght = Object.keys(levelList).length - ADDIT_VALS;
@@ -219,65 +295,11 @@ function addLevel() {
     levelList[listLenght]["color"] = "#" + inhex.join("");
 
     // Sets the color of the added card
-    $("#colorPicker" + listLenght).on("change", function () {
-        let chosenColor = $(this).val()
-        let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
-
-        let rgb = HEXtoRGB(chosenColor, 40)
-
-        $("#top" + cardSelected).css("background-color", chosenColor);
-        $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
-        $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
-
-        levelList[cardSelected]["color"] = chosenColor;
-    });
-
-    $(".idbox" + listLenght).on("change keydown", function (k) {
-        if (k.type == "change") {
-            let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-            let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-            levelList[position]["levelID"] = selection;
-        }
-        else {
-            if ($(this).val() == "") { $(".fillID").removeClass("disabled") }
-            else { $(".fillID").addClass("disabled") }
-        }
-    });
-
-    $(".cardLName" + listLenght).on("change", function () {
-        let selection = $(".cardLName" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["levelName"] = selection;
-    });
-
-    $(".cardLCreator" + listLenght).on("change", function () {
-        let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        if (typeof levelList[position]["creator"] == "object") {
-            levelList[position]["creator"][0][0] = selection;
-            levelList[position]["creator"][0][1] = false;
-        }
-        else {
-            levelList[position]["creator"] = selection;
-        }
-    });
-
-    $(".cardLVideo" + listLenght).on("change", function () {
-        // Link is a regular YT link
-        if ($(this).val().match(/(watch\?v=)/g)) {
-            let linkMatch = $(this).val().match(/(?<=\?v=).+/g);
-            $(this).val(linkMatch);
-        }
-        // Link is most likely a shortened YT link
-        else {
-            let linkMatch = $(this).val().match(/(?<=youtu.be\/).+/g);
-            $(this).val(linkMatch);
-        }
-
-        let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["video"] = selection;
-    });
+    $("#colorPicker" + listLenght).on("change", changeColPicker);
+    $(".idbox" + listLenght).on("change keydown", changeIDbox);
+    $(".cardLName" + listLenght).on("change", changeLevelName);
+    $(".cardLCreator" + listLenght).on("change", changeLevelCreator);
+    $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
 }
 
 function loadLevel(pos) {
@@ -291,65 +313,11 @@ function loadLevel(pos) {
     $("#lineSplit" + pos).css("background-color", `rgb(${rgb.join(",")})`);
 
     // Setting card buttons
-    $("#colorPicker" + pos).on("change", function () {
-        let chosenColor = $(this).val()
-        let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
-
-        let rgb = HEXtoRGB(chosenColor, 40)
-
-        $("#top" + cardSelected).css("background-color", chosenColor);
-        $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
-        $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
-
-        levelList[cardSelected]["color"] = chosenColor;
-    });
-
-    $(".idbox" + pos).on("change keydown", function (k) {
-        if (k.type == "change") {
-            let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-            let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-            levelList[position]["levelID"] = selection;
-        }
-        else {
-            if ($(this).val() == "") { $(".fillID").addClass("disabled") }
-            else { $(".fillID").removeClass("disabled") }
-        }
-    });
-
-    $(".cardLName" + pos).on("change", function () {
-        let selection = $(".cardLName" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["levelName"] = selection;
-    });
-
-    $(".cardLCreator" + pos).on("change", function () {
-        let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        if (typeof levelList[position]["creator"] == "object") {
-            levelList[position]["creator"][0][0] = selection;
-            levelList[position]["creator"][0][1] = false;
-        }
-        else {
-            levelList[position]["creator"] = selection;
-        }
-        
-    });
-
-    $(".cardLVideo" + pos).on("change", function () {
-        if ($(this).val().match(/(watch\?v=)/g)) {
-            let linkMatch = $(this).val().match(/(?<=\?v=).+/g);
-            $(this).val(linkMatch);
-        }
-        // Link is most likely a shortened YT link
-        else {
-            let linkMatch = $(this).val().match(/(?<=youtu.be\/).+/g);
-            $(this).val(linkMatch);
-        }
-
-        let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["video"] = selection;
-    });
+    $("#colorPicker" + listLenght).on("change", changeColPicker);
+    $(".idbox" + listLenght).on("change keydown", changeIDbox);
+    $(".cardLName" + listLenght).on("change", changeLevelName);
+    $(".cardLCreator" + listLenght).on("change", changeLevelCreator);
+    $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
 }
 
 function updateCardData(prevID, newID) {

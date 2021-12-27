@@ -1,6 +1,7 @@
 var currEditing;
 var clipboard;
 
+const HOST_ROLE = "Host"
 const presets = [[jsStr["DECO"][LANG], 1], [jsStr["LAYOUT"][LANG], 1], [jsStr["TESTER"][LANG], 0]];
 const presetNames = [jsStr["DECO"][LANG], jsStr["LAYOUT"][LANG], jsStr["TESTER"][LANG]]
 
@@ -214,7 +215,7 @@ function addRole(preset = null, loading = 0) {
     let currVerifier = levelList[currEditing]["creator"];
     if (typeof currVerifier != "object") {
         // TODO: first element verified might need to be fixed
-        levelList[currEditing]["creator"] = [[currVerifier, 0], [], []];
+        levelList[currEditing]["creator"] = [[currVerifier, 0, HOST_ROLE], [], []];
 
         // Role limit
         if (levelList[currEditing]["creator"][1].length == 10) {
@@ -472,7 +473,7 @@ function chRoleValue(el, changeValue, type, arr = null) {
 function chMainName(el, vyb) {
     if (typeof levelList[currEditing]["creator"] != "object") {
         let currVerifier = levelList[currEditing]["creator"];
-        levelList[currEditing]["creator"] = [[currVerifier, 0], [], []]
+        levelList[currEditing]["creator"] = [[currVerifier, 0, HOST_ROLE], [], []]
     }
 
     if (vyb == 1) {

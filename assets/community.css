@@ -1,12 +1,3 @@
-@keyframes inputError {
-    from {
-        background-color: rgb(243, 70, 70);
-    }
-    to {
-        background-color: rgb(36, 36, 36)
-    }
-}
-
 .helpButton {
     /*position: absolute;*/
     width: 3vw;
@@ -421,6 +412,7 @@ input:disabled {
     background-color: rgba(36, 36, 36, 0.5);
     border: none;
     transform: translate(0);
+    transition: background-color 50ms;
 }
 
 .lineSplitGeneral {
