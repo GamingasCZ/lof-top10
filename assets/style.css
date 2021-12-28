@@ -203,6 +203,18 @@ span {
   cursor: pointer;
 }
 
+.verticalSplitter {
+  height: 3vw;
+  margin: 0 1vw;
+  width: 0.3vw;
+  border: none;
+  border-radius: 9px;
+}
+
+.stats {
+  width: 2vw;
+}
+
 html, body {
     max-width: 100%;
     overflow-x: hidden;

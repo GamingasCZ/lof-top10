@@ -247,16 +247,21 @@ function onYTClick(link, index) {
 }
 
 const openSocLink = link => { window.open(link) }
+const openProfileOnGDB = name => {window.open("https://gdbrowser.com/profile/"+name)}
 
 function getProfileStats(k, ind) {
 	$(k.target).after("<img src='images/loading.png' class='loading'>")
-	$.get("https://gdbrowser.com/api/profile/gamingas", data => {
+	
+	$.get("https://gdbrowser.com/api/profile/"+$($(".memberName")[ind]).text(), user => {
 		$(".loading").remove();
 
-		$($(".pStatsContainer")[ind-1]).after(`<p>${data.stars} </p>`)
-		$($(".pStatsContainer")[ind-1]).after(`<p>${data.demons} </p>`)
-		$($(".pStatsContainer")[ind-1]).after(`<p>${data.cp} </p>`)
-		$($(".pStatsContainer")[ind-1]).after(`<p>${data.userCoins}</p>`)
+		$($(".pStatsContainer")[ind]).append(`<p style="margin:0 1vw"><img class="stats" src="images/star.png">${user.stars} </p>`)
+		$($(".pStatsContainer")[ind]).append(`<p style="margin:0 1vw"><img class="stats" src="images/demons.png">${user.demons} </p>`)
+		if (user.cp > 0) {
+			$($(".pStatsContainer")[ind]).append(`<p style="margin:0 1vw"><img class="stats" src="images/cp.png">${user.cp} </p>`)	
+		}
+		$($(".pStatsContainer")[ind]).append(`<p style="margin:0 1vw"><img class="stats" src="images/ucoin.png">${user.userCoins}</p>`)
+		$($(".pStatsContainer")[ind]).append(`<img onclick="openProfileOnGDB('${user.username}')" style="transform: translateX(0.7vw);" class="stats button" src="images/add.png">`)
 	})
 
 	k.target.remove()
@@ -269,12 +274,14 @@ function showCollabStats(id) {
 
 	let cardCol = $($(".box")[id - 1]).css("background-color");
 	let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
+	let extraDark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 80)
 
 	$("#collabTools").fadeIn(50);
 	$("#collabTools").css("transform", "scaleY(1)");
 
 	$(".collabTTitle").text(`- ${boards[id].levelName} -`);
 	$("#collabTools").css("background-color", cardCol);
+	$(".editorHeader").css("background-color", `rgb(${dark.join(",")})`)
 	$("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
 	$(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
 	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,34%)`)
@@ -293,16 +300,19 @@ function showCollabStats(id) {
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
 				<img style="width: 4vw;margin: 0.4vw;" src="https://gbrowser.com/icon/${creators.name}">
-				<p style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>
+				<p class="memberName" style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>
 				${socialTags}
+				<hr class="verticalSplitter">
 				<div class="pStatsContainer">
 				<img style="width: 3vw;margin: 0.4vw;" src="images/gdbrowser.png" class="getProfile button" title="Zobrazit profil">
 				</div>
 			</td>
 		</tr>`)
-			$($(".getProfile")[$(".getProfile").length-1]).on("click", k => {getProfileStats(k, $(".getProfile").length-1)} )
+			$($(".getProfile")[$(".getProfile").length-1]).on("click", k => {getProfileStats(k, $(".tableRow").length-1)} )
 		}
 	});
+	
+	$(".verticalSplitter").css("background-color", `rgb(${extraDark.join(",")})`);
 }
 
 function hideCollabStats() {
