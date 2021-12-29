@@ -249,22 +249,26 @@ function onYTClick(link, index) {
 const openSocLink = link => { window.open(link) }
 const openProfileOnGDB = name => {window.open("https://gdbrowser.com/profile/"+name)}
 
-function getProfileStats(k, ind) {
-	$(k.target).after("<img src='images/loading.png' class='loading'>")
+async function getProfileStats(k, ind) {
+	let container = k.target
 	
-	$.get("https://gdbrowser.com/api/profile/"+$($(".memberName")[ind]).text(), user => {
+	$(container).hide()
+	await $(container).after("<img src='images/loading.png' class='loading'>")
+	$(".loading").css("animation-name", "loading")
+	
+	await $.get("https://gdbrowser.com/api/profile/"+$($(".memberName")[ind]).text(), user => {
 		$(".loading").remove();
 
-		$($(".pStatsContainer")[ind]).append(`<p style="margin:0 1vw"><img class="stats" src="images/star.png">${user.stars} </p>`)
-		$($(".pStatsContainer")[ind]).append(`<p style="margin:0 1vw"><img class="stats" src="images/demons.png">${user.demons} </p>`)
+		$(container).after(`<img onclick="openProfileOnGDB('${user.username}')" style="transform: translateX(0.7vw);" class="stats button" src="images/add.png">`)
 		if (user.cp > 0) {
-			$($(".pStatsContainer")[ind]).append(`<p style="margin:0 1vw"><img class="stats" src="images/cp.png">${user.cp} </p>`)	
+			$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/cp.png">${user.cp} </p>`)	
 		}
-		$($(".pStatsContainer")[ind]).append(`<p style="margin:0 1vw"><img class="stats" src="images/ucoin.png">${user.userCoins}</p>`)
-		$($(".pStatsContainer")[ind]).append(`<img onclick="openProfileOnGDB('${user.username}')" style="transform: translateX(0.7vw);" class="stats button" src="images/add.png">`)
+		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/ucoin.png">${user.userCoins}</p>`)
+		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/demons.png">${user.demons} </p>`)
+		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/star.png">${user.stars} </p>`)
 	})
 
-	k.target.remove()
+	await k.target.remove()
 }
 
 function showCollabStats(id) {
@@ -287,8 +291,12 @@ function showCollabStats(id) {
 	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,34%)`)
 
 	$(".statsCreators").text("") // Reset table
+	
+	let appendedNames = []; // One name shouldn't have more table rows
 	level[2].forEach(creators => {
-		if (creators.verified) {
+		if (creators.verified && appendedNames.indexOf(creators.name) == -1) {
+			appendedNames.push(creators.name);
+			
 			// Social media
 			let socialTags = "";
 			for (let soc = 0; soc < creators.socials.length; soc++) {
@@ -331,7 +339,8 @@ function boxCreator(obj, index) {
 			if (creator.verified) {
 				icon = `<img class="boxIcon" alt=" " style="background: ${creator.color}">`;
 			}
-			names.push(`<div style="color: ${creator.color};" class="collabChild">${icon}${creator.name}</div>`);
+			child = `<div style="color: ${creator.color};" class="collabChild">${icon}${creator.name}</div>`
+			if (names.indexOf(child) == -1) { names.push(child); } // Names should only appear once
 		});
 		// Fix url when ready
 		return `
@@ -349,12 +358,13 @@ function generateList(boards) {
 
 		let bIndex = (i).toString();
 
-		// Disabling card buttons
-		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = "disabled"; }
-		else { var ID = ""; }
+		// Removing card buttons
+		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = ["",""]; }
+		else { var ID = [`<img src="./images/gdbrowser.png" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
+			             `<img src="./images/copyID.png" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`] }
 
-		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = "disabled"; }
-		else { var video = ""; }
+		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = ``; }
+		else { var video = `<img src="./images/yticon.png" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">`; }
 
 		// Glow depending on level position
 		var cardBG = `background-color: ${boards[bIndex]["color"]}`;
@@ -369,13 +379,12 @@ function generateList(boards) {
 
 		$(".boards").append(`
 		<div class="box" style="${cardBG}">
-		
 			<div class="boxHeader">
 				<span>${boards[bIndex]["levelName"]}</span>
 				<div style="display:flex">
-					<img src="./images/yticon.png" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">
-					<img src="./images/gdbrowser.png" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">
-					<img src="./images/copyID.png" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">
+					${video}
+					${ID[0]}
+					${ID[1]}
 				</div>
 			</div>
 
@@ -442,7 +451,7 @@ $(function () {
 			for (i = 0; i < decodeData.length; i++) {
 				decodedData += String.fromCharCode(decodeData[i]);
 			}
-			let boards = JSON.parse(decodedData);
+			boards = JSON.parse(decodedData);
 			$(".titles").append(jsStr["PREVIEW"][LANG]);
 			$(".titleImage").attr("src", boards["titleImg"]);
 			$(".searchTools").remove();

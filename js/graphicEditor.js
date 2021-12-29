@@ -163,7 +163,12 @@ function updateSmPos() {
             $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]}`);
         }
         else {
-            $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} od ${levelList[i]["creator"]}`);
+            if (typeof levelList[i]["creator"] == "object") {
+                $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} od ${levelList[i]["creator"][0][0]} (Collab)`);
+            }
+            else {
+                $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} od ${levelList[i]["creator"]}`);   
+            }
         }
     }
 }
