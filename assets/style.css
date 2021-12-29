@@ -129,6 +129,10 @@ span {
   max-height: 3vw;
 }
 
+.memberName {
+  transition: text-shadow 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
 .pStatsContainer {
   background: #00000047;
   border-radius: 5px;
@@ -147,6 +151,52 @@ span {
   margin: 0.4vw;
   animation-duration: 1s;
   animation-iteration-count: infinite;
+}
+
+.nameShower {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+#graphPercentage {
+  font-size: 2vw !important;
+  margin: 0 1vw;
+}
+
+.graphContainer {
+  width: 85%;
+  height: 2.5vw;
+  display: inherit;
+  background: #00000039;
+  border-radius: 5px;
+}
+
+.graphLine:hover {
+  transform: scaleY(1.2);
+}
+
+.graphLine:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.graphLine:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.graphPerc {
+  display: flex;
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 0.1s;
+  transform: scaleY(0.8);
+  font-size: 1.5vw;
+  -webkit-text-stroke: 0.1vw black;
+}
+
+.graphLine {
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  transform: none;
 }
 
 .boxCollabHeader {

@@ -53,7 +53,7 @@ if (YEAR == "2019" || window.location.pathname.match("upload") == -1) {
 		},
 		"6": {
 			"levelName": "Infinity Gamingas",
-			"creator": "Jazerplay, PlayerGeoCZ",
+			"creator": [["jazerplay", true, "Nahrál"], [{ "name": "Level", "hasPer": false, "color": "#8c4f00", "id": 1640786121833 }], [{ "name": "Jazerplay", "role": 1640786121833, "part": ["0", "50"], "color": "#ed333b", "socials": [], "verified": true }, { "name": "PlayerGeoCZ", "role": 1640786121833, "part": ["50", "100"], "color": "#f8e45c", "socials": [], "verified": true }]],
 			"levelID": null,
 			"video": null,
 			"color": "#b28fea"
@@ -210,7 +210,7 @@ function onGDBClick(pos, index) {
 			$("#cpopup" + index).fadeTo(500, 0);
 		}
 		else {
-			window.open("https://gdbrowser.com/" + pos, "_blank");
+			window.open("https://gdrowser.com/" + pos, "_blank");
 		}
 	});
 }
@@ -247,21 +247,23 @@ function onYTClick(link, index) {
 }
 
 const openSocLink = link => { window.open(link) }
-const openProfileOnGDB = name => {window.open("https://gdbrowser.com/profile/"+name)}
+const openProfileOnGDB = name => { window.open("https://gdrowser.com/profile/" + name) }
 
 async function getProfileStats(k, ind) {
 	let container = k.target
-	
+
 	$(container).hide()
 	await $(container).after("<img src='images/loading.png' class='loading'>")
 	$(".loading").css("animation-name", "loading")
-	
-	await $.get("https://gdbrowser.com/api/profile/"+$($(".memberName")[ind]).text(), user => {
+
+	let uName = $(k.target.parentElement).siblings()[1].innerText;
+
+	await $.get("https://gdrowser.com/api/profile/" + uName, user => {
 		$(".loading").remove();
 
 		$(container).after(`<img onclick="openProfileOnGDB('${user.username}')" style="transform: translateX(0.7vw);" class="stats button" src="images/add.png">`)
 		if (user.cp > 0) {
-			$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/cp.png">${user.cp} </p>`)	
+			$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/cp.png">${user.cp} </p>`)
 		}
 		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/ucoin.png">${user.userCoins}</p>`)
 		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/demons.png">${user.demons} </p>`)
@@ -280,9 +282,6 @@ function showCollabStats(id) {
 	let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
 	let extraDark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 80)
 
-	$("#collabTools").fadeIn(50);
-	$("#collabTools").css("transform", "scaleY(1)");
-
 	$(".collabTTitle").text(`- ${boards[id].levelName} -`);
 	$("#collabTools").css("background-color", cardCol);
 	$(".editorHeader").css("background-color", `rgb(${dark.join(",")})`)
@@ -290,13 +289,28 @@ function showCollabStats(id) {
 	$(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
 	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,34%)`)
 
+	$("#collabTools").fadeIn(50);
+	$("#collabTools").css("transform", "scaleY(1)");
+
 	$(".statsCreators").text("") // Reset table
-	
+	$(".collabGraphs").text("") // Reset table
+
+	let humanRoles = [];
+
 	let appendedNames = []; // One name shouldn't have more table rows
-	level[2].forEach(creators => {
+	level[2].forEach(creators => { // Creators
+		humanRoles.push([creators.part, creators.role, creators.color, creators.name]);
+
+		// When the creator doesn't have a name (die and turn into a ghost :O)
+		let isGhost = false
+		if (creators.name == "") {
+			isGhost = true
+			creators.name = "Duch dashera"
+		}
+
 		if (creators.verified && appendedNames.indexOf(creators.name) == -1) {
 			appendedNames.push(creators.name);
-			
+
 			// Social media
 			let socialTags = "";
 			for (let soc = 0; soc < creators.socials.length; soc++) {
@@ -307,25 +321,164 @@ function showCollabStats(id) {
 
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
-				<img style="width: 4vw;margin: 0.4vw;" src="https://gbrowser.com/icon/${creators.name}">
+				<img style="width: 4vw;margin: 0.4vw;" src="https://gdrowser.com/icon/${creators.name}">
 				<p class="memberName" style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>
 				${socialTags}
 				<hr class="verticalSplitter">
 				<div class="pStatsContainer">
-				<img style="width: 3vw;margin: 0.4vw;" src="images/gdbrowser.png" class="getProfile button" title="Zobrazit profil">
+				<img style="width: 3vw;margin: 0.4vw;" src="images/gdrowser.png" class="getProfile button" title="Zobrazit profil">
 				</div>
 			</td>
 		</tr>`)
-			$($(".getProfile")[$(".getProfile").length-1]).on("click", k => {getProfileStats(k, $(".tableRow").length-1)} )
+			
+
+			$($(".getProfile")[$(".getProfile").length - 1]).on("click", k => { getProfileStats(k, $(".tableRow").length - 1) })
+		}
+		else if (!creators.verified && appendedNames.indexOf(creators.name) == -1) {
+			appendedNames.push(creators.name);
+
+			// Social media
+			let socialTags = "";
+			for (let soc = 0; soc < creators.socials.length; soc++) {
+				socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
+				                    style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
+			}
+
+			// Give
+			let randIcon = ""
+			if (!isGhost) {
+				randIcon = -1
+				while ([-1, 0, 1].indexOf(randIcon) != -1) {
+					randIcon = parseInt(Math.random() * 17)
+				}
+				if (randIcon < 10) { randIcon = "0" + randIcon }
+			}
+			else {randIcon = "ghostCube"}
+
+			$(".statsCreators").append(`<tr class='tableRow'>
+			<td style="display: flex; justify-content: left; align-items: center">
+				<img style="width: 4vw;margin: 0.4vw;" src="images/emoji/${randIcon}.png">
+				<p class="memberName" style="color: #72f970; margin: 0 1vw 0;">${creators.name}</p>
+				${socialTags}
+			</td>
+		</tr>`)
 		}
 	});
-	
+
+	level[1].forEach(roles => { // Roles
+		let graphBars = [];
+		let sort = [];
+
+		let ind = 0
+		humanRoles.forEach(hum => {
+			if (hum[1] == roles.id) {
+				sort.push([parseInt(hum[0][0]), ind-1])
+				graphBars.push(`<div for="${hum[3]}" class="graphLine"
+				                     style="background: ${hum[2]}; width: ${hum[0][1] - hum[0][0]}%; height: 100%;">
+									 <div class="graphPerc" for="${hum[3]}">	
+									 	<div class="graphText">|< ${hum[0][0]}%</div><div class="graphText">${hum[0][1]}% >|</div>
+									 </div>
+								</div>`)
+			}
+			ind++
+		});
+		console.log(sort.sort())
+
+		$(".collabGraphs").append(`
+		<div style="display: flex; flex-direction: column; margin: 1.5vw 1vw;">
+			<div style="display: flex; justify-content: space-between; max-width: 91%;">
+				<p style="margin: 0 0 0 6vw;">${roles.name}</p>
+				<div style="display: flex; align-items: center;" class="nameShower">
+					<img class="boxIcon" alt=" " src="images/bytost.png"></img>
+					<p style="margin: 0"></p>
+				</div>
+			</div>
+
+			<div style="display: flex; justify-content: center">
+				<span id="graphPercentage">0%</span>
+				<div class="graphContainer">
+					${graphBars.sort((a,b) => {-1+((b[0]<a[0])*2)}).join("")}
+				</div>
+				<span id="graphPercentage">100%</span>
+			</div>
+		</div>
+		`)
+	})
+	// Hovering over graph parts
+	$(".graphLine").on("mouseover", hoverBar)
+	$(".graphLine").on("mouseout", unhoverBar)
+
+	// Hovering over names
+	$(".memberName").on("mouseover", hoverName)
+	$(".memberName").on("mouseout", unhoverName)
+
 	$(".verticalSplitter").css("background-color", `rgb(${extraDark.join(",")})`);
 }
 
 function hideCollabStats() {
 	$("#collabTools").fadeOut(50);
 	$("#collabTools").css("transform", "scaleY(0.7)");
+}
+
+function hoverBar(k) {
+	// Utter bullcrap >:(
+	let nameShower = $($(k.currentTarget.parentElement.parentElement).siblings().children()[1]).children()
+	let hoverName = $(`.memberName:contains(${$(k.currentTarget).attr("for")})`)
+
+	$(nameShower.parent()).css("opacity", 1)
+
+	$(nameShower[0]).attr("src", "https://gdrowser.com/icon/"+hoverName.text())
+	$(nameShower[1]).text(hoverName.text())
+
+	if (k.currentTarget.clientWidth > $(".graphContainer")["0"].clientWidth*0.13) {
+		$(k.currentTarget.children).css("opacity", 1)
+	}
+	else {
+		let from = k.currentTarget.children[0].children[0].textContent.slice(3)
+		let to = k.currentTarget.children[0].children[1].textContent.slice(0,2)
+		$(nameShower[1]).text(hoverName.text()+` - ${from} až ${to}`)
+	}
+
+	let textColor = hoverName.css("color")
+
+	hoverName.css("text-shadow", `${textColor} 0px 0px 15px`)
+	hoverName["0"].scrollIntoView();
+
+	$(`.memberName:not(.memberName:contains(${$(k.currentTarget).attr("for")}))`).css("opacity", `0.3`)
+}
+function unhoverBar(k) {
+	let nameShower = $($(k.currentTarget.parentElement.parentElement).siblings().children()[1]).children()
+	$(nameShower.parent()).css("opacity", 0)
+
+	if (k.currentTarget.clientWidth > $(".graphContainer")["0"].clientWidth*0.13) {
+		$(k.currentTarget.children).css("opacity", 0)
+	}
+
+	$(`.memberName:contains(${$(k.currentTarget).attr("for")})`).css("text-shadow", "")
+	$(`.memberName:not(.memberName:contains(${$(k.currentTarget).attr("for")}))`).css("opacity", `1`)
+}
+
+function hoverName(k) {
+	$(k.currentTarget).css("text-shadow", `${$(k.currentTarget).css("color")} 0px 0px 15px`)
+
+	let graphColor = $(`.graphLine[for=${$(k.currentTarget).text()}]`).css("background-color")
+
+	// Show build part
+	$(`.graphLine[for='${$(k.currentTarget).text()}'] > .graphPerc`).css("opacity", 1)
+	$(`.graphLine[for='${$(k.currentTarget).text()}'] > .graphPerc`).css("transform", "scaleY(1)")
+
+	$(`.graphLine[for='${$(k.currentTarget).text()}']`).css("box-shadow", `${graphColor} 0px 0px 20px`)
+	$(`.graphLine:not(.graphLine[for='${$(k.currentTarget).text()}'])`).css("opacity", 0.2)
+}
+function unhoverName(k) {
+	$(k.currentTarget).css("text-shadow", "")
+
+	// Hide build part
+	$(`.graphLine[for='${$(k.currentTarget).text()}'] > .graphPerc`).css("opacity", 0)
+	$(`.graphLine[for='${$(k.currentTarget).text()}'] > .graphPerc`).css("transform", "scaleY(0.8)")
+
+	$(`.graphLine[for='${$(k.currentTarget).text()}']`).css("box-shadow", ``)
+	$(`.graphLine:not(.graphLine[for='${$(k.currentTarget).text()}'])`).css("opacity", 1)
 }
 
 function boxCreator(obj, index) {
@@ -339,14 +492,17 @@ function boxCreator(obj, index) {
 			if (creator.verified) {
 				icon = `<img class="boxIcon" alt=" " style="background: ${creator.color}">`;
 			}
-			child = `<div style="color: ${creator.color};" class="collabChild">${icon}${creator.name}</div>`
+			if (creator.name == "") { var nm = "DuchDashera" }
+			else { var nm = creator.name }
+
+			child = `<div style="color: ${creator.color};" class="collabChild">${icon}${nm}</div>`
 			if (names.indexOf(child) == -1) { names.push(child); } // Names should only appear once
 		});
 		// Fix url when ready
 		return `
 		<div class="uploadText boxCollabHeader">
 		${obj[0][2]}: 
-			<img class="boxIcon" alt=" " style="margin: 0 1vw" src="https://gbrowser.com/icon/${obj[0][0]}">${obj[0][0]}
+			<img class="boxIcon" alt=" " style="margin: 0 1vw" src="https://gdrowser.com/icon/${obj[0][0]}">${obj[0][0]}
 		</div>
 
 		<div onclick="showCollabStats(${index})" class="collabParent button">` + names.join("") + "</div>"
@@ -359,9 +515,11 @@ function generateList(boards) {
 		let bIndex = (i).toString();
 
 		// Removing card buttons
-		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = ["",""]; }
-		else { var ID = [`<img src="./images/gdbrowser.png" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
-			             `<img src="./images/copyID.png" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`] }
+		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = ["", ""]; }
+		else {
+			var ID = [`<img src="./images/gdrowser.png" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
+			`<img src="./images/copyID.png" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`]
+		}
 
 		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = ``; }
 		else { var video = `<img src="./images/yticon.png" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">`; }
@@ -405,7 +563,7 @@ function generateList(boards) {
 				// Fix url when ready
 				for (let icon = 0; icon < ((k.target).children[2].children).length; icon++) {
 					$((k.target).children[2].children[icon].children).css("background", "none")
-					$((k.target).children[2].children[icon].children).attr("src", "https://gbrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
+					$((k.target).children[2].children[icon].children).attr("src", "https://gdrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
 				}
 
 				$(k.target).off("mouseover")
