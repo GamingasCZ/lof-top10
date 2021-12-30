@@ -274,7 +274,7 @@ async function getProfileStats(k, ind) {
 }
 
 function showCollabStats(id) {
-	let level = boards[id]["creator"]
+	let level = JSON.parse(JSON.stringify(boards[id]["creator"]))
 	let names = [jsStr["YT_CHAN"][LANG], jsStr["TW_PROF"][LANG], jsStr["TW_CHAN"][LANG], jsStr["DC_SERV"][LANG], jsStr["CUST_LINK"][LANG]];
 	let imgs = ["youtube", "twitter", "twitch", "discord", "cust"];
 
@@ -300,7 +300,8 @@ function showCollabStats(id) {
 	let appendedNames = []; // One name shouldn't have more table rows
 	level[2].forEach(creators => { // Creators
 		let part = (creators.part).map(x => parseInt(x))
-		humanRoles.push([part, creators.role, creators.color, creators.name]);
+		let uName = creators.name == "" ? "pissman69_thefreedom69connoisseur" : creators.name
+		humanRoles.push([part, creators.role, creators.color, uName]);
 
 		// When the creator doesn't have a name (die and turn into a ghost :O)
 		let isGhost = false
@@ -331,7 +332,7 @@ function showCollabStats(id) {
 				</div>
 			</td>
 		</tr>`)
-			
+
 
 			$($(".getProfile")[$(".getProfile").length - 1]).on("click", k => { getProfileStats(k, $(".tableRow").length - 1) })
 		}
@@ -354,7 +355,7 @@ function showCollabStats(id) {
 				}
 				if (randIcon < 10) { randIcon = "0" + randIcon }
 			}
-			else {randIcon = "ghostCube"}
+			else { randIcon = "ghostCube"; }
 
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
@@ -363,6 +364,10 @@ function showCollabStats(id) {
 				${socialTags}
 			</td>
 		</tr>`)
+
+			if (isGhost) { // Give ghost funny name :O
+				creators.name = "pissman69_thefreedom69connoisseur"
+			}
 		}
 	});
 
@@ -370,30 +375,52 @@ function showCollabStats(id) {
 		let graphBars = [];
 
 		let firstElement = 0
-		humanRoles = humanRoles.sort()
+		humanRoles = humanRoles.sort((a,b) => a[0][0]-b[0][0])
 		humanRoles.forEach(hum => {
 			if (hum[1] == roles.id) {
-				if (firstElement == 0) {
-					if (0-humanRoles[firstElement][0][0] < 0) {
-						graphBars.push(`<div class="graphLine" style="background: none; width: ${Math.abs(0-hum[0][0])}%; height: 100%;"></div>`)
-						}
+				let mixAmount = 0
+
+				// Spacing elements
+				if (firstElement == 0) { // First spacing element
+					if (0 - humanRoles[firstElement][0][0] < 0) {
+						graphBars.push(`<div class="graphLine space" style="background: none; width: ${Math.abs(0 - humanRoles[firstElement][0][0])}%; height: 100%;"></div>`)
 					}
+				}
 				else {
-					if (hum[firstElement+1][0][0]-hum[firstElement][0][1] < 0) {
-						graphBars.push(`<div class="graphLine" style="background: none; width: ${Math.abs(hum[firstElement+1][0][0]-hum[firstElement][0][1])}%; height: 100%;"></div>`)
-						}
+					if (humanRoles[firstElement + 1] != undefined && humanRoles[firstElement][0][1] - humanRoles[firstElement + 1][0][0] < 0) { // All other elements
+						let x = humanRoles[firstElement][0][1] - humanRoles[firstElement + 1][0][0]
+						graphBars.push(`<div class="graphLine space" style="background: none; width: ${x-x*2}%; height: 100%;"></div>`)
 					}
-				
+
+				}
+				// Role graph lines
 				graphBars.push(`<div for="${hum[3]}" class="graphLine"
-				                     style="background: ${hum[2]}; width: ${hum[0][1] - hum[0][0]}%; height: 100%;">
+				                     style="background: ${hum[2]}; width: ${hum[0][1] - hum[0][0] - mixAmount}%; height: 100%;">
 									 <div class="graphPerc" for="${hum[3]}">	
 									 	<div class="graphText">|< ${hum[0][0]}%</div><div class="graphText">${hum[0][1]}% >|</div>
 									 </div>
 								</div>`)
+				mixAmount = 0
+
+				if (humanRoles[firstElement + 1] == undefined && firstElement != 0) { // Last spacing element
+					// if (humanRoles[firstElement-1][0][1] > humanRoles[firstElement][0][0]) {
+					// 	mixAmount = humanRoles[firstElement-1][0][1] - humanRoles[firstElement][0][0]
+					// 	graphBars.push(`<div for="${hum[3]}" class="graphLine"
+					// 						 style="background: linear-gradient(90deg,${humanRoles[firstElement-1][2]},${humanRoles[firstElement][2]}); width: ${mixAmount}%; height: 100%;">
+					// 						<div class="graphPerc mixed" for="${humanRoles[firstElement-1][3]},${humanRoles[firstElement][3]}">	
+					// 							<div class="graphText">|< ${hum[0][0]}%</div><div class="graphText">${hum[0][0]+mixAmount}% >|</div>
+					// 						</div>
+					// 					</div>`)
+					// }
+					console.log("eeeeeeee")
+					graphBars.push(`<div class="graphLine space" style="background: none; width: ${Math.abs(humanRoles[firstElement][0][1] - 100)}%; height: 100%;"></div>`)
 				}
 			}
+			firstElement++
+		}
 		);
 
+		// Adding role graphs 
 		$(".collabGraphs").append(`
 		<div style="display: flex; flex-direction: column; margin: 1.5vw 1vw;">
 			<div style="display: flex; justify-content: space-between; max-width: 91%;">
@@ -413,6 +440,8 @@ function showCollabStats(id) {
 			</div>
 		</div>
 		`)
+	});
+
 	// Hovering over graph parts
 	$(".graphLine").on("mouseover", hoverBar)
 	$(".graphLine").on("mouseout", unhoverBar)
@@ -422,7 +451,7 @@ function showCollabStats(id) {
 	$(".memberName").on("mouseout", unhoverName)
 
 	$(".verticalSplitter").css("background-color", `rgb(${extraDark.join(",")})`);
-}})
+}
 
 function hideCollabStats() {
 	$("#collabTools").fadeOut(50);
@@ -431,21 +460,31 @@ function hideCollabStats() {
 
 function hoverBar(k) {
 	// Utter bullcrap >:(
+	if (k.currentTarget.classList.contains("space")) { return null } // Hovering over space element
+
 	let nameShower = $($(k.currentTarget.parentElement.parentElement).siblings().children()[1]).children()
 	let hoverName = $(`.memberName:contains(${$(k.currentTarget).attr("for")})`)
+	if ($(`.memberName:contains('Duch dashera')`) && hoverName[0] == undefined) { hoverName = $(`.memberName:contains('Duch dashera')`) }
+
+	isVerified = $(hoverName).siblings(".pStatsContainer")
+	if (isVerified.length != 0) { isVerified = true }
+	else { isVerified = false }
 
 	$(nameShower.parent()).css("opacity", 1)
 
-	$(nameShower[0]).attr("src", "https://gdrowser.com/icon/"+hoverName.text())
+	if (!isVerified) {
+		$(nameShower[0]).attr("src", "https://gdrowser.com/icon/" + hoverName.text())
+	}
+
 	$(nameShower[1]).text(hoverName.text())
 
-	if (k.currentTarget.clientWidth > $(".graphContainer")["0"].clientWidth*0.13) {
+	if (k.currentTarget.clientWidth > $(".graphContainer")["0"].clientWidth * 0.15) {
 		$(k.currentTarget.children).css("opacity", 1)
 	}
 	else {
-		let from = k.currentTarget.children[0].children[0].textContent.slice(3)
-		let to = k.currentTarget.children[0].children[1].textContent.slice(0,2)
-		$(nameShower[1]).text(hoverName.text()+` - ${from} až ${to}`)
+		let from = k.currentTarget.children[0].children[0].textContent.match(/\d+%/)[0]
+		let to = k.currentTarget.children[0].children[1].textContent.match(/\d+%/)[0]
+		$(nameShower[1]).text(hoverName.text() + ` - ${from} až ${to}`)
 	}
 
 	let textColor = hoverName.css("color")
@@ -453,41 +492,56 @@ function hoverBar(k) {
 	hoverName.css("text-shadow", `${textColor} 0px 0px 15px`)
 	hoverName["0"].scrollIntoView();
 
-	$(`.memberName:not(.memberName:contains(${$(k.currentTarget).attr("for")}))`).css("opacity", `0.3`)
+	$(`.memberName:not(.memberName:contains(${hoverName})`).css("opacity", `0.3`)
 }
 function unhoverBar(k) {
 	let nameShower = $($(k.currentTarget.parentElement.parentElement).siblings().children()[1]).children()
 	$(nameShower.parent()).css("opacity", 0)
 
-	if (k.currentTarget.clientWidth > $(".graphContainer")["0"].clientWidth*0.13) {
+	if (k.currentTarget.clientWidth > $(".graphContainer")["0"].clientWidth * 0.13) {
 		$(k.currentTarget.children).css("opacity", 0)
 	}
 
-	$(`.memberName:contains(${$(k.currentTarget).attr("for")})`).css("text-shadow", "")
+	$(`.memberName`).css("text-shadow", "")
 	$(`.memberName:not(.memberName:contains(${$(k.currentTarget).attr("for")}))`).css("opacity", `1`)
 }
 
 function hoverName(k) {
 	$(k.currentTarget).css("text-shadow", `${$(k.currentTarget).css("color")} 0px 0px 15px`)
 
-	let graphColor = $(`.graphLine[for=${$(k.currentTarget).text()}]`).css("background-color")
+	let graphColor = $(`.graphLine[for="${$(k.currentTarget).text()}"]`).css("background-color")
+
+	let forWhat = $(k.currentTarget).text()
+	if ($(k.currentTarget).text() == "Duch dashera") {
+		forWhat = "pissman69_thefreedom69connoisseur"
+	}
 
 	// Show build part
-	$(`.graphLine[for='${$(k.currentTarget).text()}'] > .graphPerc`).css("opacity", 1)
-	$(`.graphLine[for='${$(k.currentTarget).text()}'] > .graphPerc`).css("transform", "scaleY(1)")
+	for (let i = 0; i < $(`.graphLine[for="${forWhat}"] > .graphPerc`).length; i++) {
+		if ($(`.graphLine[for="${forWhat}"] > .graphPerc`)[i].clientWidth > $(".graphContainer")["0"].clientWidth * 0.13) {
+			$($(`.graphLine[for="${forWhat}"] > .graphPerc`)[i]).css("opacity", 1)
+			$($(`.graphLine[for="${forWhat}"] > .graphPerc`)[i]).css("transform", "scaleY(1)")
+		}
+	}
 
-	$(`.graphLine[for='${$(k.currentTarget).text()}']`).css("box-shadow", `${graphColor} 0px 0px 20px`)
-	$(`.graphLine:not(.graphLine[for='${$(k.currentTarget).text()}'])`).css("opacity", 0.2)
+
+	$(`.graphLine[for="${forWhat}"]`).css("box-shadow", `${graphColor} 0px 0px 20px`)
+	$(`.graphLine:not(.graphLine[for="${forWhat}"])`).css("opacity", 0.2)
 }
 function unhoverName(k) {
 	$(k.currentTarget).css("text-shadow", "")
 
-	// Hide build part
-	$(`.graphLine[for='${$(k.currentTarget).text()}'] > .graphPerc`).css("opacity", 0)
-	$(`.graphLine[for='${$(k.currentTarget).text()}'] > .graphPerc`).css("transform", "scaleY(0.8)")
+	let forWhat = $(k.currentTarget).text()
+	if ($(k.currentTarget).text() == "Duch dashera") {
+		forWhat = "pissman69_thefreedom69connoisseur"
+	}
 
-	$(`.graphLine[for='${$(k.currentTarget).text()}']`).css("box-shadow", ``)
-	$(`.graphLine:not(.graphLine[for='${$(k.currentTarget).text()}'])`).css("opacity", 1)
+	// Hide build part
+	$(`.graphLine[for="${forWhat}"] > .graphPerc`).css("opacity", 0)
+	$(`.graphLine[for="${forWhat}"] > .graphPerc`).css("transform", "scaleY(0.8)")
+
+	$(`.graphLine[for="${forWhat}"]`).css("box-shadow", ``)
+	$(`.graphLine:not(.graphLine[for="${forWhat}"])`).css("opacity", 1)
 }
 
 function boxCreator(obj, index) {
@@ -572,11 +626,11 @@ function generateList(boards) {
 				// Fix url when ready
 				try {
 					for (let icon = 0; icon < ((k.target).children[2].children).length; icon++) {
-							$((k.target).children[2].children[icon].children).css("background", "none")
-							$((k.target).children[2].children[icon].children).attr("src", "https://gdrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
+						$((k.target).children[2].children[icon].children).css("background", "none")
+						$((k.target).children[2].children[icon].children).attr("src", "https://gdrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
 					}
 				}
-				catch(e) {}
+				catch (e) { }
 
 				$(k.target).off("mouseover")
 			})

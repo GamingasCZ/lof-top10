@@ -256,6 +256,7 @@ span {
   background-position-y: -7px;
   height: 95px;
   cursor: pointer;
+  display: none;
 }
 
 .verticalSplitter {
