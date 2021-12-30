@@ -164,7 +164,9 @@ function updateSmPos() {
         }
         else {
             if (typeof levelList[i]["creator"] == "object") {
-                $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} od ${levelList[i]["creator"][0][0]} (Collab)`);
+                let includeFrom = levelList[i]["creator"][0][0]
+                if (levelList[i]["creator"][0][0] != "") { includeFrom = "od "+includeFrom}
+                $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} ${includeFrom} (Collab)`);
             }
             else {
                 $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} od ${levelList[i]["creator"]}`);   

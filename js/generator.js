@@ -299,7 +299,8 @@ function showCollabStats(id) {
 
 	let appendedNames = []; // One name shouldn't have more table rows
 	level[2].forEach(creators => { // Creators
-		humanRoles.push([creators.part, creators.role, creators.color, creators.name]);
+		let part = (creators.part).map(x => parseInt(x))
+		humanRoles.push([part, creators.role, creators.color, creators.name]);
 
 		// When the creator doesn't have a name (die and turn into a ghost :O)
 		let isGhost = false
@@ -344,7 +345,7 @@ function showCollabStats(id) {
 				                    style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
 			}
 
-			// Give
+			// Give random icon / or ghost if member doesn't have a name
 			let randIcon = ""
 			if (!isGhost) {
 				randIcon = -1
@@ -358,7 +359,7 @@ function showCollabStats(id) {
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
 				<img style="width: 4vw;margin: 0.4vw;" src="images/emoji/${randIcon}.png">
-				<p class="memberName" style="color: #72f970; margin: 0 1vw 0;">${creators.name}</p>
+				<p class="memberName" style="color: ${creators.color}; margin: 0 1vw 0;">${creators.name}</p>
 				${socialTags}
 			</td>
 		</tr>`)
@@ -367,22 +368,31 @@ function showCollabStats(id) {
 
 	level[1].forEach(roles => { // Roles
 		let graphBars = [];
-		let sort = [];
 
-		let ind = 0
+		let firstElement = 0
+		humanRoles = humanRoles.sort()
 		humanRoles.forEach(hum => {
 			if (hum[1] == roles.id) {
-				sort.push([parseInt(hum[0][0]), ind-1])
+				if (firstElement == 0) {
+					if (0-humanRoles[firstElement][0][0] < 0) {
+						graphBars.push(`<div class="graphLine" style="background: none; width: ${Math.abs(0-hum[0][0])}%; height: 100%;"></div>`)
+						}
+					}
+				else {
+					if (hum[firstElement+1][0][0]-hum[firstElement][0][1] < 0) {
+						graphBars.push(`<div class="graphLine" style="background: none; width: ${Math.abs(hum[firstElement+1][0][0]-hum[firstElement][0][1])}%; height: 100%;"></div>`)
+						}
+					}
+				
 				graphBars.push(`<div for="${hum[3]}" class="graphLine"
 				                     style="background: ${hum[2]}; width: ${hum[0][1] - hum[0][0]}%; height: 100%;">
 									 <div class="graphPerc" for="${hum[3]}">	
 									 	<div class="graphText">|< ${hum[0][0]}%</div><div class="graphText">${hum[0][1]}% >|</div>
 									 </div>
 								</div>`)
+				}
 			}
-			ind++
-		});
-		console.log(sort.sort())
+		);
 
 		$(".collabGraphs").append(`
 		<div style="display: flex; flex-direction: column; margin: 1.5vw 1vw;">
@@ -397,13 +407,12 @@ function showCollabStats(id) {
 			<div style="display: flex; justify-content: center">
 				<span id="graphPercentage">0%</span>
 				<div class="graphContainer">
-					${graphBars.sort((a,b) => {-1+((b[0]<a[0])*2)}).join("")}
+					${graphBars.join("")}
 				</div>
 				<span id="graphPercentage">100%</span>
 			</div>
 		</div>
 		`)
-	})
 	// Hovering over graph parts
 	$(".graphLine").on("mouseover", hoverBar)
 	$(".graphLine").on("mouseout", unhoverBar)
@@ -413,7 +422,7 @@ function showCollabStats(id) {
 	$(".memberName").on("mouseout", unhoverName)
 
 	$(".verticalSplitter").css("background-color", `rgb(${extraDark.join(",")})`);
-}
+}})
 
 function hideCollabStats() {
 	$("#collabTools").fadeOut(50);
@@ -561,10 +570,13 @@ function generateList(boards) {
 					}
 				}
 				// Fix url when ready
-				for (let icon = 0; icon < ((k.target).children[2].children).length; icon++) {
-					$((k.target).children[2].children[icon].children).css("background", "none")
-					$((k.target).children[2].children[icon].children).attr("src", "https://gdrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
+				try {
+					for (let icon = 0; icon < ((k.target).children[2].children).length; icon++) {
+							$((k.target).children[2].children[icon].children).css("background", "none")
+							$((k.target).children[2].children[icon].children).attr("src", "https://gdrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
+					}
 				}
+				catch(e) {}
 
 				$(k.target).off("mouseover")
 			})
