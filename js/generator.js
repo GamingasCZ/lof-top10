@@ -550,24 +550,26 @@ function boxCreator(obj, index) {
 	}
 	else {
 		let names = [];
+		let appended = [];
 		obj[2].forEach(creator => {
 			let icon = "";
 			if (creator.verified) {
 				icon = `<img class="boxIcon" alt=" " style="background: ${creator.color}">`;
 			}
-			if (creator.name == "") { var nm = "DuchDashera" }
+			if (creator.name == "") { var nm = "Duch Dashera" }
 			else { var nm = creator.name }
 
 			child = `<div style="color: ${creator.color};" class="collabChild">${icon}${nm}</div>`
-			if (names.indexOf(child) == -1) { names.push(child); } // Names should only appear once
+			if (appended.indexOf(nm) == -1) { names.push(child); } // Names should only appear once
+			appended.push(nm)
 		});
+		hostVerified = ""
+		if (obj[0][1]) { hostVerified = `<img class="boxIcon" alt=" " style="margin: 0 1vw" src="https://gdrowser.com/icon/${obj[0][0]}">` }
+		
 		// Fix url when ready
 		return `
 		<div class="uploadText boxCollabHeader">
-		${obj[0][2]}: 
-			<img class="boxIcon" alt=" " style="margin: 0 1vw" src="https://gdrowser.com/icon/${obj[0][0]}">${obj[0][0]}
-		</div>
-
+		${obj[0][2]}: ${hostVerified}${obj[0][0]}</div>
 		<div onclick="showCollabStats(${index})" class="collabParent button">` + names.join("") + "</div>"
 	}
 }

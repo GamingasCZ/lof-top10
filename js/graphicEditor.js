@@ -1,3 +1,5 @@
+const MAX_GDB_SCROLL = 5
+
 function getDetailsFromID(id) {
     // Tohle budeš pak muset předělat, až bude všechno fungovat :D
     let givenID = $(".idbox" + id).val();
@@ -35,9 +37,36 @@ function getDetailsFromName(id) {
     let givenName = $(".cardLName" + id).val();
     let givenMaker = $(".cardLCreator" + id).val();
 
+    // Only level name passed in (most liked with that name)
+    if (givenName != "" && givenMaker == "") url = `https://gdbrowser.com/api/search/${givenName}?count=1`
+    // Only creator passed in (newest level from user)
+    else if (givenName == "" && givenMaker != "") url = `https://gdbrowser.com/api/search/${givenMaker}?count=1&user`
+    // Both passed in (newest level from passed in used with the passed in name)
+    else {
+        for (let pages = 0; pages < MAX_GDB_SCROLL; pages++) {
+                $.get(`https://gdbrowser.com/api/search/${givenMaker}?page=${pages}&user`, function (data, res) {
+                    if (res != "success") { return false }
+                    Object.values(data).forEach(level => {
+                            if (level.name.toLowerCase().includes(givenName.toLowerCase()) && level.author.toLowerCase().includes(givenMaker.toLowerCase())) {
+                                $(".cardLName" + id).val(level["name"]);
+                                levelList[id]["levelName"] = level["name"];
+                                $(".cardLCreator" + id).val(level["author"]);
+
+                                if (typeof levelList[id]["creator"] == "object") { levelList[id]["creator"][0] = [level["author"], 1] } // Collab tools enabled
+                                else { levelList[id]["creator"] = level["author"]; } // Not enabled
+
+                                $(".idbox" + id).val(level["id"]);
+                                levelList[id]["levelID"] = level["id"]
+                                return true
+                                }
+                        })
+                    return false
+            })
+        }}
+    
     // Hledání nejlikovanějšího levelu
-    $.get("https://gdbrowser.com/api/search/" + givenName + "?count=1", function (data) {
-        if (data != -1) {
+    $.get(url, function (data) {
+        if (data != -1 && data.length > 0) {
             $(".cardLName" + id).val(data[0]["name"]);
             levelList[id]["levelName"] = data[0]["name"];
             $(".cardLCreator" + id).val(data[0]["author"]);
@@ -191,6 +220,20 @@ function displayCard(id) {
     }
 }
 
+function availFill(type, sel, key, pos) {
+    // Shows/hides those white rectangles in the card
+    if ((sel).length < 2 && key == "Backspace") {
+        $(".availFill:visible")[type].style.opacity = 0.3
+        if ($(".availFill:visible")[0].style.opacity == 0.3 && $(".availFill:visible")[1].style.opacity == 0.3) {
+            $(".nameDetailGetter"+pos).addClass("disabled")
+    }
+    }
+    else if ((sel + key).length > 0) {
+        $(".availFill:visible")[type].style.opacity = 1
+        $(".nameDetailGetter"+pos).removeClass("disabled")
+    }
+}
+
 function changeColPicker() {
     let chosenColor = $(this).val()
     let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
@@ -216,22 +259,27 @@ function changeIDbox(k) {
     }
 }
 
-function changeLevelName() {
+function changeLevelName(k) {
     let selection = $(".cardLName" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
     let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
     levelList[position]["levelName"] = selection;
+    
+    availFill(0, selection, k.key, position)
 }
 
-function changeLevelCreator() {
+function changeLevelCreator(k) {
     let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
     let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
     if (typeof levelList[position]["creator"] == "object") {
+        // Do not overwrite collab tools
         levelList[position]["creator"][0][0] = selection;
         levelList[position]["creator"][0][1] = false;
     }
     else {
         levelList[position]["creator"] = selection;
     }
+    
+    availFill(1, selection, k.key, position)
 }
 
 function changeLevelVideo() {
@@ -304,8 +352,8 @@ function addLevel() {
     // Sets the color of the added card
     $("#colorPicker" + listLenght).on("change", changeColPicker);
     $(".idbox" + listLenght).on("change keydown", changeIDbox);
-    $(".cardLName" + listLenght).on("change", changeLevelName);
-    $(".cardLCreator" + listLenght).on("change", changeLevelCreator);
+    $(".cardLName" + listLenght).on("keydown", changeLevelName);
+    $(".cardLCreator" + listLenght).on("keydown", changeLevelCreator);
     $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
 }
 
@@ -322,8 +370,8 @@ function loadLevel(pos) {
     // Setting card buttons
     $("#colorPicker" + listLenght).on("change", changeColPicker);
     $(".idbox" + listLenght).on("change keydown", changeIDbox);
-    $(".cardLName" + listLenght).on("change", changeLevelName);
-    $(".cardLCreator" + listLenght).on("change", changeLevelCreator);
+    $(".cardLName" + listLenght).on("keydown", changeLevelName);
+    $(".cardLCreator" + listLenght).on("keydown", changeLevelCreator);
     $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
 }
 
@@ -445,13 +493,11 @@ function card(index, rndColor) {
                 <img id="posInputPics" src="./images/gauntlet.png">
                 <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr["L_NAME"][LANG]}">
 
-                <hr class="availFill" style="margin-left: 2%">
+                <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
 
-                <button type="button" onclick="getDetailsFromName(${index})" class="button nameDetailGetter${index}" style="float: none;">
-                    <img id="fillButton" src="./images/getStats.png">
-                </button>
+                <img id="fillButton" onclick="getDetailsFromName(${index})" class="disabled button nameDetailGetter${index}" src="./images/getStats.png">
                 
-                <hr class="availFill" style="margin-right: 2%">
+                <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
                 <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
                 <img class="button colButton${index}" style="float: none;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
