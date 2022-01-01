@@ -6,16 +6,15 @@ function getDetailsFromID(id) {
 
     if (givenID != "") {
         if (isNaN(parseInt(givenID))) {
-            $(".idbox" + id).css("background-color","rgba(255, 0, 0, 0.5)");
-            setTimeout(() => { $(".idbox" + id).css("background-color","") }, 50);
+            $(".idbox" + id).css("background-color", "rgba(255, 0, 0, 0.5)");
+            setTimeout(() => { $(".idbox" + id).css("background-color", "") }, 50);
 
             $(".idbox" + id).val("");
-            $(".idDetailGetter"+id).addClass("disabled");
+            $(".idDetailGetter" + id).addClass("disabled");
             return false
         }
 
         $.get("https://gdbrowser.com/api/level/" + givenID, function (data, res) {
-            console.log(res)
             if (data != -1) {
                 $(".cardLName" + id).val(data["name"]);
                 levelList[id]["levelName"] = data["name"];
@@ -32,7 +31,7 @@ function getDetailsFromID(id) {
     }
 }
 
-function getDetailsFromName(id) {
+async function getDetailsFromName(id) {
     id = id.toString()
     let givenName = $(".cardLName" + id).val();
     let givenMaker = $(".cardLCreator" + id).val();
@@ -43,45 +42,73 @@ function getDetailsFromName(id) {
     else if (givenName == "" && givenMaker != "") url = `https://gdbrowser.com/api/search/${givenMaker}?count=1&user`
     // Both passed in (newest level from passed in used with the passed in name)
     else {
+        let succ = false;
         for (let pages = 0; pages < MAX_GDB_SCROLL; pages++) {
-                $.get(`https://gdbrowser.com/api/search/${givenMaker}?page=${pages}&user`, function (data, res) {
-                    if (res != "success") { return false }
+            $.ajax({
+                url: `https://gdbrowser.com/api/search/${givenMaker}?page=${pages}&user`, timeout: 1000, "Access-Control-Allow-Origin": "*",
+                success: data => {
                     Object.values(data).forEach(level => {
-                            if (level.name.toLowerCase().includes(givenName.toLowerCase()) && level.author.toLowerCase().includes(givenMaker.toLowerCase())) {
-                                $(".cardLName" + id).val(level["name"]);
-                                levelList[id]["levelName"] = level["name"];
-                                $(".cardLCreator" + id).val(level["author"]);
+                        if (level.name.toLowerCase().includes(givenName.toLowerCase()) && level.author.toLowerCase().includes(givenMaker.toLowerCase())) {
+                            saveGDBresult(id, level)
+                            succ = true;
+                        }
+                    })
+                },
+                error: () => {
+                    if (pages == MAX_GDB_SCROLL-1) {
+                        $(".cardLName" + id).addClass("inputErr");
+                        setTimeout(() => { $(".cardLName" + id).removeClass("inputErr") }, 500);
 
-                                if (typeof levelList[id]["creator"] == "object") { levelList[id]["creator"][0] = [level["author"], 1] } // Collab tools enabled
-                                else { levelList[id]["creator"] = level["author"]; } // Not enabled
-
-                                $(".idbox" + id).val(level["id"]);
-                                levelList[id]["levelID"] = level["id"]
-                                return true
-                                }
-                        })
-                    return false
+                        $(".cardLCreator" + id).addClass("inputErr");
+                        setTimeout(() => { $(".cardLCreator" + id).removeClass("inputErr") }, 500);
+                    }
+                }
             })
-        }}
-    
-    // Hledání nejlikovanějšího levelu
-    $.get(url, function (data) {
-        if (data != -1 && data.length > 0) {
-            $(".cardLName" + id).val(data[0]["name"]);
-            levelList[id]["levelName"] = data[0]["name"];
-            $(".cardLCreator" + id).val(data[0]["author"]);
-
-            if (typeof levelList[id]["creator"] == "object") { levelList[id]["creator"][0] = [data[0]["author"], 1] } // Collab tools enabled
-            else { levelList[id]["creator"] = data[0]["author"]; } // Not enabled
-
-            $(".idbox" + id).val(data[0]["id"]);
-            levelList[id]["levelID"] = data[0]["id"]
+            if (succ) break
         }
-        else {
-            // TODO: Add flickering or something....
+        return null
+    }
+
+    // Hledání nejlikovanějšího levelu
+    await $.ajax({
+        url: url, timeout: 1000, "Access-Control-Allow-Origin": "*",
+        success: data => {
+            if (data.length > 0) {
+                saveGDBresult(id, data)
+            }
+        },
+        error: () => {
+            $(".cardLName" + id).addClass("inputErr");
+            setTimeout(() => { $(".cardLName" + id).removeClass("inputErr") }, 500);
+
+            $(".cardLCreator" + id).addClass("inputErr");
+            setTimeout(() => { $(".cardLCreator" + id).removeClass("inputErr") }, 500);
         }
     })
+
+    if ($(".idbox"+id).val() != "") { $(".idDetailGetter"+id).removeClass("disabled") }
+    else { $(".idDetailGetter"+id).addClass("disabled") }
+
+    availFill(0,$(".cardLName" + id), "freedom69", id)
+    availFill(1,$(".cardLCreator" + id), "freedom69", id)
+
     updateSmPos()
+}
+
+function saveGDBresult(id, data) {
+    let jsonData = "";
+    if (data[0] == undefined) { jsonData = data } // When searching, result is nested
+    else { jsonData = data[0] } // When fetching level, it is not nested (shocking lmao)
+
+    $(".cardLName" + id).val(jsonData["name"]);
+    levelList[id]["levelName"] = jsonData["name"];
+    $(".cardLCreator" + id).val(jsonData["author"]);
+
+    if (typeof levelList[id]["creator"] == "object") { levelList[id]["creator"][0] = [jsonData["author"], 1] } // Collab tools enabled
+    else { levelList[id]["creator"] = jsonData["author"]; } // Not enabled
+
+    $(".idbox" + id).val(jsonData["id"]);
+    levelList[id]["levelID"] = jsonData["id"]
 }
 
 function colorizePage() {
@@ -194,11 +221,11 @@ function updateSmPos() {
         else {
             if (typeof levelList[i]["creator"] == "object") {
                 let includeFrom = levelList[i]["creator"][0][0]
-                if (levelList[i]["creator"][0][0] != "") { includeFrom = "od "+includeFrom}
+                if (levelList[i]["creator"][0][0] != "") { includeFrom = "od " + includeFrom }
                 $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} ${includeFrom} (Collab)`);
             }
             else {
-                $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} od ${levelList[i]["creator"]}`);   
+                $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} ${jsStr["CREATOR_BY"][LANG].slice(0,-2)} ${levelList[i]["creator"]}`);
             }
         }
     }
@@ -222,15 +249,15 @@ function displayCard(id) {
 
 function availFill(type, sel, key, pos) {
     // Shows/hides those white rectangles in the card
-    if ((sel).length < 2 && key == "Backspace") {
+    if (sel.length < 1) {
         $(".availFill:visible")[type].style.opacity = 0.3
         if ($(".availFill:visible")[0].style.opacity == 0.3 && $(".availFill:visible")[1].style.opacity == 0.3) {
-            $(".nameDetailGetter"+pos).addClass("disabled")
+            $(".nameDetailGetter" + pos).addClass("disabled")
+        }
     }
-    }
-    else if ((sel + key).length > 0) {
+    else if (sel.length > 0) {
         $(".availFill:visible")[type].style.opacity = 1
-        $(".nameDetailGetter"+pos).removeClass("disabled")
+        $(".nameDetailGetter" + pos).removeClass("disabled")
     }
 }
 
@@ -248,27 +275,27 @@ function changeColPicker() {
 }
 
 function changeIDbox(k) {
-    let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+    let selection = k.target.value
+    let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
     if (k.type == "change") {
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
         levelList[position]["levelID"] = selection;
     }
     else {
-        if ((selection).length < 2 && k.key == "Backspace") { $(".fillID").addClass("disabled") }
-        else if ((selection + k.key).length > 0) { $(".fillID").removeClass("disabled") }
+        if (selection.length < 1) { $(".idDetailGetter"+position).addClass("disabled") }
+        else if (selection.length > 0) { $(".idDetailGetter"+position).removeClass("disabled") }
     }
 }
 
 function changeLevelName(k) {
-    let selection = $(".cardLName" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+    let selection = k.target.value
     let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
     levelList[position]["levelName"] = selection;
-    
+
     availFill(0, selection, k.key, position)
 }
 
 function changeLevelCreator(k) {
-    let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+    let selection = k.target.value
     let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
     if (typeof levelList[position]["creator"] == "object") {
         // Do not overwrite collab tools
@@ -278,7 +305,7 @@ function changeLevelCreator(k) {
     else {
         levelList[position]["creator"] = selection;
     }
-    
+
     availFill(1, selection, k.key, position)
 }
 
@@ -351,9 +378,9 @@ function addLevel() {
 
     // Sets the color of the added card
     $("#colorPicker" + listLenght).on("change", changeColPicker);
-    $(".idbox" + listLenght).on("change keydown", changeIDbox);
-    $(".cardLName" + listLenght).on("keydown", changeLevelName);
-    $(".cardLCreator" + listLenght).on("keydown", changeLevelCreator);
+    $(".idbox" + listLenght).on("change keyup", changeIDbox);
+    $(".cardLName" + listLenght).on("keyup", changeLevelName);
+    $(".cardLCreator" + listLenght).on("keyup", changeLevelCreator);
     $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
 }
 
@@ -369,9 +396,9 @@ function loadLevel(pos) {
 
     // Setting card buttons
     $("#colorPicker" + listLenght).on("change", changeColPicker);
-    $(".idbox" + listLenght).on("change keydown", changeIDbox);
-    $(".cardLName" + listLenght).on("keydown", changeLevelName);
-    $(".cardLCreator" + listLenght).on("keydown", changeLevelCreator);
+    $(".idbox" + listLenght).on("change keyup", changeIDbox);
+    $(".cardLName" + listLenght).on("keyup", changeLevelName);
+    $(".cardLCreator" + listLenght).on("keyup", changeLevelCreator);
     $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
 }
 

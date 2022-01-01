@@ -87,7 +87,7 @@ span {
 .box {
   background-color: #43a045;
   background-image: url("../images/cardBg.png");
-  padding: 32px 30px 32px 50px;
+  padding: 32px 30px 50px 50px;
   margin: 50px 10% 50px 10%;
   border-radius: 10px;
   font-size: 3vw;

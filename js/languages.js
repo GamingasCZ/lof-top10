@@ -129,11 +129,11 @@ var jsStr = {
     "ROLE_NM_D": [`<b style="color: #ffff00;">Role je věc, kterou člověk dělal v collabu</b>.<br><br>Do pole jména zadej jméno role.<br><br>Např.: Layout, Dekorace, Hudba, Optimalizace, Testování`,
                   `<b style="color: #ffff00;">A role is a thing the person's done in the collab</b>.<br><br>Add a role name in the input.<br><br>Examples: Layout, Deco, Music, Optimization, Testing`],
     "ROLE_HP_T": ["Má část v collabu?","Has a collab part?"],
-    "ROLE_HP_D": [`V dokončeném seznamu se vizuálně ukáží části na kterých lidé pracovali. Pokud tohle pro roli nedává smysl, nezašktrávej políčko.`,
-                  `The finished list will visually show parts creators have worked on. Do not check if this doesn't make sense for the role.`],
+    "ROLE_HP_D": [`<b style='color: tomato'>Volba nic nedělá a bude brzy smazána :P</b>`,
+                  `<b style='color: tomato'>Option doesn't do anything and will be soon deleted :P</b>`],
     "ROLE_CO_T": ["Barva role","Role color"],
-    "ROLE_CO_D": ["Barva různých věcí v dokončeném seznamu...",
-                  "The color of different elements in the finished list..."],
+    "ROLE_CO_D": ["<b style='color: tomato'>Volba nic nedělá a bude brzy smazána :P</b>",
+                  "<b style='color: tomato'>Option doesn't do anything and will be soon deleted :P</b>"],
     "HUM_T": ["Členové v collabu","Collab members"],
     "HUM_D": [`<b style="color: #ffff00;">Jméno:</b> Sem patří jméno člověka, který měl část v collabu. Lupa najde jeho GD profil a udělá ho jeho profil klikatelný v dokončeném seznamu.<br><br>
     <b style="color: #ffff00;">Sítě:</b> Slouží k přidávání sociálních sítí, na kterých lze člena najít. Dvojitým klikem na náhled se dá rychle síť smazat.<br><br>

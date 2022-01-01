@@ -1,3 +1,13 @@
+
+@keyframes inputError {
+    from {
+        background-color: rgba(243, 70, 70, 0.5);
+    }
+    to {
+        background-color: rgba(36, 36, 36, 0.5);
+    }
+}
+
 .helpButton {
     /*position: absolute;*/
     width: 3vw;

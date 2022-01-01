@@ -18,7 +18,7 @@ if (YEAR == "2019" || window.location.pathname.match("upload") == -1) {
 		"titleImg": "",
 		"1": {
 			"levelName": "Snowy",
-			"creator": [["MurlocGD", 0, "Nahrál"], [{ "name": "Level", "hasPer": false, "color": "#fab789", "HTMLobject": {}, "id": 1640454770131 }], [{ "name": "MurlocGD", "role": 1640454770131, "part": ["41", "100"], "color": "#00f9f9", "socials": [[0, "https://youtube.com/channel/httpswww.youtube.comchannelUC8"]], "verified": true }, { "name": "PizzaGamerHu", "role": 1640454770131, "part": ["0", "41"], "color": "#7d7dff", "socials": [[0, "https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"], [2, "https://twitch.tv/pizzagamerhu"]], "verified": true }]],
+			"creator": [["MurlocGD", 1, "Nahrál"], [{ "name": "Level", "hasPer": false, "color": "#fab789", "HTMLobject": {}, "id": 1640454770131 }], [{ "name": "MurlocGD", "role": 1640454770131, "part": ["41", "100"], "color": "#00f9f9", "socials": [[0, "https://youtube.com/channel/httpswww.youtube.comchannelUC8"]], "verified": true }, { "name": "PizzaGamerHu", "role": 1640454770131, "part": ["0", "41"], "color": "#7d7dff", "socials": [[0, "https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"], [2, "https://twitch.tv/pizzagamerhu"]], "verified": true }]],
 			"levelID": "39776379",
 			"video": "FBJUt0U4kUw",
 			"color": "#e55b5b"
@@ -176,7 +176,7 @@ else if (YEAR == "2021" || window.location.pathname.match("upload") != -1) {
 		},
 		"13": {
 			"levelName": "Infinity Journey",
-			"creator": "playergeoCZ a další",
+			"creator": [["Playergeocz",true,"Host"],[{"name":"Level","hasPer":false,"color":"#964387","HTMLobject":{},"id":1641079683625}],[{"name":"PlayerGeoCZ","role":1641079683625,"part":["0","15"],"color":"#71b1fa","socials":[],"HTMLobject":{},"verified":true},{"name":"jakubko2005","role":1641079683625,"part":["15","28"],"color":"#004baf","socials":[[0,"https://youtube.com/channel/httpswww.youtube.comchannelUC"]],"HTMLobject":{},"verified":true},{"name":"Jazerplay","role":1641079683625,"part":["28","37"],"color":"#9b8a85","socials":[],"HTMLobject":{},"verified":true},{"name":"ShadowBurnSK","role":1641079683625,"part":["37","49"],"color":"#1cc021","socials":[],"HTMLobject":{},"verified":true},{"name":"Jablicko","role":1641079683625,"part":["54","58"],"color":"#718ea6","socials":[],"HTMLobject":{},"verified":true},{"name":"TellConfig","role":1641079683625,"part":["58","69"],"color":"#126592","socials":[],"HTMLobject":{},"verified":true},{"name":"ekokekokos","role":1641079683625,"part":["69","81"],"color":"#4ec02c","socials":[],"HTMLobject":{},"verified":0},{"name":"PlayerGeoCZ","role":1641079683625,"part":["85","100"],"color":"#c36deb","socials":[],"HTMLobject":{},"verified":true},{"name":"Patas Matas","role":1641079683625,"part":["49","54"],"color":"#fed022","socials":[],"HTMLobject":{},"verified":0}]],
 			"levelID": "61102013",
 			"video": "paGz3CzbOVk",
 			"color": "#9abd10"
@@ -190,7 +190,7 @@ else if (YEAR == "2021" || window.location.pathname.match("upload") != -1) {
 		},
 		"15": {
 			"levelName": "Hell Note",
-			"creator": "EidamGD a Jazerplay",
+			"creator": [["EidamGD",true,"Verifier"],[{"name":"Level","hasPer":false,"color":"#fa8e22","id":1641079356870}],[{"name":"Jazerplay","role":1641079356870,"part":["0","100"],"color":"#cb2a32","socials":[],"verified":true}]],
 			"levelID": "57149934",
 			"video": "vZucsa43bNs",
 			"color": "#2a0000"
@@ -375,7 +375,7 @@ function showCollabStats(id) {
 		let graphBars = [];
 
 		let firstElement = 0
-		humanRoles = humanRoles.sort((a,b) => a[0][0]-b[0][0])
+		humanRoles = humanRoles.sort((a, b) => a[0][0] - b[0][0])
 		humanRoles.forEach(hum => {
 			if (hum[1] == roles.id) {
 				let mixAmount = 0
@@ -389,10 +389,15 @@ function showCollabStats(id) {
 				else {
 					if (humanRoles[firstElement + 1] != undefined && humanRoles[firstElement][0][1] - humanRoles[firstElement + 1][0][0] < 0) { // All other elements
 						let x = humanRoles[firstElement][0][1] - humanRoles[firstElement + 1][0][0]
-						graphBars.push(`<div class="graphLine space" style="background: none; width: ${x-x*2}%; height: 100%;"></div>`)
+						graphBars.push(`<div class="graphLine space" style="background: none; width: ${x - x * 2}%; height: 100%;"></div>`)
 					}
 
 				}
+
+				if (humanRoles[firstElement + 1] == undefined && firstElement != 0) { // Last spacing element
+					graphBars.push(`<div class="graphLine space" style="background: none; width: ${Math.abs(humanRoles[firstElement][0][1] - 100)}%; height: 100%;"></div>`)
+				}
+
 				// Role graph lines
 				graphBars.push(`<div for="${hum[3]}" class="graphLine"
 				                     style="background: ${hum[2]}; width: ${hum[0][1] - hum[0][0] - mixAmount}%; height: 100%;">
@@ -401,20 +406,6 @@ function showCollabStats(id) {
 									 </div>
 								</div>`)
 				mixAmount = 0
-
-				if (humanRoles[firstElement + 1] == undefined && firstElement != 0) { // Last spacing element
-					// if (humanRoles[firstElement-1][0][1] > humanRoles[firstElement][0][0]) {
-					// 	mixAmount = humanRoles[firstElement-1][0][1] - humanRoles[firstElement][0][0]
-					// 	graphBars.push(`<div for="${hum[3]}" class="graphLine"
-					// 						 style="background: linear-gradient(90deg,${humanRoles[firstElement-1][2]},${humanRoles[firstElement][2]}); width: ${mixAmount}%; height: 100%;">
-					// 						<div class="graphPerc mixed" for="${humanRoles[firstElement-1][3]},${humanRoles[firstElement][3]}">	
-					// 							<div class="graphText">|< ${hum[0][0]}%</div><div class="graphText">${hum[0][0]+mixAmount}% >|</div>
-					// 						</div>
-					// 					</div>`)
-					// }
-					console.log("eeeeeeee")
-					graphBars.push(`<div class="graphLine space" style="background: none; width: ${Math.abs(humanRoles[firstElement][0][1] - 100)}%; height: 100%;"></div>`)
-				}
 			}
 			firstElement++
 		}
@@ -564,8 +555,8 @@ function boxCreator(obj, index) {
 			appended.push(nm)
 		});
 		hostVerified = ""
-		if (obj[0][1]) { hostVerified = `<img class="boxIcon" alt=" " style="margin: 0 1vw" src="https://gdrowser.com/icon/${obj[0][0]}">` }
-		
+		if (obj[0][1]) { hostVerified = `<img class="boxIcon" alt=" " style="margin: 0 1vw" src="https://gdbrowser.com/icon/${obj[0][0]}">` }
+
 		// Fix url when ready
 		return `
 		<div class="uploadText boxCollabHeader">
@@ -582,7 +573,7 @@ function generateList(boards) {
 		// Removing card buttons
 		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = ["", ""]; }
 		else {
-			var ID = [`<img src="./images/gdrowser.png" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
+			var ID = [`<img src="./images/gdbrowser.png" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
 			`<img src="./images/copyID.png" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`]
 		}
 
@@ -629,7 +620,7 @@ function generateList(boards) {
 				try {
 					for (let icon = 0; icon < ((k.target).children[2].children).length; icon++) {
 						$((k.target).children[2].children[icon].children).css("background", "none")
-						$((k.target).children[2].children[icon].children).attr("src", "https://gdrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
+						$((k.target).children[2].children[icon].children).attr("src", "https://gdbrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
 					}
 				}
 				catch (e) { }
