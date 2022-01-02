@@ -173,7 +173,7 @@ $(function () {
     })
 
     // Hide debug tools when not running locally
-    if (window.location.protocol.includes("file")) {
+    if (!window.location.protocol.includes("file")) {
         $(".debugTools").remove()
     }
 })
