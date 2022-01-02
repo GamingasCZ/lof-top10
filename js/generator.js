@@ -1,5 +1,8 @@
 const ADDIT_VALS = 1;
 
+// These are not real people :<'
+const fakeNames = ["Voiprin", "Sarprong", "ZentricSigma", "Darwing", "ExpoD", "J0hnram", "Jayuff", "AligaThePeter", "Divpan", "Acidity", "Doorami", "DanZBro", "FunnyBone"]
+
 if (window.location.search == "") {
 	var yID = "2019";
 }
@@ -15,7 +18,7 @@ if (YEAR == "2019" || window.location.pathname.match("upload") == -1) {
 		"titleImg": "",
 		"1": {
 			"levelName": "Snowy",
-			"creator": "MurlocGD, PizzaGamerHu",
+			"creator": [["MurlocGD", 1, "Nahrál"], [{ "name": "Level", "hasPer": false, "color": "#fab789", "HTMLobject": {}, "id": 1640454770131 }], [{ "name": "MurlocGD", "role": 1640454770131, "part": ["41", "100"], "color": "#00f9f9", "socials": [[0, "https://youtube.com/channel/httpswww.youtube.comchannelUC8"]], "verified": true }, { "name": "PizzaGamerHu", "role": 1640454770131, "part": ["0", "41"], "color": "#7d7dff", "socials": [[0, "https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"], [2, "https://twitch.tv/pizzagamerhu"]], "verified": true }]],
 			"levelID": "39776379",
 			"video": "FBJUt0U4kUw",
 			"color": "#e55b5b"
@@ -50,7 +53,7 @@ if (YEAR == "2019" || window.location.pathname.match("upload") == -1) {
 		},
 		"6": {
 			"levelName": "Infinity Gamingas",
-			"creator": "Jazerplay, PlayerGeoCZ",
+			"creator": [["jazerplay", true, "Nahrál"], [{ "name": "Level", "hasPer": false, "color": "#8c4f00", "id": 1640786121833 }], [{ "name": "Jazerplay", "role": 1640786121833, "part": ["0", "50"], "color": "#ed333b", "socials": [], "verified": true }, { "name": "PlayerGeoCZ", "role": 1640786121833, "part": ["50", "100"], "color": "#f8e45c", "socials": [], "verified": true }]],
 			"levelID": null,
 			"video": null,
 			"color": "#b28fea"
@@ -157,7 +160,7 @@ else if (YEAR == "2021" || window.location.pathname.match("upload") != -1) {
 			"video": "F0OM9qN8oCI",
 			"color": "#6a1f76"
 		},
-        "11": {
+		"11": {
 			"levelName": "Pichlace",
 			"creator": "Jakubko2005",
 			"levelID": "64609075",
@@ -173,7 +176,7 @@ else if (YEAR == "2021" || window.location.pathname.match("upload") != -1) {
 		},
 		"13": {
 			"levelName": "Infinity Journey",
-			"creator": "playergeoCZ a další",
+			"creator": [["Playergeocz",true,"Host"],[{"name":"Level","hasPer":false,"color":"#964387","HTMLobject":{},"id":1641079683625}],[{"name":"PlayerGeoCZ","role":1641079683625,"part":["0","15"],"color":"#71b1fa","socials":[],"HTMLobject":{},"verified":true},{"name":"jakubko2005","role":1641079683625,"part":["15","28"],"color":"#004baf","socials":[[0,"https://youtube.com/channel/httpswww.youtube.comchannelUC"]],"HTMLobject":{},"verified":true},{"name":"Jazerplay","role":1641079683625,"part":["28","37"],"color":"#9b8a85","socials":[],"HTMLobject":{},"verified":true},{"name":"ShadowBurnSK","role":1641079683625,"part":["37","49"],"color":"#1cc021","socials":[],"HTMLobject":{},"verified":true},{"name":"Jablicko","role":1641079683625,"part":["54","58"],"color":"#718ea6","socials":[],"HTMLobject":{},"verified":true},{"name":"TellConfig","role":1641079683625,"part":["58","69"],"color":"#126592","socials":[],"HTMLobject":{},"verified":true},{"name":"ekokekokos","role":1641079683625,"part":["69","81"],"color":"#4ec02c","socials":[],"HTMLobject":{},"verified":0},{"name":"PlayerGeoCZ","role":1641079683625,"part":["85","100"],"color":"#c36deb","socials":[],"HTMLobject":{},"verified":true},{"name":"Patas Matas","role":1641079683625,"part":["49","54"],"color":"#fed022","socials":[],"HTMLobject":{},"verified":0}]],
 			"levelID": "61102013",
 			"video": "paGz3CzbOVk",
 			"color": "#9abd10"
@@ -187,7 +190,7 @@ else if (YEAR == "2021" || window.location.pathname.match("upload") != -1) {
 		},
 		"15": {
 			"levelName": "Hell Note",
-			"creator": "EidamGD a Jazerplay",
+			"creator": [["EidamGD",true,"Verifier"],[{"name":"Level","hasPer":false,"color":"#fa8e22","id":1641079356870}],[{"name":"Jazerplay","role":1641079356870,"part":["0","100"],"color":"#cb2a32","socials":[],"verified":true}]],
 			"levelID": "57149934",
 			"video": "vZucsa43bNs",
 			"color": "#2a0000"
@@ -243,6 +246,328 @@ function onYTClick(link, index) {
 	});
 }
 
+const openSocLink = link => { window.open(link) }
+const openProfileOnGDB = name => { window.open("https://gdbrowser.com/profile/" + name) }
+
+async function getProfileStats(k, ind) {
+	let container = k.target
+
+	$(container).hide()
+	await $(container).after("<img src='images/loading.png' class='loading'>")
+	$(".loading").css("animation-name", "loading")
+
+	let uName = $(k.target.parentElement).siblings()[1].innerText;
+
+	await $.get("https://gdbrowser.com/api/profile/" + uName, user => {
+		$(".loading").remove();
+
+		$(container).after(`<img onclick="openProfileOnGDB('${user.username}')" style="transform: translateX(0.7vw);" class="stats button" src="images/add.png">`)
+		if (user.cp > 0) {
+			$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/cp.png">${user.cp} </p>`)
+		}
+		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/ucoin.png">${user.userCoins}</p>`)
+		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/demons.png">${user.demons} </p>`)
+		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/star.png">${user.stars} </p>`)
+	})
+
+	await k.target.remove()
+}
+
+function showCollabStats(id) {
+	let level = JSON.parse(JSON.stringify(boards[id]["creator"]))
+	let names = [jsStr["YT_CHAN"][LANG], jsStr["TW_PROF"][LANG], jsStr["TW_CHAN"][LANG], jsStr["DC_SERV"][LANG], jsStr["CUST_LINK"][LANG]];
+	let imgs = ["youtube", "twitter", "twitch", "discord", "cust"];
+
+	let cardCol = $($(".box")[id - 1]).css("background-color");
+	let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
+	let extraDark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 80)
+
+	$(".collabTTitle").text(`- ${boards[id].levelName} -`);
+	$("#collabTools").css("background-color", cardCol);
+	$(".editorHeader").css("background-color", `rgb(${dark.join(",")})`)
+	$("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
+	$(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
+	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,34%)`)
+
+	$("#collabTools").fadeIn(50);
+	$("#collabTools").css("transform", "scaleY(1)");
+
+	$(".statsCreators").text("") // Reset table
+	$(".collabGraphs").text("") // Reset table
+
+	let humanRoles = [];
+
+	let appendedNames = []; // One name shouldn't have more table rows
+	level[2].forEach(creators => { // Creators
+		let part = (creators.part).map(x => parseInt(x))
+		let uName = creators.name == "" ? "pissman69_thefreedom69connoisseur" : creators.name
+		humanRoles.push([part, creators.role, creators.color, uName]);
+
+		// When the creator doesn't have a name (die and turn into a ghost :O)
+		let isGhost = false
+		if (creators.name == "") {
+			isGhost = true
+			creators.name = jsStr["GHOST"][LANG]
+		}
+
+		if (creators.verified && appendedNames.indexOf(creators.name) == -1) {
+			appendedNames.push(creators.name);
+
+			// Social media
+			let socialTags = "";
+			for (let soc = 0; soc < creators.socials.length; soc++) {
+				socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
+				                    style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
+
+			}
+
+			$(".statsCreators").append(`<tr class='tableRow'>
+			<td style="display: flex; justify-content: left; align-items: center">
+				<img style="width: 4vw;margin: 0.4vw;" src="https://gdbrowser.com/icon/${creators.name}">
+				<p class="memberName" style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>
+				${socialTags}
+				<hr class="verticalSplitter">
+				<div class="pStatsContainer">
+				<img style="width: 3vw;margin: 0.4vw;" src="images/gdbrowser.png" class="getProfile button" title="Zobrazit profil">
+				</div>
+			</td>
+		</tr>`)
+
+
+			$($(".getProfile")[$(".getProfile").length - 1]).on("click", k => { getProfileStats(k, $(".tableRow").length - 1) })
+		}
+		else if (!creators.verified && appendedNames.indexOf(creators.name) == -1) {
+			appendedNames.push(creators.name);
+
+			// Social media
+			let socialTags = "";
+			for (let soc = 0; soc < creators.socials.length; soc++) {
+				socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
+				                    style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
+			}
+
+			// Give random icon / or ghost if member doesn't have a name
+			let randIcon = ""
+			if (!isGhost) {
+				randIcon = -1
+				while ([-1, 0, 1].indexOf(randIcon) != -1) {
+					randIcon = parseInt(Math.random() * 17)
+				}
+				if (randIcon < 10) { randIcon = "0" + randIcon }
+			}
+			else { randIcon = "ghostCube"; }
+
+			$(".statsCreators").append(`<tr class='tableRow'>
+			<td style="display: flex; justify-content: left; align-items: center">
+				<img style="width: 4vw;margin: 0.4vw;" src="images/emoji/${randIcon}.png">
+				<p class="memberName" style="color: ${creators.color}; margin: 0 1vw 0;">${creators.name}</p>
+				${socialTags}
+			</td>
+		</tr>`)
+
+			if (isGhost) { // Give ghost funny name :O
+				creators.name = "pissman69_thefreedom69connoisseur"
+			}
+		}
+	});
+
+	level[1].forEach(roles => { // Roles
+		let graphBars = [];
+
+		let firstElement = 0
+		humanRoles = humanRoles.sort((a, b) => a[0][0] - b[0][0])
+		humanRoles.forEach(hum => {
+			if (hum[1] == roles.id) {
+				let mixAmount = 0
+
+				// Spacing elements
+				if (firstElement == 0) { // First spacing element
+					if (0 - humanRoles[firstElement][0][0] < 0) {
+						graphBars.push(`<div class="graphLine space" style="background: none; width: ${Math.abs(0 - humanRoles[firstElement][0][0])}%; height: 100%;"></div>`)
+					}
+				}
+				else {
+					if (humanRoles[firstElement + 1] != undefined && humanRoles[firstElement][0][1] - humanRoles[firstElement + 1][0][0] < 0) { // All other elements
+						let x = humanRoles[firstElement][0][1] - humanRoles[firstElement + 1][0][0]
+						graphBars.push(`<div class="graphLine space" style="background: none; width: ${x - x * 2}%; height: 100%;"></div>`)
+					}
+
+				}
+
+				if (humanRoles[firstElement + 1] == undefined && firstElement != 0) { // Last spacing element
+					graphBars.push(`<div class="graphLine space" style="background: none; width: ${Math.abs(humanRoles[firstElement][0][1] - 100)}%; height: 100%;"></div>`)
+				}
+
+				// Role graph lines
+				graphBars.push(`<div for="${hum[3]}" class="graphLine"
+				                     style="background: ${hum[2]}; width: ${hum[0][1] - hum[0][0] - mixAmount}%; height: 100%;">
+									 <div class="graphPerc" for="${hum[3]}">	
+									 	<div class="graphText">|< ${hum[0][0]}%</div><div class="graphText">${hum[0][1]}% >|</div>
+									 </div>
+								</div>`)
+				mixAmount = 0
+			}
+			firstElement++
+		}
+		);
+
+		// Adding role graphs 
+		$(".collabGraphs").append(`
+		<div style="display: flex; flex-direction: column; margin: 1.5vw 1vw;">
+			<div style="display: flex; justify-content: space-between; max-width: 91%;">
+				<p style="margin: 0 0 0 6vw;">${roles.name}</p>
+				<div style="display: flex; align-items: center;" class="nameShower">
+					<img class="boxIcon" alt=" " src="images/bytost.png"></img>
+					<p style="margin: 0"></p>
+				</div>
+			</div>
+
+			<div style="display: flex; justify-content: center">
+				<span id="graphPercentage">0%</span>
+				<div class="graphContainer">
+					${graphBars.join("")}
+				</div>
+				<span id="graphPercentage">100%</span>
+			</div>
+		</div>
+		`)
+	});
+
+	// Hovering over graph parts
+	$(".graphLine").on("mouseover", hoverBar)
+	$(".graphLine").on("mouseout", unhoverBar)
+
+	// Hovering over names
+	$(".memberName").on("mouseover", hoverName)
+	$(".memberName").on("mouseout", unhoverName)
+
+	$(".verticalSplitter").css("background-color", `rgb(${extraDark.join(",")})`);
+}
+
+function hideCollabStats() {
+	$("#collabTools").fadeOut(50);
+	$("#collabTools").css("transform", "scaleY(0.7)");
+}
+
+function hoverBar(k) {
+	// Utter bullcrap >:(
+	if (k.currentTarget.classList.contains("space")) { return null } // Hovering over space element
+
+	let nameShower = $($(k.currentTarget.parentElement.parentElement).siblings().children()[1]).children()
+	let hoverName = $(`.memberName:contains(${$(k.currentTarget).attr("for")})`)
+	if ($(`.memberName:contains('${jsStr["GHOST"][LANG]}')`) && hoverName[0] == undefined) { hoverName = $(`.memberName:contains('${jsStr["GHOST"][LANG]}')`) }
+
+	isVerified = $(hoverName).siblings(".pStatsContainer")
+	if (isVerified.length != 0) { isVerified = true }
+	else { isVerified = false }
+
+	$(nameShower.parent()).css("opacity", 1)
+
+	if (isVerified) {
+		$(nameShower[0]).attr("src", "https://gdbrowser.com/icon/" + hoverName.text())
+	}
+	else {
+		$(nameShower[0]).attr("src", "images/bytost.png")
+	}
+
+	$(nameShower[1]).text(hoverName.text())
+
+	if (k.currentTarget.clientWidth > $(".graphContainer")["0"].clientWidth * 0.15) {
+		$(k.currentTarget.children).css("opacity", 1)
+	}
+	else {
+		let from = k.currentTarget.children[0].children[0].textContent.match(/\d+%/)[0]
+		let to = k.currentTarget.children[0].children[1].textContent.match(/\d+%/)[0]
+		$(nameShower[1]).text(hoverName.text() + ` - ${from} ${jsStr["PART_TO"][LANG]} ${to}`)
+	}
+
+	let textColor = hoverName.css("color")
+
+	hoverName.css("text-shadow", `${textColor} 0px 0px 15px`)
+	hoverName["0"].scrollIntoView();
+
+	$(`.memberName:not(.memberName:contains(${hoverName})`).css("opacity", `0.3`)
+}
+function unhoverBar(k) {
+	let nameShower = $($(k.currentTarget.parentElement.parentElement).siblings().children()[1]).children()
+	$(nameShower.parent()).css("opacity", 0)
+
+	if (k.currentTarget.clientWidth > $(".graphContainer")["0"].clientWidth * 0.13) {
+		$(k.currentTarget.children).css("opacity", 0)
+	}
+
+	$(`.memberName`).css("text-shadow", "")
+	$(`.memberName:not(.memberName:contains(${$(k.currentTarget).attr("for")}))`).css("opacity", `1`)
+}
+
+function hoverName(k) {
+	$(k.currentTarget).css("text-shadow", `${$(k.currentTarget).css("color")} 0px 0px 15px`)
+
+	let graphColor = $(`.graphLine[for="${$(k.currentTarget).text()}"]`).css("background-color")
+
+	let forWhat = $(k.currentTarget).text()
+	if ($(k.currentTarget).text() == jsStr["GHOST"][LANG]) {
+		forWhat = "pissman69_thefreedom69connoisseur"
+	}
+
+	// Show build part
+	for (let i = 0; i < $(`.graphLine[for="${forWhat}"] > .graphPerc`).length; i++) {
+		if ($(`.graphLine[for="${forWhat}"] > .graphPerc`)[i].clientWidth > $(".graphContainer")["0"].clientWidth * 0.13) {
+			$($(`.graphLine[for="${forWhat}"] > .graphPerc`)[i]).css("opacity", 1)
+			$($(`.graphLine[for="${forWhat}"] > .graphPerc`)[i]).css("transform", "scaleY(1)")
+		}
+	}
+
+
+	$(`.graphLine[for="${forWhat}"]`).css("box-shadow", `${graphColor} 0px 0px 20px`)
+	$(`.graphLine:not(.graphLine[for="${forWhat}"])`).css("opacity", 0.2)
+}
+function unhoverName(k) {
+	$(k.currentTarget).css("text-shadow", "")
+
+	let forWhat = $(k.currentTarget).text()
+	if ($(k.currentTarget).text() == jsStr["GHOST"][LANG]) {
+		forWhat = "pissman69_thefreedom69connoisseur"
+	}
+
+	// Hide build part
+	$(`.graphLine[for="${forWhat}"] > .graphPerc`).css("opacity", 0)
+	$(`.graphLine[for="${forWhat}"] > .graphPerc`).css("transform", "scaleY(0.8)")
+
+	$(`.graphLine[for="${forWhat}"]`).css("box-shadow", ``)
+	$(`.graphLine:not(.graphLine[for="${forWhat}"])`).css("opacity", 1)
+}
+
+function boxCreator(obj, index) {
+	if (typeof obj != "object") {
+		return jsStr["CREATOR_BY"][LANG] + obj
+	}
+	else {
+		let names = [];
+		let appended = [];
+		obj[2].forEach(creator => {
+			let icon = "";
+			if (creator.verified) {
+				icon = `<img class="boxIcon" alt=" " style="background: ${creator.color}">`;
+			}
+			if (creator.name == "") { var nm = jsStr["GHOST"][LANG] }
+			else { var nm = creator.name }
+
+			child = `<div style="color: ${creator.color};" class="collabChild">${icon}${nm}</div>`
+			if (appended.indexOf(nm) == -1) { names.push(child); } // Names should only appear once
+			appended.push(nm)
+		});
+		hostVerified = ""
+		if (obj[0][1]) { hostVerified = `<img class="boxIcon" alt=" " style="margin: 0 1vw" src="https://gdbrowser.com/icon/${obj[0][0]}">` }
+
+		// Fix url when ready
+		return `
+		<div class="uploadText boxCollabHeader">
+		${obj[0][2]}: ${hostVerified}${obj[0][0]}</div>
+		<div onclick="showCollabStats(${index})" class="collabParent button">` + names.join("") + "</div>"
+	}
+}
+
 function generateList(boards) {
 	for (i = 1; i < Object.keys(boards).length - ADDIT_VALS; i++) {
 
@@ -251,12 +576,15 @@ function generateList(boards) {
 		// Setting title image
 		$(".titleImage").attr("src", boards["titleImg"]);
 
-		// Disabling card buttons
-		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = "disabled"; }
-		else { var ID = ""; }
+		// Removing card buttons
+		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = ["", ""]; }
+		else {
+			var ID = [`<img src="./images/gdbrowser.png" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
+			`<img src="./images/copyID.png" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`]
+		}
 
-		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = "disabled"; }
-		else { var video = ""; }
+		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = ``; }
+		else { var video = `<img src="./images/yticon.png" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">`; }
 
 		// Glow depending on level position
 		var cardBG = `background-color: ${boards[bIndex]["color"]}`;
@@ -270,22 +598,43 @@ function generateList(boards) {
 		}
 
 		$(".boards").append(`
-		<div class="box" style="${cardBG}"><span>${boards[bIndex]["levelName"]}</span>
-		<button class="button ${video}" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">
-			<img class="boxLink" src="./images/yticon.png">
-		</button>
-		<button class="button ${ID}" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">
-			<img class="boxLink" src="./images/gdbrowser.png">
-		</button>
-		<button class="button ${ID}" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">
-			<img class="boxLink" src="./images/copyID.png">
-		</button>
+		<div class="box" style="${cardBG}">
+			<div class="boxHeader">
+				<span>${boards[bIndex]["levelName"]}</span>
+				<div style="display:flex">
+					${video}
+					${ID[0]}
+					${ID[1]}
+				</div>
+			</div>
 
-		<p>${jsStr["CREATOR_BY"][LANG]}${boards[bIndex]["creator"]}</p>
-		<h3 class="popup" id="cpopup${bIndex}">${jsStr["ID_COPIED"]}</h3>
-
+			${boxCreator(boards[bIndex]["creator"], bIndex)}
 		</div>
 	`);
+		// Only display icons on hover
+		if (typeof boards[bIndex]["creator"] == "object") {
+			$($(".box")[$(".box").length - 1]).on("mouseover", (k) => {
+				// Player icons
+				let currIndex = "";
+				let boxElements = Object.values($(".box"))
+				for (let box = 0; box < $(".box").length; box++) {
+					if (boxElements[box].isEqualNode(k.target)) {
+						currIndex = box;
+					}
+				}
+				// Fix url when ready
+				try {
+					for (let icon = 0; icon < ((k.target).children[2].children).length; icon++) {
+						$((k.target).children[2].children[icon].children).css("background", "none")
+						$((k.target).children[2].children[icon].children).attr("src", "https://gdbrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
+					}
+				}
+				catch (e) { }
+
+				$(k.target).off("mouseover")
+			})
+		}
+
 	};
 	// Removing stuff if list is empty
 	if ($(".box").length == 0 & location.pathname.match(/(upload)/g) == null) {
@@ -295,8 +644,20 @@ function generateList(boards) {
 	}
 }
 
+function debugCards() {
+	// Returns a randomly generated board
+	let str = '{"titleImg": "",';
+	for (let i = 1; i < Math.ceil(Math.random() * 20) + 1; i++) {
+		str += `"${i}": {"levelName": "Debug #${i}","creator": "${fakeNames[Math.floor(Math.random() * fakeNames.length)]}","levelID": 128, "video": "9ywnLQywz74","color":"${RGBtoHEX(randomColor())}"},`
+	}
+	str = str.slice(0, -2) + "}}"
+	return JSON.parse(str)
+}
+
 var listData = "";
+var debugPwd = 0;
 $(function () {
+	$(".passInput").val("");
 	$(".shade").append(`<img class="title" src="${jsStr["TIT_IMG"][LANG]}">`);
 	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
 	if (location.search != "") {
@@ -313,12 +674,22 @@ $(function () {
 			for (i = 0; i < decodeData.length; i++) {
 				decodedData += String.fromCharCode(decodeData[i]);
 			}
-			let boards = JSON.parse(decodedData);
+			boards = JSON.parse(decodedData);
 			$(".titles").append(jsStr["PREVIEW"][LANG]);
 			$(".searchTools").remove();
 			generateList(boards);
 		}
 		else if (listID[0] == "id") {
+			if (window.location.protocol.includes("file")) {
+				debugPwd = Math.ceil(Math.random() * 9999999999)
+				$(".titles").append(`<p style="color: tomato">Debug List</p>
+				<hr class="lineSplitGeneral" style="margin: -2% 10%;">
+				<p style="font-size: 3vw;">- Dasher123 -</p>
+				<p style="font-size: 3vw;">Pass: ${debugPwd}</p>`);
+				$(".titleImage").attr("src", boards["titleImg"]);
+				generateList(debugCards())
+			}
+
 			$.get("./php/getLists.php?id=" + listID[1], function (data) {
 				if (data == 1) {
 					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
@@ -386,7 +757,7 @@ $(function () {
 			else {
 				$(".password").remove()
 				generateList(boards);
-				}
+			}
 		}
 	}
 	else if (YEAR == "2019") {
@@ -431,4 +802,10 @@ function checkPassword() {
 			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?${page}=${listID[1]}&pass=${passEntered}`;
 		}
 	})
+
+	if (window.location.protocol.includes("file")) {
+		if (passEntered == debugPwd) {
+			window.location.href = `./upload.html?edit=${listID[1]}&pass=${passEntered}`
+		}
+	}
 }

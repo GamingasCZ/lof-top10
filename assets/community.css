@@ -1,3 +1,13 @@
+
+@keyframes inputError {
+    from {
+        background-color: rgba(243, 70, 70, 0.5);
+    }
+    to {
+        background-color: rgba(36, 36, 36, 0.5);
+    }
+}
+
 .helpButton {
     /*position: absolute;*/
     width: 3vw;
@@ -24,9 +34,10 @@
     width: 80%;
     left: 10%;
     padding: 2%;
-    top: 2%;    
+    top: 2%;
+    max-height: 40vw;
+    overflow-y: auto;
 }
-
 
 .uploadBG {
     background-color: rgb(50, 63, 50);
@@ -52,7 +63,6 @@
     font-size: 7vw;
     margin: auto;
     padding: 5px 0px 5px 0px;
-    float: none;
     display: block;
     text-shadow: 0.17vw 0.17vw rgb(61, 131, 79),
     -0.17vw -0.17vw rgb(61, 131, 79),
@@ -61,7 +71,117 @@
 
 }
 
-input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox) {
+.errNotif {
+    z-index: 2;
+    transform: translate(30vw,20vh);
+    width: 40vw;
+    position: absolute;
+    pointer-events: none;
+    display: none;
+}
+
+.errNotText {
+    z-index: 3;
+    position: relative;
+    top: 4vw;
+    left: 2vw;
+    width: 36vw;
+}
+
+#collabTools {
+	position: fixed;
+	width: 95%;
+	height: 90vh;
+	right: -8%;
+	bottom: 0%;
+    z-index: 1;
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    transform: scaleY(0.7);
+    transition-duration: 0.1s;
+}
+
+.collabBar {
+    display: flex;
+    justify-content: space-between !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    overflow-y: hidden !important;
+    min-height: 8%;
+}
+
+.collabTables {
+    border: none;
+    text-align: center;
+    width: 100%;
+    background: url("../images/fade.png") repeat-x;
+}
+
+td > * {
+    vertical-align: middle;
+}
+
+.collabTables th img:nth-child(1) {
+    width: 2vw;
+    vertical-align: middle;
+}
+.collabTables th div {
+    margin: 0vw 0 0 0.5vw;
+}
+
+.collabTables th {
+    background: rgba(0,0,0,0.1) !important;
+    font-size: 2vw;
+    -webkit-text-stroke: black 1.5px;
+}
+
+tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+tr > td:nth-child(2n) {
+	background: rgba(0,0,0,0.2);
+}
+
+#collabInp::placeholder {
+    font-size: 2vw;
+}
+
+#collabInp {
+    display: inline;
+    transform: none;
+    width: 15vw;
+    margin: 0.5%;
+    font-size: 2vw;
+    height: 28%;
+    background-color: #FFFFFF50;
+    border-color: #FFFFFF50;
+    -webkit-text-stroke: black 1.5px;
+    -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+
+.collabHeader {
+    max-height: auto;
+    overflow-y: auto;
+}
+
+.roleList {
+    border: none;
+    border-radius: 0.5vw;
+    padding: 1%;
+    font-size: 2vw;
+    -webkit-text-stroke: black 1.5px;
+    margin: 0;
+    height: 2.5vw;
+}
+
+input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .tableCpicker) {
     margin-left: auto;
     margin-right: auto;
     margin-top: 2%;
@@ -80,6 +200,11 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox) {
     -webkit-text-stroke: black 0.17vw;
     display: flex;
     justify-content: center;
+}
+
+.inputErr {
+    animation-name: inputError;
+    animation-duration: 0.5s;
 }
 
 #imageArrow {
@@ -118,6 +243,10 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox) {
 .colorLabel {
     display: flex;
     pointer-events: none;
+}
+
+#fillButton {
+    width: 2.8vw;
 }
 
 .cardInput {
@@ -196,12 +325,6 @@ input:disabled {
     height: 40%;
 }
 
-.errorBox {
-    padding: 1% 0.5%;
-    border-radius: 5px;
-    font-size: 200%;
-}
-
 #listPreview {
     background-color: rgb(36, 36, 36);
     color: white;
@@ -210,7 +333,6 @@ input:disabled {
     border: white 7px solid;
     border-radius: 5px;
     cursor: pointer;
-    float: none;
     display: block;
 }
 
@@ -222,10 +344,14 @@ input:disabled {
     background-color: tomato;
 }
 
+.hostIcon {
+    width: 5vw;
+}
+
 .editorHeader {
     background-color: rgb(89, 185, 89);
     margin: 0%;
-    padding: 1vw 1%;
+    padding: 0.8vw 1%;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -238,13 +364,9 @@ input:disabled {
 }
 
 .headerButtons {
-    width: 7vw;
-    height: 7vw;
-    padding-right: 8vw;
-}
-.headerButtonsImgs {
-    width: inherit;
-    height: inherit;
+    width: 5vw;
+    height: 5vw;
+    margin-right: 1vw;
 }
 
 .headerText {
@@ -259,11 +381,18 @@ input:disabled {
     text-align: center;
 }
 
-#mainContent {
+#mainContent, .collabBG {
     background-color: rgb(44, 99, 44);
     text-align: left;
     background-image: url("../images/fade.png");
     background-repeat: repeat-x;
+    height: inherit;
+}
+
+.smallHelp {
+    width: 1.7vw;
+    height: auto;
+    vertical-align: top;
 }
 
 
@@ -274,7 +403,13 @@ input:disabled {
     border-radius: 8px;
     white-space: nowrap;
     box-shadow: #0000004f 8px 8px 5px;
-  }
+    padding: 0.5%;
+}
+
+.smallPosEdit {
+    padding: 0 !important;
+    margin: 0.8% !important;
+}
 
 .positionEdit {
     transform: scaleY(1);
@@ -285,6 +420,8 @@ input:disabled {
     margin: 2%;
     background-color: rgba(36, 36, 36, 0.5);
     border: none;
+    transform: translate(0);
+    transition: background-color 50ms;
 }
 
 .lineSplitGeneral {
@@ -294,12 +431,23 @@ input:disabled {
     margin: 1% 3%;
 }
 
+.availFill {
+    background: white;
+    height: 7%;
+    width: 3%;
+    margin: 1%;
+    border: none;
+    border-radius: 10%;
+    transition: opacity 0.1s linear;
+    box-shadow: black 0px 0px 4px;
+}
+
 .nameDetailGetter {
     margin-right: 5%;
 }
 
 #moveLPosButton {
-    width: 80%;
+    width: 4vw;
 }
 
 #posInputPics {
@@ -310,22 +458,23 @@ input:disabled {
 .positionButtons {
     display: flex;
     justify-content: end;
+    align-items: center;
 }
 
 #positionDisplay {
     width: 13%;
-    margin: 0.5%;
-    margin-top: 6%;
     padding-left: 0;
     padding-right: 0;
     text-align: center;
+    margin: 0.5%;
+    transform: translate(0);
 }
 
 .cardButton {
-	padding-left: 2%;
-	padding-right: 11%;
-	width: 7vw;
-	height: 7vw;
+	padding-left: 1%;
+	padding-right: 0.5%;
+	width: 5vw;
+	height: 5vw;
 }
 
 .cpicker {
@@ -421,6 +570,16 @@ input:disabled {
     margin-right: 2%;
 }
 
+.debugTools {
+    justify-content: center !important;
+    background-image: url('../images/debug.png') !important;
+    max-width: 45vw !important;
+    margin: auto !important;
+    margin: auto !important;
+    margin-top: 1.5% !important;
+    display: none;
+}
+
 .searchTools {
     background-color: #1e1e1e;
     border-radius: 1vw;
@@ -429,6 +588,53 @@ input:disabled {
     display: flex;
     align-items: center;
     /*flex-wrap: wrap;*/
+}
+
+.noRoles, .noRolAdded, .addRoles {
+    margin-left: 1%;
+    color: rgb(173, 230, 185);
+}
+.noRolAdded, .addRoles > img {
+    transform: translateY(0.6vw);
+}
+
+.tableCpicker {
+    border: none;
+    background: none;
+    width: 25%;
+    height: 3vw;
+}
+
+.collabHButtons {
+    display: flex;
+    justify-content: right;
+}
+.presetButtonContainer {
+    padding: 0.2% 2%;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.socialPickerIcon {
+    display: inline;
+    width: 4vw;
+}
+
+.popupArrow {
+    position: absolute;
+    top: -1vw; 
+}
+
+.socialPicker {
+    position: absolute;
+    background: #1e1e1e;
+    padding: 1%;
+    z-index: 2;
+    border-radius: 10px;
+    top: 34.8vw;
+    left: 28.5vw;
+    display: none;
 }
 
 .page {

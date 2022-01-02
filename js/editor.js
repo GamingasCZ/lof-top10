@@ -1,7 +1,6 @@
 //Holba buenas hyperhackeře :D. Nyní sleduješ můj hrozný kód :).
 
 function checkJson(data) {
-    $(".errorBox").css("padding", "1% 0.5%");
     try {
         // Kontrola názvů atd.
         let invalidNames = ["Gamingas", "GamingasCZ"];
@@ -19,7 +18,9 @@ function checkJson(data) {
         // 1/3 Je to vůbec JSON?
         var parsedData = JSON.parse(data);
         $(".errorBox").text(jsStr["SUCC_UPL"][LANG]);
-        $(".errorBox").css("background-color", "rgba(73, 255, 103, 0.8)");
+
+        // 1.5/3 Je seznam prázdný?
+        if (Object.keys(parsedData).length-ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
         for (i = 1; i < Object.keys(parsedData).length - ADDIT_VALS; i++) {
@@ -27,23 +28,25 @@ function checkJson(data) {
                 throw (i + ". místo neexistuje. Bug mi nahlaš (nebo si nehrej s JSONem :D).")
             }
             if (parsedData[i]["levelName"] == "") {
-                throw ("Level na " + i + ". místě nemá JMÉNO!")
+                throw ("Level na " + i + ". místě nemá <b style='color:lime'>jméno!</b>")
             }
             if (parsedData[i]["creator"] == "") {
-                throw ("Level na " + i + ". místě nemá TVŮRCE!")
+                throw ("Level na " + i + ". místě nemá <b style='color:lime'>tvůrce!</b>")
             }
         }
         return true;
     }
     catch (error) {
-        $(".errorBox").css("background-color", "rgba(255, 73, 73, 0.8)");
+        $(".errNotif").fadeIn(100);
 
         if (data == "") {
-            $(".errorBox").text(jsStr["NO_JSON"][LANG]);
+            $(".errorBox").html(jsStr["NO_JSON"][LANG]);
         }
         else {
-            $(".errorBox").text(error);
+            $(".errorBox").html(error);
         }
+
+        setTimeout(() => {$(".errNotif").fadeOut(200)}, 2000);
         return false
     }
 }
@@ -88,7 +91,7 @@ function displayComLists(data) {
                     rgb.push(parseInt("0x" + listColor.slice(j, j + 2)) - 40);
                 }
                 $(".customLists").append(`
-        <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
+        <a style="text-decoration: none;" href="./index.html?id=${listData[3]}">
             <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(",")})">
                 <div class="uploadText">${listData[1]}</div>
                 <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}${listData[0]}</div>
@@ -165,13 +168,33 @@ var deeta = '';
 var ogDeeta = '';
 
 // List generator
-if (debug_mode) {
-    for (let i = 0; i < 4; i++) {
-        deeta += `${i};${btoa(i * 48514654894984 / 1.848564)};{"1":{"color":"rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})"}};45;10|`
+// if (debug_mode) {
+//     for (let i = 0; i < 4; i++) {
+//         deeta += `${i};${btoa(i * 48514654894984 / 1.848564)};{"1":{"color":"rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})"}};45;10|`
 
+//     }
+// }
+
+function debugLists(am) {
+    // not translatable, because I don't feel like it :D
+    let adj = ["Big", "Small", "Good", "Bad", "Funny", "Stupid", "Furry", "Christian", "Best", "Gay", "Nice", "Thicc", "OwO", "Cringe", "Big PP", "Life-changing", "Gamingas", "Reddit", "Dramatic", "Hot", "Shit"]
+    let noun = ["Levels", "Collabs", "Megacollabs", "Layouts", "Deco", "Effect Levels", "Grass Levels", "Glow Levels", "2.1 Levels", "Wave Levels", "Virgin Levels", "Extreme Demon Levels","Viprin Levels",
+                "Main Levels", "List Levels", "Dangerous Levels", "Gauntlet Levels","Energetic Levels", "Questionable Levels"]
+    if (am == 2) {
+        deeta = "";
+        for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
+            deeta += `${i};-!-;Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]};-!-;{"1":{"color":"${RGBtoHEX(randomColor())}"}};-!-;45;-!-;10|-!-|`
+        }
+        ogDeeta = deeta;
+        displayComLists(deeta);
+    }
+    else {
+        $("#lDebugAm").val(parseInt($("#lDebugAm").val()) + am)
+        if ($("#lDebugAm").val() < 0) {
+            $("#lDebugAm").val("0")
+        }
     }
 }
-
 
 var sorting = false;
 $(function () {
@@ -266,7 +289,7 @@ $(function () {
 
 <div style="margin-top: 5%;">
 <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
-<div class="shareBG uploadText" style="float: none;">${currWebsite}
+<div class="shareBG uploadText">${currWebsite}
 <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
 </div>
 </div>
@@ -278,13 +301,16 @@ $(function () {
     $(".smallUploaderDialog").hide();
 
     // Generates stuff
-    if (debug_mode) { displayComLists(deeta) }
-
     $.get("./php/getLists.php", function (data) {
         deeta = data;
         ogDeeta = data;
         displayComLists(deeta);
     });
+
+    if (window.location.protocol.includes("file")) {
+        $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
+        $(".debugTools").show()
+    }
 
     // Mobile optimzations
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
@@ -396,7 +422,7 @@ function search() {
             page = 0;
             $("#pageSwitcher").val("1");
             $("#maxPage").text("/1")
-            $(".customLists").append(`<p align=center>${jsStr['NO_RES']}</p>`);
+            $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
         }
         else {
             page = 0;

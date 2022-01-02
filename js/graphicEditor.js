@@ -1,32 +1,118 @@
+const MAX_GDB_SCROLL = 5
+
 function getDetailsFromID(id) {
     // Tohle budeš pak muset předělat, až bude všechno fungovat :D
     let givenID = $(".idbox" + id).val();
-    $.get("https://gdbrowser.com/api/level/" + givenID, function (data) {
-        $(".cardLName" + id).val(data["name"]);
-        levelList[id]["levelName"] = data["name"];
-        $(".cardLCreator" + id).val(data["author"]);
-        levelList[id]["creator"] = data["author"];
-    })
-    updateSmPos()
+
+    if (givenID != "") {
+        if (isNaN(parseInt(givenID))) {
+            $(".idbox" + id).css("background-color", "rgba(255, 0, 0, 0.5)");
+            setTimeout(() => { $(".idbox" + id).css("background-color", "") }, 50);
+
+            $(".idbox" + id).val("");
+            $(".idDetailGetter" + id).addClass("disabled");
+            return false
+        }
+
+        $.get("https://gdbrowser.com/api/level/" + givenID, function (data, res) {
+            if (data != -1) {
+                $(".cardLName" + id).val(data["name"]);
+                levelList[id]["levelName"] = data["name"];
+                $(".cardLCreator" + id).val(data["author"]);
+                levelList[id]["creator"] = data["author"];
+            }
+            else {
+                $(".idbox" + id).addClass("inputErr");
+                setTimeout(() => { $(".idbox" + id).removeClass("inputErr") }, 500);
+                // TODO: Add flickering or something....
+            }
+        })
+        updateSmPos()
+    }
 }
 
-function getDetailsFromName(id) {
+var succ = false
+async function getDetailsFromName(id) {
+    succ = false
+    
     id = id.toString()
     let givenName = $(".cardLName" + id).val();
     let givenMaker = $(".cardLCreator" + id).val();
 
+    // Only level name passed in (most liked with that name)
+    if (givenName != "" && givenMaker == "") url = `https://gdbrowser.com/api/search/${givenName}?count=1`
+    // Only creator passed in (newest level from user)
+    else if (givenName == "" && givenMaker != "") url = `https://gdbrowser.com/api/search/${givenMaker}?count=1&user`
+    // Both passed in (newest level from passed in used with the passed in name)
+    else {
+        for (let pages = 0; pages < MAX_GDB_SCROLL; pages++) {
+            if (!succ) {
+                await $.ajax({
+                url: `https://gdbrowser.com/api/search/${givenMaker}?page=${pages}&user`, timeout: 1000, "Access-Control-Allow-Origin": "*",
+                success: data => {
+                    Object.values(data).forEach(level => {
+                        if (level.name.toLowerCase().includes(givenName.toLowerCase()) && level.author.toLowerCase().includes(givenMaker.toLowerCase())) {
+                            saveGDBresult(id, level)
+                        }
+                    })
+                },
+                error: () => {
+                    if (pages == MAX_GDB_SCROLL-1) {
+                        $(".cardLName" + id).addClass("inputErr");
+                        setTimeout(() => { $(".cardLName" + id).removeClass("inputErr") }, 500);
+
+                        $(".cardLCreator" + id).addClass("inputErr");
+                        setTimeout(() => { $(".cardLCreator" + id).removeClass("inputErr") }, 500);
+                    }
+                }
+            }).then(() => {}, () => {})
+            }
+        }
+        return null
+    }
+
     // Hledání nejlikovanějšího levelu
-    $.get("https://gdbrowser.com/api/search/" + givenName + "?count=1", function (data) {
-        console.log(data);
-        console.log("https://gdbrowser.com/api/search/" + givenName + "?count=1");
-        $(".cardLName" + id).val(data[0]["name"]);
-        levelList[id]["levelName"] = data[0]["name"];
-        $(".cardLCreator" + id).val(data[0]["author"]);
-        levelList[id]["creator"] = data[0]["author"];
-        $(".idbox" + id).val(data[0]["id"]);
-        levelList[id]["levelID"] = data[0]["id"]
+    await $.ajax({
+        url: url, timeout: 1000, "Access-Control-Allow-Origin": "*",
+        success: data => {
+            if (data.length > 0) {
+                saveGDBresult(id, data)
+            }
+        },
+        error: () => {
+            $(".cardLName" + id).addClass("inputErr");
+            setTimeout(() => { $(".cardLName" + id).removeClass("inputErr") }, 500);
+
+            $(".cardLCreator" + id).addClass("inputErr");
+            setTimeout(() => { $(".cardLCreator" + id).removeClass("inputErr") }, 500);
+        }
     })
+
+    if ($(".idbox"+id).val() != "") { $(".idDetailGetter"+id).removeClass("disabled") }
+    else { $(".idDetailGetter"+id).addClass("disabled") }
+
+    availFill(0,$(".cardLName" + id), "freedom69", id)
+    availFill(1,$(".cardLCreator" + id), "freedom69", id)
+
     updateSmPos()
+}
+
+function saveGDBresult(id, data) {
+    succ = true
+    
+    let jsonData = "";
+    if (data[0] == undefined) { jsonData = data } // When searching, result is nested
+    else { jsonData = data[0] } // When fetching level, it is not nested (shocking lmao)
+
+    $(".cardLName" + id).val(jsonData["name"]);
+    levelList[id]["levelName"] = jsonData["name"];
+    $(".cardLCreator" + id).val(jsonData["author"]);
+
+    if (typeof levelList[id]["creator"] == "object") { levelList[id]["creator"][0] = [jsonData["author"], 1] } // Collab tools enabled
+    else { levelList[id]["creator"] = jsonData["author"]; } // Not enabled
+
+    $(".idbox" + id).val(jsonData["id"]);
+    levelList[id]["levelID"] = jsonData["id"]
 }
 
 function colorizePage() {
@@ -100,7 +186,7 @@ function refreshCardDetails(lp) {
 }
 function moveCard(position, currID) {
     let listPlacement = parseInt($(".listPosition" + currID.toString()).val());
-    if (position == "up") {
+    if (position == "up" & currID >= 0) {
         if (listPlacement > 1) {
             refreshCardDetails(listPlacement)
             $(".card" + (listPlacement - 1)).before($(".card" + (listPlacement)));
@@ -113,7 +199,7 @@ function moveCard(position, currID) {
             listPlacement--
         }
     }
-    else {
+    else if (position == "down" & currID < Object.keys(levelList).length - ADDIT_VALS) {
         if (listPlacement < Object.keys(levelList).length - 1 - ADDIT_VALS) {
             refreshCardDetails(listPlacement)
             $(".card" + (listPlacement + 1)).after($(".card" + (listPlacement)));
@@ -126,8 +212,11 @@ function moveCard(position, currID) {
             listPlacement++
         }
     }
+    else { return false; }
+
     updateSmPos();
     document.getElementById("top" + listPlacement).scrollIntoView();
+    return true;
 }
 
 function updateSmPos() {
@@ -143,21 +232,112 @@ function updateSmPos() {
             $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]}`);
         }
         else {
-            $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} od ${levelList[i]["creator"]}`);
+            if (typeof levelList[i]["creator"] == "object") {
+                let includeFrom = levelList[i]["creator"][0][0]
+                if (levelList[i]["creator"][0][0] != "") { includeFrom = "od " + includeFrom }
+                $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} ${includeFrom} (Collab)`);
+            }
+            else {
+                $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} ${jsStr["CREATOR_BY"][LANG].slice(0,-2)} ${levelList[i]["creator"]}`);
+            }
         }
     }
 }
 
 function displayCard(id) {
-    $(".smallPosEdit").show();
-    $("#smtop" + id.toString()).hide();
-    $(".positionEdit").hide();
-    $("#top" + id.toString()).css("transform", "scaleY(0.8)");
-    $("#top" + id.toString()).show();
-    $("#top" + id.toString()).css("transform", "scaleY(1)");
-    updateSmPos()
+    if (id > 0 & id < Object.keys(levelList).length - ADDIT_VALS) {
+        $(".smallPosEdit").show();
+        $("#smtop" + id.toString()).hide();
+        $(".positionEdit").hide();
+        $("#top" + id.toString()).css("transform", "scaleY(0.8)");
+        $("#top" + id.toString()).show();
+        $("#top" + id.toString()).css("transform", "scaleY(1)");
+        updateSmPos()
+
+        // Disable/Enable search buttons depending on if there's text in them
+        if ($(".idbox" + id).val().length != 0) { $(".idDetailGetter" + id).removeClass("disabled") }
+        else { $(".idDetailGetter" + id).addClass("disabled") }
+    }
 }
 
+function availFill(type, sel, key, pos) {
+    // Shows/hides those white rectangles in the card
+    if (sel.length < 1) {
+        $(".availFill:visible")[type].style.opacity = 0.3
+        if ($(".availFill:visible")[0].style.opacity == 0.3 && $(".availFill:visible")[1].style.opacity == 0.3) {
+            $(".nameDetailGetter" + pos).addClass("disabled")
+        }
+    }
+    else if (sel.length > 0) {
+        $(".availFill:visible")[type].style.opacity = 1
+        $(".nameDetailGetter" + pos).removeClass("disabled")
+    }
+}
+
+function changeColPicker() {
+    let chosenColor = $(this).val()
+    let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
+
+    let rgb = HEXtoRGB(chosenColor, 40)
+
+    $("#top" + cardSelected).css("background-color", chosenColor);
+    $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
+    $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
+
+    levelList[cardSelected]["color"] = chosenColor;
+}
+
+function changeIDbox(k) {
+    let selection = k.target.value
+    let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+    if (k.type == "change") {
+        levelList[position]["levelID"] = selection;
+    }
+    else {
+        if (selection.length < 1) { $(".idDetailGetter"+position).addClass("disabled") }
+        else if (selection.length > 0) { $(".idDetailGetter"+position).removeClass("disabled") }
+    }
+}
+
+function changeLevelName(k) {
+    let selection = k.target.value
+    let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+    levelList[position]["levelName"] = selection;
+
+    availFill(0, selection, k.key, position)
+}
+
+function changeLevelCreator(k) {
+    let selection = k.target.value
+    let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+    if (typeof levelList[position]["creator"] == "object") {
+        // Do not overwrite collab tools
+        levelList[position]["creator"][0][0] = selection;
+        levelList[position]["creator"][0][1] = false;
+    }
+    else {
+        levelList[position]["creator"] = selection;
+    }
+
+    availFill(1, selection, k.key, position)
+}
+
+function changeLevelVideo() {
+    // Link is a regular YT link
+    if ($(this).val().match(/(watch\?v=)/g)) {
+        let linkMatch = $(this).val().match(/(?<=\?v=).+/g);
+        $(this).val(linkMatch);
+    }
+    // Link is most likely a shortened YT link
+    else {
+        let linkMatch = $(this).val().match(/(?<=youtu.be\/).+/g);
+        $(this).val(linkMatch);
+    }
+
+    let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
+    let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
+    levelList[position]["video"] = selection;
+}
 
 function addLevel() {
     var listLenght = Object.keys(levelList).length - ADDIT_VALS;
@@ -210,53 +390,11 @@ function addLevel() {
     levelList[listLenght]["color"] = "#" + inhex.join("");
 
     // Sets the color of the added card
-    $("#colorPicker" + listLenght).on("change", function () {
-        let chosenColor = $(this).val()
-        let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
-
-        let rgb = HEXtoRGB(chosenColor, 40)
-
-        $("#top" + cardSelected).css("background-color", chosenColor);
-        $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
-        $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
-
-        levelList[cardSelected]["color"] = chosenColor;
-    });
-
-    $(".idbox" + listLenght).on("change", function () {
-        let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["levelID"] = selection;
-    });
-
-    $(".cardLName" + listLenght).on("change", function () {
-        let selection = $(".cardLName" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["levelName"] = selection;
-    });
-
-    $(".cardLCreator" + listLenght).on("change", function () {
-        let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["creator"] = selection;
-    });
-
-    $(".cardLVideo" + listLenght).on("change", function () {
-        // Link is a regular YT link
-        if ($(this).val().match(/(watch\?v=)/g)) {
-            let linkMatch = $(this).val().match(/(?<=\?v=).+/g);
-            $(this).val(linkMatch);
-        }
-        // Link is most likely a shortened YT link
-        else {
-            let linkMatch = $(this).val().match(/(?<=youtu.be\/).+/g);
-            $(this).val(linkMatch);
-        }
-
-        let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["video"] = selection;
-    });
+    $("#colorPicker" + listLenght).on("change", changeColPicker);
+    $(".idbox" + listLenght).on("change keyup", changeIDbox);
+    $(".cardLName" + listLenght).on("keyup", changeLevelName);
+    $(".cardLCreator" + listLenght).on("keyup", changeLevelCreator);
+    $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
 }
 
 function loadLevel(pos) {
@@ -270,52 +408,11 @@ function loadLevel(pos) {
     $("#lineSplit" + pos).css("background-color", `rgb(${rgb.join(",")})`);
 
     // Setting card buttons
-    $("#colorPicker" + pos).on("change", function () {
-        let chosenColor = $(this).val()
-        let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
-
-        let rgb = HEXtoRGB(chosenColor, 40)
-
-        $("#top" + cardSelected).css("background-color", chosenColor);
-        $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
-        $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
-
-        levelList[cardSelected]["color"] = chosenColor;
-    });
-
-    $(".idbox" + pos).on("change", function () {
-        let selection = $(".idbox" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["levelID"] = selection;
-    });
-
-    $(".cardLName" + pos).on("change", function () {
-        let selection = $(".cardLName" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["levelName"] = selection;
-    });
-
-    $(".cardLCreator" + pos).on("change", function () {
-        let selection = $(".cardLCreator" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["creator"] = selection;
-    });
-
-    $(".cardLVideo" + pos).on("change", function () {
-        if ($(this).val().match(/(watch\?v=)/g)) {
-            let linkMatch = $(this).val().match(/(?<=\?v=).+/g);
-            $(this).val(linkMatch);
-        }
-        // Link is most likely a shortened YT link
-        else {
-            let linkMatch = $(this).val().match(/(?<=youtu.be\/).+/g);
-            $(this).val(linkMatch);
-        }
-
-        let selection = $(".cardLVideo" + ($(this)[0]["className"]).match(/[0-9]/g).join("")).val()
-        let position = ($(this)[0]["className"]).match(/[0-9]/g).join("")
-        levelList[position]["video"] = selection;
-    });
+    $("#colorPicker" + listLenght).on("change", changeColPicker);
+    $(".idbox" + listLenght).on("change keyup", changeIDbox);
+    $(".cardLName" + listLenght).on("keyup", changeLevelName);
+    $(".cardLCreator" + listLenght).on("keyup", changeLevelCreator);
+    $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
 }
 
 function updateCardData(prevID, newID) {
@@ -347,6 +444,8 @@ function updateCardData(prevID, newID) {
     $(".removerButton" + prevID).attr("onclick", "removeLevel(" + newID + ")");
     $(".removerButton" + prevID).attr("class", "button cardButton removerButton" + newID);
     $("#colorPicker" + prevID).attr("id", "colorPicker" + newID);
+    $(".colButton" + prevID).attr("onclick", "showCollabTools(" + newID + ")");
+    $(".colButton" + prevID).attr("class", "button colButton" + newID);
 
     if (parseInt(prevID) != parseInt(newID)) {
         levelList[prevID] = levelList[newID + "waiting"];
@@ -407,47 +506,58 @@ function card(index, rndColor) {
     </div>
     <div class="positionEdit" id="top${index}">
         <div style="display: flex">
-            <div>
-                <img id="posInputPics" src="./images/idtext.png">
-                <input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text">
+            <div style="display: flex; align-items: center;">
+                <p style="margin: 2%;">ID:</p>
+                <input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text" style=" margin-left: 4%; transform: translateY(0%);">
 
-                <button type="button" onclick="getDetailsFromID(${index})" style="float: none;" class="button idDetailGetter${index}">
-                    <img id="fillButton" src="./images/getStats.png">
-                </button>
+                <img id="fillButton" src="./images/getStats.png" onclick="getDetailsFromID(${index})" style="float: none;" class="fillID button disabled idDetailGetter${index}">
             </div>
 
             <div class="positionButtons">
-                <button title="${jsStr["L_MOVE_D"][LANG]}" type="button" onclick="moveCard('up',${index})" class="button upmover${index}" style="float: none;">
-                    <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(90deg);">
-                </button>
+                <img title="${jsStr["L_MOVE_D"][LANG]}" onclick="moveCard('up',${index})" 
+                     class="button upmover${index}" style="transform: rotate(90deg);" id="moveLPosButton"
+                     src="./images/arrow.png">
 
                 <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" disabled="true" value="${index}">
 
-                <button title="${jsStr["L_MOVE_U"][LANG]}" type="button" onclick="moveCard('down',${index})" class="button downmover${index}" style="float: none;">
-                    <img id="moveLPosButton" src="./images/arrow.png" style="transform: rotate(-90deg);">
-                </button>
+                <img title="${jsStr["L_MOVE_U"][LANG]}" onclick="moveCard('down',${index})"
+                        class="button downmover${index}" style="transform: rotate(-90deg);" id="moveLPosButton"
+                        src="./images/arrow.png">
             </div>
         </div>
 
         <hr id="lineSplit${index}" class="lineSplitGeneral">
-        <img id="posInputPics" src="./images/gauntlet.png"><input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr["L_NAME"][LANG]}">
 
-        <button type="button" onclick="getDetailsFromName(${index})" class="button nameDetailGetter${index}" style="float: none;">
-            <img id="fillButton" src="./images/getStats.png">
-        </button>
-        
-        <img id="posInputPics" src="./images/bytost.png">
-        <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="display: flex; flex-wrap: wrap; width: 100%; align-items: center;">
+                <img id="posInputPics" src="./images/gauntlet.png">
+                <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr["L_NAME"][LANG]}">
 
-        <img id="posInputPics" src="./images/yticon.png"><input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
+                <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
 
-        <button title="${jsStr["DEL_CARD"][LANG]}" onclick="removeLevel(${index})" type="button" class="removerButton${index} button cardButton">
-            <img src="./images/delete.png" style="width: inherit; height: inherit;">
-        </button>
-        <button type="button" class="button cardButton">
-            <img src="./images/colorSelect.png" style="width: inherit; height: inherit;">
-            <input title="${jsStr["CARD_COL"][LANG]}" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
-        </button>
+                <img id="fillButton" onclick="getDetailsFromName(${index})" class="disabled button nameDetailGetter${index}" src="./images/getStats.png">
+                
+                <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
+
+                <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
+                <img class="button colButton${index}" style="float: none;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
+            </div>
+
+            <div style="display: flex; width: 100%;">
+                <div style="display: flex; align-items: center;">
+                    <img id="posInputPics" src="./images/yticon.png">
+                    <input style="margin: 5%;" class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
+                </div>
+                
+                <div style="display: flex; justify-content: right; flex-grow: 1; align-items: center;">
+                    <img title="${jsStr["DEL_CARD"][LANG]}" class="removerButton${index} button cardButton"
+                        onclick="removeLevel(${index})" src="./images/delete.png">
+
+                    <img class="button cardButton" onclick="document.querySelector('#colorPicker${index}').click();" src="./images/colorSelect.png">
+                    <input style="display: none;" title="${jsStr["CARD_COL"][LANG]}" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
+                </div>
+            </div>   
+        </div>
     </div>
 </div>
     `;
@@ -493,6 +603,31 @@ $(function () {
     ];
 
     $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
+
+    // Keyboard stuff
+
+    $("html").on("keydown", k => {
+        if (Object.keys(levelList).length - ADDIT_VALS > 2) {
+            let currCardShown = parseInt($(".positionEdit:not(:hidden)")[0].id.match(/[0-9]/g));
+            $(".positionEdit:not(:hidden)")[0].focus()
+            if (k.key == "ArrowDown") {
+                displayCard(currCardShown + 1) // Key: W
+                document.getElementById("top" + currCardShown++).scrollIntoView();
+            }
+            else if (k.key == "ArrowUp") {
+                displayCard(currCardShown - 1) // Key: S
+                document.getElementById("top" + currCardShown--).scrollIntoView();
+            }
+            else if (k.key == "ArrowLeft") {
+                if (moveCard("up", currCardShown)) { currCardShown-- } // Key: A
+            }
+            else if (k.key == "ArrowRight") {
+                if (moveCard("down", currCardShown)) { currCardShown++ } // Key: D
+            }
+        }
+
+    })
+
 
     // Disabling input boxes when editing a list
     let listID = location.search.slice(1).split(/[=&]/g);

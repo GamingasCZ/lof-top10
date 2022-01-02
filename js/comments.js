@@ -263,6 +263,13 @@ function sendComment() {
                     setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
                 }
             })
+
+            if (window.location.protocol.includes("file")) {
+                $(".sendBut").removeClass("disabled")
+                $(".comUserError").show()
+                $(".comUserError").text("Lokálně nejde posílat komentáře!");
+                setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
+            }
         }
     }
 }
@@ -339,6 +346,22 @@ var page = 0;
 var maxPage = 1;
 var deeta = "";
 
+function debugComments(am) {
+    if (am == 2) {
+        deeta = "";
+        for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
+            deeta += `${fakeNames[Math.floor(Math.random() * fakeNames.length)]};-!-;This is a comment!;-!-;0;-!-;${RGBtoHEX(randomColor())};-!-;-2;-!-;27;-!-;0;-!-;${Math.floor(Math.random() * Date.now()/1000)}|-!-|`;
+        }
+        displayComments(deeta)
+      }
+    else {
+        $("#lDebugAm").val(parseInt($("#lDebugAm").val()) + am)
+        if ($("#lDebugAm").val() < 0) {
+            $("#lDebugAm").val("0")
+        }
+    }
+}
+
 function displayComments(data) {
     const PER_PAGE = 5
     data = data.slice(0, -5);
@@ -347,7 +370,7 @@ function displayComments(data) {
     $(".noComm").hide()
 
     try {
-        if (data.match(/\|/g).length > 0) {
+        if (data.match(/\|-!-\|/g).length > 0) {
             let comArray = data.split("|-!-|");
 
             comArray.reverse()

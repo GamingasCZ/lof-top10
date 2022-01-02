@@ -28,19 +28,34 @@
 </head>
 
 <body>
-  <div class="shade">
-    <a href="https://github.com/GamingasCZ/lof-top10"><img class="github" src="images/github.png"></a>
-  </div>
+  <div class="shade"></div>
   <div align="center" id="submitarea">
-    <img class="yearButtonImg button" src="images/button1.png"
-         onclick="window.location.assign('index.html?year=2019')">
-    <img class="yearButtonImg button" src="images/locked.png"
-         onclick="window.location.assign('index.html?year=2021')">
-    <img class="yearButtonImg button commBut" src=""
-         onclick="window.location.assign('upload.html')">
-    <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;"
-         onclick="changeLang()">
-    <div style="display: none;" class="notify" onclick="$(this).hide()"><br><br><br><pre class="uploadText">   Jazyk/Language</pre></div>
+    <img class="yearButtonImg button" src="images/button1.png" onclick="window.location.assign('index.html?year=2019')">
+    <img class="yearButtonImg button" src="images/locked.png" onclick="window.location.assign('index.html?year=2021')">
+    <img class="yearButtonImg button commBut" src="" onclick="window.location.assign('upload.html')">
+    <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;" onclick="changeLang()">
+    <div class="notify" onclick="$(this).hide()"><br><br><br>
+      <pre class="uploadText">   Jazyk/Language</pre>
+    </div>
+  </div>
+
+  <!-- Collab stats-->
+  <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
+    <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
+      <p style="margin: 0 auto;" class="collabTTitle"></p>
+      <img src="./images/delete.png" class="button" style="width: 6%; height: max-content;" onclick="hideCollabStats()">
+    </div>
+    <div class="collabGraphs" style="min-height: 49%; max-height: 49%; overflow-y: auto;">
+
+    </div>
+    <div class="editorHeader">
+      <p class="uploadText colMembers" style="margin: 0.2% 0%;">Členové</p>
+    </div>
+    <div style="max-height: 48.5%;overflow-y: auto;">
+      <table style="min-height: 48.5%;" class="collabTables statsCreators">
+
+      </table>
+    </div>
   </div>
 
   <div class="titles"></div>
@@ -49,26 +64,31 @@
 
   <div class="searchTools uploadText" style="justify-content: left;">
     <div style="justify-content: left;">
-      <img src="images/list.png" onclick="listList()" class="button lList disabled" style="float: none; width: 20%;"
+      <img src="images/list.png" onclick="listList()" class="button lList disabled" style="width: 20%;"
         title="Seznam levelů">
-      <img src="images/comments.png" onclick="listComments()" class="button lComm" style="float: none; width: 20%;"
+      <img src="images/comments.png" onclick="listComments()" class="button lComm" style="width: 20%;"
         title="Komentáře">
     </div>
 
     <div class="password">
       <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 0% 2% -1%;">
-      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg"
-        style="float: none; height: fit-content;">
+      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="height: fit-content;">
     </div>
   </div>
 
   <div class="comments">
+    <div class="searchTools uploadText debugTools">
+      <span style="font-size: 2.6vw;">Přidat komentáře:</span>
+      <img class="button pageBut" src="images/arrow-left.png" onclick="debugComments(-1)">
+      <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
+      <img class="button pageBut" src="images/arrow-right.png" onclick="debugComments(1)">
+      <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugComments(2)">
+    </div>
     <div class="positionEdit" id="commentMaker">
       <div style="display: flex; align-items: center; padding-left: 1%;">
         <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 4vw;">
         <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno" maxlength="20">
-        <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg"
-          style="float: none; height: max-content;">
+        <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg" style="height: max-content;">
         <h5 class="uploadText comUserError"></h5>
       </div>
 
@@ -117,13 +137,12 @@
     <div class="searchTools uploadText" id="commentTool" style="justify-content: center;">
       <div class="page">
         <span id="pageStr" style="font-size: 3vw; padding-right: 2%;">Strana: </span>
-        <img class="button pageBut" style="float: none;" src="images/arrow-left.png" onclick="pageSwitch(-1)">
+        <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
         <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
         <span style="font-size: 3.5vw" id="maxPage">/1</span>
-        <img class="button pageBut" style="float: none;" src="images/arrow-right.png" onclick="pageSwitch(1)">
+        <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
       </div>
-      <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button"
-        style="float: none; width: 6vw;">
+      <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button" style="width: 6vw;">
     </div>
 
     <div id="commentList"></div>
@@ -134,6 +153,13 @@
     <img src="./images/crown.png" id="crown" align="center">
   </div>
 </body>
-<script>$(function() { translate(); })</script>
+<footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.5) translateY(4vw);">
+  <p class="uploadText">Vytvořil </p>
+  <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
+  <span class="uploadText"> | 2021-2022 | </span>
+  <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github"
+      src="images/github.png"></a>
+</footer>
+<script>$(function () { translate(); })</script>
 
 </html>
