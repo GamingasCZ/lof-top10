@@ -210,7 +210,7 @@ function onGDBClick(pos, index) {
 			$("#cpopup" + index).fadeTo(500, 0);
 		}
 		else {
-			window.open("https://gdrowser.com/" + pos, "_blank");
+			window.open("https://gdbrowser.com/" + pos, "_blank");
 		}
 	});
 }
@@ -247,7 +247,7 @@ function onYTClick(link, index) {
 }
 
 const openSocLink = link => { window.open(link) }
-const openProfileOnGDB = name => { window.open("https://gdrowser.com/profile/" + name) }
+const openProfileOnGDB = name => { window.open("https://gdbrowser.com/profile/" + name) }
 
 async function getProfileStats(k, ind) {
 	let container = k.target
@@ -258,7 +258,7 @@ async function getProfileStats(k, ind) {
 
 	let uName = $(k.target.parentElement).siblings()[1].innerText;
 
-	await $.get("https://gdrowser.com/api/profile/" + uName, user => {
+	await $.get("https://gdbrowser.com/api/profile/" + uName, user => {
 		$(".loading").remove();
 
 		$(container).after(`<img onclick="openProfileOnGDB('${user.username}')" style="transform: translateX(0.7vw);" class="stats button" src="images/add.png">`)
@@ -307,7 +307,7 @@ function showCollabStats(id) {
 		let isGhost = false
 		if (creators.name == "") {
 			isGhost = true
-			creators.name = "Duch dashera"
+			creators.name = jsStr["GHOST"][LANG]
 		}
 
 		if (creators.verified && appendedNames.indexOf(creators.name) == -1) {
@@ -323,12 +323,12 @@ function showCollabStats(id) {
 
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
-				<img style="width: 4vw;margin: 0.4vw;" src="https://gdrowser.com/icon/${creators.name}">
+				<img style="width: 4vw;margin: 0.4vw;" src="https://gdbrowser.com/icon/${creators.name}">
 				<p class="memberName" style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>
 				${socialTags}
 				<hr class="verticalSplitter">
 				<div class="pStatsContainer">
-				<img style="width: 3vw;margin: 0.4vw;" src="images/gdrowser.png" class="getProfile button" title="Zobrazit profil">
+				<img style="width: 3vw;margin: 0.4vw;" src="images/gdbrowser.png" class="getProfile button" title="Zobrazit profil">
 				</div>
 			</td>
 		</tr>`)
@@ -455,7 +455,7 @@ function hoverBar(k) {
 
 	let nameShower = $($(k.currentTarget.parentElement.parentElement).siblings().children()[1]).children()
 	let hoverName = $(`.memberName:contains(${$(k.currentTarget).attr("for")})`)
-	if ($(`.memberName:contains('Duch dashera')`) && hoverName[0] == undefined) { hoverName = $(`.memberName:contains('Duch dashera')`) }
+	if ($(`.memberName:contains('${jsStr["GHOST"][LANG]}')`) && hoverName[0] == undefined) { hoverName = $(`.memberName:contains('${jsStr["GHOST"][LANG]}')`) }
 
 	isVerified = $(hoverName).siblings(".pStatsContainer")
 	if (isVerified.length != 0) { isVerified = true }
@@ -463,8 +463,11 @@ function hoverBar(k) {
 
 	$(nameShower.parent()).css("opacity", 1)
 
-	if (!isVerified) {
-		$(nameShower[0]).attr("src", "https://gdrowser.com/icon/" + hoverName.text())
+	if (isVerified) {
+		$(nameShower[0]).attr("src", "https://gdbrowser.com/icon/" + hoverName.text())
+	}
+	else {
+		$(nameShower[0]).attr("src", "images/bytost.png")
 	}
 
 	$(nameShower[1]).text(hoverName.text())
@@ -475,7 +478,7 @@ function hoverBar(k) {
 	else {
 		let from = k.currentTarget.children[0].children[0].textContent.match(/\d+%/)[0]
 		let to = k.currentTarget.children[0].children[1].textContent.match(/\d+%/)[0]
-		$(nameShower[1]).text(hoverName.text() + ` - ${from} až ${to}`)
+		$(nameShower[1]).text(hoverName.text() + ` - ${from} ${jsStr["PART_TO"][LANG]} ${to}`)
 	}
 
 	let textColor = hoverName.css("color")
@@ -503,7 +506,7 @@ function hoverName(k) {
 	let graphColor = $(`.graphLine[for="${$(k.currentTarget).text()}"]`).css("background-color")
 
 	let forWhat = $(k.currentTarget).text()
-	if ($(k.currentTarget).text() == "Duch dashera") {
+	if ($(k.currentTarget).text() == jsStr["GHOST"][LANG]) {
 		forWhat = "pissman69_thefreedom69connoisseur"
 	}
 
@@ -523,7 +526,7 @@ function unhoverName(k) {
 	$(k.currentTarget).css("text-shadow", "")
 
 	let forWhat = $(k.currentTarget).text()
-	if ($(k.currentTarget).text() == "Duch dashera") {
+	if ($(k.currentTarget).text() == jsStr["GHOST"][LANG]) {
 		forWhat = "pissman69_thefreedom69connoisseur"
 	}
 
@@ -547,7 +550,7 @@ function boxCreator(obj, index) {
 			if (creator.verified) {
 				icon = `<img class="boxIcon" alt=" " style="background: ${creator.color}">`;
 			}
-			if (creator.name == "") { var nm = "Duch Dashera" }
+			if (creator.name == "") { var nm = jsStr["GHOST"][LANG] }
 			else { var nm = creator.name }
 
 			child = `<div style="color: ${creator.color};" class="collabChild">${icon}${nm}</div>`

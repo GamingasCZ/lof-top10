@@ -473,14 +473,15 @@ function chRoleValue(el, changeValue, type, arr = null) {
 function chMainName(el, vyb) {
     if (typeof levelList[currEditing]["creator"] != "object") {
         let currVerifier = levelList[currEditing]["creator"];
-        levelList[currEditing]["creator"] = [[currVerifier, 0, HOST_ROLE], [], []]
+        levelList[currEditing]["creator"] = [[currVerifier, 0, $(".verifierRole").val()], [], []]
     }
 
     if (vyb == 1) {
         levelList[currEditing]["creator"][0][1] = false;
         $(el.siblings()[0]).attr("src", "images/bytost.png");
+        levelList[currEditing]["creator"][0][0] = $(".verifier").val();
     }
-    else {
+    else if (vyb == 2) {
         // Verifying person
         $.get("https://gdbrowser.com/api/profile/" + $(".verifier").val(), nm => {
             if (nm != "-1") {
@@ -489,7 +490,10 @@ function chMainName(el, vyb) {
             }
         })
     }
-    levelList[currEditing]["creator"][0][0] = $(".verifier").val();
+    else if (vyb == 3) {
+        // Changing host role
+        levelList[currEditing]["creator"][0][0] = $(".verifierRole").val();
+    }
 }
 
 function getObjArrayIndex(th, type) {

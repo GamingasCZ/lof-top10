@@ -31,7 +31,10 @@ function getDetailsFromID(id) {
     }
 }
 
+var succ = false
 async function getDetailsFromName(id) {
+    succ = false
+    
     id = id.toString()
     let givenName = $(".cardLName" + id).val();
     let givenMaker = $(".cardLCreator" + id).val();
@@ -42,15 +45,14 @@ async function getDetailsFromName(id) {
     else if (givenName == "" && givenMaker != "") url = `https://gdbrowser.com/api/search/${givenMaker}?count=1&user`
     // Both passed in (newest level from passed in used with the passed in name)
     else {
-        let succ = false;
         for (let pages = 0; pages < MAX_GDB_SCROLL; pages++) {
-            $.ajax({
+            if (!succ) {
+                await $.ajax({
                 url: `https://gdbrowser.com/api/search/${givenMaker}?page=${pages}&user`, timeout: 1000, "Access-Control-Allow-Origin": "*",
                 success: data => {
                     Object.values(data).forEach(level => {
                         if (level.name.toLowerCase().includes(givenName.toLowerCase()) && level.author.toLowerCase().includes(givenMaker.toLowerCase())) {
                             saveGDBresult(id, level)
-                            succ = true;
                         }
                     })
                 },
@@ -63,8 +65,8 @@ async function getDetailsFromName(id) {
                         setTimeout(() => { $(".cardLCreator" + id).removeClass("inputErr") }, 500);
                     }
                 }
-            })
-            if (succ) break
+            }).then(() => {}, () => {})
+            }
         }
         return null
     }
@@ -96,6 +98,8 @@ async function getDetailsFromName(id) {
 }
 
 function saveGDBresult(id, data) {
+    succ = true
+    
     let jsonData = "";
     if (data[0] == undefined) { jsonData = data } // When searching, result is nested
     else { jsonData = data[0] } // When fetching level, it is not nested (shocking lmao)

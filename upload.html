@@ -46,7 +46,9 @@
     </div>
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 12%;">
       <img class="hostIcon" src="./images/bytost.png">
-      <input id="posInputBox" class="verifier" autocomplete="off" type="text" placeholder="Host / Verifier"
+      <input id="posInputBox" class="verifierRole" autocomplete="off" type="text" placeholder="Role nahrávatele"
+        style="width: 15vw;" onchange="chMainName($(this), 3)" value="Host">:
+      <input id="posInputBox" class="verifier" autocomplete="off" type="text" placeholder="Nahrál"
         style="width: 25vw;" onchange="chMainName($(this), 1)">
       <img class="button"  src="images/getStats.png" onclick="chMainName($(this), 2)">
     </div>

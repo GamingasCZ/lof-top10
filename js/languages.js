@@ -4,6 +4,7 @@ const LANG_AM = 2;
 var strings = [
     ["title", "index.html", 0, ["Top 10 Levelů od Fanoušků", "Top 10 Fan Levels"]],
     [".lList", "index.html", "title", ["Seznam levelů", "Level List"]],
+    [".colMembers", "index.html", 0, ["Členové", "Members"]],
     [".lComm", "index.html", "title", ["Komentáře", "Comments"]],
     ["h3:nth-child(1)", "index.html", 0, ["Komentář", "Comment"]],
     [".pIconInp", "index.html", "placeholder", ["Jméno", "Username"]],
@@ -32,7 +33,8 @@ var strings = [
     ["#searchBar", "upload.html", "placeholder", ["Hledání", "Search"]],
 
     [".collabTTitle","upload.html",0,["- Nastavení collabu -","- Collab Settings -"]],
-    [".verifier","upload.html","placeholder",["Host / Verifier","Host / Verifier"]],
+    [".verifierRole","upload.html","placeholder",["Role","Role"]],
+    [".verifier","upload.html","placeholder",["Nahrál...","Uploaded by"]],
     [".roleHead","upload.html",0,["Role","Roles"]],
     [".presetButtonContainer > button:nth-child(1)","upload.html",0,["Dekorace","Decoration"]],
     [".presetButtonContainer > button:nth-child(2)","upload.html",0,["Layout","Layout"]],
@@ -228,6 +230,8 @@ var jsStr = {
     "AGO": ["před ", ""],
 
     // Collab tools
+    "GHOST": ["Duch Dashera", "Dasher Ghost"],
+    "PART_TO": ["až","to"],
     "DECO": ["Dekorace", "Decoration"],
     "LAYOUT": ["Layout", "Layout"],
     "TESTER": ["Tester", "Tester"],
@@ -286,7 +290,7 @@ function translate() {
 
     strings.forEach(i => {
         // Replace depending on the directory
-        let isIndex = location.pathname == "/lofttop10/" & i[1] == "index.html";
+        let isIndex = location.pathname == "/loftop10/" & i[1] == "index.html";
 
         // Apply only to current page
         if (location.pathname.match(i[1]) != null || i[1] == 0 || isIndex) {
