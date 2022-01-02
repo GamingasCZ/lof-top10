@@ -2,7 +2,7 @@ const EMOJI_AM = 17;
 function getID() {
     let paramGetter = new URLSearchParams(window.location.search)
     let params = Object.fromEntries(paramGetter.entries());
-    
+
     if (params["id"] != null) { return params["id"] } // Community level
     // 2019 or 2021 list
     else if (params["year"] != null) { return params["year"] == 2019 ? -2 : -3 }
@@ -171,6 +171,11 @@ $(function () {
         if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
         displayComments(deeta);
     })
+
+    // Hide debug tools when not running locally
+    if (window.location.protocol.includes("file")) {
+        $(".debugTools").remove()
+    }
 })
 
 function getPlayerIcon() {
@@ -350,10 +355,10 @@ function debugComments(am) {
     if (am == 2) {
         deeta = "";
         for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-            deeta += `${fakeNames[Math.floor(Math.random() * fakeNames.length)]};-!-;This is a comment!;-!-;0;-!-;${RGBtoHEX(randomColor())};-!-;-2;-!-;27;-!-;0;-!-;${Math.floor(Math.random() * Date.now()/1000)}|-!-|`;
+            deeta += `${fakeNames[Math.floor(Math.random() * fakeNames.length)]};-!-;This is a comment!;-!-;0;-!-;${RGBtoHEX(randomColor())};-!-;-2;-!-;27;-!-;0;-!-;${Math.floor(Math.random() * Date.now() / 1000)}|-!-|`;
         }
         displayComments(deeta)
-      }
+    }
     else {
         $("#lDebugAm").val(parseInt($("#lDebugAm").val()) + am)
         if ($("#lDebugAm").val() < 0) {

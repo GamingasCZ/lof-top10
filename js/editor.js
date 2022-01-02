@@ -311,6 +311,7 @@ $(function () {
         $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
         $(".debugTools").show()
     }
+    else { $(".debugTools").remove() }
 
     // Mobile optimzations
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
