@@ -1,16 +1,12 @@
 const EMOJI_AM = 17;
 function getID() {
-    try {
-        var lID = (window.location.search).match(/id=\d+/)["0"].split("=")[1];
-        if (lID != undefined) { return lID }
-        
-        var yID = (window.location.search).match(/year=\d+/)["0"].split("=")[1];
-    }
-    catch {
-        if (window.location.search == "" || yID == "2019") { return "-2"; }
-        else if (yID == "2021") { return "-3"; }
-        else { return "-1"; }
-    }
+    let paramGetter = new URLSearchParams(window.location.search)
+    let params = Object.fromEntries(paramGetter.entries());
+    
+    if (params["id"] != null) { return params["id"] } // Community level
+    // 2019 or 2021 list
+    else if (params["year"] != null) { return params["year"] == 2019 ? -2 : -3 }
+    else { return -2 } // Is 2019 list
 }
 const LIST_ID = getID();
 
