@@ -1,9 +1,9 @@
 var currEditing;
 var clipboard;
 
-const HOST_ROLE = "Host"
-const presets = [[jsStr["DECO"][LANG], 1], [jsStr["LAYOUT"][LANG], 1], [jsStr["TESTER"][LANG], 0]];
-const presetNames = [jsStr["DECO"][LANG], jsStr["LAYOUT"][LANG], jsStr["TESTER"][LANG]]
+var HOST_ROLE;
+var presets;
+var presetNames;
 
 class Role {
     constructor(name, hasPer, color, HTMLobject, id = 0) {
@@ -773,6 +773,10 @@ function changeSocial(but) {
 }
 
 $(function () {
+    HOST_ROLE = "Host"
+    presets = [[jsStr["DECO"][LANG], 1], [jsStr["LAYOUT"][LANG], 1], [jsStr["TESTER"][LANG], 0]];
+    presetNames = [jsStr["DECO"][LANG], jsStr["LAYOUT"][LANG], jsStr["TESTER"][LANG]]
+
     names = [jsStr["YT_CHAN"][LANG], jsStr["TW_PROF"][LANG], jsStr["TW_CHAN"][LANG], jsStr["DC_SERV"][LANG], jsStr["CUST_LINK"][LANG]];
     imgs = ["youtube", "twitter", "twitch", "discord", "cust"];
 
