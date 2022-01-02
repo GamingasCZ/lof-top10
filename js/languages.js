@@ -35,7 +35,7 @@ var strings = [
 
     [".collabTTitle","upload.html",0,["- Nastavení collabu -","- Collab Settings -"]],
     [".verifierRole","upload.html","placeholder",["Role","Role"]],
-    [".verifier","upload.html","placeholder",["Nahrál...","Uploaded by"]],
+    [".verifier","upload.html","placeholder",["Nahrál...","Uploaded by..."]],
     [".roleHead","upload.html",0,["Role","Roles"]],
     [".presetButtonContainer > button:nth-child(1)","upload.html",0,["Dekorace","Decoration"]],
     [".presetButtonContainer > button:nth-child(2)","upload.html",0,["Layout","Layout"]],
@@ -128,15 +128,6 @@ var jsStr = {
 	      <b style="color:yellow">Kdykoliv můžeš upravit seznam a udělat ho veřejný.</b>`
         , `Private lists <b style="color: lime;">won't show up publicly</b> and you access them with a <b style="color: tomato">special link.</b><br><br>
           <b style="color:yellow">You can edit the list anytime and make it public.</b>`],
-    "ROLE_NM_T": ["Jméno role","Role name"],
-    "ROLE_NM_D": [`<b style="color: #ffff00;">Role je věc, kterou člověk dělal v collabu</b>.<br><br>Do pole jména zadej jméno role.<br><br>Např.: Layout, Dekorace, Hudba, Optimalizace, Testování`,
-                  `<b style="color: #ffff00;">A role is a thing the person's done in the collab</b>.<br><br>Add a role name in the input.<br><br>Examples: Layout, Deco, Music, Optimization, Testing`],
-    "ROLE_HP_T": ["Má část v collabu?","Has a collab part?"],
-    "ROLE_HP_D": [`<b style='color: tomato'>Volba nic nedělá a bude brzy smazána :P</b>`,
-                  `<b style='color: tomato'>Option doesn't do anything and will be soon deleted :P</b>`],
-    "ROLE_CO_T": ["Barva role","Role color"],
-    "ROLE_CO_D": ["<b style='color: tomato'>Volba nic nedělá a bude brzy smazána :P</b>",
-                  "<b style='color: tomato'>Option doesn't do anything and will be soon deleted :P</b>"],
     "HUM_T": ["Členové v collabu","Collab members"],
     "HUM_D": [`<b style="color: #ffff00;">Jméno:</b> Sem patří jméno člověka, který měl část v collabu. Lupa najde jeho GD profil a udělá ho jeho profil klikatelný v dokončeném seznamu.<br><br>
     <b style="color: #ffff00;">Sítě:</b> Slouží k přidávání sociálních sítí, na kterých lze člena najít. Dvojitým klikem na náhled se dá rychle síť smazat.<br><br>
@@ -148,6 +139,14 @@ var jsStr = {
             <b style="color: #ffff00;">Role:</b> No help needed :D<br><br>
             <b style="color: #ffff00;">Part:</b> Where the creator started and ended making his part, in percentage.<br><br>
             <b style="color: #ffff00;">Color:</b> Color of the creator's name in the finished list.`],
+    "RMROLE_T": ["Smazání poslední role", "Removing last role"],
+    "RMROLE_D": [`Smazáním poslední role smazeš i všechny členy. Pokračovat?<br><br>
+    <img src="images/yeees.png" style="width: 10vw" class="button" onclick="killEverything()">
+    <img src="images/ne.png" style="width: 10vw" class="button" onclick="closeHelp()">
+    `, `Deleting the last role will also delete all members. Continue?<br><br>
+    <img src="images/yeeesEng.png" style="width: 10vw" class="button" onclick="killEverything()">
+    <img src="images/no.png" style="width: 10vw" class="button" onclick="closeHelp()">
+    `],
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],
@@ -238,7 +237,7 @@ var jsStr = {
     "TESTER": ["Tester", "Tester"],
     "NO_ROLE": ["Žádná", "None"],
     "UNN_ROLE": ["Bezejmenná", "Unnamed"],
-    "NAME": ["Jméno", "Username"],
+    "NAME": ["Jméno", "Name"],
     "DISABLED": ["Zapnuto", "Enabled"], // This is not a mistake :P
     "ENABLED": ["Vypnuto", "Disabled"],
     "CT_S_TIT_1": ["Nastavení collabu", "Collab Settings"],

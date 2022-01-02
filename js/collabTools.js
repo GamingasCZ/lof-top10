@@ -6,10 +6,8 @@ var presets;
 var presetNames;
 
 class Role {
-    constructor(name, hasPer, color, HTMLobject, id = 0) {
+    constructor(name, HTMLobject, id = 0) {
         this.name = name;
-        this.hasPer = hasPer;
-        this.color = color;
         this.HTMLobject = HTMLobject[0];
         this.id = new Date().getTime();
     }
@@ -58,6 +56,8 @@ function showCollabTools(id) {
 
     $("#collabTools").fadeIn(50);
     $("#collabTools").css("transform", "scaleY(1)");
+
+    $(".roleBubble").remove();
     $(".tableRow").remove();
 
     // Clipboard loading
@@ -229,38 +229,17 @@ function addRole(preset = null, loading = 0) {
         }
     }
 
-    if (loading == 0) { var cpickerCol = RGBtoHEX(randomColor()) }
-    else { var cpickerCol = preset.color }
-
-    // Checking 'hasPer' check when loading
-    let loadCheck = "off"
-    if (loading && preset.hasPer) { loadCheck = "on" }
-
-    let roleInstance = new Role(presetName, false, cpickerCol, [0])
+    let roleInstance = new Role(presetName, [0])
     if (loading == 0) {
-        levelList[currEditing]["creator"][1].push(roleInstance); // Role name, has %, COLOR
+        levelList[currEditing]["creator"][1].push(roleInstance); // Role name
     }
 
-    let rowID = new Date().getTime();
     let roleCode = $(`
-    <tr class="tableRow">        
-        <td>
-            <input id="collabInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="${jsStr["NAME"][LANG]}" value=${presetName}></input>
-        </td>
-        <td>
-            <img class="setCheckbox button" for="hasPer" src="images/check-${loadCheck}.png" onclick="checkCollabCheck('hasPer', $(this))"> 
-            <div style="margin:0; display: inline;" class="uploadText">${jsStr["ENABLED"][LANG]}</div>
-        </td>
-        <td>
-            <input type="color" class="tableCpicker button" style="float: none;" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 1)">
-            <p id="roleColPicker" style="display: inline;">${cpickerCol.slice(1)}</p>
-        </td>
-        <td>
-            <img class="button" style="width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"
-           ><img class="button roleRm" style="width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
-        </td>
-        <input type="hidden" value="${rowID}">
-    </tr>
+    <div class="roleBubble" style="background: rgb(${randomColor()})">
+        <input id="roleInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="${jsStr["NAME"][LANG]}" value=${presetName}></input>
+        <img class="button" style="width: 2.5vw; height: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"
+       ><img class="button roleRm" style="width: 2.5vw; height: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
+    </div>
     `).appendTo($(".collabRoles"));
     roleInstance.HTMLobject = roleCode[0];
     if (loading == 1) { preset.HTMLobject = roleCode[0]; }
@@ -307,23 +286,6 @@ function verifyPerson(th) {
             levelList[currEditing]["creator"][2][index].verified = true
         }
     })
-}
-
-function checkCollabCheck(name, el) {
-    let index = getObjArrayIndex(el, 1);
-    let check = $(".tableRow")[index].children[1].children
-    if ($(check[0]).attr("src").match("off") == null) {
-        $(check[0]).attr("src", "images/check-off.png")
-        $(check[1]).text(jsStr["ENABLED"][LANG])
-        levelList[currEditing]["creator"][1][index].hasPer = false;
-
-    }
-    else {
-        $(check[0]).attr("src", "images/check-on.png")
-        $(check[1]).text(jsStr["DISABLED"][LANG])
-        levelList[currEditing]["creator"][1][index].hasPer = true;
-
-    }
 }
 
 function addCollabHuman(load = 0) {
@@ -440,10 +402,6 @@ function chRoleValue(el, changeValue, type, arr = null) {
         }
     }
 
-    if (changeValue == "color") {
-        // Change text next to role color picker
-        el.siblings().text(el.val().slice(1))
-    }
     if (changeValue == "name" && type == 2 && levelList[currEditing]["creator"][2][index].verified) {
         // Unverifying person on input change
         levelList[currEditing]["creator"][2][index].verified = false;
@@ -498,8 +456,11 @@ function chMainName(el, vyb) {
 
 function getObjArrayIndex(th, type) {
     var res = null;
+
+    mainEl = type == 1 ? th.parent() : th.parent().parent()
+
     levelList[currEditing]["creator"][type].forEach(el => {
-        if (el.HTMLobject.isEqualNode(th.parent().parent()["0"])) {
+        if (el.HTMLobject.isEqualNode(mainEl["0"])) {
             res = levelList[currEditing]["creator"][type].indexOf(el);
         }
     })
@@ -507,15 +468,35 @@ function getObjArrayIndex(th, type) {
     return res;
 }
 
+function killEverything() {
+    $(".roleBubble").remove()
+    $(".tableRow").remove()
+    levelList[currEditing]["creator"][1] = []
+    levelList[currEditing]["creator"][2] = []
+
+    closeHelp()
+    refreshRoleList()
+}
+
 function removeColObject(th, type) {
-    // Hiding socials bar
-    if (th.parent().siblings()[1].childNodes[1].style.filter != "") { // Add socials button
-        $(".socSettings").css("opacity", 0);
+    if (type == 2) {
+        // Hiding socials bar
+        if (th.parent().siblings()[1].childNodes[1].style.filter != "") { // Add socials button
+            $(".socSettings").css("opacity", 0);
+        }
+    }
+
+    let isLastRole = levelList[currEditing]["creator"][1].length == 1
+    let areHumans = levelList[currEditing]["creator"][2].length > 0
+    if (type == 1 && isLastRole && areHumans) {
+        openHelp("lastRoleDelete")
+        return false
     }
 
     var finished = false
     levelList[currEditing]["creator"][type].forEach(el => { // Removing element
-        if ($(el.HTMLobject).is(th.parent().parent())) {
+        mainEl = type == 1 ? th.parent() : th.parent().parent()
+        if ($(el.HTMLobject).is(mainEl)) {
             el.remove(getObjArrayIndex(th, type))
 
             if (presetNames.indexOf(el.name) != -1) { // Restore preset
@@ -531,6 +512,7 @@ function removeColObject(th, type) {
         let deleteIndexH = Object.values($(".humRm")).indexOf(th[0]);
 
         $(".tableRow").remove();
+        $(".roleBubble").remove();
         let creaArray = levelList[currEditing]["creator"];
         let longer = creaArray[1].length >= creaArray[2].length ? creaArray[1].length : creaArray[2].length;
         $(".verifier").val(creaArray[0][0]);
@@ -539,7 +521,7 @@ function removeColObject(th, type) {
             if (i < creaArray[2].length) { addCollabHuman(creaArray[2][i]); }
         }
         if (type == 1) {
-            $(".tableRow")[deleteIndexR].remove();
+            $(".roleBubble")[deleteIndexR].remove();
             levelList[currEditing]["creator"][1].splice(deleteIndexR, 1);
         }
         else {
@@ -587,7 +569,7 @@ function clipboardTask(task, data, ind = -1) {
 
         if (data == "roleclip") {
             let clip = JSON.parse(pasteData)
-            let role = new Role(clip.name, clip.hasPer, clip.color, ["lol"])
+            let role = new Role(clip.name, ["lol"])
 
             levelList[currEditing]["creator"][1].push(role)
             addRole(role, 1);

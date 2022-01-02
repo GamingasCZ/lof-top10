@@ -118,6 +118,36 @@
     background: url("../images/fade.png") repeat-x;
 }
 
+.collabRoles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 12.3vw;
+}
+
+.roleBubble {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 3vw;
+    padding: 0.1vw 1vw;
+    border-radius: 0.5vw;
+    margin: 1%;
+    width: 25vw;
+}
+.roleButtons {
+    display: flex;
+    max-height: 2.5vw;
+}
+#roleInp {
+    border: none !important;
+    background: none !important;
+    transform: none !important;
+    width: 20vw !important;
+    margin: 0.5% !important;
+    outline: none;
+}
+
 td > * {
     vertical-align: middle;
 }
