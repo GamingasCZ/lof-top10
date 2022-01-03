@@ -58,9 +58,8 @@ span {
 .titles {
     font-size: 5vw;
     color: white;
-    margin: auto;
     text-align: center;
-    font-family: pusab;  
+    font-family: pusab;
 }
 
 /* just so stuff doesn't break :D*/
@@ -96,6 +95,8 @@ span {
   color: white;
   -webkit-text-stroke: black 0.17vw;
   text-shadow: rgba(0,0,0,0.5) 3px 3px 4px;
+  transform: translateX(-100vw);
+  transition: transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .boxHeader {
@@ -236,9 +237,14 @@ span {
   margin: 0px 8vw 0px 0px;
 }
 .yearButtonImg {
-  width: 16vw;
-  height: max-content;
-  margin: 2vw;
+  width: 12vw;
+  height: 4vw;
+  border: none;
+  margin: 0 !important;
+  background: linear-gradient(180deg, #08ff0024, transparent);
+  font-size: 2em !important;
+  -webkit-text-stroke: 0px !important;
+  cursor: pointer;
 }
 
 .notify {
@@ -328,7 +334,8 @@ html, body {
 }
 
 #crown {
-  transform: translateY(120px);
+  transition: transform 1s ease-out, opacity 1.2s ease-out;
+  opacity: 0;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -498,8 +505,23 @@ html, body {
 .password {
     display: flex;
     justify-content: flex-end;
-    align-items: flex-end;
-    flex-grow: 1;
+    align-items: center;
+}
+
+header {
+  background: #222;
+  height: 4vw;
+  position: fixed;
+  width: 100vw;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  transition: transform 0.05s ease-in;
+}
+
+footer {
+  opacity: 0;
+  transition: opacity 1s ease-out;
 }
 
 .eventButton {

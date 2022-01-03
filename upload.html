@@ -29,14 +29,22 @@
 </div>
 
 <body>
-  <div class="shade"></div>
-
-  <div style="display: flex; justify-content: center; align-items: center;">
-    <img class="yearButtonImg button" src="images/button1.png" onclick="window.location.assign('index.html?year=2019')">
-    <img class="yearButtonImg button" src="images/locked.png" onclick="window.location.assign('index.html?year=2021')">
-    <img class="yearButtonImg button commBut" src="" onclick="window.location.assign('upload.html')">
-    <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;" onclick="changeLang()">
-  </div>
+  <header>
+    <div style="justify-content: left;">
+      <img src="images/title.png" style="width: 23vw; height: fit-content;">
+    </div>
+    <div style="justify-content: center; width: 50vw;">
+      <button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2019')">2019</button
+     ><button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2021')">2021</button
+     ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('upload.html')">Komunitní</button>
+    </div>
+    <div style="justify-content: right; display: flex; align-items: center;">
+      <img class="button" src="images/gauntlet.png" style="width: 3vw;" onclick="changeLang()">
+      <div class="notify" onclick="$(this).hide()"><br><br><br>
+        <pre class="uploadText">   Jazyk/Language</pre>
+      </div>
+    </div>
+  </header>
 
   <!-- Collab tools -->
   <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">

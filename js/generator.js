@@ -1,4 +1,5 @@
 const ADDIT_VALS = 1;
+const DISABLE_GDB = "x" // Change to anything else than "h" to break requests
 
 // These are not real people :<'
 const fakeNames = ["Voiprin", "Sarprong", "ZentricSigma", "Darwing", "ExpoD", "J0hnram", "Jayuff", "AligaThePeter", "Divpan", "Acidity", "Doorami", "DanZBro", "FunnyBone"]
@@ -176,7 +177,7 @@ else if (YEAR == "2021" || window.location.pathname.match("upload") != -1) {
 		},
 		"13": {
 			"levelName": "Infinity Journey",
-			"creator": [["Playergeocz",true,"Host"],[{"name":"Level","hasPer":false,"color":"#964387","HTMLobject":{},"id":1641079683625}],[{"name":"PlayerGeoCZ","role":1641079683625,"part":["0","15"],"color":"#71b1fa","socials":[],"HTMLobject":{},"verified":true},{"name":"jakubko2005","role":1641079683625,"part":["15","28"],"color":"#004baf","socials":[[0,"https://youtube.com/channel/httpswww.youtube.comchannelUC"]],"HTMLobject":{},"verified":true},{"name":"Jazerplay","role":1641079683625,"part":["28","37"],"color":"#9b8a85","socials":[],"HTMLobject":{},"verified":true},{"name":"ShadowBurnSK","role":1641079683625,"part":["37","49"],"color":"#1cc021","socials":[],"HTMLobject":{},"verified":true},{"name":"Jablicko","role":1641079683625,"part":["54","58"],"color":"#718ea6","socials":[],"HTMLobject":{},"verified":true},{"name":"TellConfig","role":1641079683625,"part":["58","69"],"color":"#126592","socials":[],"HTMLobject":{},"verified":true},{"name":"ekokekokos","role":1641079683625,"part":["69","81"],"color":"#4ec02c","socials":[],"HTMLobject":{},"verified":0},{"name":"PlayerGeoCZ","role":1641079683625,"part":["85","100"],"color":"#c36deb","socials":[],"HTMLobject":{},"verified":true},{"name":"Patas Matas","role":1641079683625,"part":["49","54"],"color":"#fed022","socials":[],"HTMLobject":{},"verified":0}]],
+			"creator": [["Playergeocz", true, "Host"], [{ "name": "Level", "hasPer": false, "color": "#964387", "HTMLobject": {}, "id": 1641079683625 }], [{ "name": "PlayerGeoCZ", "role": 1641079683625, "part": ["0", "15"], "color": "#71b1fa", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "jakubko2005", "role": 1641079683625, "part": ["15", "28"], "color": "#004baf", "socials": [[0, "https://youtube.com/channel/httpswww.youtube.comchannelUC"]], "HTMLobject": {}, "verified": true }, { "name": "Jazerplay", "role": 1641079683625, "part": ["28", "37"], "color": "#9b8a85", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "ShadowBurnSK", "role": 1641079683625, "part": ["37", "49"], "color": "#1cc021", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "Jablicko", "role": 1641079683625, "part": ["54", "58"], "color": "#718ea6", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "TellConfig", "role": 1641079683625, "part": ["58", "69"], "color": "#126592", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "ekokekokos", "role": 1641079683625, "part": ["69", "81"], "color": "#4ec02c", "socials": [], "HTMLobject": {}, "verified": 0 }, { "name": "PlayerGeoCZ", "role": 1641079683625, "part": ["85", "100"], "color": "#c36deb", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "Patas Matas", "role": 1641079683625, "part": ["49", "54"], "color": "#fed022", "socials": [], "HTMLobject": {}, "verified": 0 }]],
 			"levelID": "61102013",
 			"video": "paGz3CzbOVk",
 			"color": "#9abd10"
@@ -190,7 +191,7 @@ else if (YEAR == "2021" || window.location.pathname.match("upload") != -1) {
 		},
 		"15": {
 			"levelName": "Hell Note",
-			"creator": [["EidamGD",true,"Verifier"],[{"name":"Level","hasPer":false,"color":"#fa8e22","id":1641079356870}],[{"name":"Jazerplay","role":1641079356870,"part":["0","100"],"color":"#cb2a32","socials":[],"verified":true}]],
+			"creator": [["EidamGD", true, "Verifier"], [{ "name": "Level", "hasPer": false, "color": "#fa8e22", "id": 1641079356870 }], [{ "name": "Jazerplay", "role": 1641079356870, "part": ["0", "100"], "color": "#cb2a32", "socials": [], "verified": true }]],
 			"levelID": "57149934",
 			"video": "vZucsa43bNs",
 			"color": "#2a0000"
@@ -258,7 +259,7 @@ async function getProfileStats(k, ind) {
 
 	let uName = $(k.target.parentElement).siblings()[1].innerText;
 
-	await $.get("https://gdbrowser.com/api/profile/" + uName, user => {
+	await $.get(DISABLE_GDB+"ttps://gdbrowser.com/api/profile/" + uName, user => {
 		$(".loading").remove();
 
 		$(container).after(`<img onclick="openProfileOnGDB('${user.username}')" style="transform: translateX(0.7vw);" class="stats button" src="images/add.png">`)
@@ -323,7 +324,7 @@ function showCollabStats(id) {
 
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
-				<img style="width: 4vw;margin: 0.4vw;" src="https://gdbrowser.com/icon/${creators.name}">
+				<img style="width: 4vw;margin: 0.4vw;" src="${DISABLE_GDB}ttps://gdbrowser.com/icon/${creators.name}">
 				<p class="memberName" style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>
 				${socialTags}
 				<hr class="verticalSplitter">
@@ -464,7 +465,7 @@ function hoverBar(k) {
 	$(nameShower.parent()).css("opacity", 1)
 
 	if (isVerified) {
-		$(nameShower[0]).attr("src", "https://gdbrowser.com/icon/" + hoverName.text())
+		$(nameShower[0]).attr("src", DISABLE_GDB+"ttps://gdbrowser.com/icon/" + hoverName.text())
 	}
 	else {
 		$(nameShower[0]).attr("src", "images/bytost.png")
@@ -558,7 +559,7 @@ function boxCreator(obj, index) {
 			appended.push(nm)
 		});
 		hostVerified = ""
-		if (obj[0][1]) { hostVerified = `<img class="boxIcon" alt=" " style="margin: 0 1vw" src="https://gdbrowser.com/icon/${obj[0][0]}">` }
+		if (obj[0][1]) { hostVerified = `<img class="boxIcon" alt=" " style="margin: 0 1vw" src="${DISABLE_GDB}ttps://gdbrowser.com/icon/${obj[0][0]}">` }
 
 		// Fix url when ready
 		return `
@@ -572,7 +573,7 @@ function generateList(boards) {
 	for (i = 1; i < Object.keys(boards).length - ADDIT_VALS; i++) {
 
 		let bIndex = (i).toString();
-		
+
 		// Setting title image
 		$(".titleImage").attr("src", boards["titleImg"]);
 
@@ -626,7 +627,7 @@ function generateList(boards) {
 				try {
 					for (let icon = 0; icon < ((k.target).children[2].children).length; icon++) {
 						$((k.target).children[2].children[icon].children).css("background", "none")
-						$((k.target).children[2].children[icon].children).attr("src", "https://gdbrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
+						$((k.target).children[2].children[icon].children).attr("src", DISABLE_GDB+"ttps://gdbrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
 					}
 				}
 				catch (e) { }
@@ -658,7 +659,6 @@ var listData = "";
 var debugPwd = 0;
 $(function () {
 	$(".passInput").val("");
-	$(".shade").append(`<img class="title" src="${jsStr["TIT_IMG"][LANG]}">`);
 	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
 	if (location.search != "") {
 		var listID = location.search.slice(1).split("=");
@@ -764,6 +764,33 @@ $(function () {
 		$(".password").remove()
 		generateList(boards);
 	}
+
+	// Hiding header
+	$("body").on("scroll", () => {
+		if (document.body.scrollTop > 150) {
+			$("header").css("transform", "translateY(-5vw)")
+		}
+		else {
+			$("header").css("transform", "none")
+		}
+	})
+
+	if ($(".titles").text() == "") { $(".titles").css("margin-top", "5vw") }
+	$(".searchTools").css("opacity",1)
+	$("footer").css("opacity", 1)
+
+	$("#crown").css("transform", "translateY(120px)")
+	$("#crown").css("opacity", 1)
+	
+	// Box appear animation
+	if (!window.location.pathname.includes("upload")) {
+		let index = 0
+		let boxAppear = setInterval(() => {
+			if (index == Object.keys(boards).length-ADDIT_VALS-2) { clearInterval(boxAppear) }
+			$(".box")[index].style.transform = "none"
+			index++
+		}, 100);
+	}
 });
 
 function checkPassword() {
@@ -777,17 +804,17 @@ function checkPassword() {
 	$(".passInput").css("background-color", "#82fc80")
 
 	$(".passImg").addClass("disabled");
-    
-    let listType = "id";
-    if (listID[0] == "pid") {
-        listType = "pid";
-    }
-    let postReq = { "pwdEntered": passEntered, "retData": "0" };
-    postReq[listType] = listID[1];
-    
+
+	let listType = "id";
+	if (listID[0] == "pid") {
+		listType = "pid";
+	}
+	let postReq = { "pwdEntered": passEntered, "retData": "0" };
+	postReq[listType] = listID[1];
+
 	$.post("./php/pwdCheckAction.php", postReq, function (data) {
 		// Incorrect pwd
-		if (["1","2"].includes(data)) {
+		if (["1", "2"].includes(data)) {
 			//testing
 			$(".passInput").css("background-color", "#fc8093")
 			$(".passInput").val(jsStr["INC_PWD"][LANG])
@@ -798,7 +825,7 @@ function checkPassword() {
 			}, 1000)
 		}
 		else if (data == 3) {
-            let page = listType == "id" ? "edit" : "pedit";
+			let page = listType == "id" ? "edit" : "pedit";
 			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?${page}=${listID[1]}&pass=${passEntered}`;
 		}
 	})

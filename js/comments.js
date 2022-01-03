@@ -26,6 +26,10 @@ function listComments() {
     $(".lList").removeClass("disabled")
 }
 
+function listShare() {
+    
+}
+
 function updateCharLimit() {
     var charLimit = actualText.length
 

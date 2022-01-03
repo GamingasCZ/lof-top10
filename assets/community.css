@@ -42,7 +42,7 @@
 .uploadBG {
     background-color: rgb(50, 63, 50);
     padding: 2% 0% 2% 0%;
-    margin: 2vh 10vw;
+    margin: 12vh 10vw 2vw;
     border: rgb(24, 24, 24) 10px solid;
     border-radius: 10px;
 }
@@ -613,10 +613,11 @@ input:disabled {
 .searchTools {
     background-color: #1e1e1e;
     border-radius: 1vw;
-    margin: 2%;
-    padding: 1%;
+    margin: 1% 2%;
+    padding: 0.5%;
     display: flex;
     align-items: center;
+    transition: opacity 0.2s ease-in-out;
     /*flex-wrap: wrap;*/
 }
 

@@ -29,17 +29,24 @@
 
 <body>
   <div class="shade"></div>
-  <div align="center" id="submitarea">
-    <img class="yearButtonImg button" src="images/button1.png" onclick="window.location.assign('index.html?year=2019')">
-    <img class="yearButtonImg button" src="images/locked.png" onclick="window.location.assign('index.html?year=2021')">
-    <img class="yearButtonImg button commBut" src="" onclick="window.location.assign('upload.html')">
-    <img class="yearButtonImg button" src="images/gauntlet.png" style="width: 4vw;" onclick="changeLang()">
-    <div class="notify" onclick="$(this).hide()"><br><br><br>
-      <pre class="uploadText">   Jazyk/Language</pre>
+  <header>
+    <div style="justify-content: left;">
+      <img src="images/title.png" style="width: 23vw; height: fit-content;">
     </div>
-  </div>
+    <div style="justify-content: center; width: 50vw;">
+      <button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2019')">2019</button
+     ><button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2021')">2021</button
+     ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('upload.html')">Komunitní</button>
+    </div>
+    <div style="justify-content: right; display: flex; align-items: center;">
+      <img class="button" src="images/gauntlet.png" style="width: 3vw;" onclick="changeLang()">
+      <div class="notify" onclick="$(this).hide()"><br><br><br>
+        <pre class="uploadText">   Jazyk/Language</pre>
+      </div>
+    </div>
+  </header>
 
-  <!-- Collab stats-->
+  <!-- Collab stats -->
   <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
       <p style="margin: 0 auto;" class="collabTTitle"></p>
@@ -58,21 +65,31 @@
     </div>
   </div>
 
+  <!-- Share dialog -->
+  <div class="sharedialog">
+
+  </div>
+
   <div class="titles"></div>
 
   <img class="titleImage">
 
-  <div class="searchTools uploadText" style="justify-content: left;">
-    <div style="justify-content: left;">
-      <img src="images/list.png" onclick="listList()" class="button lList disabled" style="width: 20%;"
-        title="Seznam levelů">
-      <img src="images/comments.png" onclick="listComments()" class="button lComm" style="width: 20%;"
-        title="Komentáře">
+  <div class="searchTools uploadText" style="justify-content: space-between; opacity: 0;">
+    <div style="justify-content: left; height: 4vw;">
+      <img src="images/list.png" onclick="listList()" class="button lList disabled" style="width: 4vw;"
+           title="Seznam levelů">
+      <img src="images/comments.png" onclick="listComments()" class="button lComm" style="width: 4vw;"
+          title="Komentáře">
+    </div>
+
+    <div style="justify-content: center; height: 4vw;">
+      <img src="images/shareBut.png" onclick="listShare()" class="button lShare" style="width: 4vw;"
+           title="Sdílet">
     </div>
 
     <div class="password">
-      <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 0% 2% -1%;">
-      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="height: fit-content;">
+      <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 0% 2% -1%; height: 2.3vw; transform: none;">
+      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="height: fit-content; transform: translateY(0.2vw);">
     </div>
   </div>
 
