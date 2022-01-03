@@ -28,10 +28,10 @@ function checkJson(data) {
                 throw (i + ". místo neexistuje. Bug mi nahlaš (nebo si nehrej s JSONem :D).")
             }
             if (parsedData[i]["levelName"] == "") {
-                throw ("Level na " + i + ". místě nemá <b style='color:lime'>jméno!</b>")
+                throw (jsStr["NO_NAME_C"][LANG].replace("%d", i))
             }
             if (parsedData[i]["creator"] == "") {
-                throw ("Level na " + i + ". místě nemá <b style='color:lime'>tvůrce!</b>")
+                throw (jsStr["NO_CREA_C"][LANG].replace("%d", i))
             }
         }
         return true;

@@ -315,16 +315,24 @@ function showCollabStats(id) {
 
 			// Social media
 			let socialTags = "";
+			let discordTag = "";
 			for (let soc = 0; soc < creators.socials.length; soc++) {
-				socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
-				                    style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
-
+				// Discord tag
+				if (creators.socials[soc][0] == 3 && creators.socials[soc][1].match(/\w+#\d+/) != null) {
+					discordTag = "- "+creators.socials[soc][1]
+				}
+				else {
+					if (creators.socials[soc][0] == 3) creators.socials[soc][1] = "https://discord.com/"+creators.socials[soc][1]
+					socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
+					style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
+				}
 			}
 
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
 				<img style="width: 4vw;margin: 0.4vw;" src="https://gdbrowser.com/icon/${creators.name}">
 				<p class="memberName" style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>
+				<p class="uploadText" id="discordTag">${discordTag}</p>
 				${socialTags}
 				<hr class="verticalSplitter">
 				<div class="pStatsContainer">

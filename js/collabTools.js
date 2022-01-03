@@ -279,7 +279,7 @@ function verifyPerson(th) {
                     // Member color from GD pcol1
                     let p1col = RGBtoHEX([nm.col1RGB.r, nm.col1RGB.g, nm.col1RGB.b])
                     levelList[currEditing]["creator"][2][index].color = p1col;
-                    $(".tableCpicker")[levelList[currEditing]["creator"][1].length + index].value = p1col;
+                    $(".tableCpicker")[index].value = p1col;
                 }
             })
 

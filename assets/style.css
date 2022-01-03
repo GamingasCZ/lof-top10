@@ -213,6 +213,15 @@ span {
   height: 3vw;
 }
 
+#discordTag {
+  padding-right: 1.5vw;
+  margin: 0;
+  font-size: 1.5vw;
+  -webkit-text-stroke: 0.1vw black;
+  color: #c8fcc7;
+  padding-right: 2vw;
+}
+
 .popup {
   display: block;
   margin-left: 37%;

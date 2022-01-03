@@ -1,4 +1,4 @@
-const EMOJI_AM = 17;
+const EMOJI_AM = 18;
 function getID() {
     let paramGetter = new URLSearchParams(window.location.search)
     let params = Object.fromEntries(paramGetter.entries());
@@ -272,7 +272,7 @@ function sendComment() {
             if (window.location.protocol.includes("file")) {
                 $(".sendBut").removeClass("disabled")
                 $(".comUserError").show()
-                $(".comUserError").text("Lokálně nejde posílat komentáře!");
+                $(".comUserError").text(jsStr["LOCAL_F"][LANG]);
                 setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
             }
         }
