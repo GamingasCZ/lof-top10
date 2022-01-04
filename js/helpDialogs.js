@@ -11,7 +11,10 @@ $(function () {
             "title": jsStr["PRIVATE_T"][LANG],
             "content": jsStr["PRIVATE_D"][LANG]
         },
-
+        "shareCollab": {
+            "title": jsStr["SHARECOLL_T"][LANG],
+            "content": jsStr["SHARECOLL_D"][LANG]
+        },
         "event": {
             "title": "Event - Lepší seznam",
             "content": `Když necháš tohle <b style="color: tomato">zaškrtlé</b>, tvůj určitě mnohem lepší seznam se zobrazí <b style="color: lime">vedlé mého 2021 seznamu.</b>`

@@ -29,6 +29,7 @@ var strings = [
     [".setTitle", "upload.html", 0, ["- Nastavení -", "- Settings -"]],
     ["#submitbutton", "upload.html", "value", ["Nahrát", "Upload"]],
     ["label[for='private']", "upload.html", 0, ["Soukromý seznam", "Private List"]],
+    ["label[for='shareCollab']", "upload.html", 0, ["Sdílet collaby", "Share Collabs"]],
     [".titles", "upload.html", 0, ["- Komunitní seznamy -", "- Community Lists -"]],
     ["#sortStr", "upload.html", 0, ["Řazení: ", "Sorting: "]],
     ["#searchBar", "upload.html", "placeholder", ["Hledání", "Search"]],
@@ -147,6 +148,9 @@ var jsStr = {
     <img src="images/yeeesEng.png" style="width: 10vw" class="button" onclick="killEverything()">
     <img src="images/no.png" style="width: 10vw" class="button" onclick="closeHelp()">
     `],
+    "SHARECOLL_T": ["Sdílení collabů", "Collab sharing"],
+    "SHARECOLL_D": [`Pokud využiješ collab nástroje a zaškrtneš toto políčko, tak kdokoliv poté bude moct využít <b style="color: tomato;">tvá nastavení</b> collabu pro jeho seznam.`,
+                    `If you've used collab tools and tick this check, anyone will be able to use your collab settings for their lists.`],
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],

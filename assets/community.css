@@ -279,6 +279,23 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     width: 2.8vw;
 }
 
+#shareTools {
+    position: fixed;
+    display: none;
+    width: 45%;
+    height: 30%;
+    top: 11vw;
+    left: 15vw;
+    z-index: 1;
+    padding-top: 0;
+    padding-left: 2vw;
+}
+#shareContainer {
+    font-size: 2vw;
+    margin: 0 2vw 3vw 0vw;
+    -webkit-text-stroke: 0.1vw black;
+}
+
 .cardInput {
     margin: 15px 30%;
     background-color: rgb(36, 36, 36);
