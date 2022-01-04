@@ -247,6 +247,31 @@ function onYTClick(link, index) {
 	});
 }
 
+function listShare() {
+    $("#shareTools").fadeIn(100);
+	
+	switch (window.location.href.match(/[year|id|pid]/)[0]) {
+		case undefined:
+			link = "y=2019"
+			break;
+		case "pid":
+			link = "p="+LIST_ID
+		case "year":
+			link = "y="+
+	
+		default:
+			break;
+	}
+
+	let link = ["l=","p=","y="][window.location.href]
+
+	$("#shareContainer").text("gamingas.wz.cz/?"+link);
+}
+
+function hideShare() {
+	$("#shareTools").fadeOut(100);
+}
+
 const openSocLink = link => { window.open(link) }
 const openProfileOnGDB = name => { window.open("https://gdbrowser.com/profile/" + name) }
 
