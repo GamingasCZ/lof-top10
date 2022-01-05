@@ -35,7 +35,15 @@ foreach ($fuckupData as $post) {
 error_reporting(1);
 
 // Password check
-$check = $mysqli -> query("SELECT * FROM `lists` WHERE `id`=".join("",array_slice($fuckupData,0,1)));
+if ($_POST["isHidden"] == 0) {
+  $check = $mysqli -> query("SELECT * FROM `lists` WHERE `id`=".$fuckupData[0]);
+}
+else {
+  $check = $mysqli -> query("SELECT * FROM `lists` WHERE `hidden`='".$fuckupData[0]."'");
+}
+
+echo "SELECT * FROM `lists` WHERE `hidden`=".$fuckupData[0];
+
 $listData = $check -> fetch_assoc();
 $listPass = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
 
@@ -47,8 +55,13 @@ if ($listPass != $fuckupData[1]) {
 }
 
 // Removing list
-$query = sprintf("DELETE FROM `lists` WHERE `id`=".$listData["id"]);
-$result = $mysqli -> query($query);
+if ($_POST["isHidden"] == 0) {
+  $check = sprintf("DELETE FROM `lists` WHERE `id`=%s",$listData["id"]);
+}
+else {
+  $check = sprintf("DELETE FROM `lists` WHERE`hidden`='%s'",$listData["hidden"]);
+}
+$result = $mysqli -> query($check);
 echo "3";
 
 $mysqli -> close();

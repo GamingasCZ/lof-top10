@@ -14,7 +14,7 @@ function getDetailsFromID(id) {
             return false
         }
 
-        $.get("https://gdbrowser.com/api/level/" + givenID, function (data, res) {
+        $.get("https://gdbrowser.com/api/level/" + givenID, function (data) {
             if (data != -1) {
                 $(".cardLName" + id).val(data["name"]);
                 levelList[id]["levelName"] = data["name"];
@@ -34,7 +34,7 @@ function getDetailsFromID(id) {
 var succ = false
 async function getDetailsFromName(id) {
     succ = false
-    
+
     id = id.toString()
     let givenName = $(".cardLName" + id).val();
     let givenMaker = $(".cardLCreator" + id).val();
@@ -48,24 +48,24 @@ async function getDetailsFromName(id) {
         for (let pages = 0; pages < MAX_GDB_SCROLL; pages++) {
             if (!succ) {
                 await $.ajax({
-                url: `https://gdbrowser.com/api/search/${givenMaker}?page=${pages}&user`, timeout: 1000, "Access-Control-Allow-Origin": "*",
-                success: data => {
-                    Object.values(data).forEach(level => {
-                        if (level.name.toLowerCase().includes(givenName.toLowerCase()) && level.author.toLowerCase().includes(givenMaker.toLowerCase())) {
-                            saveGDBresult(id, level)
-                        }
-                    })
-                },
-                error: () => {
-                    if (pages == MAX_GDB_SCROLL-1) {
-                        $(".cardLName" + id).addClass("inputErr");
-                        setTimeout(() => { $(".cardLName" + id).removeClass("inputErr") }, 500);
+                    url: `https://gdbrowser.com/api/search/${givenMaker}?page=${pages}&user`, timeout: 1000, "Access-Control-Allow-Origin": "*",
+                    success: data => {
+                        Object.values(data).forEach(level => {
+                            if (level.name.toLowerCase().includes(givenName.toLowerCase()) && level.author.toLowerCase().includes(givenMaker.toLowerCase())) {
+                                saveGDBresult(id, level)
+                            }
+                        })
+                    },
+                    error: () => {
+                        if (pages == MAX_GDB_SCROLL - 1) {
+                            $(".cardLName" + id).addClass("inputErr");
+                            setTimeout(() => { $(".cardLName" + id).removeClass("inputErr") }, 500);
 
-                        $(".cardLCreator" + id).addClass("inputErr");
-                        setTimeout(() => { $(".cardLCreator" + id).removeClass("inputErr") }, 500);
+                            $(".cardLCreator" + id).addClass("inputErr");
+                            setTimeout(() => { $(".cardLCreator" + id).removeClass("inputErr") }, 500);
+                        }
                     }
-                }
-            }).then(() => {}, () => {})
+                }).then(() => { }, () => { })
             }
         }
         return null
@@ -88,18 +88,18 @@ async function getDetailsFromName(id) {
         }
     })
 
-    if ($(".idbox"+id).val() != "") { $(".idDetailGetter"+id).removeClass("disabled") }
-    else { $(".idDetailGetter"+id).addClass("disabled") }
+    if ($(".idbox" + id).val() != "") { $(".idDetailGetter" + id).removeClass("disabled") }
+    else { $(".idDetailGetter" + id).addClass("disabled") }
 
-    availFill(0,$(".cardLName" + id), "freedom69", id)
-    availFill(1,$(".cardLCreator" + id), "freedom69", id)
+    availFill(0, $(".cardLName" + id), "freedom69", id)
+    availFill(1, $(".cardLCreator" + id), "freedom69", id)
 
     updateSmPos()
 }
 
 function saveGDBresult(id, data) {
     succ = true
-    
+
     let jsonData = "";
     if (data[0] == undefined) { jsonData = data } // When searching, result is nested
     else { jsonData = data[0] } // When fetching level, it is not nested (shocking lmao)
@@ -137,9 +137,9 @@ function generateFromJSON(event = null) {
     }
     let postReq = { "pwdEntered": listID[3], "retData": "1" };
     postReq[listType] = listID[1];
-    
+
     $.post("./php/pwdCheckAction.php", postReq, function (data) {
-        if (["1","2"].includes(data)) {
+        if (["1", "2"].includes(data)) {
             window.location.replace("./upload.html")
         }
         if (event) {
@@ -172,17 +172,26 @@ function generateFromJSON(event = null) {
         }
         updateSmPos()
         displayCard("1")
-        
+
         isHidden = lData[3] != "0";
     })
 }
 
 function refreshCardDetails(lp) {
     $(".cardLName" + lp).val(levelList[lp]["levelName"])
-    $(".cardLCreator" + lp).val(levelList[lp]["creator"])
+
+    if (typeof levelList[lp]["creator"] == "object") {
+        $(".cardLCreator" + lp).val(levelList[lp]["creator"][0][0]) // Is collab?
+        $(".colButton" + lp).css("filter", "hue-rotate(180deg)");
+    }
+    else $(".cardLCreator" + lp).val(levelList[lp]["creator"])
+
     $(".idbox" + lp).val(levelList[lp]["levelID"])
     $(".cardLVideo" + lp).val(levelList[lp]["video"])
     $("#top" + lp).css("background-color", levelList[lp]["color"])
+
+    availFill(0, $(".cardLName" + lp), "freedom69", lp)
+    availFill(1, $(".cardLCreator" + lp), "freedom69", lp)
 }
 function moveCard(position, currID) {
     let listPlacement = parseInt($(".listPosition" + currID.toString()).val());
@@ -238,7 +247,7 @@ function updateSmPos() {
                 $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} ${includeFrom} (Collab)`);
             }
             else {
-                $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} ${jsStr["CREATOR_BY"][LANG].slice(0,-2)} ${levelList[i]["creator"]}`);
+                $("#smtop" + i.toString()).text(`#${i} - ${levelList[i]["levelName"]} ${jsStr["CREATOR_BY"][LANG].slice(0, -2)} ${levelList[i]["creator"]}`);
             }
         }
     }
@@ -294,8 +303,8 @@ function changeIDbox(k) {
         levelList[position]["levelID"] = selection;
     }
     else {
-        if (selection.length < 1) { $(".idDetailGetter"+position).addClass("disabled") }
-        else if (selection.length > 0) { $(".idDetailGetter"+position).removeClass("disabled") }
+        if (selection.length < 1) { $(".idDetailGetter" + position).addClass("disabled") }
+        else if (selection.length > 0) { $(".idDetailGetter" + position).removeClass("disabled") }
     }
 }
 
@@ -408,11 +417,11 @@ function loadLevel(pos) {
     $("#lineSplit" + pos).css("background-color", `rgb(${rgb.join(",")})`);
 
     // Setting card buttons
-    $("#colorPicker" + listLenght).on("change", changeColPicker);
-    $(".idbox" + listLenght).on("change keyup", changeIDbox);
-    $(".cardLName" + listLenght).on("keyup", changeLevelName);
-    $(".cardLCreator" + listLenght).on("keyup", changeLevelCreator);
-    $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
+    $("#colorPicker" + pos).on("change", changeColPicker);
+    $(".idbox" + pos).on("change keyup", changeIDbox);
+    $(".cardLName" + pos).on("keyup", changeLevelName);
+    $(".cardLCreator" + pos).on("keyup", changeLevelCreator);
+    $(".cardLVideo" + pos).on("change", changeLevelVideo);
 }
 
 function updateCardData(prevID, newID) {
@@ -631,7 +640,7 @@ $(function () {
 
     // Disabling input boxes when editing a list
     let listID = location.search.slice(1).split(/[=&]/g);
-    if (["edit","pedit"].includes(listID[0])) {
+    if (["edit", "pedit"].includes(listID[0])) {
         $(".uploadTitle").text(jsStr["EDITING"][LANG]);
 
         $("#listnm").attr("disabled", "true");

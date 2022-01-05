@@ -345,7 +345,8 @@ function confirmDelete() {
         let data = location.search.slice(1).split(/[=&]/g);
         let postData = {
             "id": data[1],
-            "pwdEntered": data[3]
+            "pwdEntered": data[3],
+            "isHidden": isHidden ? 1 : 0
         }
         murderList();
         $.post("./php/removeList.php", postData, function (data) {

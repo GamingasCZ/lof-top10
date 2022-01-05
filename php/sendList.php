@@ -35,7 +35,7 @@ $pass = passwordGenerator($_POST["lName"], $_POST["creator"], $timestamp);
 $query = sprintf("INSERT INTO `lists`(`creator`,`name`,`data`,`timestamp`,`hidden`) VALUES ('%s','%s','%s','%s','%s')",
                 $fuckupData[0],
                 $fuckupData[1],
-                $fuckupData[2],
+                base64_encode($fuckupData[2]),
                 $timestamp,
                 $hidden);
 $result = $mysqli -> query($query);

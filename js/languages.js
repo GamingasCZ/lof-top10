@@ -129,9 +129,9 @@ var jsStr = {
         <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
         <b style="color: tomato;">You don't have to add an image!</b>`],
     "PRIVATE_T": ["Soukromé seznamy", "Private Lists"],
-    "PRIVATE_D": [`Soukromé seznamy se <b style="color: lime;">nezobrazí veřejně</b> a mají <b style="color: tomato">speciální odkaz</b> k přístupu.<br><br>
+    "PRIVATE_D": [`Soukromé seznamy se <b style="color: lime;">nezobrazí veřejně</b>, mají <b style="color: tomato">speciální odkaz</b> k přístupu a <b style="color: #28dcfc">nejde u nich psát komentáře</b>.<br><br>
 	      <b style="color:yellow">Kdykoliv můžeš upravit seznam a udělat ho veřejný.</b>`
-        , `Private lists <b style="color: lime;">won't show up publicly</b> and you access them with a <b style="color: tomato">special link.</b><br><br>
+        , `Private lists <b style="color: lime;">won't show up publicly</b>, you access them with a <b style="color: tomato">special link</b> and <b style="color: #28dcfc">they cannot be commented on</b>.<br><br>
           <b style="color:yellow">You can edit the list anytime and make it public.</b>`],
     "HUM_T": ["Členové v collabu","Collab members"],
     "HUM_D": [`<b style="color: #ffff00;">Jméno:</b> Sem patří jméno člověka, který měl část v collabu. Lupa najde jeho GD profil a udělá ho jeho profil klikatelný v dokončeném seznamu.<br><br>

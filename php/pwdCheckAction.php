@@ -15,6 +15,8 @@ if ($mysqli -> connect_errno) {
     exit();
 }
 
+error_reporting(0);
+
 if (isset($_POST["id"])) {
     $listType = Array($_POST["id"], "id");
 }
@@ -25,6 +27,8 @@ else {
     echo "1";
     exit();
 }
+
+error_reporting(1);
 
 $datacheck = [$listType[0], $_POST["pwdEntered"], $_POST["retData"]];
 if (in_array("", $datacheck)) {
@@ -44,6 +48,9 @@ if ($_POST["pwdEntered"] != $listPwd) {
 }
 else {
     if ($_POST["retData"] == "1") {
+        if (base64_decode($listData["data"], true) == true) {
+            $listData["data"] = base64_decode($listData["data"]);
+            }
         echo sprintf("%s;-!-;%s;-!-;%s;-!-;%s",$listData["name"],$listData["creator"],$listData["data"],$listData["hidden"]);
     }
     else {
