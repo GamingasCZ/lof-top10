@@ -16,6 +16,17 @@
     }
 }
 
+@keyframes headerScroll {
+  from {
+    background-position-x: 0px;
+    background-position-y: 0px;
+  }
+  to {
+    background-position-x: 64px;
+    background-position-y: 64px;
+  }
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
 
 body {
@@ -509,7 +520,12 @@ html, body {
 }
 
 header {
-  background: #222;
+  background-color: #222;
+  background-image: url("../images/navbarBG.png");
+  animation-name: headerScroll;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+  animation-timing-function: linear;
   height: 4vw;
   position: fixed;
   width: 100vw;

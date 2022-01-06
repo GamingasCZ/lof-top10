@@ -549,7 +549,7 @@ function card(index, rndColor) {
                     <input style="margin: 5%;" class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
                 </div>
                 
-                <div style="display: flex; justify-content: right; flex-grow: 1; align-items: center;">
+                <div style="display: flex; justify-content: flex-end; flex-grow: 1; align-items: center;">
                     <img title="${jsStr["DEL_CARD"][LANG]}" class="removerButton${index} button cardButton"
                         onclick="removeLevel(${index})" src="./images/delete.png">
 

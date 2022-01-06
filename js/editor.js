@@ -315,9 +315,10 @@ $(function () {
 
     // Mobile optimzations
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        $(".uploadBG").css("margin", "0")
-        $(".uploadBG").css("border", "none")
-        $("body").css("margin", "0")
+        $(".uploadBG").css("margin", "1vw");
+        $("#collabTools").css("right",0);
+        $("#collabInp").css("border", "none");
+        $("body").css("margin", "0");
     }
 })
 

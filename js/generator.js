@@ -250,22 +250,35 @@ function onYTClick(link, index) {
 function listShare() {
     $("#shareTools").fadeIn(100);
 	
-	switch (window.location.href.match(/[year|id|pid]/)[0]) {
-		case undefined:
-			link = "y=2019"
+	let link = "";
+	let array = window.location.href.match(/(year|id|pid)/).slice(0,1);
+	switch (array.length > 0 ? array[0] : null) {
+		case null:
+			link = "y=2019";
 			break;
 		case "pid":
-			link = "p="+LIST_ID
+			let paramGetter = new URLSearchParams(window.location.search)
+			let params = Object.fromEntries(paramGetter.entries());
+
+			link = "p="+params["pid"];
+			break;
 		case "year":
-			link = "y="+
-	
+			link = "y="+(LIST_ID == -2 ? "2019" : "2021");
+			break;
+		case "id":
+			link = "l="+LIST_ID;
+			break;
 		default:
 			break;
 	}
 
-	let link = ["l=","p=","y="][window.location.href]
+	$("#shareContainer").on("mouseover", () => $("#shareContainer")[0].select())
 
-	$("#shareContainer").text("gamingas.wz.cz/?"+link);
+	let cringeText = "Mrkni se na můj Geodeš seznam - gamingas.wz.cz/?"+link
+
+	$($(".shareSocials")[0]).on("click", () => window.open("https://twitter.com/intent/tweet?text="+cringeText))
+
+	$("#shareContainer").val("gamingas.wz.cz/?"+link);
 }
 
 function hideShare() {
@@ -706,13 +719,14 @@ $(function () {
 		}
 		else if (listID[0] == "id") {
 			if (window.location.protocol.includes("file")) {
+				boards = debugCards();
 				debugPwd = Math.ceil(Math.random() * 9999999999)
 				$(".titles").append(`<p style="color: tomato">Debug List</p>
 				<hr class="lineSplitGeneral" style="margin: -2% 10%;">
 				<p style="font-size: 3vw;">- Dasher123 -</p>
 				<p style="font-size: 3vw;">Pass: ${debugPwd}</p>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
-				generateList(debugCards())
+				generateList(boards)
 			}
 
 			$.get("./php/getLists.php?id=" + listID[1], function (data) {

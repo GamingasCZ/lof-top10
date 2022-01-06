@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=0">
 
   <link rel="stylesheet" href="./assets/style.css">
   <link rel="stylesheet" href="./assets/community.css">
@@ -67,8 +68,8 @@
   <div class="uploadBG uploadText" id="shareTools" style="position: fixed; display: none;">
     <img src="./images/delete.png" class="button" style="width: 6%; float: right;" onclick="hideShare()">
     <p class="uploadText">Sdílet</p>
-    <p class="uploadText settingsBG" id="shareContainer"></p>
-    <div style="display: flex;">
+    <input class="uploadText settingsBG" id="shareContainer" readonly></input>
+    <div style="display: flex;" class="shareSocials">
       <img src="images/twitter.png" class="button" style="width: 5vw;">
     </div>
   </div>

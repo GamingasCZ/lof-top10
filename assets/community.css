@@ -294,6 +294,8 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     font-size: 2vw;
     margin: 0 2vw 3vw 0vw;
     -webkit-text-stroke: 0.1vw black;
+    border: none;
+    opacity: 1 !important;
 }
 
 .cardInput {
@@ -504,7 +506,7 @@ input:disabled {
 
 .positionButtons {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
 }
 
