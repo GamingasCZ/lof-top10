@@ -94,7 +94,7 @@
 	height: 90vh;
 	right: -8%;
 	bottom: 0%;
-    z-index: 1;
+    z-index: 4;
     display: flex;
     padding: 0;
     flex-direction: column;
@@ -279,6 +279,13 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     width: 2.8vw;
 }
 
+#popupBG {
+    z-index: 3;
+    background: #00000087;
+    display: none;
+    transition: opacity 0.1s linear;
+}
+
 #shareTools {
     position: fixed;
     display: none;
@@ -286,7 +293,7 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     height: 30%;
     top: 11vw;
     left: 15vw;
-    z-index: 1;
+    z-index: 4;
     padding-top: 0;
     padding-left: 2vw;
 }
@@ -297,6 +304,34 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     border: none;
     opacity: 1 !important;
 }
+#jumpToTools {
+    width: 50vw;
+    height: 35vw;
+    z-index: 4;
+    position: fixed;
+    padding-left: 3vw;
+    left: 15vw;
+    top: 1vw;
+}
+.jumpToContainer {
+    display: flex;
+    flex-direction: row;
+    height: 89%;
+    background: #00000042;
+    margin-right: 3vw;
+    border-radius: 2vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+#jumpBubble {
+    background: #ff6161;
+    width: 90%;
+    margin-left: 2.5%;
+    justify-content: flex-start;
+    font-size: 1.8vw;
+    -webkit-text-stroke: 0.1vw black;
+}
+
 
 .cardInput {
     margin: 15px 30%;

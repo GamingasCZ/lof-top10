@@ -17,6 +17,7 @@ const YEAR = yID;
 if (YEAR == "2019" || window.location.pathname.match("upload") == -1) {
 	var boards = {
 		"titleImg": "",
+		"pageBGcolor": "#020202",
 		"1": {
 			"levelName": "Snowy",
 			"creator": [["MurlocGD", 1, "Nahrál"], [{ "name": "Level", "hasPer": false, "color": "#fab789", "HTMLobject": {}, "id": 1640454770131 }], [{ "name": "MurlocGD", "role": 1640454770131, "part": ["41", "100"], "color": "#00f9f9", "socials": [[0, "https://youtube.com/channel/httpswww.youtube.comchannelUC8"]], "verified": true }, { "name": "PizzaGamerHu", "role": 1640454770131, "part": ["0", "41"], "color": "#7d7dff", "socials": [[0, "https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"], [2, "https://twitch.tv/pizzagamerhu"]], "verified": true }]],
@@ -248,10 +249,13 @@ function onYTClick(link, index) {
 }
 
 function listShare() {
-    $("#shareTools").fadeIn(100);
-	
+	$("#popupBG").show()
+	$("#popupBG").css("opacity", 1)
+
+	$("#shareTools").fadeIn(100);
+
 	let link = "";
-	let array = window.location.href.match(/(year|id|pid)/).slice(0,1);
+	let array = window.location.href.match(/(year|id|pid)/).slice(0, 1);
 	switch (array.length > 0 ? array[0] : null) {
 		case null:
 			link = "y=2019";
@@ -260,13 +264,13 @@ function listShare() {
 			let paramGetter = new URLSearchParams(window.location.search)
 			let params = Object.fromEntries(paramGetter.entries());
 
-			link = "p="+params["pid"];
+			link = "p=" + params["pid"];
 			break;
 		case "year":
-			link = "y="+(LIST_ID == -2 ? "2019" : "2021");
+			link = "y=" + (LIST_ID == -2 ? "2019" : "2021");
 			break;
 		case "id":
-			link = "l="+LIST_ID;
+			link = "l=" + LIST_ID;
 			break;
 		default:
 			break;
@@ -274,15 +278,43 @@ function listShare() {
 
 	$("#shareContainer").on("mouseover", () => $("#shareContainer")[0].select())
 
-	let cringeText = "Mrkni se na můj Geodeš seznam - gamingas.wz.cz/?"+link
+	let cringeText = "Mrkni se na můj Geodeš seznam - gamingas.wz.cz/?" + link
 
-	$($(".shareSocials")[0]).on("click", () => window.open("https://twitter.com/intent/tweet?text="+cringeText))
+	$($(".shareSocials")[0]).on("click", () => window.open("https://twitter.com/intent/tweet?text=" + cringeText))
 
-	$("#shareContainer").val("gamingas.wz.cz/?"+link);
+	$("#shareContainer").val("gamingas.wz.cz/?" + link);
 }
 
 function hideShare() {
 	$("#shareTools").fadeOut(100);
+	$("#popupBG").css("opacity", 0)
+	setTimeout(() => { $("#popupBG").hide() }, 100);
+}
+
+function showJumpTo() {
+	$("#popupBG").show()
+	$("#popupBG").css("opacity", 1)
+	$("#jumpToTools").fadeIn(100);
+	$(".jumpToContainer").text("");
+
+	let ind = 1;
+	Object.values(boards).slice(0, Object.keys(boards).length - ADDIT_VALS - 1).forEach(pos => {
+		let creator = pos.creator;
+		if (typeof creator == "object") creator = "(Collab)"
+
+		$(".jumpToContainer").append(`<div class="roleBubble button" for="${ind}" style="background:${pos.color};" id="jumpBubble">#${ind} ${pos.levelName} - ${creator}</div>`)
+		$(".jumpToContainer:last-child").on("click", (k) => {
+			hideJumpTo();
+			if ($(".boards").css("display") == "none") listList()
+			$(".box")[$(k.target).attr("for") - 2].scrollIntoView();
+		})
+		ind++
+	});
+}
+function hideJumpTo() {
+	$("#jumpToTools").fadeOut(100);
+	$("#popupBG").css("opacity", 0)
+	setTimeout(() => { $("#popupBG").hide() }, 100);
 }
 
 const openSocLink = link => { window.open(link) }
@@ -297,7 +329,7 @@ async function getProfileStats(k, ind) {
 
 	let uName = $(k.target.parentElement).siblings()[1].innerText;
 
-	await $.get(DISABLE_GDB+"ttps://gdbrowser.com/api/profile/" + uName, user => {
+	await $.get(DISABLE_GDB + "ttps://gdbrowser.com/api/profile/" + uName, user => {
 		$(".loading").remove();
 
 		$(container).after(`<img onclick="openProfileOnGDB('${user.username}')" style="transform: translateX(0.7vw);" class="stats button" src="images/add.png">`)
@@ -313,6 +345,8 @@ async function getProfileStats(k, ind) {
 }
 
 function showCollabStats(id) {
+	$("#popupBG").css("opacity", 1)
+
 	let level = JSON.parse(JSON.stringify(boards[id]["creator"]))
 	let names = [jsStr["YT_CHAN"][LANG], jsStr["TW_PROF"][LANG], jsStr["TW_CHAN"][LANG], jsStr["DC_SERV"][LANG], jsStr["CUST_LINK"][LANG]];
 	let imgs = ["youtube", "twitter", "twitch", "discord", "cust"];
@@ -486,6 +520,9 @@ function showCollabStats(id) {
 function hideCollabStats() {
 	$("#collabTools").fadeOut(50);
 	$("#collabTools").css("transform", "scaleY(0.7)");
+
+	$("#popupBG").css("opacity", 0)
+	setTimeout(() => { $("#popupBG").hide() }, 100);
 }
 
 function hoverBar(k) {
@@ -503,7 +540,7 @@ function hoverBar(k) {
 	$(nameShower.parent()).css("opacity", 1)
 
 	if (isVerified) {
-		$(nameShower[0]).attr("src", DISABLE_GDB+"ttps://gdbrowser.com/icon/" + hoverName.text())
+		$(nameShower[0]).attr("src", DISABLE_GDB + "ttps://gdbrowser.com/icon/" + hoverName.text())
 	}
 	else {
 		$(nameShower[0]).attr("src", "images/bytost.png")
@@ -607,7 +644,7 @@ function boxCreator(obj, index) {
 	}
 }
 
-function generateList(boards) {
+function generateList(boards, listData) {
 	for (i = 1; i < Object.keys(boards).length - ADDIT_VALS; i++) {
 
 		let bIndex = (i).toString();
@@ -636,8 +673,21 @@ function generateList(boards) {
 			$("body").css("background-color", boards["pageBGcolor"])
 		}
 
+		let hasID = ["", null].includes(boards[bIndex]["levelID"])
+		let preview = window.location.search.includes("preview")
+		let isDebugList = window.location.protocol.includes("file") & window.location.search.includes("id")
+
+		let favoriteCheck = hasID && !preview && !isDebugList
+		let currentlyFavedIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
+		let disableStar = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "disabled" : ""
+		let starTitle = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "Odstranit z oblíbených" : "Přidat do oblíbených"
+
+		let star = `<img title="${starTitle}" src="images/star.png" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, [${listData[0]},'${listData[1]}'])">`
 		$(".boards").append(`
 		<div class="box" style="${cardBG}">
+			<div style="height:0px;">
+				${favoriteCheck ? "" : star}
+			</div>
 			<div class="boxHeader">
 				<span>${boards[bIndex]["levelName"]}</span>
 				<div style="display:flex">
@@ -665,7 +715,7 @@ function generateList(boards) {
 				try {
 					for (let icon = 0; icon < ((k.target).children[2].children).length; icon++) {
 						$((k.target).children[2].children[icon].children).css("background", "none")
-						$((k.target).children[2].children[icon].children).attr("src", DISABLE_GDB+"ttps://gdbrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
+						$((k.target).children[2].children[icon].children).attr("src", DISABLE_GDB + "ttps://gdbrowser.com/icon/" + boards[currIndex + 1]["creator"][2][icon].name)
 					}
 				}
 				catch (e) { }
@@ -680,6 +730,36 @@ function generateList(boards) {
 		$(".titles").append(jsStr["LLOAD_FAIL"][LANG]);
 		$(".password").remove();
 		$("#crown").remove();
+	}
+}
+
+function fave(th, id, data) {
+	let creator = boards[id]["creator"]
+	if (typeof boards[id]["creator"] == "object") creator = boards[id]["creator"][0][0] + " (Collab)" // Is collab?
+
+	let currData = localStorage.getItem("favorites") == null ? [] : JSON.parse(localStorage.getItem("favorites"))
+	let currIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
+
+	// Unfaving
+	if (currIDs.includes(boards[id]["levelID"])) {
+		let listIndex = currIDs.indexOf(boards[id]["levelID"])
+		currData.splice(listIndex, 1)
+		currIDs.splice(listIndex, 1)
+
+		localStorage.setItem("favorites", JSON.stringify(currData))
+		localStorage.setItem("favoriteIDs", JSON.stringify(currIDs))
+
+		th.removeClass("disabled")
+	}
+	else {
+		let favoriteArray = [boards[id]["levelName"], creator, boards[id]["levelID"], data[0], data[1], new Date().getTime() / 1000]
+		currData.push(favoriteArray)
+		currIDs.push(boards[id]["levelID"])
+
+		localStorage.setItem("favorites", JSON.stringify(currData))
+		localStorage.setItem("favoriteIDs", JSON.stringify(currIDs))
+
+		th.addClass("disabled")
 	}
 }
 
@@ -715,7 +795,8 @@ $(function () {
 			boards = JSON.parse(decodedData);
 			$(".titles").append(jsStr["PREVIEW"][LANG]);
 			$(".searchTools").remove();
-			generateList(boards);
+			$("title").html(`Náhled seznamu | GD Seznamy`)
+			generateList(boards, [0, 0]);
 		}
 		else if (listID[0] == "id") {
 			if (window.location.protocol.includes("file")) {
@@ -726,17 +807,20 @@ $(function () {
 				<p style="font-size: 3vw;">- Dasher123 -</p>
 				<p style="font-size: 3vw;">Pass: ${debugPwd}</p>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
-				generateList(boards)
+				$("title").html(`Debug seznam | GD Seznamy`)
+				generateList(boards, [0, 0])
 			}
 
 			$.get("./php/getLists.php?id=" + listID[1], function (data) {
 				if (data == 1) {
 					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
+					$("title").html(`Neexistující seznam | GD Seznamy`)
 					$(".searchTools").remove();
 					$("#crown").remove();
 				}
 				else if (data == 2) {
 					$(".titles").append(jsStr["L_INVID"][LANG]);
+					$("title").html(`Neexistující seznam | GD Seznamy`)
 					$(".searchTools").remove();
 					$("#crown").remove();
 				}
@@ -755,7 +839,8 @@ $(function () {
 						<hr class="lineSplitGeneral" style="margin: -2% 10%;">
 						<p style="font-size: 3vw;">- ${listData[0]} -</p>`);
 						$(".titleImage").attr("src", boards["titleImg"]);
-						generateList(boards);
+						$("title").html(`${listData[1]} | GD Seznamy`)
+						generateList(boards, [listData[1], listData[3]]);
 					}
 				}
 			}
@@ -766,6 +851,7 @@ $(function () {
 				if (data == 1) {
 					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
 					$(".searchTools").remove();
+					$("title").html(`Neexistující seznam | GD Seznamy`)
 					$("#crown").remove();
 				}
 				else {
@@ -776,7 +862,8 @@ $(function () {
 					<hr class="lineSplitGeneral" style="margin: -2% 10%;">
 					<p style="font-size: 3vw;">- ${listData[0]} -</p>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
-					generateList(boards);
+					$("title").html(`${listData[1]} | GD Seznamy`)
+					generateList(boards, [listData[1], listData[3]]);
 				}
 			}
 			)
@@ -786,16 +873,23 @@ $(function () {
 			if (YEAR == undefined) {
 				$(".titles").append(jsStr["L_NONUM"][LANG]);
 				$(".searchTools").remove();
+				$("title").html(`Neexistující seznam | GD Seznamy`)
 				$("#crown").remove();
 			}
 			else if (YEAR != "2019" & YEAR != "2021") {
 				$(".titles").append(jsStr["L_NOYEAR"][LANG]);
 				$(".searchTools").remove();
+				$("title").html(`Neexistující seznam | GD Seznamy`)
 				$("#crown").remove();
 			}
 			else {
+				let listName = `Top ${YEAR == 2019 ? 10 : 15} LoF ${YEAR}`
+
 				$(".password").remove()
-				generateList(boards);
+				$("title").html(`${listName} | GD Seznamy`)
+
+
+				generateList(boards, [LIST_ID, "GamingasCZ"]);
 			}
 		}
 	}
@@ -804,28 +898,30 @@ $(function () {
 		generateList(boards);
 	}
 
-	// Hiding header
+	// Hiding header and showing scroll to top button
 	$("body").on("scroll", () => {
 		if (document.body.scrollTop > 150) {
 			$("header").css("transform", "translateY(-5vw)")
+			$(".scrollToTop").css("opacity", 1)
 		}
 		else {
 			$("header").css("transform", "none")
+			$(".scrollToTop").css("opacity", 0)
 		}
 	})
 
 	if ($(".titles").text() == "") { $(".titles").css("margin-top", "5vw") }
-	$(".searchTools").css("opacity",1)
+	$(".searchTools").css("opacity", 1)
 	$("footer").css("opacity", 1)
 
 	$("#crown").css("transform", "translateY(120px)")
 	$("#crown").css("opacity", 1)
-	
+
 	// Box appear animation
 	if (!window.location.pathname.includes("upload")) {
 		let index = 0
 		let boxAppear = setInterval(() => {
-			if (index == Object.keys(boards).length-ADDIT_VALS-2) { clearInterval(boxAppear) }
+			if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
 			$(".box")[index].style.transform = "none"
 			index++
 		}, 100);

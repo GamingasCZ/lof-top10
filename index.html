@@ -25,10 +25,11 @@
   <meta name="twitter:description" content="Několik kůl Geometry Dash levelů v epickém seznamu!">
   <meta name="twitter:image" content="http://gamingas.wz.cz/lofttop10/images/twitImg.png">
 
-  <title>Top 10 Levelů od Fanoušků</title>
+  <title>GD Seznamy</title>
 </head>
 
 <body>
+  <img src="images/arrow-left.png" class="scrollToTop button" title="Skočit na vrch" onclick="document.body.scrollTop = 0">
   <div class="shade"></div>
   <header>
     <div style="justify-content: left;">
@@ -37,7 +38,8 @@
     <div style="justify-content: center; width: 50vw;">
       <button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2019')">2019</button
      ><button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2021')">2021</button
-     ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('upload.html')">Komunitní</button>
+     ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('upload.html')">Komunitní</button
+     ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('packs.html')">Uložené</button>
     </div>
     <div style="justify-content: right; display: flex; align-items: center;">
       <img class="button" src="images/gauntlet.png" style="width: 3vw;" onclick="changeLang()">
@@ -46,6 +48,8 @@
       </div>
     </div>
   </header>
+
+  <div class="boom" id="popupBG"></div>
 
   <!-- Collab stats -->
   <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
@@ -74,6 +78,14 @@
     </div>
   </div>
 
+  <!-- Jump To Dialog-->
+  <div class="uploadBG uploadText" id="jumpToTools" style="position: fixed; display: none;">
+    <img src="./images/delete.png" class="button" style="width: 6%; float: right;" onclick="hideJumpTo()">
+    <p class="uploadText">Skočit na...</p>
+    <div style="display: flex; flex-direction: column;" class="jumpToContainer">
+    </div>
+  </div>
+
   <div class="titles"></div>
 
   <img class="titleImage">
@@ -87,6 +99,8 @@
     </div>
 
     <div style="justify-content: center; height: 4vw;">
+      <img src="images/sort.png" onclick="showJumpTo()" class="button lJumpTo" style="width: 4vw;"
+           title="Skočit na...">
       <img src="images/shareBut.png" onclick="listShare()" class="button lShare" style="width: 4vw;"
            title="Sdílet">
     </div>

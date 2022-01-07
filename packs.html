@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=0">
+
+  <link rel="stylesheet" href="./assets/style.css">
+  <link rel="stylesheet" href="./assets/community.css">
+  <link rel="icon" href="./images/gdbrowser.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script rel="text/javascript" src="./js/languages.js"></script>
+  <script rel="text/javascript" src="./js/generator.js"></script>
+  <script rel="text/javascript" src="./js/comments.js"></script>
+  <script rel="text/javascript" src="./js/color.js"></script>
+  <script rel="text/javascript" src="./js/helpDialogs.js"></script>
+
+  <title>Uložené levely | GD Seznamy</title>
+</head>
+
+<body>
+  <div class="shade"></div>
+  <header>
+    <div style="justify-content: left;">
+      <img src="images/title.png" style="width: 23vw; height: fit-content;">
+    </div>
+    <div style="justify-content: center; width: 50vw;">
+      <button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2019')">2019</button
+     ><button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2021')">2021</button
+     ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('upload.html')">Komunitní</button
+     ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('packs.html')">Uložené</button>
+    </div>
+    <div style="justify-content: right; display: flex; align-items: center;">
+      <img class="button" src="images/gauntlet.png" style="width: 3vw;" onclick="changeLang()">
+    </div>
+  </header>
+</body>
+<footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.5) translateY(4vw);">
+  <p class="uploadText">Vytvořil </p>
+  <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
+  <span class="uploadText"> | 2021-2022 | </span>
+  <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github"
+      src="images/github.png"></a>
+</footer>
+<script>$(function () { translate(); })</script>
+
+</html>

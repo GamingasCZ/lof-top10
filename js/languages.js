@@ -1,9 +1,6 @@
 var LANG = 0;
 const LANG_AM = 2;
-
-var strings = [
-    ["title", "index.html", 0, ["Top 10 Levelů od Fanoušků", "Top 10 Fan Levels"]],
-    [".lList", "index.html", "title", ["Seznam levelů", "Level List"]],
+var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"]],
     [".colMembers", "index.html", 0, ["Členové", "Members"]],
     [".lComm", "index.html", "title", ["Komentáře", "Comments"]],
     ["h3:nth-child(1)", "index.html", 0, ["Komentář", "Comment"]],
@@ -16,7 +13,6 @@ var strings = [
     [".noComm", "index.html", 0, ["- Žádné komentáře -", "- No Comments -"]],
     [".passInput", "index.html", "placeholder", ["Heslo", "Password"]],
 
-    ["title", "upload.html", 0, ["Komunitní seznamy", "Community Lists"]],
     [".uploadTitle", "upload.html", 0, ["Nahrávání", "Upload"]],
     ["#listnm", "upload.html", "placeholder", ["Jméno seznamu", "List Name"]],
     ["#creatornm", "upload.html", "placeholder", ["Tvůrce", "List Creator"]],

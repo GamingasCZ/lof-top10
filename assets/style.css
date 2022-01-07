@@ -98,8 +98,8 @@ span {
 .box {
   background-color: #43a045;
   background-image: url("../images/cardBg.png");
-  padding: 32px 30px 50px 50px;
-  margin: 50px 10% 50px 10%;
+  padding: 3vw 3vw 4vw 3vw;
+  margin: 3vw 7vw 5vw 7vw;
   border-radius: 10px;
   font-size: 3vw;
   font-family: "pusab";
@@ -108,6 +108,24 @@ span {
   text-shadow: rgba(0,0,0,0.5) 3px 3px 4px;
   transform: translateX(-100vw);
   transition: transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.favoriteStar {
+  position: relative;
+  bottom: 2.8vw;
+  left: 78vw;
+  width: 4vw;
+}
+
+.scrollToTop {
+  position: absolute;
+  z-index: 4;
+  width: 4vw;
+  rotate: 90deg;
+  left: 94vw;
+  top: 46vw;
+  opacity: 0;
+  transition: opacity 0.2s linear;
 }
 
 .boxHeader {
@@ -293,6 +311,7 @@ html, body {
     max-width: 100%;
     overflow-x: hidden;
     height: 100%;
+    scroll-behavior: smooth;
 }
 
 .button {
