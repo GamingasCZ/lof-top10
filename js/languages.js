@@ -261,13 +261,20 @@ var jsStr = {
 $(function () {
     var currLang = localStorage.getItem("lang");
     if (currLang == null) {
-        $(".notify").show();
         let getLang = navigator.language;
         if (["cs", "sk"].includes(getLang)) { currLang = 0; }
         else { currLang = 1; }
         localStorage.setItem("lang", currLang);
     }
     LANG = currLang;
+    $($(".settingsDropdown").children()[currLang]).attr("selected", true)
+    
+    
+    $(".settingsDropdown").on("change", () => {
+        let switchLang = $(".settingsDropdown").val() == "Čeština" ? 0 : 1
+        localStorage.setItem("lang", switchLang);
+        window.location.reload();
+    })
 })
 
 function changeLang() {
