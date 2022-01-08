@@ -436,16 +436,3 @@ function search() {
         }
     }
 }
-
-function checkCheckbox(changeVal) {
-    if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
-        $(`img[for="${changeVal}"]`).attr("src", "images/check-off.png")
-        $(`input[name="${changeVal}"]`).attr("checked", false)
-
-    }
-    else {
-        $(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
-        $(`input[name="${changeVal}"]`).attr("checked", true)
-
-    }
-}

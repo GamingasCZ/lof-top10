@@ -888,14 +888,13 @@ $(function () {
 				$(".password").remove()
 				$("title").html(`${listName} | GD Seznamy`)
 
-
 				generateList(boards, [LIST_ID, "GamingasCZ"]);
 			}
 		}
 	}
 	else if (YEAR == "2019") {
 		$(".password").remove()
-		generateList(boards);
+		generateList(boards, [LIST_ID, "GamingasCZ"]);
 	}
 
 	// Hiding header and showing scroll to top button
@@ -903,6 +902,7 @@ $(function () {
 		if (document.body.scrollTop > 150) {
 			$("header").css("transform", "translateY(-5vw)")
 			$(".scrollToTop").css("opacity", 1)
+			$(".settingsMenu").fadeOut(50)
 		}
 		else {
 			$("header").css("transform", "none")
@@ -913,12 +913,25 @@ $(function () {
 	if ($(".titles").text() == "") { $(".titles").css("margin-top", "5vw") }
 	$(".searchTools").css("opacity", 1)
 	$("footer").css("opacity", 1)
+	
+	if (localStorage.getItem("anims") == null) localStorage.setItem("anims", 1)
+	$("input[name='anim']").attr("checked", localStorage.getItem("anims") == true ? true : false)
+	$("img[for='anim']").attr("src", localStorage.getItem("anims") == true ? "images/check-on.png" : "images/check-off.png")
+	let animsEnabled = localStorage.getItem("anims") == true
 
-	$("#crown").css("transform", "translateY(120px)")
-	$("#crown").css("opacity", 1)
+	if (animsEnabled) {
+		$("header").css("animation-name", "headerScroll")
+	}
 
 	// Box appear animation
-	if (!window.location.pathname.includes("upload")) {
+	if (!window.location.pathname.includes("upload") && animsEnabled) {
+		$(".box").css("transform", "translateX(-100vw)");
+		$(".box").css("transition", "transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1)");
+		
+		$("#crown").css("transition", "transform 1s ease-out, opacity 1.2s ease-out");
+		$("#crown").css("opacity", 1);
+		
+		
 		let index = 0
 		let boxAppear = setInterval(() => {
 			if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
@@ -926,6 +939,8 @@ $(function () {
 			index++
 		}, 100);
 	}
+	
+	$("#crown").css("transform", "translateY(120px)")
 });
 
 function checkPassword() {
@@ -970,4 +985,19 @@ function checkPassword() {
 			window.location.href = `./upload.html?edit=${listID[1]}&pass=${passEntered}`
 		}
 	}
+}
+
+const switchAnims = (_curr) => localStorage.setItem("anims", localStorage.getItem("anims") == true ? 0 : 1)
+
+function checkCheckbox(changeVal, runFun=null) {
+    if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
+        $(`img[for="${changeVal}"]`).attr("src", "images/check-off.png")
+        $(`input[name="${changeVal}"]`).attr("checked", false)
+        runFun(false)
+    }
+    else {
+        $(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
+        $(`input[name="${changeVal}"]`).attr("checked", true)
+		runFun(true)
+    }
 }

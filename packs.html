@@ -36,7 +36,22 @@
      ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('packs.html')">Uložené</button>
     </div>
     <div style="justify-content: right; display: flex; align-items: center;">
-      <img class="button" src="images/gauntlet.png" style="width: 3vw;" onclick="changeLang()">
+      <img id="popupBit" class="settingsMenu" src="images/popupArr.png">
+      <img class="button" src="images/gauntlet.png" style="width: 3vw; padding-right: 1vw;" onclick="$('.settingsMenu').fadeToggle(100)">
+    </div>
+    <div class="settingsMenu">
+        <div class="siteSettingsChild">
+            <p class="uploadText">Jazyk</p>
+            <select class="uploadText settingsDropdown">
+                <option>Čeština</option>
+                <option>Angličtina</option>
+            </select>
+        </div>
+        <div class="siteSettingsChild">
+            <p class="uploadText">Animace</p>
+            <img src="images/check-on.png" for="anim" class="button" style="width: 3vw;" onclick="checkCheckbox('anim', switchAnims)">
+            <input type="checkbox" style="display: none;" name="anim">
+        </div>
     </div>
   </header>
 </body>

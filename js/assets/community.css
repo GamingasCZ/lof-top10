@@ -1,0 +1,676 @@
+
+@keyframes inputError {
+    from {
+        background-color: rgba(243, 70, 70, 0.5);
+    }
+    to {
+        background-color: rgba(36, 36, 36, 0.5);
+    }
+}
+
+.helpButton {
+    /*position: absolute;*/
+    width: 3vw;
+    height: 3vw;
+    /*right: 23%;*/
+}
+.helpBG {
+	background-color: #000000a1;
+	/* margin: 100%; */
+	position: fixed;
+	top: 0px;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+    background-image: url("../images/thinkAn.gif");
+}
+.popupHelp {
+    background-color: rgb(50, 63, 50);
+    border: rgb(24, 24, 24) 10px solid;
+    border-radius: 10px;
+    position: fixed;
+    margin: auto;
+    z-index: 3;
+    width: 80%;
+    left: 10%;
+    padding: 2%;
+    top: 2%;
+    max-height: 40vw;
+    overflow-y: auto;
+}
+
+.uploadBG {
+    background-color: rgb(50, 63, 50);
+    padding: 2% 0% 2% 0%;
+    margin: 2vh 10vw;
+    border: rgb(24, 24, 24) 10px solid;
+    border-radius: 10px;
+}
+
+.uploadText {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    color: white;
+    font-family: "pusab";
+    src: url("assets/PUSAB.TTF");
+    font-size: 3vw;
+    -webkit-text-stroke: black 0.17vw;
+    line-height: 84%;
+    text-shadow: rgba(0,0,0,0.5) 3px 3px 4px;
+}
+
+.uploadTitle {
+    font-size: 7vw;
+    margin: auto;
+    padding: 5px 0px 5px 0px;
+    display: block;
+    text-shadow: 0.17vw 0.17vw rgb(61, 131, 79),
+    -0.17vw -0.17vw rgb(61, 131, 79),
+    -0.17vw 0.17vw rgb(61, 131, 79),
+     0.17vw -0.17vw rgb(61, 131, 79);
+
+}
+
+.errNotif {
+    z-index: 2;
+    transform: translate(30vw,20vh);
+    width: 40vw;
+    position: absolute;
+    pointer-events: none;
+    display: none;
+}
+
+.errNotText {
+    z-index: 3;
+    position: relative;
+    top: 4vw;
+    left: 2vw;
+    width: 36vw;
+}
+
+#collabTools {
+	position: fixed;
+	width: 95%;
+	height: 90vh;
+	right: -8%;
+	bottom: 0%;
+    z-index: 1;
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    transform: scaleY(0.7);
+    transition-duration: 0.1s;
+}
+
+.collabBar {
+    display: flex;
+    justify-content: space-between !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    overflow-y: hidden !important;
+    min-height: 8%;
+}
+
+.collabTables {
+    border: none;
+    text-align: center;
+    width: 100%;
+    background: url("../images/fade.png") repeat-x;
+}
+
+td > * {
+    vertical-align: middle;
+}
+
+.collabTables th img:nth-child(1) {
+    width: 2vw;
+    vertical-align: middle;
+}
+.collabTables th div {
+    margin: 0vw 0 0 0.5vw;
+}
+
+.collabTables th {
+    background: rgba(0,0,0,0.1) !important;
+    font-size: 2vw;
+    -webkit-text-stroke: black 1.5px;
+}
+
+tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+tr > td:nth-child(2n) {
+	background: rgba(0,0,0,0.2);
+}
+
+#collabInp::placeholder {
+    font-size: 2vw;
+}
+
+#collabInp {
+    display: inline;
+    transform: none;
+    width: 15vw;
+    margin: 0.5%;
+    font-size: 2vw;
+    height: 28%;
+    background-color: #FFFFFF50;
+    border-color: #FFFFFF50;
+    -webkit-text-stroke: black 1.5px;
+    -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+
+.collabHeader {
+    max-height: auto;
+    overflow-y: auto;
+}
+
+.roleList {
+    border: none;
+    border-radius: 0.5vw;
+    padding: 1%;
+    font-size: 2vw;
+    -webkit-text-stroke: black 1.5px;
+    margin: 0;
+    height: 2.5vw;
+}
+
+input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .tableCpicker) {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+    margin-bottom: 0.5%;
+    background-color: rgb(36, 36, 36);
+    border:rgb(36, 36, 36) 5px solid;
+    border-radius: 5%;
+    padding: 3px 5px;
+    color: white;
+    transform: translateY(-20%);
+    width: 15em;
+    height: 5vh;
+
+    font-family: "pusab";
+    font-size: 3vw;
+    -webkit-text-stroke: black 0.17vw;
+    display: flex;
+    justify-content: center;
+}
+
+.inputErr {
+    animation-name: inputError;
+    animation-duration: 0.5s;
+}
+
+#imageArrow {
+    display: flex;
+    width: 5%;
+    height: 5%;
+    align-self: center;
+    transform: scaleY(1);
+    transition-duration: 0s;
+}
+.imgPreview {
+    background-color: rgb(24, 24, 24);
+    margin: 0% 22.5% 3%;
+    padding: 2%;
+    border-radius: inherit;
+    width: 40vw;
+    display: none;
+}
+
+
+#tImgMargin {
+    margin-left: 2%;
+    margin-right: 1%;
+}
+
+#bgcolorPicker {
+    display: flex;
+    border: none;
+    width: 10vw;
+    padding: 0.4%;
+    height: 7vh;
+    margin-left: 2%;
+    margin-right: 0;
+}
+
+.colorLabel {
+    display: flex;
+    pointer-events: none;
+}
+
+#fillButton {
+    width: 2.8vw;
+}
+
+.cardInput {
+    margin: 15px 30%;
+    background-color: rgb(36, 36, 36);
+    border:rgb(36, 36, 36) 5px solid;
+    border-radius: 5%;
+    padding: 3px 5px;
+    color: white;
+    transform: translateY(-20%);
+    width: 25vw;
+    height: 5vh;
+
+    font-family: "pusab";
+    src: url("assets/PUSAB.TTF");
+    font-size: 3vw;
+    -webkit-text-stroke: black 0.17vw;
+}
+
+input::-webkit-input-placeholder {
+    opacity: 0.5;
+    color: white;
+    font-family: "pusab";
+    font-size: 3vw;
+    -webkit-text-stroke: black 0.17vw;
+}
+input::-moz-placeholder {
+    color: white;
+    font-family: "pusab";
+    font-size: 3vw;
+    -webkit-text-stroke: black 0.17vw;
+}
+
+input:disabled {
+    opacity: 0.5;
+}
+
+#submitarea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#submitbutton {
+	width: auto;
+	padding: 2% 2% 4% 2%;
+    background-color: rgb(113, 212, 113);
+    border: none;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+#removebutton {
+    width: auto;
+	padding: 2% 2% 4% 2%;
+    background-color: rgb(212, 113, 113);
+    color: rgb(255, 0, 0);
+    border: none;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+#jsonBox {
+    background-color: rgb(36, 36, 36);
+    border:rgb(36, 36, 36) 5px solid;
+    border-radius: 5%;
+    width: 90%;
+    height: 100vh;
+    border-radius: 2%;
+    padding: 1% 2%;
+    margin: auto;
+    color: white;
+    font-family: monospace;
+}
+
+.jsonHelp {
+    width: 40%;
+    height: 40%;
+}
+
+#listPreview {
+    background-color: rgb(36, 36, 36);
+    color: white;
+    padding: 1% 2% 1% 2%;
+    margin: 2% 7%;
+    border: white 7px solid;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+}
+
+#listPreview:visited {
+    background-color: rgb(64, 153, 56);
+}
+
+#listPreview:hover {
+    background-color: tomato;
+}
+
+.hostIcon {
+    width: 5vw;
+}
+
+.editorHeader {
+    background-color: rgb(89, 185, 89);
+    margin: 0%;
+    padding: 0.8vw 1%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-image: url("../images/headerBG.png");
+}
+
+#plusSign {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.headerButtons {
+    width: 5vw;
+    height: 5vw;
+    margin-right: 1vw;
+}
+
+.headerText {
+    display: inherit;
+    align-items: center;
+    margin-right: auto;
+    margin-left: 2%;
+}
+
+.helpText {
+    display: inherit;
+    text-align: center;
+}
+
+#mainContent, .collabBG {
+    background-color: rgb(44, 99, 44);
+    text-align: left;
+    background-image: url("../images/fade.png");
+    background-repeat: repeat-x;
+    height: inherit;
+}
+
+.smallHelp {
+    width: 1.7vw;
+    height: auto;
+    vertical-align: top;
+}
+
+
+.positionEdit, .smallPosEdit {
+    margin: 1%;
+    background-color: darksalmon;
+    border: salmon 5px solid;
+    border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: #0000004f 8px 8px 5px;
+    padding: 0.5%;
+}
+
+.smallPosEdit {
+    padding: 0 !important;
+    margin: 0.8% !important;
+}
+
+.positionEdit {
+    transform: scaleY(1);
+    transition-duration: 0.1s;
+}
+
+#posInputBox {
+    margin: 2%;
+    background-color: rgba(36, 36, 36, 0.5);
+    border: none;
+    transform: translate(0);
+    transition: background-color 50ms;
+}
+
+.lineSplitGeneral {
+    height: 4px;
+    background-color: salmon;
+    border: none;
+    margin: 1% 3%;
+}
+
+.availFill {
+    background: white;
+    height: 7%;
+    width: 3%;
+    margin: 1%;
+    border: none;
+    border-radius: 10%;
+    transition: opacity 0.1s linear;
+    box-shadow: black 0px 0px 4px;
+}
+
+.nameDetailGetter {
+    margin-right: 5%;
+}
+
+#moveLPosButton {
+    width: 4vw;
+}
+
+#posInputPics {
+    width: 5vw;
+    height: 5vw;
+}
+
+.positionButtons {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+#positionDisplay {
+    width: 13%;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+    margin: 0.5%;
+    transform: translate(0);
+}
+
+.cardButton {
+	padding-left: 1%;
+	padding-right: 0.5%;
+	width: 5vw;
+	height: 5vw;
+}
+
+.cpicker {
+    width: inherit;
+    height: inherit;
+    position: relative;
+    opacity: 0%;
+    transform: translateX(-100%);
+
+}
+
+.shareBG {
+	background-color: #1e1e1e;
+	padding: 1%;
+	margin: 3%;
+	border-radius: 10px;
+	font-size: 2vw;
+	margin-top: 0px;
+	margin-right: 9%;
+	display: inline;
+	padding-right: 20%;
+}
+
+.shareTitle {
+	margin-left: 3%;
+	color: #1fb1e1;
+    margin-bottom: 0;
+}
+
+.shareBut {
+	width: 7%;
+	bottom: 1vw;
+	position: relative;
+	left: -13%;
+}
+
+.passText {
+    position: absolute;
+    left: 61.5vw;
+    top: 48vw;
+}
+
+.killList {
+    transition-duration: 4s;
+    transform: scaleY(0.0) scaleX(2);
+    filter: invert(100%);
+    transition-timing-function: ease-out;
+}
+.boom {
+    background-color: white ;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    opacity: 0;
+    display: none;
+}
+.removeImg {
+    transition-duration: 0.5s;
+    margin-left: 13em;
+}
+#rmbutton {
+    width: 15%;
+    height: 15%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+.settingsBG {
+    background-color: rgb(36, 36, 36);
+    margin: 0% 21% 3%;
+    padding: 2%;
+    border-radius: inherit;
+    display: flex;
+    flex-direction: column;
+}
+.setting {
+    display: flex;
+    align-items: center;
+    margin-top: 1%;
+}
+.setLabel {
+    margin: 0%;
+    margin-top: 1%;
+}
+.setHelp {
+    width: 2vw;
+    margin-left: 2%;
+    margin-bottom: 4%;
+}
+
+.setCheckbox {
+    width: 10%;
+    margin-right: 2%;
+}
+
+.debugTools {
+    justify-content: center !important;
+    background-image: url('../images/debug.png') !important;
+    max-width: 45vw !important;
+    margin: auto !important;
+    margin: auto !important;
+    margin-top: 1.5% !important;
+    display: none;
+}
+
+.searchTools {
+    background-color: #1e1e1e;
+    border-radius: 1vw;
+    margin: 2%;
+    padding: 1%;
+    display: flex;
+    align-items: center;
+    /*flex-wrap: wrap;*/
+}
+
+.noRoles, .noRolAdded, .addRoles {
+    margin-left: 1%;
+    color: rgb(173, 230, 185);
+}
+.noRolAdded, .addRoles > img {
+    transform: translateY(0.6vw);
+}
+
+.tableCpicker {
+    border: none;
+    background: none;
+    width: 25%;
+    height: 3vw;
+}
+
+.collabHButtons {
+    display: flex;
+    justify-content: right;
+}
+.presetButtonContainer {
+    padding: 0.2% 2%;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.socialPickerIcon {
+    display: inline;
+    width: 4vw;
+}
+
+.popupArrow {
+    position: absolute;
+    top: -1vw; 
+}
+
+.socialPicker {
+    position: absolute;
+    background: #1e1e1e;
+    padding: 1%;
+    z-index: 2;
+    border-radius: 10px;
+    top: 34.8vw;
+    left: 28.5vw;
+    display: none;
+}
+
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.pageIndicator {
+    width: 10%;
+    margin: 0.5%;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+    min-height: 3.4vw;
+    border: none;
+    background-color: #111;
+    border-radius: 10px;
+    font-size: 3vw;
+    font-family: "pusab";
+    color: white;
+    -webkit-text-stroke: black 0.17vw;
+}
+
+.pageBut {
+    width: 5%;
+    height: 5%;
+    align-self: center;
+    margin: 1%;
+}
+#searchBar {
+    width: 80%;
+}

@@ -16,17 +16,6 @@
     }
 }
 
-@keyframes headerScroll {
-  from {
-    background-position-x: 0px;
-    background-position-y: 0px;
-  }
-  to {
-    background-position-x: 64px;
-    background-position-y: 64px;
-  }
-}
-
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
 
 body {
@@ -69,8 +58,9 @@ span {
 .titles {
     font-size: 5vw;
     color: white;
+    margin: auto;
     text-align: center;
-    font-family: pusab;
+    font-family: pusab;  
 }
 
 /* just so stuff doesn't break :D*/
@@ -98,79 +88,14 @@ span {
 .box {
   background-color: #43a045;
   background-image: url("../images/cardBg.png");
-  padding: 3vw 3vw 4vw 3vw;
-  margin: 3vw 7vw 5vw 7vw;
+  padding: 32px 30px 50px 50px;
+  margin: 50px 10% 50px 10%;
   border-radius: 10px;
   font-size: 3vw;
   font-family: "pusab";
   color: white;
   -webkit-text-stroke: black 0.17vw;
   text-shadow: rgba(0,0,0,0.5) 3px 3px 4px;
-}
-
-#popupBit {
-  position: absolute;
-  left: 94.5vw;
-  top: 4.3vh;
-  width: 2vw;
-  height: 2vw;
-  border-radius: 0;
-  background: 0;
-}
-
-.settingsDropdown {
-  width: 15vw;
-  background: #012b003d;
-  border: none;
-  border-radius: 0.5vw;
-  font-size: 2vw !important;
-  padding: 0.6vw;
-  text-align: center;
-  height: 4vw;
-  box-decoration-break: ;
-  box-shadow: #0009 0vw 0vw 1vw;
-  -webkit-text-stroke: 0.1vw black !important;
-}
-
-.siteSettingsChild {
-  display: flex;
-  flex-direction: column;
-  background: #0000004a;
-  border-radius: 1vw;
-  align-items: center;
-  padding: 0.9vw;
-  margin-bottom: 1vw;
-}
-
-
-.settingsMenu {
-  position: absolute;
-  left: 79vw;
-  background: #222;
-  top: 6vw;
-  width: 17vw;
-  height: 37vh;
-  padding: 2vw;
-  border-radius: 1vw;
-  display: none;
-}
-
-.favoriteStar {
-  position: relative;
-  bottom: 2.8vw;
-  left: 78vw;
-  width: 4vw;
-}
-
-.scrollToTop {
-  position: absolute;
-  z-index: 4;
-  width: 4vw;
-  rotate: 90deg;
-  left: 94vw;
-  top: 88vh;
-  opacity: 0;
-  transition: opacity 0.2s linear;
 }
 
 .boxHeader {
@@ -311,14 +236,9 @@ span {
   margin: 0px 8vw 0px 0px;
 }
 .yearButtonImg {
-  width: 12vw;
-  height: 4vw;
-  border: none;
-  margin: 0 !important;
-  background: linear-gradient(180deg, #08ff0024, transparent);
-  font-size: 2em !important;
-  -webkit-text-stroke: 0px !important;
-  cursor: pointer;
+  width: 16vw;
+  height: max-content;
+  margin: 2vw;
 }
 
 .notify {
@@ -356,7 +276,6 @@ html, body {
     max-width: 100%;
     overflow-x: hidden;
     height: 100%;
-    scroll-behavior: smooth;
 }
 
 .button {
@@ -409,6 +328,7 @@ html, body {
 }
 
 #crown {
+  transform: translateY(120px);
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -578,27 +498,8 @@ html, body {
 .password {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
-}
-
-header {
-  background-color: #222;
-  background-image: url("../images/navbarBG.png");
-  animation-iteration-count: infinite;
-  animation-duration: 2s;
-  animation-timing-function: linear;
-  height: 4vw;
-  position: fixed;
-  width: 100vw;
-  z-index: 3;
-  display: flex;
-  justify-content: space-between;
-  transition: transform 0.05s ease-in;
-}
-
-footer {
-  opacity: 0;
-  transition: opacity 1s ease-out;
+    align-items: flex-end;
+    flex-grow: 1;
 }
 
 .eventButton {
