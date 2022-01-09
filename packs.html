@@ -15,10 +15,8 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script rel="text/javascript" src="./js/languages.js"></script>
-  <script rel="text/javascript" src="./js/generator.js"></script>
-  <script rel="text/javascript" src="./js/comments.js"></script>
+  <script rel="text/javascript" src="./js/saves.js"></script>
   <script rel="text/javascript" src="./js/color.js"></script>
-  <script rel="text/javascript" src="./js/helpDialogs.js"></script>
 
   <title>Uložené levely | GD Seznamy</title>
 </head>
@@ -30,30 +28,53 @@
       <img src="images/title.png" style="width: 23vw; height: fit-content;">
     </div>
     <div style="justify-content: center; width: 50vw;">
-      <button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2019')">2019</button
-     ><button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2021')">2021</button
-     ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('upload.html')">Komunitní</button
-     ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('packs.html')">Uložené</button>
+      <button class="yearButtonImg uploadText"
+        onclick="window.location.assign('index.html?year=2019')">2019</button><button class="yearButtonImg uploadText"
+        onclick="window.location.assign('index.html?year=2021')">2021</button><button
+        class="yearButtonImg commBut uploadText" src=""
+        onclick="window.location.assign('upload.html')">Komunitní</button><button
+        class="yearButtonImg commBut uploadText" src=""
+        onclick="window.location.assign('packs.html?type=favorites')">Uložené</button>
     </div>
     <div style="justify-content: right; display: flex; align-items: center;">
       <img id="popupBit" class="settingsMenu" src="images/popupArr.png">
-      <img class="button" src="images/gauntlet.png" style="width: 3vw; padding-right: 1vw;" onclick="$('.settingsMenu').fadeToggle(100)">
+      <img class="button" src="images/gauntlet.png" style="width: 3vw; padding-right: 1vw;"
+        onclick="$('.settingsMenu').fadeToggle(100)">
     </div>
     <div class="settingsMenu">
-        <div class="siteSettingsChild">
-            <p class="uploadText">Jazyk</p>
-            <select class="uploadText settingsDropdown">
-                <option>Čeština</option>
-                <option>Angličtina</option>
-            </select>
-        </div>
-        <div class="siteSettingsChild">
-            <p class="uploadText">Animace</p>
-            <img src="images/check-on.png" for="anim" class="button" style="width: 3vw;" onclick="checkCheckbox('anim', switchAnims)">
-            <input type="checkbox" style="display: none;" name="anim">
-        </div>
+      <div class="siteSettingsChild">
+        <p class="uploadText">Jazyk</p>
+        <select class="uploadText settingsDropdown">
+          <option>Čeština</option>
+          <option>Angličtina</option>
+        </select>
+      </div>
+      <div class="siteSettingsChild">
+        <p class="uploadText">Animace</p>
+        <img src="images/check-on.png" for="anim" class="button" style="width: 3vw;"
+          onclick="checkCheckbox('anim', switchAnims)">
+        <input type="checkbox" style="display: none;" name="anim">
+      </div>
     </div>
   </header>
+
+  <p class="titles"></p>
+  <div class="searchTools uploadText" style="justify-content: center;">
+    <span style="font-size: 3vw; padding-right: 2%;" id="sortStr">Řazení: </span>
+    <img src="images/sort.png" id="sortBut" class="button" style="width: 5%; transition-duration: 0s;">
+    <div class="page">
+      <span style="font-size: 3vw; padding-right: 2%;" id="pageStr">Strana: </span>
+      <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
+      <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
+      <span style="font-size: 3.5vw" id="maxPage">/1</span>
+      <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
+    </div>
+    <div class="search">
+      <input placeholder="Hledání" autocomplete="off" class="pageIndicator" id="searchBar">
+      <img src="./images/getStats.png" class="button passImg" style="float: none" onclick="search()">
+    </div>
+  </div>
+  <div class="listContainer"></div>
 </body>
 <footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.5) translateY(4vw);">
   <p class="uploadText">Vytvořil </p>

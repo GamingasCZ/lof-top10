@@ -255,8 +255,8 @@ function listShare() {
 	$("#shareTools").fadeIn(100);
 
 	let link = "";
-	let array = window.location.href.match(/(year|id|pid)/).slice(0, 1);
-	switch (array.length > 0 ? array[0] : null) {
+	let array = window.location.href.match(/(year|id|pid)/);
+	switch (array != null ? array[0] : null) {
 		case null:
 			link = "y=2019";
 			break;
@@ -278,9 +278,14 @@ function listShare() {
 
 	$("#shareContainer").on("mouseover", () => $("#shareContainer")[0].select())
 
-	let cringeText = "Mrkni se na můj Geodeš seznam - gamingas.wz.cz/?" + link
+	let cringeText = encodeURIComponent(`Mrkni se na můj Geodeš seznam - gamingas.wz.cz/?${link}`)
 
-	$($(".shareSocials")[0]).on("click", () => window.open("https://twitter.com/intent/tweet?text=" + cringeText))
+	let shareLinks = ["https://twitter.com/intent/tweet?text=" + cringeText, "https://www.reddit.com/submit?url=" + cringeText]
+	
+	let socButtons = $(".shareSocials").children()	
+	for (let but = 0; but < socButtons.length; but++) {
+		$(socButtons[but]).on("click", () => window.open(shareLinks[but]))
+	}
 
 	$("#shareContainer").val("gamingas.wz.cz/?" + link);
 }
@@ -752,7 +757,7 @@ function fave(th, id, data) {
 		th.removeClass("disabled")
 	}
 	else {
-		let favoriteArray = [boards[id]["levelName"], creator, boards[id]["levelID"], data[0], data[1], new Date().getTime() / 1000]
+		let favoriteArray = [boards[id]["levelName"], creator, boards[id]["levelID"], boards[id]["color"], data[0], data[1], new Date().getTime() / 1000]
 		currData.push(favoriteArray)
 		currIDs.push(boards[id]["levelID"])
 
@@ -761,6 +766,8 @@ function fave(th, id, data) {
 
 		th.addClass("disabled")
 	}
+
+	document.cookie = localStorage.getItem("favorites")
 }
 
 function debugCards() {
@@ -913,7 +920,7 @@ $(function () {
 	if ($(".titles").text() == "") { $(".titles").css("margin-top", "5vw") }
 	$(".searchTools").css("opacity", 1)
 	$("footer").css("opacity", 1)
-	
+
 	if (localStorage.getItem("anims") == null) localStorage.setItem("anims", 1)
 	$("input[name='anim']").attr("checked", localStorage.getItem("anims") == true ? true : false)
 	$("img[for='anim']").attr("src", localStorage.getItem("anims") == true ? "images/check-on.png" : "images/check-off.png")
@@ -922,16 +929,19 @@ $(function () {
 	if (animsEnabled) {
 		$("header").css("animation-name", "headerScroll")
 	}
+	else {
+		$("#crown").css("opacity", 0);
+	}
 
 	// Box appear animation
 	if (!window.location.pathname.includes("upload") && animsEnabled) {
 		$(".box").css("transform", "translateX(-100vw)");
 		$(".box").css("transition", "transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1)");
-		
+
 		$("#crown").css("transition", "transform 1s ease-out, opacity 1.2s ease-out");
 		$("#crown").css("opacity", 1);
-		
-		
+
+
 		let index = 0
 		let boxAppear = setInterval(() => {
 			if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
@@ -939,7 +949,7 @@ $(function () {
 			index++
 		}, 100);
 	}
-	
+
 	$("#crown").css("transform", "translateY(120px)")
 });
 
@@ -989,15 +999,15 @@ function checkPassword() {
 
 const switchAnims = (_curr) => localStorage.setItem("anims", localStorage.getItem("anims") == true ? 0 : 1)
 
-function checkCheckbox(changeVal, runFun=null) {
-    if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
-        $(`img[for="${changeVal}"]`).attr("src", "images/check-off.png")
-        $(`input[name="${changeVal}"]`).attr("checked", false)
-        runFun(false)
-    }
-    else {
-        $(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
-        $(`input[name="${changeVal}"]`).attr("checked", true)
+function checkCheckbox(changeVal, runFun = null) {
+	if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
+		$(`img[for="${changeVal}"]`).attr("src", "images/check-off.png")
+		$(`input[name="${changeVal}"]`).attr("checked", false)
+		runFun(false)
+	}
+	else {
+		$(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
+		$(`input[name="${changeVal}"]`).attr("checked", true)
 		runFun(true)
-    }
+	}
 }

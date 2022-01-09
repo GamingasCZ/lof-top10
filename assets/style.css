@@ -127,7 +127,6 @@ span {
   padding: 0.6vw;
   text-align: center;
   height: 4vw;
-  box-decoration-break: ;
   box-shadow: #0009 0vw 0vw 1vw;
   -webkit-text-stroke: 0.1vw black !important;
 }
@@ -412,6 +411,7 @@ html, body {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  opacity: 0;
 }
 
 .boards { margin-top: -5vw; }
