@@ -258,13 +258,53 @@ var jsStr = {
     "CANCEL": ["Zrušit", "Cancel"]
 }
 
+function slapArrayIntoObject(arr) {
+    let obj = {}
+    for (let i = 0; i < arr.length; i += 2) {
+        obj[arr[i]] = arr[i+1]
+    }
+    return obj
+}
+
+function getCookie(val="") {
+    let allCooks = document.cookie;
+    if (allCooks == "") return null // No cookies set
+    
+    let arrayOfCooks = allCooks.split("; ");
+    let finishedCooks = [];
+    
+    arrayOfCooks.forEach(x => {
+        if (x.includes("=")) {
+            finishedCooks.push(x.split("=")[0])
+            finishedCooks.push(x.split("=")[1])
+            };
+    })
+        
+    finishedCooks = slapArrayIntoObject(finishedCooks)
+    if (val != "") {
+        let getSearched = Object.keys(finishedCooks).indexOf(val);
+        if (getSearched != -1) { // Not found
+            let searchObj = {};
+            return Object.values(finishedCooks)[getSearched]
+            }
+        else throw "Bro, someone stole the cookie, as it hasn't been found lmao!";
+    }
+    else return finishedCoocks;
+}
+
+function makeCookie(val) { // Also works for changing cookies
+    let expireDate = "Sun, 1 Jan 2040 12:00:00 UTC"
+    document.cookie = `${val[0]}=${encodeURIComponent(val[1])}; expires=${expireDate}; SameSite=Lax`
+}
+
 $(function () {
-    var currLang = localStorage.getItem("lang");
+    var currLang = getCookie("lang");
     if (currLang == null) {
         let getLang = navigator.language;
         if (["cs", "sk"].includes(getLang)) { currLang = 0; }
         else { currLang = 1; }
-        localStorage.setItem("lang", currLang);
+        
+        makeCookie(["lang", currLang])
     }
     LANG = currLang;
     $($(".settingsDropdown").children()[currLang]).attr("selected", true)
@@ -272,7 +312,7 @@ $(function () {
     
     $(".settingsDropdown").on("change", () => {
         let switchLang = $(".settingsDropdown").val() == "Čeština" ? 0 : 1
-        localStorage.setItem("lang", switchLang);
+        makeCookie(["lang", switchLang])
         window.location.reload();
     })
 })
@@ -282,7 +322,7 @@ function changeLang() {
     if (LANG >= LANG_AM) {
         LANG = 0
     }
-    localStorage.setItem("lang", LANG);
+    makeCookie(["lang", switchLang])
     window.location.reload()
 }
 

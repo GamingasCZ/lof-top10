@@ -9,7 +9,7 @@ $(function() {
     if (params["type"] != null && params["type"] == "favorites") {
         $(".titles").text("- Oblíbené levely -")
 
-        let favorites = JSON.parse(document.cookie)
+        let favorites = JSON.parse(decodeURIComponent(getCookie("favorites")))
         if (favorites == null) {
             $(".listContainer").html("<p class='uploadText'>Zatím nemáš nic v oblíbených!</p>")
         }

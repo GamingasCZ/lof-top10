@@ -746,7 +746,7 @@ function fave(th, id, data) {
 	let currIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
 
 	// Unfaving
-	if (currIDs.includes(boards[id]["levelID"])) {
+	if (1==2) {
 		let listIndex = currIDs.indexOf(boards[id]["levelID"])
 		currData.splice(listIndex, 1)
 		currIDs.splice(listIndex, 1)
@@ -766,8 +766,10 @@ function fave(th, id, data) {
 
 		th.addClass("disabled")
 	}
-
-	document.cookie = localStorage.getItem("favorites")
+	
+	if (localStorage.getItem("favorites") != null) {
+		makeCookie(["favorites",localStorage.getItem("favorites")])
+	}
 }
 
 function debugCards() {
@@ -951,6 +953,11 @@ $(function () {
 	}
 
 	$("#crown").css("transform", "translateY(120px)")
+	
+	// Setting favorites to cookie
+	if (localStorage.getItem("favorites") != null) {
+		makeCookie(["favorites",localStorage.getItem("favorites")])
+	}
 });
 
 function checkPassword() {
