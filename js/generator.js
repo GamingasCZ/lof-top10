@@ -281,8 +281,8 @@ function listShare() {
 	let cringeText = encodeURIComponent(`Mrkni se na můj Geodeš seznam - gamingas.wz.cz/?${link}`)
 
 	let shareLinks = ["https://twitter.com/intent/tweet?text=" + cringeText, "https://www.reddit.com/submit?url=" + cringeText]
-	
-	let socButtons = $(".shareSocials").children()	
+
+	let socButtons = $(".shareSocials").children()
 	for (let but = 0; but < socButtons.length; but++) {
 		$(socButtons[but]).on("click", () => window.open(shareLinks[but]))
 	}
@@ -736,17 +736,23 @@ function generateList(boards, listData) {
 		$(".password").remove();
 		$("#crown").remove();
 	}
+
+	// When clicking a level in saved, scroll to card
+	let paramGetter = new URLSearchParams(window.location.search)
+	let params = Object.fromEntries(paramGetter.entries());
+
+	if ($(".box")[params.goto - 1] != undefined) $(".box")[params.goto - 1].scrollIntoView()
 }
 
 function fave(th, id, data) {
 	let creator = boards[id]["creator"]
-	if (typeof boards[id]["creator"] == "object") creator = boards[id]["creator"][0][0] + " (Collab)" // Is collab?
+	if (typeof boards[id]["creator"] == "object") creator = boards[id]["creator"][0][0] + " <b style='color: #ffd27c'>(Collab)</b>" // Is collab?
 
 	let currData = localStorage.getItem("favorites") == null ? [] : JSON.parse(localStorage.getItem("favorites"))
 	let currIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
 
 	// Unfaving
-	if (1==2) {
+	if (currIDs.includes(boards[id]["levelID"])) {
 		let listIndex = currIDs.indexOf(boards[id]["levelID"])
 		currData.splice(listIndex, 1)
 		currIDs.splice(listIndex, 1)
@@ -757,7 +763,8 @@ function fave(th, id, data) {
 		th.removeClass("disabled")
 	}
 	else {
-		let favoriteArray = [boards[id]["levelName"], creator, boards[id]["levelID"], boards[id]["color"], data[0], data[1], new Date().getTime() / 1000]
+		// levelName, levelCreator, levelID, cardCol, listID, listID, listPos, timeAdded
+		let favoriteArray = [boards[id]["levelName"], creator, boards[id]["levelID"], boards[id]["color"], data[0], data[1], id, new Date().getTime() / 1000]
 		currData.push(favoriteArray)
 		currIDs.push(boards[id]["levelID"])
 
@@ -766,10 +773,41 @@ function fave(th, id, data) {
 
 		th.addClass("disabled")
 	}
-	
-	if (localStorage.getItem("favorites") != null) {
-		makeCookie(["favorites",localStorage.getItem("favorites")])
+
+	let savePage = $("iframe")[0].contentWindow
+	sender = "http://gamingas.wz.cz"
+	if (window.location.protocol == "file:") sender = "*" // Allow all if running locally
+
+	savePage.postMessage([JSON.stringify(currData), JSON.stringify(currIDs)], sender)
+}
+
+async function showFaves() {
+	$(".boards").hide();
+	$(".comments").hide();
+	$(".listOptions").hide();
+	$(".titles").hide();
+
+	// Reloads iframe and loads new faved levels
+	await $("iframe").attr("src", "packs.html?type=favorites");
+	setTimeout(() => $("iframe").fadeIn(50), 100)
+
+}
+
+function switchLoFList(page, goto = null) {
+	if (window.location.href.includes(page)) {
+		// Returning from favorites page doesn't need reloading
+		$(".boards").fadeIn(50);
+		$(".listOptions").fadeIn(50);
+		$(".comments").fadeOut(50);
+		$(".titles").fadeIn(50);
+
+		$("iframe").fadeOut(50)
+
+		// HOW DOES THIS WORK??!! You shouldn't have to subtract 4
+		if (goto != null) $(".box")[goto - 4].scrollIntoView();
+
 	}
+	else window.location.assign(goto == null ? page : page + `&goto=${goto}`)
 }
 
 function debugCards() {
@@ -785,6 +823,20 @@ function debugCards() {
 var listData = "";
 var debugPwd = 0;
 $(function () {
+	window.addEventListener("message", mess => {
+		let intent = mess.data[0];
+		if (intent == "loading") {
+			switchLoFList(mess.data[1], mess.data[2]);
+		}
+		else if (intent == "removing") {
+			localStorage.setItem("favorites", JSON.stringify(mess.data[1][0]))
+			localStorage.setItem("favoriteIDs", JSON.stringify(mess.data[1][1]))
+
+			// What a wonderful method
+			if ($("title").text().includes(mess.data[1][3])) $($(".favoriteStar")[mess.data[1][2]]).removeClass("disabled")
+		}
+	})
+
 	$(".passInput").val("");
 	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
 	if (location.search != "") {
@@ -817,7 +869,7 @@ $(function () {
 				<p style="font-size: 3vw;">Pass: ${debugPwd}</p>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`Debug seznam | GD Seznamy`)
-				generateList(boards, [0, 0])
+				generateList(boards, [0, "Debug List"])
 			}
 
 			$.get("./php/getLists.php?id=" + listID[1], function (data) {
@@ -834,22 +886,21 @@ $(function () {
 					$("#crown").remove();
 				}
 				else {
-					let listData = data.split(";-!-;");
-					listData[3].replace("&quot;", "\"");
+					data[3].replace("&quot;", '"');
 
-					if (listData[5] == 2) {
+					if (data[5] == 2) {
 						$(".titles").append("<p>Event seznam si jde prohlédnout jen ze stránky 2021 seznamu ;).</p>");
 						$(".searchTools").remove();
 						$("#crown").remove();
 					}
 					else {
-						let boards = JSON.parse(listData[2]);
-						$(".titles").append(`<p>${listData[1]}</p>
+						let boards = JSON.parse(data[2]);
+						$(".titles").append(`<p>${data[1]}</p>
 						<hr class="lineSplitGeneral" style="margin: -2% 10%;">
-						<p style="font-size: 3vw;">- ${listData[0]} -</p>`);
+						<p style="font-size: 3vw;">- ${data[0]} -</p>`);
 						$(".titleImage").attr("src", boards["titleImg"]);
-						$("title").html(`${listData[1]} | GD Seznamy`)
-						generateList(boards, [listData[1], listData[3]]);
+						$("title").html(`${data[1]} | GD Seznamy`)
+						generateList(boards, [data[1], data[3]]);
 					}
 				}
 			}
@@ -864,15 +915,14 @@ $(function () {
 					$("#crown").remove();
 				}
 				else {
-					let listData = data.split(";-!-;");
-					listData[3].replace("&quot;", "\"");
-					let boards = JSON.parse(listData[2]);
-					$(".titles").append(`<p>${listData[1]}</p>
+					data[3].replace("&quot;", "\"");
+					let boards = JSON.parse(data[2]);
+					$(".titles").append(`<p>${data[1]}</p>
 					<hr class="lineSplitGeneral" style="margin: -2% 10%;">
-					<p style="font-size: 3vw;">- ${listData[0]} -</p>`);
+					<p style="font-size: 3vw;">- ${data[0]} -</p>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
-					$("title").html(`${listData[1]} | GD Seznamy`)
-					generateList(boards, [listData[1], listData[3]]);
+					$("title").html(`${data[1]} | GD Seznamy`)
+					generateList(boards, [data[1], data[3]]);
 				}
 			}
 			)
@@ -897,13 +947,13 @@ $(function () {
 				$(".password").remove()
 				$("title").html(`${listName} | GD Seznamy`)
 
-				generateList(boards, [LIST_ID, "GamingasCZ"]);
+				generateList(boards, [LIST_ID, listName]);
 			}
 		}
 	}
-	else if (YEAR == "2019") {
+	else if (YEAR == "2019" & location.pathname.match(/(upload)/g) == null) {
 		$(".password").remove()
-		generateList(boards, [LIST_ID, "GamingasCZ"]);
+		generateList(boards, [LIST_ID, "Top 10 LoF 2019"]);
 	}
 
 	// Hiding header and showing scroll to top button
@@ -953,10 +1003,10 @@ $(function () {
 	}
 
 	$("#crown").css("transform", "translateY(120px)")
-	
+
 	// Setting favorites to cookie
 	if (localStorage.getItem("favorites") != null) {
-		makeCookie(["favorites",localStorage.getItem("favorites")])
+		makeCookie(["favorites", localStorage.getItem("favorites")])
 	}
 });
 

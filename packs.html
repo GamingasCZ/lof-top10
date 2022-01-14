@@ -21,45 +21,9 @@
   <title>Uložené levely | GD Seznamy</title>
 </head>
 
-<body>
-  <div class="shade"></div>
-  <header>
-    <div style="justify-content: left;">
-      <img src="images/title.png" style="width: 23vw; height: fit-content;">
-    </div>
-    <div style="justify-content: center; width: 50vw;">
-      <button class="yearButtonImg uploadText"
-        onclick="window.location.assign('index.html?year=2019')">2019</button><button class="yearButtonImg uploadText"
-        onclick="window.location.assign('index.html?year=2021')">2021</button><button
-        class="yearButtonImg commBut uploadText" src=""
-        onclick="window.location.assign('upload.html')">Komunitní</button><button
-        class="yearButtonImg commBut uploadText" src=""
-        onclick="window.location.assign('packs.html?type=favorites')">Uložené</button>
-    </div>
-    <div style="justify-content: right; display: flex; align-items: center;">
-      <img id="popupBit" class="settingsMenu" src="images/popupArr.png">
-      <img class="button" src="images/gauntlet.png" style="width: 3vw; padding-right: 1vw;"
-        onclick="$('.settingsMenu').fadeToggle(100)">
-    </div>
-    <div class="settingsMenu">
-      <div class="siteSettingsChild">
-        <p class="uploadText">Jazyk</p>
-        <select class="uploadText settingsDropdown">
-          <option>Čeština</option>
-          <option>Angličtina</option>
-        </select>
-      </div>
-      <div class="siteSettingsChild">
-        <p class="uploadText">Animace</p>
-        <img src="images/check-on.png" for="anim" class="button" style="width: 3vw;"
-          onclick="checkCheckbox('anim', switchAnims)">
-        <input type="checkbox" style="display: none;" name="anim">
-      </div>
-    </div>
-  </header>
-
-  <p class="titles"></p>
-  <div class="searchTools uploadText" style="justify-content: center;">
+<body style="background: transparent; overflow-x: visible;">
+  <p class="titles" style="margin: 2vw;"></p>
+  <div class="searchTools savesTools uploadText" style="justify-content: center">
     <span style="font-size: 3vw; padding-right: 2%;" id="sortStr">Řazení: </span>
     <img src="images/sort.png" id="sortBut" class="button" style="width: 5%; transition-duration: 0s;">
     <div class="page">
@@ -76,13 +40,6 @@
   </div>
   <div class="listContainer"></div>
 </body>
-<footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.5) translateY(4vw);">
-  <p class="uploadText">Vytvořil </p>
-  <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
-  <span class="uploadText"> | 2021-2022 | </span>
-  <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github"
-      src="images/github.png"></a>
-</footer>
-<script>$(function () { translate(); })</script>
+<script>$(function () { translate() });</script>
 
 </html>

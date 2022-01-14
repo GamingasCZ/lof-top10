@@ -20,7 +20,7 @@ function checkJson(data) {
         $(".errorBox").text(jsStr["SUCC_UPL"][LANG]);
 
         // 1.5/3 Je seznam prázdný?
-        if (Object.keys(parsedData).length-ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
+        if (Object.keys(parsedData).length - ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
         for (i = 1; i < Object.keys(parsedData).length - ADDIT_VALS; i++) {
@@ -46,7 +46,7 @@ function checkJson(data) {
             $(".errorBox").html(error);
         }
 
-        setTimeout(() => {$(".errNotif").fadeOut(200)}, 2000);
+        setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
         return false
     }
 }
@@ -55,81 +55,39 @@ var isHidden = $("input[name='hidden']").attr("checked") == "checked";
 var page = 0;
 var maxPage = 0;
 var listNames = [];
-function displayComLists(data) {
-    // Zbavení se line breaku
-    data = data.slice(0, -2);
+function displayComLists(doita) {
+    $(".customLists").children().remove();
 
-    $(".customLists").children().remove()
+    let data = JSON.parse(JSON.stringify(doita));
+    let listAmount = Object.keys(data).length;
 
-    try {
-        if (data.match(/\|/g).length > 0) {
-            let listsArray = data.split("|-!-|");
+    maxPage = Math.ceil(listAmount / 4);
+    $("#maxPage").text("/" + maxPage);
 
-            // Deleteee  e e
-            if (listsArray.indexOf("") != -1) { listsArray.splice(listsArray.indexOf(""), 1) }
-            if (listsArray.indexOf("\n") != -1) { listsArray.splice(listsArray.indexOf("\n"), 1) }
-
-            maxPage = Math.ceil(listsArray.length / 4);
-            $("#maxPage").text("/" + maxPage);
-
-            // List sorting
-            if (!sorting) {
-                listsArray.reverse();
-            }
-
-            // Appends list names (only needs to be done once)
-            if (listNames.length == 0) {
-                listsArray.forEach((val) => listNames.push(val.split(";-!-;")[1]));
-            }
-
-
-            for (i = 4 * page; i < 4 * page + 4; i++) {
-                let listData = (listsArray[i]).split(";-!-;");
-                let listColor = JSON.parse(listData[2])["1"]["color"]
-                let rgb = [];
-                for (j = 1; j < 6; j += 2) {
-                    rgb.push(parseInt("0x" + listColor.slice(j, j + 2)) - 40);
-                }
-                $(".customLists").append(`
-        <a style="text-decoration: none;" href="./index.html?id=${listData[3]}">
-            <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(",")})">
-                <div class="uploadText">${listData[1]}</div>
-                <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}${listData[0]}</div>
-            </div>
-        </a>
-                `);
-            }
-        }
-        else {
-            throw ("ok");
-        }
-    }
-
-    catch (error) {
-        if (data.match(/\|/g) == null || data.endsWith("|\n")) {
-            let listData = (data).split(";-!-;");
-
-            let listColor = JSON.parse(listData[2])["1"]["color"]
-            let rgb = [];
-            for (j = 1; j < 6; j += 2) {
-                rgb.push(parseInt("0x" + listColor.slice(j, j + 2)) - 40);
-            }
-
-            if (listNames.length == 0) {
-                listNames.push(listData[1]);
-            }
+    if (Object.keys(data).length > 0) {
+        data.slice(4 * page, 4 * page + 4).forEach(list => {
+            let listColor = list["data"]["1"].color;
+            let darkCol = HEXtoRGB(listColor, 40);
 
             $(".customLists").append(`
-        <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
-        <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(',')})">
-            <div class="uploadText">${listData[1]}</div>
-            <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}${listData[0]}</div>
-        </div>
-    </a>
-                `);
-        }
-
+            <a style="text-decoration: none;" href="./index.html?id=${list.id}">
+                <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${darkCol.join(",")})">
+                    <div class="uploadText">${list.name}</div>
+                    <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}${list.creator}</div>
+                </div>
+            </a>
+                    `);
+        });
     }
+}
+
+function showFaves() {
+    $(".searchTools").hide();
+    $(".uploadBG").hide();
+    $(".titles").hide();
+    $(".customLists").hide();
+
+    $("iframe").show();
 }
 
 function uploadList() {
@@ -167,25 +125,18 @@ var debug_mode = false;
 var deeta = '';
 var ogDeeta = '';
 
-// List generator
-// if (debug_mode) {
-//     for (let i = 0; i < 4; i++) {
-//         deeta += `${i};${btoa(i * 48514654894984 / 1.848564)};{"1":{"color":"rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})"}};45;10|`
-
-//     }
-// }
-
 function debugLists(am) {
     // not translatable, because I don't feel like it :D
     let adj = ["Big", "Small", "Good", "Bad", "Funny", "Stupid", "Furry", "Christian", "Best", "Gay", "Nice", "Thicc", "OwO", "Cringe", "Big PP", "Life-changing", "Gamingas", "Reddit", "Dramatic", "Hot", "Shit"]
-    let noun = ["Levels", "Collabs", "Megacollabs", "Layouts", "Deco", "Effect Levels", "Grass Levels", "Glow Levels", "2.1 Levels", "Wave Levels", "Virgin Levels", "Extreme Demon Levels","Viprin Levels",
-                "Main Levels", "List Levels", "Dangerous Levels", "Gauntlet Levels","Energetic Levels", "Questionable Levels"]
+    let noun = ["Levels", "Collabs", "Megacollabs", "Layouts", "Deco", "Effect Levels", "Grass Levels", "Glow Levels", "2.1 Levels", "Wave Levels", "Virgin Levels", "Extreme Demon Levels", "Viprin Levels",
+        "Main Levels", "List Levels", "Dangerous Levels", "Gauntlet Levels", "Energetic Levels", "Questionable Levels"]
     if (am == 2) {
-        deeta = "";
+        deeta = [];
         for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-            deeta += `${i};-!-;Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]};-!-;{"1":{"color":"${RGBtoHEX(randomColor())}"}};-!-;45;-!-;10|-!-|`
+            deeta.push({ "creator": i, "name": `Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]}`, "data": { "1": { "color": RGBtoHEX(randomColor()) } }, "id": 45, "timestamp": 10 })
         }
         ogDeeta = deeta;
+
         displayComLists(deeta);
     }
     else {
@@ -207,7 +158,7 @@ $(function () {
 
     // Sort button action
     $("#sortBut").on("click", function () {
-        displayComLists(deeta.split("|-!-|").reverse().join("|-!-|"))
+        displayComLists(deeta.reverse())
         if (sorting) {
             $("#sortBut").css("transform", "scaleY(1)");
             $("#sortBut").attr("title", jsStr["NEWEST"][LANG])
@@ -316,7 +267,7 @@ $(function () {
     // Mobile optimzations
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         $(".uploadBG").css("margin", "1vw");
-        $("#collabTools").css("right",0);
+        $("#collabTools").css("right", 0);
         $("#collabInp").css("border", "none");
         $("body").css("margin", "0");
     }
@@ -416,9 +367,8 @@ function search() {
         displayComLists(deeta);
     }
     else {
-        let regex = new RegExp(";.*(" + query + ").*;{", "ig"); // Matches all strings that contain "query"
-        let splitData = deeta.split("|-!-|");
-        let filteredData = splitData.filter((val) => val.match(regex));
+        let regex = new RegExp(".*(" + query + ").*", "ig"); // Matches all strings that contain "query"
+        let filteredData = deeta.filter(val => JSON.stringify(val).match(regex));
         if (filteredData.length == 0) {
             $(".customLists").children().remove()
             page = 0;
@@ -429,10 +379,9 @@ function search() {
         else {
             page = 0;
             $("#pageSwitcher").val("1");
-            deeta = "";
-            filteredData.forEach((val) => deeta += val + "|-!-|");
+            deeta = filteredData;
 
-            displayComLists(filteredData.join("|-!-|"));
+            displayComLists(filteredData);
         }
     }
 }

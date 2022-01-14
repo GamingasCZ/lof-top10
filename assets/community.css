@@ -294,12 +294,11 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     top: 11vw;
     left: 15vw;
     z-index: 4;
-    padding-top: 0;
-    padding-left: 2vw;
+    padding: 0 0vw 1vw 2vw;
 }
 #shareContainer {
     font-size: 2vw;
-    margin: 0 2vw 3vw 0vw;
+    margin: 0 2vw 2vw 0vw;
     -webkit-text-stroke: 0.1vw black;
     border: none;
     opacity: 1 !important;
@@ -416,7 +415,6 @@ input:disabled {
     margin: 2% 7%;
     border: white 7px solid;
     border-radius: 5px;
-    cursor: pointer;
     display: block;
 }
 

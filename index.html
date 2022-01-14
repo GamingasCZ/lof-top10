@@ -35,11 +35,11 @@
     <div style="justify-content: left;">
       <img src="images/title.png" style="width: 23vw; height: fit-content;">
     </div>
-    <div style="justify-content: center; width: 50vw;">
-      <button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2019')">2019</button
-     ><button class="yearButtonImg uploadText" onclick="window.location.assign('index.html?year=2021')">2021</button
+    <div style="justify-content: center; width: 66vw;">
+      <button class="yearButtonImg uploadText" onclick="switchLoFList('index.html?year=2019')">2019</button
+     ><button class="yearButtonImg uploadText" onclick="switchLoFList('index.html?year=2021')">2021</button
      ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('upload.html')">Komunitní</button
-     ><button class="yearButtonImg commBut uploadText" src="" onclick="window.location.assign('packs.html?type=favorites')">Uložené</button>
+     ><button class="yearButtonImg commBut uploadText" src="" onclick="showFaves()">Uložené</button>
     </div>
     <div style="justify-content: right; display: flex; align-items: center;">
       <img id="popupBit" class="settingsMenu" src="images/popupArr.png">
@@ -103,7 +103,7 @@
 
   <img class="titleImage">
 
-  <div class="searchTools uploadText" style="justify-content: space-between; opacity: 0;">
+  <div class="searchTools listOptions uploadText" style="justify-content: space-between; opacity: 0;">
     <div style="justify-content: left; height: 4vw;">
       <img src="images/list.png" onclick="listList()" class="button lList disabled" style="width: 4vw;"
            title="Seznam levelů">
@@ -119,10 +119,12 @@
     </div>
 
     <div class="password">
-      <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 0% 2% -1%; height: 2.3vw; transform: none;">
-      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="height: fit-content; transform: translateY(0.2vw);">
+      <input type="text" class="cardInput passInput" placeholder="Heslo" style="margin: 0% 2% 0%; height: 2.3vw; transform: none;">
+      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="height: fit-content;">
     </div>
   </div>
+
+  <iframe src="packs.html?type=favorites" loading="eager" style="display: none;" scrolling="no"></iframe>
 
   <div class="comments">
     <div class="searchTools uploadText debugTools">

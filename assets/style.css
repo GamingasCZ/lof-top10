@@ -141,6 +141,11 @@ span {
   margin-bottom: 1vw;
 }
 
+u {
+  color: rgb(131, 181, 255);
+  text-decoration-thickness: 0.1vw;
+  cursor: pointer;
+}
 
 .settingsMenu {
   position: absolute;
@@ -599,6 +604,14 @@ header {
 footer {
   opacity: 0;
   transition: opacity 1s ease-out;
+}
+
+iframe {
+  width: 100vw;
+  height: 102vh;
+  overflow: hidden;
+  border: none;
+  margin-top: 8vh;
 }
 
 .eventButton {
