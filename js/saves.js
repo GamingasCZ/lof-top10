@@ -1,5 +1,6 @@
 const MAX_ON_PAGE = 4
 var page = 0
+var maxPage = 0
 
 var sorting = false
 var currView = "" 
@@ -14,7 +15,10 @@ $(function() {
     })
 
     $("#sortBut").on("click", function () {
-        let getObject = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")));
+        let getObject
+        if (filteredData == null) getObject = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")));
+        else getObject = sorting ? filteredData : filteredData.reverse();
+
         if (sorting) {
             $("#sortBut").css("transform", "scaleY(1)");
             $("#sortBut").attr("title", jsStr["OLDEST"][LANG])
@@ -26,6 +30,17 @@ $(function() {
             generateList(getObject);
         }
         sorting = !sorting
+    })
+
+    $("#pageSwitcher").on("change", function () {
+        page = parseInt($(this).val()) - 1;
+        if (page > maxPage) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
+        if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
+
+        let obj = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")));
+        if (!sorting) obj.reverse()
+
+        generateList(obj);
     })
 
     // Prepping for future :O
@@ -40,13 +55,68 @@ function generateFaves() {
     $(".titles").text("- Oblíbené levely -")
 
     // levelName, levelCreator, levelID, cardCol, listID, listName, listPos, timeAdded
-    let favorites = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")))
+    let favorites = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")));
+
     if (!sorting) favorites.reverse()
     
+    maxPage = Math.ceil(Object.keys(favorites).length/MAX_ON_PAGE)
+
     if (favorites == null || Object.keys(favorites).length == 0) {
         $(".listContainer").html("<p class='uploadText' style='text-align: center; color: #f9e582'>Zatím nemáš nic v oblíbených!</p>")
     }
     else generateList(favorites)
+}
+
+function pageSwitch(num) {
+    if (page + num < 0) page = 0
+    else if (page + num > maxPage - 1) page = maxPage - 1;
+    else {
+        page += num;
+        $("#pageSwitcher").val(page + 1);
+
+        // Not sure how I feel about this...
+        let obj = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")));
+        if (!sorting) obj.reverse()
+
+        generateList(obj);
+    }
+}
+
+var filteredData = null
+function search() {
+    deeta = JSON.parse(decodeURIComponent(localStorage.getItem(currView)));
+    let query = $("#searchBar").val();
+    if (query == "") {
+        // Reset stuff
+        page = 0;
+        filteredData = null;
+        $("#pageSwitcher").val("1");
+        maxPage = Math.ceil(Object.keys(deeta).length/MAX_ON_PAGE);
+        $("#maxPage").text("/"+maxPage);
+
+        generateList(deeta);
+    }
+    else {
+        let regex = new RegExp(".*(" + query + ").*", "ig"); // Matches all strings that contain "query"
+        filteredData = deeta.filter(val => JSON.stringify(val).match(regex));
+        if (filteredData.length == 0) {
+            $(".listContainer").text("")
+            page = 0;
+            $("#pageSwitcher").val("1");
+            $("#maxPage").text("/1")
+            $(".listContainer").append(`<p class="uploadText" align=center>${jsStr['NO_RES'][LANG]}</p>`);
+        }
+        else {
+            page = 0;
+            $("#pageSwitcher").val("1");
+            maxPage = Math.ceil(Object.keys(filteredData).length/MAX_ON_PAGE)
+            $("#maxPage").text("/"+maxPage)
+
+            deeta = filteredData;
+
+            generateList(filteredData);
+        }
+    }
 }
 
 function removeFromList(obj, id, el, listName, pos) {
@@ -94,7 +164,7 @@ function goToList(obj, pos) {
 function generateList(obj) {
     $(".listContainer").text("")
 
-    $("#maxPage").text("/"+(parseInt(Object.keys(obj).length/MAX_ON_PAGE)+1))
+    $("#maxPage").text("/"+maxPage)
     obj.slice(MAX_ON_PAGE*page, MAX_ON_PAGE*page+MAX_ON_PAGE).forEach(object => {
         let darkCol = HEXtoRGB(object[3], 40)
         $(".listContainer").append(`

@@ -283,6 +283,8 @@ function listShare() {
 	let shareLinks = ["https://twitter.com/intent/tweet?text=" + cringeText, "https://www.reddit.com/submit?url=" + cringeText]
 
 	let socButtons = $(".shareSocials").children()
+	socButtons.off("click")
+	
 	for (let but = 0; but < socButtons.length; but++) {
 		$(socButtons[but]).on("click", () => window.open(shareLinks[but]))
 	}
@@ -982,7 +984,8 @@ $(function () {
 		$("header").css("animation-name", "headerScroll")
 	}
 	else {
-		$("#crown").css("opacity", 0);
+		$("body").css("scroll-behavior", "unset")
+		$("#crown").css("opacity", 1);
 	}
 
 	// Box appear animation
