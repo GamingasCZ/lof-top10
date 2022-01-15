@@ -13,26 +13,31 @@ $(function() {
 
     // Prepping for future :O
     if (params["type"] != null && params["type"] == "favorites") {
-        $(".titles").text("- Oblíbené levely -")
-
-        // levelName, levelCreator, levelID, cardCol, listID, listName, listPos, timeAdded
-        let favorites = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")))
-        if (favorites == null || Object.keys(favorites).length == 0) {
-            $(".listContainer").html("<p class='uploadText' style='text-align: center; color: #f9e582'>Zatím nemáš nic v oblíbených!</p>")
-        }
-        else generateList(favorites)
+        generateFaves()
     }
     $("body").css("opacity", 1);
 })
+
+function generateFaves() {
+    $(".titles").text("- Oblíbené levely -")
+
+    // levelName, levelCreator, levelID, cardCol, listID, listName, listPos, timeAdded
+    let favorites = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")))
+    if (favorites == null || Object.keys(favorites).length == 0) {
+        $(".listContainer").html("<p class='uploadText' style='text-align: center; color: #f9e582'>Zatím nemáš nic v oblíbených!</p>")
+    }
+    else generateList(favorites)
+}
 
 function removeFromList(obj, id, el, listName, pos) {
     if (obj == "fav") {
         // Remove level
         let currIDs = JSON.parse(localStorage.getItem("favoriteIDs"))
-        let removeID = currIDs.indexOf(id.toString())-1 // TODO: broken
-
-		let currData = JSON.parse(localStorage.getItem("favorites")).splice(removeID, 1)
-		currIDs = currIDs.splice(removeID, 1)
+        let currData = JSON.parse(localStorage.getItem("favorites"))
+        let removeID = currIDs.indexOf((id).toString()) // TODO: broken
+        
+        currData.splice(removeID, 1)
+		currIDs.splice(removeID, 1)
 
 		localStorage.setItem("favorites", JSON.stringify(currData))
 		localStorage.setItem("favoriteIDs", JSON.stringify(currIDs))
@@ -41,8 +46,8 @@ function removeFromList(obj, id, el, listName, pos) {
         if (window.location.protocol == "file:") sender = "*" // Allow all if running locally
     
         window.parent.postMessage(["removing", [currData, currIDs, pos-1, listName]], sender)
-
-        generateList(currData)
+    
+        generateFaves()
     }
 }
 
@@ -67,7 +72,7 @@ function goToList(obj, pos) {
 }
 
 function generateList(obj) {
-    $("#listPreview").remove()
+    $(".listContainer").text("")
 
     $("#maxPage").text("/"+(parseInt(Object.keys(obj).length/MAX_ON_PAGE)+1))
     obj.slice(MAX_ON_PAGE*page, MAX_ON_PAGE*page+MAX_ON_PAGE).forEach(object => {
@@ -79,7 +84,7 @@ function generateList(obj) {
                 <p class="uploadText" style="font-size: 1.8vw; margin: 0;"><u onclick="goToList(${object[4]}, ${object[6]})">${object[5]}</u> - ID levelu: ${object[2]}</p>
             </div>
             <div>
-                <img class="button" onclick="removeFromList('fav', ${object[2]}, $(this), '${object[5]}', ${object[6]})" style="width: 4vw" src="images/delete.png">
+                <img class="button" onclick="removeFromList('fav', ${object[2]}, $(this), '${object[5]}', ${object[6]});" style="width: 4vw" src="images/delete.png">
             </div>
         </div>
         `)
