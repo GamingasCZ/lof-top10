@@ -1,6 +1,8 @@
 const MAX_ON_PAGE = 4
 var page = 0
 
+var sorting = false
+var currView = "" 
 $(function() {
     let paramGetter = new URLSearchParams(window.location.search)
     let params = Object.fromEntries(paramGetter.entries());
@@ -11,8 +13,24 @@ $(function() {
         localStorage.setItem("favoriteIDs", mess.data[1])
     })
 
+    $("#sortBut").on("click", function () {
+        let getObject = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")));
+        if (sorting) {
+            $("#sortBut").css("transform", "scaleY(1)");
+            $("#sortBut").attr("title", jsStr["OLDEST"][LANG])
+            generateList(getObject.reverse());
+        }
+        else {
+            $("#sortBut").css("transform", "scaleY(-1)");
+            $("#sortBut").attr("title", jsStr["NEWEST"][LANG])
+            generateList(getObject);
+        }
+        sorting = !sorting
+    })
+
     // Prepping for future :O
     if (params["type"] != null && params["type"] == "favorites") {
+        currView = "favorites"
         generateFaves()
     }
     $("body").css("opacity", 1);
@@ -23,6 +41,8 @@ function generateFaves() {
 
     // levelName, levelCreator, levelID, cardCol, listID, listName, listPos, timeAdded
     let favorites = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")))
+    if (!sorting) favorites.reverse()
+    
     if (favorites == null || Object.keys(favorites).length == 0) {
         $(".listContainer").html("<p class='uploadText' style='text-align: center; color: #f9e582'>Zatím nemáš nic v oblíbených!</p>")
     }
