@@ -16,12 +16,19 @@
     }
 }
 
+@keyframes advyout {
+    from { background-position-x: 0px }
+    to { background-position-x: 285px }
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
 
 body {
-  background-image: url("../images/bg.png");
-  background-color: #020202;
-  margin: 0;
+    background: black url("../images/advyout.png");
+    animation-name: advyout;
+    animation-iteration-count: infinite;
+    animation-duration: 5s;
+    animation-timing-function: linear;
 }
 
 @font-face {
