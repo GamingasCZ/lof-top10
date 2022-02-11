@@ -252,6 +252,7 @@ function displayCard(id) {
         $("#top" + id.toString()).css("transform", "scaleY(0.8)");
         $("#top" + id.toString()).show();
         $("#top" + id.toString()).css("transform", "scaleY(1)");
+        $(".cardExtrasContainer").hide()
         updateSmPos()
 
         // Disable/Enable search buttons depending on if there's text in them
@@ -274,17 +275,13 @@ function availFill(type, sel, key, pos) {
     }
 }
 
-function changeColPicker() {
-    let chosenColor = $(this).val()
-    let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
+function changeColPicker(chosenColor, target) {
+    $("#top" + target).css("background-color", `hsl(${chosenColor}, ${DEFAULT_SATURATION}, ${DEFAULT_LIGHTNESS})`);
+    $("#top" + target).css("border-color", `hsl(${chosenColor}, ${DEFAULT_SATURATION}, ${DEFAULT_DARK})`);
+    $("#lineSplit" + target).css("background-color", `hsl(${chosenColor}, ${DEFAULT_SATURATION}, ${DEFAULT_DARK})`);
+    $(".cardContainer" + target).css("background-color", `hsl(${chosenColor}, ${DEFAULT_SATURATION}, ${DEFAULT_DARK})`);
 
-    let rgb = HEXtoRGB(chosenColor, 40)
-
-    $("#top" + cardSelected).css("background-color", chosenColor);
-    $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
-    $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
-
-    levelList[cardSelected]["color"] = chosenColor;
+    levelList[target]["color"] = HSLtoHEX(chosenColor, DEFAULT_SATURATION, DEFAULT_LIGHTNESS);
 }
 
 function changeIDbox(k) {
@@ -375,19 +372,18 @@ function addLevel() {
     $("#top" + listLenght).css("transform", "scaleY(1)");
 
     // Random color generation
-    let rgb = randomColor()
+    let hsl = randomColor();
 
-    let darker = rgb.map(c => c - 40);
+    let darker = HEXtoRGB(hsl, 40);
 
-    $("#top" + listLenght).css("background-color", `rgb(${rgb.join(",")})`);
+    $("#top" + listLenght).css("background-color", hsl);
     $("#top" + listLenght).css("border-color", `rgb(${darker.join(",")})`);
-    $("#smtop" + listLenght).css("background-color", `rgb(${rgb.join(",")})`);
+    $(".cardContainer" + listLenght).css("background-color", `rgb(${darker.join(",")})`);
+    $("#smtop" + listLenght).css("background-color", hsl);
     $("#smtop" + listLenght).css("border-color", `rgb(${darker.join(",")})`);
     $("#lineSplit" + listLenght).css("background-color", `rgb(${darker.join(",")})`);
 
-
-    let inhex = rgb.map(c => ((c).toString(16).length == 1 ? "0" + (c).toString(16) : (c).toString(16)))
-    levelList[listLenght]["color"] = "#" + inhex.join("");
+    levelList[listLenght]["color"] = hsl;
 
     // Sets the color of the added card
     $("#colorPicker" + listLenght).on("change", changeColPicker);
@@ -395,6 +391,7 @@ function addLevel() {
     $(".cardLName" + listLenght).on("keyup", changeLevelName);
     $(".cardLCreator" + listLenght).on("keyup", changeLevelCreator);
     $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
+
 }
 
 function loadLevel(pos) {
@@ -446,6 +443,9 @@ function updateCardData(prevID, newID) {
     $("#colorPicker" + prevID).attr("id", "colorPicker" + newID);
     $(".colButton" + prevID).attr("onclick", "showCollabTools(" + newID + ")");
     $(".colButton" + prevID).attr("class", "button colButton" + newID);
+    $(".cardContainer" + prevID).attr("class", "cardExtrasContainer cardContainer" + newID);
+    $(".cPickerBut" + prevID).attr("onclick", "openColorPicker(" + newID + ")");
+    $(".cPickerBut" + prevID).attr("class", "button cardButton cPickerBut" + newID);
 
     if (parseInt(prevID) != parseInt(newID)) {
         levelList[prevID] = levelList[newID + "waiting"];
@@ -460,6 +460,17 @@ function updateCardData(prevID, newID) {
 
 }
 
+function openColorPicker(lp) {
+    $('.cardContainer'+lp).text('')
+    $('.cardContainer'+lp).slideToggle(50)
+
+    let color = makeColorElement(getHueFromHEX(levelList[lp]["color"]))
+    color.on("input", k => {
+        changeColPicker($(k.target).val(), lp)
+    })
+    color.appendTo($(".cardContainer"+lp))
+}
+
 function removeLevel(id) {
     delete levelList[($(".listPosition" + id.toString()).val())];
 
@@ -470,6 +481,8 @@ function removeLevel(id) {
 
     for (j = id + 1; j <= Object.keys(levelList).length - ADDIT_VALS; j++) {
         updateCardData(j, j - 1);
+        availFill(0,$(".cardLName" + id), "freedom69", id)
+        availFill(1,$(".cardLCreator" + id), "freedom69", id)
     }
 
     // Adds the tutorial, when the list is empty
@@ -539,24 +552,26 @@ function card(index, rndColor) {
                 
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
-                <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
+                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
                 <img class="button colButton${index}" style="float: none;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
                 <div style="display: flex; align-items: center;">
                     <img id="posInputPics" src="./images/yticon.png">
-                    <input style="margin: 5%;" class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
+                    <input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
                 </div>
                 
-                <div style="display: flex; justify-content: flex-end; flex-grow: 1; align-items: center;">
+                <div class="cardButtonsContainer">
                     <img title="${jsStr["DEL_CARD"][LANG]}" class="removerButton${index} button cardButton"
                         onclick="removeLevel(${index})" src="./images/delete.png">
 
-                    <img class="button cardButton" onclick="document.querySelector('#colorPicker${index}').click();" src="./images/colorSelect.png">
+                    <img class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
                     <input style="display: none;" title="${jsStr["CARD_COL"][LANG]}" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
                 </div>
-            </div>   
+            </div>
+
+            <div class="cardExtrasContainer cardContainer${index}"></div>
         </div>
     </div>
 </div>
@@ -640,7 +655,7 @@ $(function () {
         $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
         $("#submitbutton").attr("onclick", "updateList()")
 
-        $("#submitarea").append(`<input onclick="removeList()" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
+        $("#submitarea").append(`<input onclick="removeList()" class="button" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
     }
 
     $(window).on("resize", function () {

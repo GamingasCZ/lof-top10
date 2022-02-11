@@ -137,7 +137,7 @@ $(function () {
     })
 
     // Pick a random comment color
-    let commentColor = RGBtoHEX(randomColor())
+    let commentColor = randomColor()
     let boxColor = HEXtoRGB(commentColor, 30);
     let darkerBoxColor = HEXtoRGB(commentColor, 50);
 
@@ -307,7 +307,7 @@ function comBox(cd, dcc, edcc) {
 
     // Is user verified?
     if (cd[6] == 1) {
-        profPic = `<img class="pIcon " style="padding: 0.5vw;" src="https://gdbrowser.com/icon/${cd[0]}">`;
+        profPic = `<img class="pIcon " style="padding: 0.5vw;transform: scale(2);" src="https://gdbrowser.com/icon/${cd[0]}">`;
         clickable[0] = "clickable";
         clickable[1] = `onclick="profile('${cd[0]}')`;
         comColor = "#f9f99a";
@@ -327,21 +327,21 @@ function comBox(cd, dcc, edcc) {
     }
 
     return `
-    <div>
+    <div style="margin-bottom: 2vw">
     
         <div class="comBoxThings ${clickable[0]} uploadText" id="comBoxHeader" ${clickable[1]}"
             style="margin-bottom: 0 !important;
                     justify-content: flex-start;
                     background-color: ${"rgb(" + dcc.join(",") + ")"};
-                    border: solid ${"rgb(" + edcc.join(",") + ")"} 10px">
+                    border: solid ${"rgb(" + edcc.join(",") + ")"} 10px; height: 2.3vw;">
             ${profPic}
             <h3 style="margin-left: 1%; color: ${comColor};">${cd[0]}</h3>
             <h3 id="comFont" 
-                style="margin: 3.3vw 0 0 auto; font-size: 2vw; cursor: help;"
+                style="margin: 0 0 0 auto; cursor: help;"
                 title="${nT.getDay() + 1}.${nT.getMonth() + 1}.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
         </div>
     
-        <div class="comTextArea" id="comFont" style="width: 98%; background-color: ${cd[3]};">${cd[1]}</div>
+        <div class="comTextArea" id="comFont" style="width: 99%; background-color: ${cd[3]};">${cd[1]}</div>
     
     </div>
     `
@@ -355,7 +355,7 @@ function debugComments(am) {
     if (am == 2) {
         deeta = "";
         for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-            deeta += `${fakeNames[Math.floor(Math.random() * fakeNames.length)]};-!-;This is a comment!;-!-;0;-!-;${RGBtoHEX(randomColor())};-!-;-2;-!-;27;-!-;0;-!-;${Math.floor(Math.random() * Date.now() / 1000)}|-!-|`;
+            deeta += `${fakeNames[Math.floor(Math.random() * fakeNames.length)]};-!-;This is a comment!;-!-;0;-!-;${randomColor()};-!-;-2;-!-;27;-!-;0;-!-;${Math.floor(Math.random() * Date.now() / 1000)}|-!-|`;
         }
         displayComments(deeta)
     }

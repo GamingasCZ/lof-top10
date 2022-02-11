@@ -23,6 +23,7 @@ foreach ($fuckupData as $post) {
       exit();
     }
     $fuckupData[$i] = htmlspecialchars($post);
+    $fuckupData[$i] = preg_replace(`/<(“[^”]*”|'[^’]*’|[^'”>])*>/g`, "", $post);
     $i += 1;
   }
 

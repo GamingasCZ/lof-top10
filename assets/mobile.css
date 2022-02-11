@@ -1,0 +1,78 @@
+@media only screen and (max-width: 600px) {
+
+.comTextArea {
+    height: 20vw;
+}
+
+.boxHeader {
+    flex-direction: column;
+}
+
+/* Changes navbar style */
+.mobilePicker {
+    display: block;
+}
+.menuPicker {
+    display: none;
+}
+
+.button:not(.noMobileResize) {
+    width: 8vw !important;
+    height: 8vw !important;
+}
+
+/* Buttons in comment box */
+.comFooterButton {
+    transform: scale(0.7);
+    margin: 0% -4%;
+}
+
+/* Page switcher in comments */
+#commentTool {
+    width: 80%
+}
+
+.settingsMenu {
+    right: 13vw;
+    top: 30vw;
+    transform: scale(2);
+}
+
+#shareContainer {
+    font-size: 4vw;
+}
+#shareTools {
+    width: 75%;
+    left: 0;
+}
+.searchTools:not(#commentTool) { margin-top: 10vw }
+
+#jumpToTools {
+    top: 24vw;
+    transform: scale(1.7);
+}
+
+#crown {
+    transform: translateY(8.5vw) !important;
+    width: 25vw;
+}
+
+#collabTools {
+    margin: 0;
+    border: none;
+    border-radius: 0px;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+}
+.graphPerc {
+    font-size: 2.5vw;
+}
+.graphContainer { 
+    height: 5.5vw;
+}
+
+/* Hides help text in searchTool/CommentTool */
+#pageStr, #sortStr { display: none; }
+}

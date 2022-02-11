@@ -309,7 +309,7 @@ function showJumpTo() {
 		let creator = pos.creator;
 		if (typeof creator == "object") creator = "(Collab)"
 
-		$(".jumpToContainer").append(`<div class="roleBubble button" for="${ind}" style="background:${pos.color};" id="jumpBubble">#${ind} ${pos.levelName} - ${creator}</div>`)
+		$(".jumpToContainer").append(`<div class="roleBubble noMobileResize button" for="${ind}" style="background:${pos.color};" id="jumpBubble">#${ind} ${pos.levelName} - ${creator}</div>`)
 		$(".jumpToContainer:last-child").on("click", (k) => {
 			hideJumpTo();
 			if ($(".boards").css("display") == "none") listList()
@@ -322,6 +322,25 @@ function hideJumpTo() {
 	$("#jumpToTools").fadeOut(100);
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
+}
+
+function switchSite(val) {
+	switch (val) {
+		case "2019":
+			switchLoFList('index.html?year=2019');
+			break;
+		case "2021":
+			switchLoFList('index.html?year=2021');
+			break;
+		case "Komunitní":
+			window.location.assign('upload.html');
+			break;
+		case "Uložené":
+			showFaves();
+			break;
+		default:
+			break;
+	}
 }
 
 const openSocLink = link => { window.open(link) }
@@ -494,7 +513,7 @@ function showCollabStats(id) {
 		// Adding role graphs 
 		$(".collabGraphs").append(`
 		<div style="display: flex; flex-direction: column; margin: 1.5vw 1vw;">
-			<div style="display: flex; justify-content: space-between; max-width: 91%;">
+			<div class="graph" style="display: flex; justify-content: space-between; max-width: 91%;">
 				<p style="margin: 0 0 0 6vw;">${roles.name}</p>
 				<div style="display: flex; align-items: center;" class="nameShower">
 					<img class="boxIcon" alt=" " src="images/bytost.png"></img>
@@ -621,9 +640,9 @@ function unhoverName(k) {
 	$(`.graphLine:not(.graphLine[for="${forWhat}"])`).css("opacity", 1)
 }
 
-function boxCreator(obj, index) {
+function boxCreator(obj, index, bgcolor) {
 	if (typeof obj != "object") {
-		return jsStr["CREATOR_BY"][LANG] + obj
+		return `<p class="uploadText" id="listLevelSub" style="margin: 0;">${obj}</p>`
 	}
 	else {
 		let names = [];
@@ -645,9 +664,9 @@ function boxCreator(obj, index) {
 
 		// Fix url when ready
 		return `
-		<div class="uploadText boxCollabHeader">
+		<div class="uploadText boxCollabHeader" id="listLevelSub">
 		${obj[0][2]}: ${hostVerified}${obj[0][0]}</div>
-		<div onclick="showCollabStats(${index})" class="collabParent button">` + names.join("") + "</div>"
+		<div onclick="showCollabStats(${index})" id="listLevelSub" class="collabParent  button noMobileResize">` + names.join("") + "</div>"
 	}
 }
 
@@ -684,7 +703,7 @@ function generateList(boards, listData) {
 		let preview = window.location.search.includes("preview")
 		let isDebugList = window.location.protocol.includes("file") & window.location.search.includes("id")
 
-		let favoriteCheck = hasID && !preview && !isDebugList
+		let favoriteCheck = isDebugList ? false : (preview ? false : (hasID ? false : true))
 		let currentlyFavedIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
 		let disableStar = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "disabled" : ""
 		let starTitle = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "Odstranit z oblíbených" : "Přidat do oblíbených"
@@ -693,18 +712,18 @@ function generateList(boards, listData) {
 		$(".boards").append(`
 		<div class="box" style="${cardBG}">
 			<div style="height:0px;">
-				${favoriteCheck ? "" : star}
+				${favoriteCheck ? star : ""}
 			</div>
 			<div class="boxHeader">
-				<span>${boards[bIndex]["levelName"]}</span>
-				<div style="display:flex">
+				<span id="listLevelName">${boards[bIndex]["levelName"]}</span>
+				<div class="boxLinksContainer">
 					${video}
 					${ID[0]}
 					${ID[1]}
 				</div>
 			</div>
 
-			${boxCreator(boards[bIndex]["creator"], bIndex)}
+			${boxCreator(boards[bIndex]["creator"], bIndex, boards[bIndex]["color"])}
 		</div>
 	`);
 		// Only display icons on hover
@@ -816,7 +835,7 @@ function debugCards() {
 	// Returns a randomly generated board
 	let str = '{"titleImg": "",';
 	for (let i = 1; i < Math.ceil(Math.random() * 20) + 1; i++) {
-		str += `"${i}": {"levelName": "Debug #${i}","creator": "${fakeNames[Math.floor(Math.random() * fakeNames.length)]}","levelID": 128, "video": "9ywnLQywz74","color":"${RGBtoHEX(randomColor())}"},`
+		str += `"${i}": {"levelName": "Debug #${i}","creator": "${fakeNames[Math.floor(Math.random() * fakeNames.length)]}","levelID": 128, "video": "9ywnLQywz74","color":"${randomColor()}"},`
 	}
 	str = str.slice(0, -2) + "}}"
 	return JSON.parse(str)
@@ -865,9 +884,9 @@ $(function () {
 			if (window.location.protocol.includes("file")) {
 				boards = debugCards();
 				debugPwd = Math.ceil(Math.random() * 9999999999)
-				$(".titles").append(`<p style="color: tomato">Debug List</p>
-				<hr class="lineSplitGeneral" style="margin: -2% 10%;">
-				<p style="font-size: 3vw;">- Dasher123 -</p>
+				$(".titles").append(`<p style="color: tomato; margin-bottom: 0;">Debug List</p>
+				<hr class="lineSplitGeneral">
+				<p style="font-size: 3vw; margin-top: 0;">- Dasher123 -</p>
 				<p style="font-size: 3vw;">Pass: ${debugPwd}</p>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`Debug seznam | GD Seznamy`)
@@ -897,9 +916,9 @@ $(function () {
 					}
 					else {
 						let boards = JSON.parse(data[2]);
-						$(".titles").append(`<p>${data[1]}</p>
-						<hr class="lineSplitGeneral" style="margin: -2% 10%;">
-						<p style="font-size: 3vw;">- ${data[0]} -</p>`);
+						$(".titles").append(`<p style="margin-bottom: 0;">${data[1]}</p>
+						<hr class="lineSplitGeneral">
+						<p style="font-size: 3vw;margin-top: 0;">- ${data[0]} -</p>`);
 						$(".titleImage").attr("src", boards["titleImg"]);
 						$("title").html(`${data[1]} | GD Seznamy`)
 						generateList(boards, [data[1], data[3]]);
@@ -920,7 +939,7 @@ $(function () {
 					data[3].replace("&quot;", "\"");
 					let boards = JSON.parse(data[2]);
 					$(".titles").append(`<p>${data[1]}</p>
-					<hr class="lineSplitGeneral" style="margin: -2% 10%;">
+					<hr class="lineSplitGeneral">
 					<p style="font-size: 3vw;">- ${data[0]} -</p>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
 					$("title").html(`${data[1]} | GD Seznamy`)
@@ -961,7 +980,7 @@ $(function () {
 	// Hiding header and showing scroll to top button
 	$("body").on("scroll", () => {
 		if (document.body.scrollTop > 150) {
-			$("header").css("transform", "translateY(-5vw)")
+			$("header").css("transform", "translateY(-8vh)")
 			$(".scrollToTop").css("opacity", 1)
 			$(".settingsMenu").fadeOut(50)
 		}
@@ -1011,6 +1030,11 @@ $(function () {
 	if (localStorage.getItem("favorites") != null) {
 		makeCookie(["favorites", localStorage.getItem("favorites")])
 	}
+
+	// Setting mobile picker in navbar to curr site name
+	let sites = ["2019","2021","Komunitní"] // No need for saved
+	if (window.location.href.includes("2021")) $($(".mobilePicker").children()[1]).attr("selected", true)
+	if (window.location.href.includes("editor")) $($(".mobilePicker").children()[2]).attr("selected", true)
 });
 
 function checkPassword() {

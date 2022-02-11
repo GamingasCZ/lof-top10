@@ -22,6 +22,10 @@ function checkJson(data) {
         // 1.5/3 Je seznam prázdný?
         if (Object.keys(parsedData).length - ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
 
+        if (data.length > 25000) {
+            throw (`Tvůj seznam je moc velký! (${(data.length/25000).toFixed(2)}% nad limitem!). Smaž nějaké levely/collaby z levelů!`)
+        }
+
         // 2/3 Neobsahuje prázdné jméno/tvůrce
         for (i = 1; i < Object.keys(parsedData).length - ADDIT_VALS; i++) {
             if (parsedData[i] == undefined) {
@@ -71,7 +75,7 @@ function displayComLists(doita) {
 
             $(".customLists").append(`
             <a style="text-decoration: none;" href="./index.html?id=${list.id}">
-                <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${darkCol.join(",")})">
+                <div id="listPreview" class="button noMobileResize" style="background-color: ${listColor}; border-color: rgb(${darkCol.join(",")})">
                     <div class="uploadText">${list.name}</div>
                     <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}${list.creator}</div>
                 </div>
@@ -133,7 +137,7 @@ function debugLists(am) {
     if (am == 2) {
         deeta = [];
         for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-            deeta.push({ "creator": i, "name": `Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]}`, "data": { "1": { "color": RGBtoHEX(randomColor()) } }, "id": 45, "timestamp": 10 })
+            deeta.push({ "creator": i, "name": `Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]}`, "data": { "1": { "color": randomColor() } }, "id": 45, "timestamp": 10 })
         }
         ogDeeta = deeta;
 
@@ -310,7 +314,7 @@ function removeList() {
     // Confirm remove
     $(".boom").append(`<div class="uploadText removeScreen">
     <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.png"><br />
-    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -1.74em;" src="./images/szn1.png">
+    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -3.04em;" src="./images/szn1.png">
     <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">${jsStr["CONF_DEL"][LANG]}</p>
     <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
         <img id="rmbutton" onclick="confirmDelete()" class="button" src="${jsStr["YES_IMG"][LANG]}">
@@ -326,8 +330,8 @@ function removeList() {
     })
 
     $("#rmbutton").on("mouseover", function () {
-        $("#rmimg1").css("transform", "translateY(-10%)");
-        $("#rmimg2").css("transform", "translateY(10%)");
+        $("#rmimg1").css("transform", "translateY(-5%)");
+        $("#rmimg2").css("transform", "translateY(5%)");
         $(".boom").css("background-color", "rgb(11, 0, 0)");
     })
     $("#rmbutton").on("mouseout", function () {

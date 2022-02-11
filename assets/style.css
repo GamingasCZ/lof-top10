@@ -37,8 +37,13 @@ body {
 
 @font-face {
     font-family: pusab;
-    src: url("../assets/PusabFIX.otf") format("opentype");
+    src: url("../assets/Poppins-Medium.ttf");
 }
+@font-face {
+  font-family: light;
+  src: url("../assets/MerriweatherSans-Light.ttf");
+}
+
 @font-face {
     font-family: chatFont;
     src: url("../assets/chatFont.ttf");
@@ -54,7 +59,7 @@ body {
 }
 
 span {
-  font-size: 5vw;
+  font-size: calc(100% + 1vw);;
   max-width: 80%;
   display: block;
 }
@@ -67,7 +72,7 @@ span {
 
 /*Nadpis v custom Listu*/
 .titles {
-    font-size: 5vw;
+    font-size: 4vw;
     color: white;
     text-align: center;
     font-family: pusab;
@@ -75,7 +80,7 @@ span {
 
 /* just so stuff doesn't break :D*/
 .comTitles {
-  font-size: 5vw;
+  font-size: calc(100% + 3vw);
   color: white;
   margin: auto;
   text-align: center;
@@ -95,18 +100,37 @@ span {
   transition-duration: 0.3s;
 }
 
+#listLevelSub {
+  font-size: calc(70% + 1.2vw);
+}
+
+#listLevelName {
+  text-align: center;
+  font-size: calc(175% + 2vw);;
+}
+
+.listOptions > div {
+  display: flex;
+}
+
 .box {
   background-color: #43a045;
   background-image: url("../images/cardBg.png");
-  padding: 3vw 3vw 4vw 3vw;
-  margin: 3vw 7vw 5vw 7vw;
+  padding: 1vw 3vw 2vw 3vw;
+  margin: 2.5vw 7vw 2.5vw 7vw;
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
-  font-size: 3vw;
   font-family: "pusab";
   color: white;
-  -webkit-text-stroke: black 0.17vw;
-  text-shadow: rgba(0,0,0,0.5) 3px 3px 4px;
+  text-shadow: rgba(0,0,0,0.5) 0.2vw 0.2vw 0.3vw;
 }
+
+.boxLinksContainer {
+  display: flex;
+  margin-right: 2vw;
+}
+
 
 #popupBit {
   position: absolute;
@@ -128,7 +152,6 @@ span {
   text-align: center;
   height: 4vw;
   box-shadow: #0009 0vw 0vw 1vw;
-  -webkit-text-stroke: 0.1vw black !important;
 }
 
 .siteSettingsChild {
@@ -139,6 +162,11 @@ span {
   align-items: center;
   padding: 0.9vw;
   margin-bottom: 1vw;
+  width: max-content;
+}
+
+.siteSettingsChild > p {
+  margin: 0;
 }
 
 u {
@@ -149,21 +177,24 @@ u {
 
 .settingsMenu {
   position: absolute;
-  left: 79vw;
+  float: right;
+  right: 0vw;
   background: #222;
-  top: 6vw;
-  width: 17vw;
-  height: 37vh;
-  padding: 2vw;
+  top: 5vw;
+  width: max-content;
+  padding: 1vw;
   border-radius: 1vw;
-  display: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .favoriteStar {
   position: relative;
-  bottom: 2.8vw;
-  left: 78vw;
+  bottom: 0.6vw;
+  left: 3%;
   width: 4vw;
+  float: right;
 }
 
 .scrollToTop {
@@ -171,8 +202,8 @@ u {
   z-index: 4;
   width: 4vw;
   rotate: 90deg;
-  left: 94vw;
-  top: 88vh;
+  left: calc(95vw - 2.8vh);
+  top: 80vh;
   opacity: 0;
   transition: opacity 0.2s linear;
 }
@@ -271,7 +302,6 @@ u {
   transition: opacity 0.1s;
   transform: scaleY(0.8);
   font-size: 1.5vw;
-  -webkit-text-stroke: 0.1vw black;
 }
 
 .graphLine {
@@ -315,14 +345,13 @@ u {
   margin: 0px 8vw 0px 0px;
 }
 .yearButtonImg {
-  width: 12vw;
   height: 4vw;
   border: none;
   margin: 0 !important;
   background: linear-gradient(180deg, #08ff0024, transparent);
-  font-size: 2em !important;
-  -webkit-text-stroke: 0px !important;
+  font-size: 1vw !important;
   cursor: pointer;
+  padding: 0 2vw;
 }
 
 .notify {
@@ -426,30 +455,29 @@ html, body {
 
 /* Entire comment box, including user input box */
 #commentMaker {
-  margin: 2vw 5vw;
-  padding: 1vw;
+  margin: 5vw 5vw 0;
+  padding: 0.5vw;
 }
 
 /* Comment text area */
 .comTextArea {
   background-color: salmon;
   border: none;
-  height: 10vw;
+  height: 7vw;
   border-radius: 10px;
   resize: none;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   width: 102%;
-  padding: 1%;
+  padding: 0.5%;
   overflow: auto;
   white-space: pre-wrap;
   word-wrap: anywhere;
 }
 
 #comFont {
-  -webkit-text-stroke: black 0px;
   font-family: chatFont, serif;
-  font-size: 2.5vw;
+  font-size: calc(60% + 1vw);
   line-height: 1.1;
   color: white;
 }
@@ -463,13 +491,11 @@ html, body {
   justify-content: space-between;
   width: inherit;
   /*i despise css.*/
-  height: 4.2vw;
   padding: 0 1%;
 }
 
 /* Specific stuff relating to the cbox footer and header */
 #comBoxHeader {
-  margin-bottom: -2vw !important;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
@@ -483,8 +509,7 @@ html, body {
 
 /* Text placement in the cbox footer and header */
 .comBoxThings > h3 {
-  position: relative;
-  bottom: 2.5vw;
+  margin: 0;
 }
 
 /* User input box */
@@ -503,7 +528,7 @@ html, body {
 /* Hypermodern buttons in cbox footer */
 .comFooterButton {
   background: none;
-  border: white solid 0.3vw;
+  border: white solid 0.2vw;
   color: white;
   border-radius: 10px;
   cursor: pointer;
@@ -533,7 +558,7 @@ html, body {
 
 /* laughing crying emoji yes XDDDDDDDD */
 .emojis {
-  width: 2.2vw;
+  width: 1em;
   pointer-events: none;
   user-select: text;
 }
@@ -543,7 +568,6 @@ html, body {
   color: tomato !important;
   padding-left: 1vw;
   font-size: 2vw !important;
-  -webkit-text-stroke: black 0.1vw !important;
   margin: 0 !important;
 }
 
@@ -555,7 +579,7 @@ html, body {
 }
 .listEmoji {
   padding: 0.5vw;
-  width: 3.5vw;
+  width: 40px;
 }
 
 #commentList {
@@ -592,13 +616,24 @@ header {
   animation-iteration-count: infinite;
   animation-duration: 2s;
   animation-timing-function: linear;
-  height: 4vw;
+  height: 9vw;
   position: fixed;
   width: 100vw;
   z-index: 3;
   display: flex;
   justify-content: space-between;
   transition: transform 0.05s ease-in;
+}
+
+.mobilePicker {
+  text-align: center;
+  font-family: pusab;
+  font-size: 2em;
+  background: linear-gradient(180deg, #08ff0024, transparent);
+  color: white;
+  border: none;
+  padding: 0 1vw;
+  display: none;
 }
 
 footer {
@@ -611,13 +646,16 @@ iframe {
   height: 102vh;
   overflow: hidden;
   border: none;
-  margin-top: 8vh;
 }
 
 .eventButton {
   background-color: #2d6da6 !important;
-  padding: 0.3% 1%;
-  margin: 0.5%;
-  margin-left: 4%;
+  padding: 0% 1%;
+  margin-left: 1%;
   border-radius: 10%;
+}
+
+.mobileButton:not(.noMobileResize) {
+  width: 8vw !important;
+  height: auto !important;
 }

@@ -10,6 +10,12 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     [".sendBut", "index.html", "title", ["Odeslat komentář", "Send Comment"]],
     [".comTitles", "index.html", 0, ["- Komentáře -", "- Comments -"]],
     ["#pageStr", 0, 0, ["Strana: ", "Page: "]],
+    [".commBut", 0, 0, ["Komunitní", "Community"]],
+    [".savedBut", 0, 0, ["Uložené", "Saved"]],
+    [".langText", 0, 0, ["Jazyk", "Language"]],
+    ["#czech", 0, 0, ["Čeština", "Czech"]],
+    ["#english", 0, 0, ["Anličtina", "English"]],
+    [".anims", 0, 0, ["Animace", "Animations"]],
     [".noComm", "index.html", 0, ["- Žádné komentáře -", "- No Comments -"]],
     [".passInput", "index.html", "placeholder", ["Heslo", "Password"]],
 
@@ -71,6 +77,7 @@ var jsStr = {
     "NO_IMG": ["./images/ne.png","./images/no.png"],
 
     // editor
+    "CZECH": ["Čeština", "Czech"],
     "EMPT_L": ["Snažiš se poslat <b style='color:cyan'>prázdný seznam!</b>", "You're trying to send an <b style='color:cyan'>empty list!</b>"],
     "LIST_L": ["Jméno tvého seznamu by mělo být delší :).",
         "The name of your list should be longer :)."],
@@ -311,7 +318,7 @@ $(function () {
     
     
     $(".settingsDropdown").on("change", () => {
-        let switchLang = $(".settingsDropdown").val() == "Čeština" ? 0 : 1
+        let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
         makeCookie(["lang", switchLang])
         window.location.reload();
     })

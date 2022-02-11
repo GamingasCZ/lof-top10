@@ -235,7 +235,7 @@ function addRole(preset = null, loading = 0) {
     }
 
     let roleCode = $(`
-    <div class="roleBubble" style="background: rgb(${randomColor()})">
+    <div class="roleBubble" style="background: ${randomColor()};">
         <input id="roleInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="${jsStr["NAME"][LANG]}" value=${presetName}></input>
         <img class="button" style="width: 2.5vw; height: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"
        ><img class="button roleRm" style="width: 2.5vw; height: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
@@ -294,7 +294,7 @@ function addCollabHuman(load = 0) {
     if (load != 0) {
         humanInstance = load;
     }
-    if (load == 0) { var cpickerCol = RGBtoHEX(randomColor()); humanInstance.color = cpickerCol }
+    if (load == 0) { var cpickerCol = randomColor(); humanInstance.color = cpickerCol }
     else { var cpickerCol = load.color }
 
     // messages don't change when deleting, bur i don't care :p

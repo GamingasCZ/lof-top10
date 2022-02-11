@@ -7,6 +7,7 @@
 
   <link rel="stylesheet" href="./assets/style.css">
   <link rel="stylesheet" href="./assets/community.css">
+  <link rel="stylesheet" href="./assets/mobile.css">
   <link rel="icon" href="./images/gdbrowser.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,13 +25,13 @@
 <body style="background: transparent; overflow-x: visible;">
   <p class="titles" style="margin: 2vw;"></p>
   <div class="searchTools savesTools uploadText" style="justify-content: center">
-    <span style="font-size: 3vw; padding-right: 2%;" id="sortStr">Řazení: </span>
+    <span style="padding-right: 2%;" id="sortStr">Řazení: </span>
     <img src="images/sort.png" id="sortBut" class="button" style="width: 5%; transition-duration: 0s;">
     <div class="page">
-      <span style="font-size: 3vw; padding-right: 2%;" id="pageStr">Strana: </span>
+      <span style="padding-right: 2%;" id="pageStr">Strana: </span>
       <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
       <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-      <span style="font-size: 3.5vw" id="maxPage">/1</span>
+      <span id="maxPage">/1</span>
       <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
     </div>
     <div class="search">
