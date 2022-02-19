@@ -22,7 +22,7 @@ foreach ($fuckupData as $post) {
       echo "1";
       exit();
     }
-    $fuckupData[$i] = htmlspecialchars($post);
+    $fuckupData[$i] = htmlspecialchars(strip_tags(htmlspecialchars_decode($post)));
     $i += 1;
   }
 
@@ -72,11 +72,16 @@ if ($mysqli -> connect_errno) {
 
 $time = new DateTime();
 
-$query = sprintf("INSERT INTO `comments` (`username`,`comment`,`comType`,`bgcolor`,`listID`,`verified`,`timestamp`)
-                  VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-                  $fuckupData[0], $fuckupData[1], $fuckupData[2], $fuckupData[4], $fuckupData[3], $verified, $time -> getTimestamp());
+// Prepare query template
+$query = $mysqli -> prepare("INSERT INTO `comments` (`username`,`comment`,`comType`,`bgcolor`,`listID`,`verified`,`timestamp`)
+                  VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-$mysqli -> query($query) or die($mysqli -> error);
+// Fill in template
+$query -> bind_param("sssssss",
+    $fuckupData[0], $fuckupData[1], $fuckupData[2], $fuckupData[4], $fuckupData[3], $verified, $time -> getTimestamp());
+
+$query -> execute();
+$query -> close();
 echo "6";
 $mysqli -> close();
 
