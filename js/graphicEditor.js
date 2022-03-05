@@ -142,10 +142,6 @@ function generateFromJSON(event = null) {
         if (["1","2"].includes(data)) {
             window.location.replace("./upload.html")
         }
-        if (event) {
-            var data = JSON.stringify(boards);
-            data = ";;" + data + ";0";
-        }
 
         let lData = $("#listData").html(data).text()
         lData = lData.split(";-!-;")
@@ -275,13 +271,18 @@ function availFill(type, sel, key, pos) {
     }
 }
 
-function changeColPicker(chosenColor, target) {
-    $("#top" + target).css("background-color", `hsl(${chosenColor}, ${DEFAULT_SATURATION}, ${DEFAULT_LIGHTNESS})`);
-    $("#top" + target).css("border-color", `hsl(${chosenColor}, ${DEFAULT_SATURATION}, ${DEFAULT_DARK})`);
-    $("#lineSplit" + target).css("background-color", `hsl(${chosenColor}, ${DEFAULT_SATURATION}, ${DEFAULT_DARK})`);
-    $(".cardContainer" + target).css("background-color", `hsl(${chosenColor}, ${DEFAULT_SATURATION}, ${DEFAULT_DARK})`);
+async function changeColPicker(chosenColor, target, isChangingValue) {
+    let lightness = await isChangingValue ? chosenColor : getLightnessFromHEX(levelList[target]["color"])
+    let hue = await isChangingValue ? getHueFromHEX(levelList[target]["color"]) : chosenColor
 
-    levelList[target]["color"] = HSLtoHEX(chosenColor, DEFAULT_SATURATION, DEFAULT_LIGHTNESS);
+    $("#top" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`);
+    $("#top" + target).css("border-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+    $("#lineSplit" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+    $(".cardContainer" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+
+    let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness+"%");
+    levelList[target]["color"] = inHex;
+    $(".hueChanger").css("filter",`hue-rotate(${hue}deg)`)
 }
 
 function changeIDbox(k) {
@@ -466,7 +467,7 @@ function openColorPicker(lp) {
 
     let color = makeColorElement(getHueFromHEX(levelList[lp]["color"]))
     color.on("input", k => {
-        changeColPicker($(k.target).val(), lp)
+        changeColPicker($(k.target).val(), lp, k.target.previousElementSibling.className == "hueChanger")
     })
     color.appendTo($(".cardContainer"+lp))
 }
@@ -520,10 +521,10 @@ function card(index, rndColor) {
     <div class="positionEdit" id="top${index}">
         <div style="display: flex">
             <div style="display: flex; align-items: center;">
-                <p style="margin: 2%;">ID:</p>
-                <input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text" style=" margin-left: 4%; transform: translateY(0%);">
+                <img id="posInputPics" src="./images/star.png">
+                <input autocomplete="off" placeholder="${jsStr["L_LEVID"][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text" style="transform: translateY(0%);">
 
-                <img id="fillButton" src="./images/getStats.png" onclick="getDetailsFromID(${index})" style="float: none;" class="fillID button disabled idDetailGetter${index}">
+                <img id="fillButton" src="./images/getStats.png" onclick="getDetailsFromID(${index})"class="fillID button disabled idDetailGetter${index}">
             </div>
 
             <div class="positionButtons">
@@ -543,7 +544,7 @@ function card(index, rndColor) {
 
         <div style="display: flex; flex-wrap: wrap;">
             <div style="display: flex; flex-wrap: wrap; width: 100%; align-items: center;">
-                <img id="posInputPics" src="./images/gauntlet.png">
+                <img id="posInputPics" src="./images/island.png">
                 <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr["L_NAME"][LANG]}">
 
                 <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
@@ -553,7 +554,7 @@ function card(index, rndColor) {
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
                 <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
-                <img class="button colButton${index}" style="float: none;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
+                <img class="button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
@@ -655,7 +656,7 @@ $(function () {
         $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
         $("#submitbutton").attr("onclick", "updateList()")
 
-        $("#submitarea").append(`<input onclick="removeList()" class="button" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
+        $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
     }
 
     $(window).on("resize", function () {

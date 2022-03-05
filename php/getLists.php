@@ -13,8 +13,7 @@ if ($mysqli->connect_errno) {
   exit();
 }
 
-function parseResult($queryRes) {
-  $rows = $queryRes->fetch_all(MYSQLI_ASSOC);
+function parseResult($rows, $singleList=false) {
   $ind = 0;
   foreach ($rows as $row) {
     if (base64_decode($row["data"], true) == true) {
@@ -22,7 +21,8 @@ function parseResult($queryRes) {
     }
     $row["data"] = json_decode(htmlspecialchars_decode($row["data"]));
     
-    $rows[$ind]["data"] = $row["data"];
+    if ($singleList) { $rows["data"] = $row["data"]; }
+    else { $rows[$ind]["data"] = $row["data"]; }
     $ind += 1;
   }
 
@@ -42,7 +42,7 @@ if (count($_GET) == 1) {
       $rows = $result->fetch_all(MYSQLI_ASSOC);
 
       if (count($rows) == 0) { echo "1"; } // When the pID is invalid
-      else { parseResult($result); }
+      else { parseResult($rows); }
     }
   } elseif (in_array("pid", array_keys($_GET))) {
     // Private lists
@@ -50,7 +50,7 @@ if (count($_GET) == 1) {
     $rows = $result->fetch_all(MYSQLI_ASSOC);
 
     if (count($rows) == 0) { echo "1"; } // When the pID is invalid
-    else { parseResult($result); }
+    else { parseResult($rows); }
   }
 
   // Searching
@@ -61,7 +61,7 @@ if (count($_GET) == 1) {
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     
     if (count($rows) == 0) { echo "1"; } // When the pID is invalid
-    else { parseResult($result); }
+    else { parseResult($rows); }
   }
 }
 
@@ -74,7 +74,7 @@ elseif (count($_GET) > 1) {
 else {
   // Loading all lists
   $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0'");
-  parseResult($result);
+  parseResult($result->fetch_all(MYSQLI_ASSOC));
 }
 
 $mysqli->close();

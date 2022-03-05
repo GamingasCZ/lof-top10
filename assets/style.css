@@ -49,13 +49,33 @@ body {
     src: url("../assets/chatFont.ttf");
 }
 
-.shade {
-  background-image: linear-gradient(green,#00000000);
-  text-align: center;
-  font-family: "oxygene";
-  font-size: 2.5vw;
-  color: #5df469;
-  text-shadow: -1px -1px 0 white,1px 1px 0 white,-1px -1px 0 white,1px 1px 0 white;
+.logo {
+  width: 3.7vw;
+  height: auto;
+  padding-left: 1vw;
+  /* transform: scale(1) translateY(0.1vw);
+  transition-duration: 0.2s; */
+  transform-origin: center;
+  -ms-interpolation-mode: bicubic;
+}
+/* .logo:hover {
+  transform: scale(1.05) translateY(0.1vw);
+}
+.logo:active {
+  animation-name: logoPoint;
+  animation-duration: 0.2s;
+} */
+
+@keyframes logoPoint {
+  0% {
+    transform: scale(1.05) translateY(0.1vw);
+  }
+  50% {
+    transform: scale(1.15) translateY(0.2vw) rotate(-20deg);
+  }
+  100% {
+    transform: scale(1.05) translateY(0.1vw);
+  }
 }
 
 span {
@@ -72,7 +92,7 @@ span {
 
 /*Nadpis v custom Listu*/
 .titles {
-    font-size: 4vw;
+    font-size: calc(80% + 3vw);
     color: white;
     text-align: center;
     font-family: pusab;
@@ -86,7 +106,7 @@ span {
   text-align: center;
   font-family: pusab;  
 }
-
+.listInfo { margin-top: 7vh; }
 
 .title {
   width: 50vw;
@@ -131,26 +151,12 @@ span {
   margin-right: 2vw;
 }
 
-
-#popupBit {
-  position: absolute;
-  left: 94.5vw;
-  top: 4.3vh;
-  width: 2vw;
-  height: 2vw;
-  border-radius: 0;
-  background: 0;
-}
-
 .settingsDropdown {
-  width: 15vw;
   background: #012b003d;
   border: none;
   border-radius: 0.5vw;
-  font-size: 2vw !important;
-  padding: 0.6vw;
+  font-size: calc(40% + 1vw) !important;
   text-align: center;
-  height: 4vw;
   box-shadow: #0009 0vw 0vw 1vw;
 }
 
@@ -161,7 +167,7 @@ span {
   border-radius: 1vw;
   align-items: center;
   padding: 0.9vw;
-  margin-bottom: 1vw;
+  margin-bottom: 0.2vw;
   width: max-content;
 }
 
@@ -178,11 +184,11 @@ u {
 .settingsMenu {
   position: absolute;
   float: right;
-  right: 0vw;
   background: #222;
-  top: 5vw;
+  right: 1vw;
+  top: 6vw;
+  padding: 0.5vw;
   width: max-content;
-  padding: 1vw;
   border-radius: 1vw;
   display: flex;
   flex-direction: column;
@@ -349,28 +355,9 @@ u {
   border: none;
   margin: 0 !important;
   background: linear-gradient(180deg, #08ff0024, transparent);
-  font-size: 1vw !important;
+  font-size: calc(80% + 1vw) !important;
   cursor: pointer;
   padding: 0 2vw;
-}
-
-.notify {
-  position: relative;
-  right: 1vw;
-  transform: scale(0.6);
-  bottom: -9vw;
-  margin: -17vw !important;
-  background: url("../images/notify.png");
-  background-position-y: 0%;
-  background-repeat: repeat;
-  background-size: auto;
-  background-size: contain;
-  padding: 7%;
-  background-repeat: no-repeat;
-  background-position-y: -7px;
-  height: 95px;
-  cursor: pointer;
-  display: none;
 }
 
 .verticalSplitter {
@@ -446,6 +433,7 @@ html, body {
   margin-left: auto;
   margin-right: auto;
   opacity: 0;
+  width: 15vw;
 }
 
 .boards { margin-top: -5vw; }
@@ -463,7 +451,7 @@ html, body {
 .comTextArea {
   background-color: salmon;
   border: none;
-  height: 7vw;
+  height: 8vw;
   border-radius: 10px;
   resize: none;
   border-top-left-radius: 0;
@@ -504,7 +492,6 @@ html, body {
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   justify-content: right !important;
-  height: auto;
 }
 
 /* Text placement in the cbox footer and header */
@@ -532,15 +519,16 @@ html, body {
   color: white;
   border-radius: 10px;
   cursor: pointer;
-  margin: 0.5% 1% 0.5% 1%;
+  margin: -0.4% -1% -0.4% -1%;
+  transform: scale(0.6);
   height: min-content;
 }
 
 #verticalLine {
-    margin: 1% 2%;
-    height: auto;
-    border-style: solid;
-    border-radius: 15px;
+  margin: 0.5% 2%;
+  height: auto;
+  border-style: solid;
+  border-radius: 15px;
 }
 
 /* Comment color picker */
@@ -616,7 +604,6 @@ header {
   animation-iteration-count: infinite;
   animation-duration: 2s;
   animation-timing-function: linear;
-  height: 9vw;
   position: fixed;
   width: 100vw;
   z-index: 3;
@@ -643,13 +630,13 @@ footer {
 
 iframe {
   width: 100vw;
-  height: 102vh;
+  height: 65em;
   overflow: hidden;
   border: none;
 }
 
 .eventButton {
-  background-color: #2d6da6 !important;
+  background-color: #2d6ea6 !important;
   padding: 0% 1%;
   margin-left: 1%;
   border-radius: 10%;

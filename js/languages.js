@@ -14,10 +14,15 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     [".savedBut", 0, 0, ["Uložené", "Saved"]],
     [".langText", 0, 0, ["Jazyk", "Language"]],
     ["#czech", 0, 0, ["Čeština", "Czech"]],
-    ["#english", 0, 0, ["Anličtina", "English"]],
+    ["#english", 0, 0, ["Angličtina", "English"]],
+    ["#skinText", 0, 0, ["Vzhled", "Skin"]],
     [".anims", 0, 0, ["Animace", "Animations"]],
     [".noComm", "index.html", 0, ["- Žádné komentáře -", "- No Comments -"]],
     [".passInput", "index.html", "placeholder", ["Heslo", "Password"]],
+    ["#jumpToText", "index.html", 0, ["Skočit na...", "Jump to..."]],
+    ["#jumpToBut", "index.html", "title", ["Skočit na...", "Jump to..."]],
+    ["#shareText", "index.html", 0, ["Sdílet", "Share"]],
+    ["#shareBut", "index.html", "title", ["Sdílet", "Share"]],
 
     [".uploadTitle", "upload.html", 0, ["Nahrávání", "Upload"]],
     ["#listnm", "upload.html", "placeholder", ["Jméno seznamu", "List Name"]],
@@ -66,7 +71,9 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#h_role","upload.html",0,["Role","Role"]],
     ["#h_part","upload.html",0,["Část","Part"]],
     ["#h_color","upload.html",0,["Barva","Color"]],
-    [".errTitle","upload.html",0,["Jejda!","Oh no!"]]
+    [".errTitle","upload.html",0,["Jejda!","Oh no!"]],
+
+    ["title","packs.html",0,["Uložené levely | GD Seznamy", "Saved Levels | GD Lists"]]
 ]
 
 var jsStr = {
@@ -118,8 +125,26 @@ var jsStr = {
     "L_NOYEAR": ["<p>Tenhle rok neexistuje :D</p>", "<p>This year doesn't exist :D</p>"],
     "CHECKING": ["Kontrolování...", "Checking..."],
     "INC_PWD": ["Heslo je nesprávné!", "Incorrect password!"],
+    "CLICKS": ["Kliknutí: ","Clicks: "],
+    "SKIN1": ["Výchozí", "Default"],
+    "SKIN2": ["Pluska", "Addition"],
+    "SKIN3": ["Čáry", "Lines"],
+    "SKIN4": ["Nevím", "k"],
+    "SKIN5": ["Bloky", "Blocks"],
+    "SKIN6": ["Freedom69", "Freedom69"],
+    "SKIN7": ["Výchozí", "Default"],
+    "SKIN8": ["Výchozí", "Default"],
+    "GDLISTS": ["GD Seznamy","GD Lists"],
+    "FAV_REM": ["Odstranit z oblíbených", "Remove from Favorites"],
+    "FAV_ADD": ["Přidat do oblíbených", "Add to Favorites"],
+    "COMMUNITY": ["Komunitní", "Community"],
+    "SAVED": ["Uložené", "Saved"],
+    "SHOW_PROFILE": ["Zobrazit profil", "Show profile"],
 
     // helpDialogs
+    "LICENSE": ["Licence","License"],
+    "NEWSKIN_T": ["Nový skin", "New Skin!"],
+    "NEWSKIN_D": ["Odemknul jsi nový skin! Vyzkoušej ho v nastavení :).<br><br>Klikej dál!","You've unlocked a new skin! Apply it in the settings :).<br><br>Keep on clicking!"],
     "UPLOAD_T": ["Obrázky seznamu", "List Header Images"],
     "UPLOAD_D": [`Jestli chceš svůj seznam pořádně vyzdobit, můžeš k němu přidat obrázek, který se u něho zobrazí!<br />
         <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
@@ -161,6 +186,7 @@ var jsStr = {
         `<p class="helpText">Click the <img width=5% id="plusSign" src="images/add.png"> to add a level!</p>`],
     "L_MOVE_D": ["Přesunout level níž", "Move level up"],
     "L_MOVE_U": ["Přesunout level výš", "Move level down"],
+    "L_LEVID": ["ID levelu", "Level ID"],
     "L_NAME": ["Jméno levelu", "Level Name"],
     "L_BUILDER": ["Tvůrce", "Creator"],
     "L_VIDEO": ["Video", "Video"],
@@ -294,7 +320,7 @@ function getCookie(val="") {
             let searchObj = {};
             return Object.values(finishedCooks)[getSearched]
             }
-        else throw "Bro, someone stole the cookie, as it hasn't been found lmao!";
+        else return false;
     }
     else return finishedCoocks;
 }
@@ -317,7 +343,7 @@ $(function () {
     $($(".settingsDropdown").children()[currLang]).attr("selected", true)
     
     
-    $(".settingsDropdown").on("change", () => {
+    $(".settingsDropdown:not(.skins)").on("change", () => {
         let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
         makeCookie(["lang", switchLang])
         window.location.reload();

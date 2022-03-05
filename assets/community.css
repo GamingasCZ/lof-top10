@@ -20,6 +20,13 @@
     text-align: center
 }
 
+.communityTitle { margin: 5vh 0 -2vh 0; }
+.communityTitle { margin: 0; }
+
+.hueChanger {
+    box-shadow: rgba(255, 255, 255, 0.35) 0px 0px 0vw 0.2vw;
+}
+
 .setTitle {
     margin-bottom: 0;
     text-align: center;
@@ -56,7 +63,7 @@
     border-radius: 10px;
 }
 .uploadMainInp {
-    font-size: 3vw !important;
+    font-size: calc(30% + 2vw) !important;
     padding: 1vw !important;
 }
 .uploadText {
@@ -216,20 +223,17 @@ input::-webkit-inner-spin-button {
 input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .tableCpicker) {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 0.5%;
-    margin-bottom: 0.5%;
     background-color: rgb(36, 36, 36);
-    border:rgb(36, 36, 36) 5px solid;
+    border:rgb(36, 36, 36) 0.3vw solid;
     border-radius: 5%;
     padding: 3px 5px;
     color: white;
-    width: 15em;
     height: 2.8vh;
-
     font-family: "pusab";
-    font-size: 2vw;
+    font-size: calc(50% + 1vw);
     display: flex;
     justify-content: center;
+    width: 20em;
 }
 
 .inputErr {
@@ -246,10 +250,10 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     transition-duration: 0s;
 }
 .imgPreview {
-    background-color: rgb(24, 24, 24);
     margin: 0% 22.5% 3%;
     padding: 2%;
-    border-radius: inherit;
+    background-color: rgb(29, 29, 29);
+    border-radius: 0px 0px 10px 10px;
     width: 40vw;
     display: none;
 }
@@ -290,11 +294,10 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     position: fixed;
     display: none;
     width: 45%;
-    height: 30%;
     top: 11vw;
     left: 15vw;
     z-index: 4;
-    padding: 0 0vw 1vw 2vw;
+    padding: 0 0vw 3vw 2vw;
 }
 #shareContainer {
     font-size: 2vw;
@@ -327,7 +330,8 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     width: 90%;
     margin-left: 2.5%;
     justify-content: flex-start;
-    font-size: 1.8vw;
+    font-size: calc(50% + 1vwh);
+    padding: 1%;
 }
 
 
@@ -342,7 +346,7 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     width: 25vw;
     height: 5vh;
     font-family: "pusab";
-    font-size: 1.8vw;
+    font-size: calc(70% + 0.5vw);
 }
 .cardButtonsContainer {
     display: flex;
@@ -385,12 +389,12 @@ input::-webkit-input-placeholder {
     opacity: 0.5;
     color: white;
     font-family: "pusab";
-    font-size: 1.5vw;
+    font-size: calc(50% + 1vw);
 }
 input::-moz-placeholder {
     color: white;
     font-family: "pusab";
-    font-size: 1.5vw;
+    font-size: calc(50% + 1vw);
 }
 
 input:disabled {
@@ -707,6 +711,8 @@ input:disabled {
     display: flex;
     align-items: center;
     transition: opacity 0.2s ease-in-out;
+    background-repeat: repeat;
+    background-position-y: center;
     /*flex-wrap: wrap;*/
 }
 

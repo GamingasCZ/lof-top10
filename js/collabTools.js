@@ -237,8 +237,8 @@ function addRole(preset = null, loading = 0) {
     let roleCode = $(`
     <div class="roleBubble" style="background: ${randomColor()};">
         <input id="roleInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="${jsStr["NAME"][LANG]}" value=${presetName}></input>
-        <img class="button" style="width: 2.5vw; height: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"
-       ><img class="button roleRm" style="width: 2.5vw; height: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
+        <img class="button noMobileResize" style="width: 2.5vw; height: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"
+       ><img class="button noMobileResize roleRm" style="width: 2.5vw; height: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
     </div>
     `).appendTo($(".collabRoles"));
     roleInstance.HTMLobject = roleCode[0];
@@ -256,6 +256,8 @@ function verifyPerson(th) {
     $.get("https://gdbrowser.com/api/profile/" + inp, nm => {
         if (nm != "-1") {
             $(th.siblings()[0]).attr("src", "https://gdbrowser.com/icon/" + inp)
+            $(th.siblings()[1]).val(nm.username)
+            levelList[currEditing]["creator"][2][index].name = nm.username
 
             // Setting social media
             for (let i = 0; i < levelList[currEditing]["creator"][2][index]["socials"].length; i++) {
@@ -279,11 +281,11 @@ function verifyPerson(th) {
                     // Member color from GD pcol1
                     let p1col = RGBtoHEX([nm.col1RGB.r, nm.col1RGB.g, nm.col1RGB.b])
                     levelList[currEditing]["creator"][2][index].color = p1col;
-                    $(".tableCpicker")[levelList[currEditing]["creator"][1].length + index].value = p1col;
+                    $(".tableCpicker")[index].value = p1col;
                 }
             })
 
-            levelList[currEditing]["creator"][2][index].verified = true
+            levelList[currEditing]["creator"][2][index].verified = [nm.icon, nm.col1, nm.col2, nm.glow]
         }
     })
 }
@@ -325,12 +327,12 @@ function addCollabHuman(load = 0) {
     let humanCode = $(`
     <tr class="tableRow">
         <td>
-            <img class="button" style="width: 2vw;" src="${verifySign}"
+            <img class="button noMobileResize" style="width: 2vw;" src="${verifySign}"
            ><input onchange="chRoleValue($(this), 'name', 2)" id="collabInp" placeholder="${jsStr["NAME"][LANG]}" value="${humanInstance.name}"></input
-           ><img class="button" style="width: 2vw;" src="images/getStats.png" onclick="verifyPerson($(this), 1)">
+           ><img class="button noMobileResize" style="width: 2vw;" src="images/getStats.png" onclick="verifyPerson($(this), 1)">
         </td>
         <td>
-            <img class="button socAddButton" style="width: 2vw;" src="images/add.png" onclick="addSocMedia($(this))"
+            <img class="button noMobileResize socAddButton" style="width: 2vw;" src="images/add.png" onclick="addSocMedia($(this))"
        ></td>
         <td>
             <select onchange="chRoleValue($(this), 'role', 2)" class="uploadText roleList"></select>
@@ -342,11 +344,11 @@ function addCollabHuman(load = 0) {
            ><p class="uploadText" style="display: inline">%</p
         </td>
         <td>
-            <input type="color" class="tableCpicker button" style="width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
+            <input type="color" class="tableCpicker noMobileResize button" style="width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
         </td>
         <td>
-            <img class="button" style="width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 2)"
-           ><img class="button humRm" style="width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
+            <img class="button noMobileResize" style="width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 2)"
+           ><img class="button noMobileResize humRm" style="width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
         </td>
         <input type="hidden" value="${rowID}">
     </tr>
@@ -370,7 +372,7 @@ function addCollabHuman(load = 0) {
         }
 
         humanInstance["socials"].forEach(soc => {
-            let smallBut = $(`<img class="button" style="width: 2vw" src=images/${imgs[soc[0]]}.png>`).appendTo(socialCell)
+            let smallBut = $(`<img class="button noMobileResize" style="width: 2vw" src=images/${imgs[soc[0]]}.png>`).appendTo(socialCell)
             smallBut.on("click", changeSocial)
             smallBut.on("dblclick", x => { changeSocial(x); removeSocial() });
             // Adds corresponding HTMLelement to array
@@ -670,7 +672,7 @@ function confirmSocial() {
 
         // Adds a button to table cell
         let tableBit = $(".socAddButton")[soc_selected].parentElement
-        let smallBut = $(`<img class="button" style="width: 2vw" src=images/${imgs[soc_array[0]]}.png>`).appendTo(tableBit)
+        let smallBut = $(`<img class="button noMobileResize" style="width: 2vw" src=images/${imgs[soc_array[0]]}.png>`).appendTo(tableBit)
         smallBut.on("click", changeSocial)
         smallBut.on("dblclick", x => { changeSocial(x); removeSocial() });
 

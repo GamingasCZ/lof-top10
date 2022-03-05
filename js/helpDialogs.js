@@ -26,6 +26,14 @@ $(function () {
         "lastRoleDelete": {
             "title": jsStr["RMROLE_T"][LANG],
             "content": jsStr["RMROLE_D"][LANG]
+        },
+        "newSkin": {
+            "title": jsStr["NEWSKIN_T"][LANG],
+            "content": jsStr["NEWSKIN_D"][LANG]
+        },
+        "license": {
+            "title": jsStr["LICENSE"][LANG],
+            "content": "Načítání..."
         }
     }
 })
@@ -34,7 +42,9 @@ function closeHelp() {
     $(".popupHelp").slideUp();
     $(".helpBG").fadeOut();
 }
-function openHelp(page) {
+async function openHelp(page) {
+    if (page == "license") await $.get("https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/LICENSE", d => {help[page]["content"] = d})
+
     $("#helpTitle").html(help[page]["title"])
     $("#helpContent").html(help[page]["content"])
 

@@ -1,3 +1,10 @@
+@media only screen and (max-width: 800px) {
+    .button:not(.noMobileResize) {
+        width: 6vw !important;
+        height: auto !important;
+    }
+    }
+
 @media only screen and (max-width: 600px) {
 
 .comTextArea {
@@ -16,15 +23,15 @@
     display: none;
 }
 
-.button:not(.noMobileResize) {
+.button:not(.noMobileResize), .logo {
     width: 8vw !important;
-    height: 8vw !important;
+    height: auto !important;
 }
 
 /* Buttons in comment box */
 .comFooterButton {
     transform: scale(0.7);
-    margin: 0% -4%;
+    margin: 0% -2vw;
 }
 
 /* Page switcher in comments */
@@ -33,9 +40,9 @@
 }
 
 .settingsMenu {
-    right: 13vw;
-    top: 30vw;
-    transform: scale(2);
+    right: 7vw;
+    top: 19vw;
+    transform: scale(1.5);
 }
 
 #shareContainer {
@@ -48,12 +55,18 @@
 .searchTools:not(#commentTool) { margin-top: 10vw }
 
 #jumpToTools {
-    top: 24vw;
-    transform: scale(1.7);
+    top: 0;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    left: 0;
+    padding: 0;
 }
 
 #crown {
-    transform: translateY(8.5vw) !important;
+    transform: translateY(7.7vw) !important;
     width: 25vw;
 }
 
@@ -64,7 +77,7 @@
     right: 0;
     bottom: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
 }
 .graphPerc {
     font-size: 2.5vw;
@@ -72,6 +85,17 @@
 .graphContainer { 
     height: 5.5vw;
 }
+
+.uploadBG:not(#jumpToTools, #shareTools) {
+    margin: 1vw;
+}
+
+#levelUpload {
+    margin-top: 15% !important;
+}
+
+.communityTitle { margin: 5vh 0 -5vh 0; }
+.savedTitle { margin: 4vh 0 -5vh 0vw; }
 
 /* Hides help text in searchTool/CommentTool */
 #pageStr, #sortStr { display: none; }

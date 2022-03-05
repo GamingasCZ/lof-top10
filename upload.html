@@ -31,10 +31,10 @@
 
 <body>
   <header>
-    <div style="justify-content: left;">
-      <img src="images/title.png" style="width: 23vw; height: fit-content;">
+    <div style="display: flex; align-items: center;">
+      <img src="images/gdSezn.svg" class="logo">
     </div>
-    <div style="justify-content: center; width: 66vw;" class="menuPicker">
+    <div style="justify-content: center" class="menuPicker">
       <button class="yearButtonImg uploadText" onclick="switchLoFList('index.html?year=2019')">2019</button><button
         class="yearButtonImg uploadText" onclick="switchLoFList('index.html?year=2021')">2021</button><button
         class="yearButtonImg commBut uploadText" src=""
@@ -44,11 +44,10 @@
     <select class="mobilePicker" onchange="switchSite($(this)[0].value)">
       <option class="yearButtonImg uploadText">2019</option>
       <option class="yearButtonImg uploadText">2021</option>
-      <option class="yearButtonImg commBut uploadText" src="./images/community.png">Komunitní</option>
+      <option class="yearButtonImg commBut uploadText" src="./images/community.png" selected>Komunitní</option>
       <option class="yearButtonImg savedBut uploadText" src="./images/community.png">Uložené</option>
     </select>
     <div style="justify-content: right; display: flex; align-items: center;">
-      <img id="popupBit" class="settingsMenu" style="display: none;" src="images/popupArr.png">
       <img class="button" src="images/gauntlet.png" style="width: 3vw; padding-right: 1vw;"
         onclick="$('.settingsMenu').fadeToggle(100)">
     </div>
@@ -76,20 +75,20 @@
       <img src="./images/delete.png" class="button" style="width: 6%; height: max-content;" onclick="hideCollabTools()">
     </div>
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 12%;">
-      <img class="hostIcon" src="./images/bytost.png">
-      <input id="posInputBox" class="verifierRole" autocomplete="off" type="text" placeholder="Role nahrávatele"
+      <img class="hostIcon" src="./images/bytost.png" style="margin-right: 1vw;">
+      <input id="posInputBox" class="verifierRole cardInput" autocomplete="off" type="text" placeholder="Role nahrávatele"
         style="width: 15vw;" onchange="chMainName($(this), 3)" value="Host">:
-      <input id="posInputBox" class="verifier" autocomplete="off" type="text" placeholder="Nahrál"
-        style="width: 25vw;" onchange="chMainName($(this), 1)">
+      <input id="posInputBox" class="verifier cardInput" autocomplete="off" type="text" placeholder="Nahrál"
+        style="width: 25vw; margin: 0vw 1vw;" onchange="chMainName($(this), 1)">
       <img class="button"  src="images/getStats.png" onclick="chMainName($(this), 2)">
     </div>
 
     <div class="editorHeader collabHeader uploadText collabBar">
       <div class="uploadText button roleHead" onclick="rollThing(0)">Role</div>
       <div class="presetButtonContainer">
-        <button class="button uploadText eventButton" onclick="addRole(0)">Dekorace</button>
-        <button class="button uploadText eventButton" onclick="addRole(1)">Layout</button>
-        <button class="button uploadText eventButton" onclick="addRole(2)">Tester</button>
+        <button class="button uploadText eventButton noMobileResize" onclick="addRole(0)">Dekorace</button>
+        <button class="button uploadText eventButton noMobileResize" onclick="addRole(1)">Layout</button>
+        <button class="button uploadText eventButton noMobileResize" onclick="addRole(2)">Tester</button>
       </div>
       <div class="collabHButtons" style="width: 11vw;">
         <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')" style="width: 3vw;height: fit-content;"
@@ -131,36 +130,36 @@
       </div>
     </div>
     <div class="collabBG collabHeader collabDIV" style="height: 39.7%;;">
-      <div class="uploadText noRoles">K přidání členů přidej roli.</div>
-      <div style="display: none;" class="uploadText addRoles">K přidání člena klikni na<img style="width: 2.2%" id="plusSign"
-          src="images/add.png"></div>
+      <p class="uploadText noRoles">K přidání členů přidej roli.</p>
+      <p style="display: none;" class="uploadText addRoles">K přidání člena klikni na<img style="width: 2.2%" id="plusSign"
+          src="images/add.png"></p>
       <table style="display: none;" class="collabTables collabHumans">
         <tr class="collabTables">
           <th class="collabTables" style="width: 26%;">
             <img src="images/bytost.png" style="width: 2vw;"
            ><div id="h_name" style="display:inline">Jméno</div
-           ><img src="images/help.png" class="button smallHelp helpButton"
+           ><img src="images/help.png" class="button smallHelp noMobileResize helpButton"
               onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 14%;">
             <img src="images/like.png" style="width: 2vw;"
            ><div id="h_social" style="display:inline">Sítě</div
-           ><img src="images/help.png" class="button smallHelp helpButton" onclick="openHelp('humansHelp')">
+           ><img src="images/help.png" class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 25%;">
             <img src="images/part.png" style="width: 2vw;"
            ><div id="h_role" style="display:inline">Role</div
-           ><img src="images/help.png" class="button smallHelp helpButton" onclick="openHelp('humansHelp')">
+           ><img src="images/help.png" class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 15%;">
             <img src="images/length.png" style="width: 2vw;"
            ><div id="h_part" style="display:inline">Část</div
-           ><img src="images/help.png" class="button smallHelp helpButton" onclick="openHelp('humansHelp')">
+           ><img src="images/help.png" class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 13%;">
             <img src="images/colorSelect.png" style="width: 2vw;"
            ><div id="h_color" style="display:inline">Barva</div
-           ><img src="images/help.png" class="button smallHelp helpButton" onclick="openHelp('humansHelp')">
+           ><img src="images/help.png" class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables"></th>
         </tr>
@@ -238,12 +237,12 @@
     </div>
 
     <div id="submitarea">
-      <input onclick="uploadList()" type="button" class="button" id="submitbutton" value="Nahrát">
+      <input onclick="uploadList()" type="button" class="button noMobileResize" id="submitbutton" value="Nahrát">
     </div>
 
   </form>
 
-  <p class="titles" style="margin: 5vh 0 0 0;">- Komunitní seznamy -</p>
+  <p class="titles communityTitle">- Komunitní seznamy -</p>
 
   <!-- Debug Tools -->
   <div class="searchTools uploadText debugTools">
@@ -261,7 +260,7 @@
       <span style="padding-right: 2%;" id="pageStr">Strana: </span>
       <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
       <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-      <span style="font-size: 2vw" id="maxPage">/1</span>
+      <span id="maxPage">/1</span>
       <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
     </div>
     <div class="search">
@@ -281,6 +280,7 @@
   <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
   <span class="uploadText"> | 2021-2022 | </span>
   <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github" src="images/github.png"></a>
+  <a onclick="openHelp('license')" class="uploadText gamLink"> Licence</a>
 </footer>
 
 <script>$(function () { translate(); })</script>
