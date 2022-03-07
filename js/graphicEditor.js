@@ -282,7 +282,6 @@ async function changeColPicker(chosenColor, target, isChangingValue) {
 
     let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness+"%");
     levelList[target]["color"] = inHex;
-    $(".hueChanger").css("filter",`hue-rotate(${hue}deg)`)
 }
 
 function changeIDbox(k) {
@@ -465,7 +464,7 @@ function openColorPicker(lp) {
     $('.cardContainer'+lp).text('')
     $('.cardContainer'+lp).slideToggle(50)
 
-    let color = makeColorElement(getHueFromHEX(levelList[lp]["color"]))
+    let color = makeColorElement(getHueFromHEX(levelList[lp]["color"]), getLightnessFromHEX(levelList[lp]["color"]))
     color.on("input", k => {
         changeColPicker($(k.target).val(), lp, k.target.previousElementSibling.className == "hueChanger")
     })
@@ -568,7 +567,6 @@ function card(index, rndColor) {
                         onclick="removeLevel(${index})" src="./images/delete.png">
 
                     <img class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
-                    <input style="display: none;" title="${jsStr["CARD_COL"][LANG]}" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
                 </div>
             </div>
 
@@ -659,20 +657,20 @@ $(function () {
         $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
     }
 
-    $(window).on("resize", function () {
-        // Editor disable on portrait orientaton
-        if ($(window).width() < $(window).height()) {
-            $(".headerTitle").text(jsStr["MOBILE_ED"][LANG]);
-            $("#mainContent").hide()
-            $(".headerButtons").hide()
-        }
-        else {
-            $(".headerTitle").html(jsStr["LEVELS"][LANG]);
-            $("#mainContent").show()
-            $(".headerButtons").show()
-        }
+    // $(window).on("resize", function () {
+    //     // Editor disable on portrait orientaton
+    //     if ($(window).width() < $(window).height()) {
+    //         $(".headerTitle").text(jsStr["MOBILE_ED"][LANG]);
+    //         $("#mainContent").hide()
+    //         $(".headerButtons").hide()
+    //     }
+    //     else {
+    //         $(".headerTitle").html(jsStr["LEVELS"][LANG]);
+    //         $("#mainContent").show()
+    //         $(".headerButtons").show()
+    //     }
 
-    })
+    // })
 
     $("#bgcolorPicker").on("change", function () {
         colorizePage()

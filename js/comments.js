@@ -66,6 +66,7 @@ function updateCharLimit() {
 
 var actualText = "";
 var midText = "";
+var commentColor = "";
 $(function () {
   var placeholders = [
     jsStr["PHOLD1"][LANG],
@@ -144,7 +145,7 @@ $(function () {
   });
 
   // Pick a random comment color
-  let commentColor = randomColor();
+  commentColor = randomColor();
   let boxColor = HEXtoRGB(commentColor, 30);
   let darkerBoxColor = HEXtoRGB(commentColor, 50);
 
@@ -158,24 +159,6 @@ $(function () {
   $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")");
   $("#verticalLine").css("border-color", commentColor);
   $(".cpicker").val(commentColor);
-
-  // Comment color picker
-  $(".cpicker").on("change", () => {
-    let col = $(".cpicker").val();
-
-    let boxColor = HEXtoRGB(col, 40);
-    let darkerBoxColor = HEXtoRGB(col, 80);
-
-    $("#commentMaker").css("background-color", col);
-    $("#commentMaker").css("border-color", "rgb(" + boxColor.join(",") + ")");
-    $(".comInpArea").css("background-color", "rgb(" + boxColor.join(",") + ")");
-    $(".comInpThings").css(
-      "background-color",
-      "rgb(" + darkerBoxColor.join(",") + ")"
-    );
-    $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")");
-    $("#verticalLine").css("border-color", col);
-  });
 
   // Page switching
   $("#pageSwitcher").on("change", function () {
@@ -228,12 +211,47 @@ function addEmoji(id) {
   }
 }
 
-function displayEmojiPanel() {
-  if ($(".emojiPanel").css("display") == "none") {
-    $(".emojiPanel").slideDown(50);
-  } else {
-    $(".emojiPanel").slideUp(50);
+var lastOpenedPanel = -1
+function displayPanel(what) {
+  if (what == 1) { // Emoji
+    $(".colorPicker").hide()
+    $(".listEmoji").show()
   }
+  else { // Color picker
+    if ($(".colorPicker").length < 1) {
+      let color = makeColorElement(getHueFromHEX(commentColor), getLightnessFromHEX(commentColor))
+      color.on("input", k => {
+          let isChangingValue = false;
+          if (k.target.previousElementSibling.className == "hueChanger") isChangingValue = true
+          let lightness = isChangingValue ? k.target.value : getLightnessFromHEX(commentColor)
+          let hue = isChangingValue ? getHueFromHEX(commentColor) : k.target.value
+  
+          $("#commentMaker").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`);
+          $("#commentMaker").css("border-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+          $(".comInpArea").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+          $(".comInpThings").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-10}%)`);
+          $(".emojiPanel").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+          $("#verticalLine").css("border-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+  
+          let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness+"%");
+          commentColor = inHex;
+        });
+      
+      color.appendTo($(".emojiPanel"))
+    }
+
+    $(".colorPicker").show()
+    $(".listEmoji").hide()
+  }
+
+  if (lastOpenedPanel == what || $(".emojiPanel").css("display") == "none") {
+    if ($(".emojiPanel").css("display") == "none") {
+      $(".emojiPanel").slideDown(50);
+    } else {
+      $(".emojiPanel").slideUp(50);
+    }
+  }
+  lastOpenedPanel = what
 }
 
 function sendComment() {
@@ -253,7 +271,7 @@ function sendComment() {
         comment: actualText,
         comType: 0, // Change when I eventually add replies,
         listID: LIST_ID,
-        comColor: $("#comCPicker").val(),
+        comColor: commentColor,
       };
 
       $.post("./php/sendComment.php", postData, (data) => {

@@ -62,7 +62,7 @@ $(function () {
 });
 
 function generateFaves() {
-  $(".titles").text("- Oblíbené levely -");
+  $(".titles").text(jsStr["FAV_LEVELS"][LANG]);
 
   // levelName, levelCreator, levelID, cardCol, listID, listName, listPos, timeAdded
   let favorites = JSON.parse(
@@ -172,7 +172,7 @@ function goToList(obj, pos) {
       break;
   }
 
-  sender = "http://gamingas.wz.cz";
+  sender = "http://www.gamingas.wz.cz";
   if (window.location.protocol == "file:") sender = "*"; // Allow all if running locally
 
   window.parent.postMessage(["loading", page, pos], sender);
@@ -196,7 +196,7 @@ function generateList(obj) {
       }</p>
                 <p class="uploadText" style="font-size: 1.8vw; margin: 0;"><u onclick="goToList(${
                   object[4]
-                }, ${object[6]})">${object[5]}</u> - ID levelu: ${object[2]}</p>
+                }, ${object[6]})">${object[5]}</u> - ${jsStr["L_LEVID"][LANG]}: ${object[2]}</p>
             </div>
             <div>
                 <img class="button" onclick="removeFromList('fav', ${

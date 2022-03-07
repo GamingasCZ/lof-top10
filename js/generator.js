@@ -15,118 +15,10 @@ const YEAR = yID;
 
 // Default 2019 board
 if (YEAR == "2019" || window.location.pathname.match("upload") == -1) {
-	var boards = {"1":{"levelName":"Snowy","creator":[["MurlocGD",true,"Host"],[{"name":"Level","HTMLobject":{},"id":1646438090943}],[{"name":"MurlocGD","role":1646438090943,"part":[0,0],"color":"#62a0ea","socials":[[0,"https://youtube.com/channel/httpswww.youtube.comchannelUC8"]],"HTMLobject":{},"verified":[122,15,16,true]},{"name":"pizzagamerhu","role":1646438090943,"part":[0,0],"color":"#7d7dff","socials":[[0,"https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"],[2,"https://twitch.tv/pizzagamerhu"]],"HTMLobject":{},"verified":[35,41,3,false]}]],"levelID":"39776379","video":"FBJUt0U4kUw","color":"#a3003c"},"2":{"levelName":"Garatun","creator":"TellConfig","levelID":"55787317","video":"yXo6jY_W6LM","color":"#009194"},"3":{"levelName":"Gold Ring","creator":"ShadowBurnSK","levelID":null,"video":"uT2n-35x1CA","color":"#3d2900"},"4":{"levelName":"FiFqo Calling Rebirth","creator":"GD Mini","levelID":null,"video":"WLJ0rVXIDP4","color":"#44a300"},"5":{"levelName":"Gamingas","creator":"Qrange","levelID":"59654444","video":"V1zGo03x4Po","color":"#a34100"},"6":{"levelName":"Infinity Gamingas","creator":[["jazerplay",true,"Nahrál"],[{"name":"Level","HTMLobject":{},"id":1646438293839}],[{"name":"jazerplay","role":1646438293839,"part":[0,0],"color":"#a30088","socials":[],"HTMLobject":{},"verified":[130,12,9,false]},{"name":"playergeoCZ","role":1646438293839,"part":[0,0],"color":"#a38d00","socials":[],"HTMLobject":{},"verified":[107,17,18,false]}]],"levelID":null,"video":null,"color":"#5c5c00"},"7":{"levelName":"Deltarune","creator":"EidamGD","levelID":null,"video":"3u3ptITvG5g","color":"#a30010"},"8":{"levelName":"GG geddon","creator":"Jakubko2005","levelID":"52409692","video":"ljaAtxqcngg","color":"#995200"},"9":{"levelName":"rainbow travel","creator":"playergeoCZ","levelID":"55029144","video":"FBJUt0U4kUw","color":"#00a396"},"10":{"levelName":"Fracture","creator":"ImSamo","levelID":null,"video":"WLJ0rVXIDP4","color":"#230057"},"titleImg":"","pageBGcolor":"#020202"}
+	var boards = {"1":{"levelName":"Snowy","creator":[["MurlocGD",true,"Host"],[{"name":"Level","id":1646438090943}],[{"name":"MurlocGD","role":1646438090943,"part":[0,41],"color":"#62a0ea","socials":[[0,"https://youtube.com/channel/httpswww.youtube.comchannelUC8"]],"verified":[122,15,16,true]},{"name":"pizzagamerhu","role":1646438090943,"part":[41,100],"color":"#7d7dff","socials":[[0,"https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"],[2,"https://twitch.tv/pizzagamerhu"]],"verified":[35,41,3,false]}]],"levelID":"39776379","video":"FBJUt0U4kUw","color":"#a3003c"},"2":{"levelName":"Garatun","creator":"TellConfig","levelID":"55787317","video":"yXo6jY_W6LM","color":"#009194"},"3":{"levelName":"Gold Ring","creator":"ShadowBurnSK","levelID":null,"video":"uT2n-35x1CA","color":"#3d2900"},"4":{"levelName":"FiFqo Calling Rebirth","creator":"GD Mini","levelID":null,"video":"WLJ0rVXIDP4","color":"#44a300"},"5":{"levelName":"Gamingas","creator":"Qrange","levelID":"59654444","video":"V1zGo03x4Po","color":"#a34100"},"6":{"levelName":"Infinity Gamingas","creator":[["jazerplay",true,"Nahrál"],[{"name":"Level","id":1646438293839}],[{"name":"jazerplay","role":1646438293839,"part":[0,50],"color":"#a30088","socials":[],"verified":[130,12,9,false]},{"name":"playergeoCZ","role":1646438293839,"part":[50,100],"color":"#a38d00","socials":[],"verified":[107,17,18,false]}]],"levelID":null,"video":null,"color":"#5c5c00"},"7":{"levelName":"Deltarune","creator":"EidamGD","levelID":null,"video":"3u3ptITvG5g","color":"#a30010"},"8":{"levelName":"GG geddon","creator":"Jakubko2005","levelID":"52409692","video":"ljaAtxqcngg","color":"#995200"},"9":{"levelName":"rainbow travel","creator":"playergeoCZ","levelID":"55029144","video":"FBJUt0U4kUw","color":"#00a396"},"10":{"levelName":"Fracture","creator":"ImSamo","levelID":null,"video":"WLJ0rVXIDP4","color":"#230057"},"titleImg":"","pageBGcolor":"#020202"}
 }
 else if (YEAR == "2021" || window.location.pathname.match("upload") != -1) {
-	var boards = {
-		"1": {
-			"levelName": "Vajcia",
-			"creator": "ImSamo",
-			"levelID": "64832786",
-			"video": "-aYFb6mtrvY",
-			"color": "#cdefed"
-		},
-		"2": {
-			"levelName": "Gamingas",
-			"creator": "Qrange",
-			"levelID": "59654444",
-			"video": "V1zGo03x4Po",
-			"color": "#ff5f16"
-		},
-		"3": {
-			"levelName": "TsukI",
-			"creator": "ImSamo",
-			"levelID": "58937627",
-			"video": "Ia7_kV6riOQ",
-			"color": "#c83dd9"
-		},
-		"4": {
-			"levelName": "level482",
-			"creator": "ImSamo",
-			"levelID": null,
-			"video": "-bq_rvgtukM",
-			"color": "#d7bd05"
-		},
-		"5": {
-			"levelName": "Wibes",
-			"creator": "ShadowBurnSK",
-			"levelID": "55974905",
-			"video": "MWGR6W0cMNw",
-			"color": "#f93232"
-		},
-		"6": {
-			"levelName": "Calm Blue",
-			"creator": "playergeoCZ",
-			"levelID": "70205309",
-			"video": "AuokRDWcTu4",
-			"color": "#5fb3c9"
-		},
-		"7": {
-			"levelName": "Okurka",
-			"creator": "TellConfig",
-			"levelID": null,
-			"video": "Ia7_kV6riOQ",
-			"color": "#24700d"
-		},
-		"8": {
-			"levelName": "Night Light",
-			"creator": "EidamGD",
-			"levelID": "63562152",
-			"video": "pU4kA6s0yWM",
-			"color": "#493653"
-		},
-		"9": {
-			"levelName": "Krestan Miso",
-			"creator": "Jazerplay",
-			"levelID": null,
-			"video": "7FoxMO8u38Q",
-			"color": "#e0e0e0"
-		},
-		"10": {
-			"levelName": "Paradox World",
-			"creator": "Jakubko2005",
-			"levelID": "54941993",
-			"video": "F0OM9qN8oCI",
-			"color": "#6a1f76"
-		},
-		"11": {
-			"levelName": "Pichlace",
-			"creator": "Jakubko2005",
-			"levelID": "64609075",
-			"video": "apxi5fELZlA",
-			"color": "#62ec63"
-		},
-		"12": {
-			"levelName": "Doom arrived",
-			"creator": "Jakubko2005",
-			"levelID": "55948676",
-			"video": "8RVqO6HsptU",
-			"color": "#316346"
-		},
-		"13": {
-			"levelName": "Infinity Journey",
-			"creator": [["Playergeocz", true, "Host"], [{ "name": "Level", "hasPer": false, "color": "#964387", "HTMLobject": {}, "id": 1641079683625 }], [{ "name": "PlayerGeoCZ", "role": 1641079683625, "part": ["0", "15"], "color": "#71b1fa", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "jakubko2005", "role": 1641079683625, "part": ["15", "28"], "color": "#004baf", "socials": [[0, "https://youtube.com/channel/httpswww.youtube.comchannelUC"]], "HTMLobject": {}, "verified": true }, { "name": "Jazerplay", "role": 1641079683625, "part": ["28", "37"], "color": "#9b8a85", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "ShadowBurnSK", "role": 1641079683625, "part": ["37", "49"], "color": "#1cc021", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "Jablicko", "role": 1641079683625, "part": ["54", "58"], "color": "#718ea6", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "TellConfig", "role": 1641079683625, "part": ["58", "69"], "color": "#126592", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "ekokekokos", "role": 1641079683625, "part": ["69", "81"], "color": "#4ec02c", "socials": [], "HTMLobject": {}, "verified": 0 }, { "name": "PlayerGeoCZ", "role": 1641079683625, "part": ["85", "100"], "color": "#c36deb", "socials": [], "HTMLobject": {}, "verified": true }, { "name": "Patas Matas", "role": 1641079683625, "part": ["49", "54"], "color": "#fed022", "socials": [], "HTMLobject": {}, "verified": 0 }]],
-			"levelID": "61102013",
-			"video": "paGz3CzbOVk",
-			"color": "#9abd10"
-		},
-		"14": {
-			"levelName": "D e s e r t",
-			"creator": "playergeoCZ",
-			"levelID": "56179232",
-			"video": "OJl6WIf-qGA",
-			"color": "#d8c437"
-		},
-		"15": {
-			"levelName": "Hell Note",
-			"creator": [["EidamGD", true, "Verifier"], [{ "name": "Level", "hasPer": false, "color": "#fa8e22", "id": 1641079356870 }], [{ "name": "Jazerplay", "role": 1641079356870, "part": ["0", "100"], "color": "#cb2a32", "socials": [], "verified": true }]],
-			"levelID": "57149934",
-			"video": "vZucsa43bNs",
-			"color": "#2a0000"
-		},
-		"titleImg": "",
-		"pageBGcolor": "#020202"
-	}
+	var boards = {"1":{"levelName":"Vajcia","creator":"ImSamo","levelID":"64832786","video":"-aYFb6mtrvY","color":"#a37a00"},"2":{"levelName":"Gamingas","creator":"Qrange","levelID":"59654444","video":"V1zGo03x4Po","color":"#600094"},"3":{"levelName":"TsukI","creator":"ImSamo","levelID":"58937627","video":"Ia7_kV6riOQ","color":"#a3009e"},"4":{"levelName":"level482","creator":"ImSamo","levelID":null,"video":"-bq_rvgtukM","color":"#a39e00"},"5":{"levelName":"Wibes","creator":"ShadowBurnSK","levelID":"55974905","video":"MWGR6W0cMNw","color":"#a31800"},"6":{"levelName":"Calm Blue","creator":"playergeoCZ","levelID":"70205309","video":"AuokRDWcTu4","color":"#0070a3"},"7":{"levelName":"Okurka","creator":"TellConfig","levelID":null,"video":"Ia7_kV6riOQ","color":"#023800"},"8":{"levelName":"Night Light","creator":"EidamGD","levelID":"63562152","video":"pU4kA6s0yWM","color":"#14003d"},"9":{"levelName":"Krestan Miso","creator":"Jazerplay","levelID":null,"video":"7FoxMO8u38Q","color":"#567000"},"10":{"levelName":"Paradox World","creator":"Jakubko2005","levelID":"54941993","video":"F0OM9qN8oCI","color":"#47006b"},"11":{"levelName":"Pichlace","creator":"Jakubko2005","levelID":"64609075","video":"apxi5fELZlA","color":"#2ca300"},"12":{"levelName":"Doom arrived","creator":"Jakubko2005","levelID":"55948676","video":"8RVqO6HsptU","color":"#003d1f"},"13":{"levelName":"Infinity Journey","creator":[["playergeoCZ",[107,17,18,false],"Host"],[{"name":"Level","id":1646506536018}],[{"name":"playergeoCZ","role":1646506536018,"part":["0","15"],"color":"#3d3846","socials":[],"verified":[107,17,18,false]},{"name":"Jakubko2005","role":1646506536018,"part":["15","28"],"color":"#004baf","socials":[[0,"https://youtube.com/channel/httpswww.youtube.comchannelUC"]],"verified":[116,22,17,true]},{"name":"jazerplay","role":1646506536018,"part":["28","37"],"color":"#a3a000","socials":[],"verified":[130,12,9,false]},{"name":"ShadowBurnSK","role":1646506536018,"part":["37","49"],"color":"#a34400","socials":[],"verified":[37,10,14,true]},{"name":"jablicko","role":1646506536018,"part":["54","58"],"color":"#6200a3","socials":[],"verified":[31,18,12,false]},{"name":"TellConfig","role":1646506536018,"part":["58","69"],"color":"#00a344","socials":[],"verified":[1,0,3,false]},{"name":"ekokekokos","role":1646506536018,"part":["69","81"],"color":"#00a31b","socials":[],"verified":0},{"name":"Patas Matas","role":1646506536018,"part":["49","54"],"color":"#000ba3","socials":[],"verified":0},{"name":"playergeoCZ","role":1646506536018,"part":["85","100"],"color":"#0049a3","socials":[],"verified":[107,17,18,false]}]],"levelID":"61102013","video":"paGz3CzbOVk","color":"#536600"},"14":{"levelName":"D e s e r t","creator":"playergeoCZ","levelID":"56179232","video":"OJl6WIf-qGA","color":"#a39b00"},"15":{"levelName":"Hell Note","creator":[["jazeplay",true,"Verifier"],[{"name":"Level","id":1646506461617}],[{"name":"jazerplay","role":1646506461617,"part":["0","100"],"color":"#a30800","socials":[],"verified":[130,12,9,false]}]],"levelID":"57149934","video":"vZucsa43bNs","color":"#1f0000"},"titleImg":"","pageBGcolor":"#020202"}
 }
 
 function onGDBClick(pos, index) {
@@ -263,11 +155,17 @@ function switchSite(val) {
 			window.location.assign('upload.html');
 			break;
 		case jsStr["SAVED"][LANG]:
-			showFaves();
+			if ($("iframe").css("display") == "none") showFaves();
+			$(".mobilePicker").append(`<option id='closePick'>${jsStr["CLOSE"][LANG]}</option>`)
 			break;
+		case jsStr["CLOSE"][LANG]:
+			$("#closePick").remove()
+			showFaves()
 		default:
 			break;
 	}
+	if (window.location.href.includes("2021")) $($(".mobilePicker").children()[1]).attr("selected", true)
+	if (window.location.href.includes("editor")) $($(".mobilePicker").children()[2]).attr("selected", true)
 }
 
 const openSocLink = link => { window.open(link) }
@@ -299,6 +197,7 @@ async function getProfileStats(k, ind) {
 
 function showCollabStats(id) {
 	$("#popupBG").css("opacity", 1)
+	setTimeout(() => { $("#popupBG").show() }, 100);
 
 	let level = JSON.parse(JSON.stringify(boards[id]["creator"]))
 	let names = [jsStr["YT_CHAN"][LANG], jsStr["TW_PROF"][LANG], jsStr["TW_CHAN"][LANG], jsStr["DC_SERV"][LANG], jsStr["CUST_LINK"][LANG]];
@@ -342,17 +241,21 @@ function showCollabStats(id) {
 
 			// Social media
 			let socialTags = "";
+			let discordTag = "";
 			for (let soc = 0; soc < creators.socials.length; soc++) {
-				socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
-				                    style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
-
+				if (names[creators.socials[soc][0]] == jsStr["DC_SERV"][LANG] && creators.socials[soc][1].includes("#"))
+					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin-right: 1vw;"> - ${creators.socials[soc][1]}</p>`
+				else {
+					socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
+									style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
+				}
 			}
 
 			let icon = `icon=${creators.verified[0]}&col1=${creators.verified[1]}&col2=${creators.verified[2]}&glow=${creators.verified[3]}&noUser=true`
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
 				<img style="width: 4vw;margin: 0.4vw;" src="${DISABLE_GDB}ttps://gdbrowser.com/icon/freedom69?${icon}">
-				<p class="memberName" style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>
+				<p class="memberName" style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>${discordTag}
 				${socialTags}
 				<hr class="verticalSplitter">
 				<div class="pStatsContainer">
@@ -369,11 +272,15 @@ function showCollabStats(id) {
 
 			// Social media
 			let socialTags = "";
+			let discordTag = "";
 			for (let soc = 0; soc < creators.socials.length; soc++) {
-				socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
-				                    style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
+				if (names[creators.socials[soc][0]] == jsStr["DC_SERV"][LANG] && creators.socials[soc][1].includes("#"))
+					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin-right: 1vw;"> - ${creators.socials[soc][1]}</p>`
+				else {
+					socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
+									style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
+				}
 			}
-
 			// Give random icon / or ghost if member doesn't have a name
 			let randIcon = ""
 			if (!isGhost) {
@@ -388,7 +295,7 @@ function showCollabStats(id) {
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
 				<img style="width: 4vw;margin: 0.4vw;" src="images/emoji/${randIcon}.png">
-				<p class="memberName" style="color: ${creators.color}; margin: 0 1vw 0;">${creators.name}</p>
+				<p class="memberName" style="color: ${creators.color}; margin: 0 1vw 0;">${creators.name}</p>${discordTag}
 				${socialTags}
 			</td>
 		</tr>`)
@@ -687,12 +594,12 @@ function generateList(boards, listData) {
 				}
 				// Fix url when ready
 				try {
-					for (let icon = 0; icon < ((k.target).children[2].children).length; icon++) {
-						$((k.target).children[2].children[icon].children).css("background", "none")
+					for (let icon = 0; icon < ((k.target).children[3].children).length; icon++) {
+						$((k.target).children[3].children[icon].children).css("background", "none")
 
 						let verArr = boards[currIndex + 1]["creator"][2][icon].verified
 						let cube = `icon=${verArr[0]}&col1=${verArr[1]}&col2=${verArr[2]}&glow=${verArr[3]}&noUser=true`
-						$((k.target).children[2].children[icon].children).attr("src", DISABLE_GDB + "ttps://gdbrowser.com/icon/freedom69?" + cube)
+						$((k.target).children[3].children[icon].children).attr("src", DISABLE_GDB + "ttps://gdbrowser.com/icon/freedom69?" + cube)
 					}
 				}
 				catch (e) { console.log(e) }
@@ -754,11 +661,13 @@ function fave(th, id, data) {
 }
 
 async function showFaves() {
+	if ($("iframe").css("display") != "none") {$(".boards").show(); $(".listOptions").show(); $(".titles").show(); $(".titleImage").show(); $("iframe").hide(); return null}
+
 	$(".boards").hide();
 	$(".comments").hide();
 	$(".listOptions").hide();
 	$(".titles").hide();
-	$(".titleImage").hide()
+	$(".titleImage").hide();
 
 	// Reloads iframe and loads new faved levels
 	await $("iframe").attr("src", "packs.html?type=favorites");
@@ -834,7 +743,8 @@ $(function () {
 			boards = JSON.parse(decodedData);
 			$(".titles").append(jsStr["PREVIEW"][LANG]);
 			$(".searchTools").remove();
-			$("title").html(`Náhled seznamu | ${jsStr["GDLISTS"][LANG]}`)
+			$(".titleImage").attr("src", boards["titleImg"]);
+			$("title").html(`${jsStr["PREVIEW_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 			generateList(boards, [0, 0]);
 		}
 		else if (listQueries.includes("id")) {
@@ -846,20 +756,20 @@ $(function () {
 				<p style="font-size: 3vw; margin-top: 0;">- Dasher123 -</p>
 				<p style="font-size: 3vw;">Pass: ${debugPwd}</p>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
-				$("title").html(`Debug seznam | ${jsStr["GDLISTS"][LANG]}`)
+				$("title").html(`${jsStr["DEBUG_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 				generateList(boards, [0, "Debug List"])
 			}
 
 			$.get("./php/getLists.php?id=" + listID, function (data) {
 				if (data == 1) {
 					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
-					$("title").html(`Neexistující seznam | ${jsStr["GDLISTS"][LANG]}`)
+					$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 					$(".searchTools").remove();
 					$("#crown").remove();
 				}
 				else if (data == 2) {
 					$(".titles").append(jsStr["L_INVID"][LANG]);
-					$("title").html(`Neexistující seznam | ${jsStr["GDLISTS"][LANG]}`)
+					$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 					$(".searchTools").remove();
 					$("#crown").remove();
 				}
@@ -887,7 +797,7 @@ $(function () {
 				if (data == 1) {
 					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
 					$(".searchTools").remove();
-					$("title").html(`Neexistující seznam | ${jsStr["GDLISTS"][LANG]}`)
+					$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 					$("#crown").remove();
 				}
 				else {
@@ -908,13 +818,13 @@ $(function () {
 			if (YEAR == undefined) {
 				$(".titles").append(jsStr["L_NONUM"][LANG]);
 				$(".searchTools").remove();
-				$("title").html(`Neexistující seznam | ${jsStr["GDLISTS"][LANG]}`)
+				$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 				$("#crown").remove();
 			}
 			else if (YEAR != "2019" & YEAR != "2021") {
 				$(".titles").append(jsStr["L_NOYEAR"][LANG]);
 				$(".searchTools").remove();
-				$("title").html(`Neexistující seznam | ${jsStr["GDLISTS"][LANG]}`)
+				$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 				$("#crown").remove();
 			}
 			else {
@@ -983,7 +893,7 @@ $(function () {
 	$("#crown").css("transform", "translateY(5.7vw)")
 
 	// Setting mobile picker in navbar to curr site name
-	let sites = ["2019","2021","Komunitní"] // No need for saved
+	let sites = ["2019","2021",jsStr["COMMUNITY"][LANG]] // No need for saved
 	if (window.location.href.includes("2021")) $($(".mobilePicker").children()[1]).attr("selected", true)
 	if (window.location.href.includes("editor")) $($(".mobilePicker").children()[2]).attr("selected", true)
 

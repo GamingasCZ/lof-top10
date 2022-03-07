@@ -62,7 +62,7 @@ var listNames = [];
 function displayComLists(doita) {
     $(".customLists").children().remove();
 
-    let data = JSON.parse(JSON.stringify(doita));
+    let data = JSON.parse(JSON.stringify(doita)).reverse();
     let listAmount = Object.keys(data).length;
 
     maxPage = Math.ceil(listAmount / 4);
@@ -72,12 +72,13 @@ function displayComLists(doita) {
         data.slice(4 * page, 4 * page + 4).forEach(list => {
             let listColor = list["data"]["1"].color;
             let darkCol = HEXtoRGB(listColor, 40);
+            let lightCol = HEXtoRGB(listColor, -60);
 
             $(".customLists").append(`
             <a style="text-decoration: none;" href="./index.html?id=${list.id}">
-                <div id="listPreview" class="button noMobileResize" style="background-color: ${listColor}; border-color: rgb(${darkCol.join(",")})">
+                <div id="listPreview" class="button noMobileResize" style="background-image: linear-gradient(39deg, ${listColor}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
                     <div class="uploadText">${list.name}</div>
-                    <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}${list.creator}</div>
+                    <div class="uploadText">- ${list.creator} -</div>
                 </div>
             </a>
                     `);
@@ -86,8 +87,10 @@ function displayComLists(doita) {
 }
 
 function showFaves() {
+    if ($("iframe").css("display") != "none") { $(".searchTools").show(); $(".uploadBG:not(#collabTools)").show(); $(".titles").show(); $(".customLists").show(); $("iframe").hide(); $(".smallUploaderDialog").hide(); return null}
+
     $(".searchTools").hide();
-    $(".uploadBG").hide();
+    $(".uploadBG:not(#collabTools)").hide();
     $(".titles").hide();
     $(".customLists").hide();
 
@@ -242,11 +245,13 @@ $(function () {
 <img style="padding-left: 3%" src=./images/check.png>
 <p class="uploadText" style="padding: 0 3% 0 3%">${jsStr["LIST_SUCC_UPL"][LANG]} ${pstr}</p>
 
-<div style="margin-top: 5%;">
-<h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
-<div class="shareBG uploadText">${currWebsite}
-<img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
-</div>
+<div style="display:flex; flex-direction: column">
+    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
+    <div class="uploadText shareContainer">
+        <p class="shareBG uploadText">${currWebsite}</p>
+        <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
+    </div>
+    </div>
 </div>
 
 `);

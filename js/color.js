@@ -122,12 +122,14 @@ function HSLtoHEX(h, s, l) {
   return `#${f(0)}${f(8)}${f(4)}`;
 }
 
-function makeColorElement(startCol) {
+function makeColorElement(startHue, startVal) {
   return $(`
+  <div class="colorPicker">
     <img id="sliderImg" src="images/rgb.png">
-    <input type="range" min="0" max="360" value="${startCol}" id="slider">
+    <input type="range" min="0" max="360" value="${startHue}" id="slider">
 
     <img id="sliderImg" class="hueChanger" src="images/value.png">
-    <input type="range" min="1" max="${DEFAULT_LIGHTNESS.slice(0,2)}" value="${startCol}" id="slider">
+    <input type="range" min="1" max="${DEFAULT_LIGHTNESS.slice(0,2)}" value="${startVal}" id="slider">
+  </div>
     `);
 }

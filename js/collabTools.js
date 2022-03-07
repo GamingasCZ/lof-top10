@@ -338,9 +338,9 @@ function addCollabHuman(load = 0) {
             <select onchange="chRoleValue($(this), 'role', 2)" class="uploadText roleList"></select>
         </td>
         <td>
-            <input onchange="chRoleValue($(this), 'part', 2, 0)" type="number" min="0" max="100" id="collabInp" style="width: 20%;" placeholder="${jsStr["FROM"][LANG]}" value="${humanInstance.part[0]}"></input
+            <input onchange="chRoleValue($(this), 'part', 2, 0)" type="number" min="0" max="100" id="collabInp" class="percCollab" style="width: 20%;" placeholder="${jsStr["FROM"][LANG]}" value="${humanInstance.part[0]}"></input
            ><p class="uploadText" style="display: inline">-</p
-           ><input onchange="chRoleValue($(this), 'part', 2, 1)" type="number" min="0" max="100" id="collabInp" style="width: 20%;" placeholder="${jsStr["TO"][LANG]}" value="${humanInstance.part[1]}"></input
+           ><input onchange="chRoleValue($(this), 'part', 2, 1)" type="number" min="0" max="100" id="collabInp" class="percCollab" style="width: 20%;" placeholder="${jsStr["TO"][LANG]}" value="${humanInstance.part[1]}"></input
            ><p class="uploadText" style="display: inline">%</p
         </td>
         <td>
@@ -446,7 +446,7 @@ function chMainName(el, vyb) {
         $.get("https://gdbrowser.com/api/profile/" + $(".verifier").val(), nm => {
             if (nm != "-1") {
                 $(".hostIcon").attr("src", "https://gdbrowser.com/icon/" + $(".verifier").val())
-                levelList[currEditing]["creator"][0][1] = true;
+                levelList[currEditing]["creator"][0][1] = [nm.icon, nm.col1, nm.col2, nm.glow];
             }
         })
     }

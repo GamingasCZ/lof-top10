@@ -30,8 +30,11 @@
 </head>
 
 <body>
-  <img src="images/arrow-left.png" class="scrollToTop button" title="Skočit na vrch"
-    onclick="document.body.scrollTop = 0">
+  <div class="overlay">
+    <img src="images/arrow-left.png" class="scrollToTop button" title="Skočit na vrch"
+      onclick="document.body.scrollTop = 0">
+  </div>
+  
   <header>
     <div style="display: flex; align-items: center;">
       <img src="images/gdSezn.svg" class="logo">
@@ -194,14 +197,14 @@
   
         <div class="uploadText comBoxThings comInpThings" id="comBoxFooter">
   
-          <button class="comFooterButton" title="Barva komentáře">
+          <button class="comFooterButton" title="Barva komentáře" onclick="displayPanel(2)">
             <svg width="90" height="40">
               <image xlink:href="./images/color.svg" width="90" height="40" />
             </svg>
-            <input type="color" class="cpicker cardButton" id="comCPicker">
+            <!-- <input type="color" class="cpicker cardButton" id="comCPicker"> -->
           </button>
   
-          <button class="comFooterButton" title="Emotikony" onclick="displayEmojiPanel()">
+          <button class="comFooterButton" title="Emotikony" onclick="displayPanel(1)">
             <svg width="90" height="40">
               <image xlink:href="./images/emoji.svg" width="90" height="40" />
             </svg>

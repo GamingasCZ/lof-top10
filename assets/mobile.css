@@ -1,11 +1,13 @@
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 600px) {
     .button:not(.noMobileResize) {
-        width: 6vw !important;
+        width: 5
+        
+        vw !important;
         height: auto !important;
     }
     }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 550px) {
 
 .comTextArea {
     height: 20vw;
@@ -65,6 +67,7 @@
     padding: 0;
 }
 
+.listInfo { margin-top: 8vh !important; }
 #crown {
     transform: translateY(7.7vw) !important;
     width: 25vw;
@@ -76,7 +79,7 @@
     border-radius: 0px;
     right: 0;
     bottom: 0;
-    width: 100vw;
+    width: 100%;
     height: 100%;
 }
 .graphPerc {
@@ -87,7 +90,7 @@
 }
 
 .uploadBG:not(#jumpToTools, #shareTools) {
-    margin: 1vw;
+    margin: 0vw;
 }
 
 #levelUpload {
@@ -95,8 +98,13 @@
 }
 
 .communityTitle { margin: 5vh 0 -5vh 0; }
-.savedTitle { margin: 4vh 0 -5vh 0vw; }
+.savedTitle { margin: 4vh 0 -3vh 0vw; }
 
 /* Hides help text in searchTool/CommentTool */
 #pageStr, #sortStr { display: none; }
+
+#collabTools > .editorHeader { padding: 0 6vw 0 0; }
+.socInp { width: 40vw !important;}
+.percCollab { width: 3vw !important; height: 2vw !important; padding: 0 !important; }
+.tableCpicker { height: 5vw !important; }
 }

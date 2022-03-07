@@ -24,6 +24,7 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#shareText", "index.html", 0, ["Sdílet", "Share"]],
     ["#shareBut", "index.html", "title", ["Sdílet", "Share"]],
 
+    ["title", "upload.html", 0, ["Komunitní seznamy | GD Seznamy", "Community Lists | GD Lists"]],
     [".uploadTitle", "upload.html", 0, ["Nahrávání", "Upload"]],
     ["#listnm", "upload.html", "placeholder", ["Jméno seznamu", "List Name"]],
     ["#creatornm", "upload.html", "placeholder", ["Tvůrce", "List Creator"]],
@@ -40,6 +41,9 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     [".titles", "upload.html", 0, ["- Komunitní seznamy -", "- Community Lists -"]],
     ["#sortStr", "upload.html", 0, ["Řazení: ", "Sorting: "]],
     ["#searchBar", "upload.html", "placeholder", ["Hledání", "Search"]],
+
+    ["#sortStr", "packs.html", 0, ["Řazení: ", "Sorting: "]],
+    ["#searchBar", "packs.html", "placeholder", ["Hledání", "Search"]],
 
     [".collabTTitle","upload.html",0,["- Nastavení collabu -","- Collab Settings -"]],
     [".verifierRole","upload.html","placeholder",["Role","Role"]],
@@ -140,6 +144,10 @@ var jsStr = {
     "COMMUNITY": ["Komunitní", "Community"],
     "SAVED": ["Uložené", "Saved"],
     "SHOW_PROFILE": ["Zobrazit profil", "Show profile"],
+    "NONEXISTENT_L": ["Neexistující seznam", "Nonexistent list"],
+    "DEBUG_L": ["Debug seznam", "Debug List"],
+    "PREVIEW_L": ["Náhled seznamu", "List Preview"],
+    "CLOSE": ["Zavřít", "Close"],
 
     // helpDialogs
     "LICENSE": ["Licence","License"],
@@ -170,11 +178,12 @@ var jsStr = {
             <b style="color: #ffff00;">Color:</b> Color of the creator's name in the finished list.`],
     "RMROLE_T": ["Smazání poslední role", "Removing last role"],
     "RMROLE_D": [`Smazáním poslední role smazeš i všechny členy. Pokračovat?<br><br>
-    <img src="images/yeees.png" style="width: 10vw" class="button" onclick="killEverything()">
-    <img src="images/ne.png" style="width: 10vw" class="button" onclick="closeHelp()">
+
+    <button class="button uploadText eventButton" onclick="killEverything()">Ano</button>
+    <button class="button uploadText eventButton" onclick="closeHelp()">Ne</button>
     `, `Deleting the last role will also delete all members. Continue?<br><br>
-    <img src="images/yeeesEng.png" style="width: 10vw" class="button" onclick="killEverything()">
-    <img src="images/no.png" style="width: 10vw" class="button" onclick="closeHelp()">
+    <button class="button uploadText eventButton" onclick="killEverything()">Yes</button>
+    <button class="button uploadText eventButton" onclick="closeHelp()">No</button>
     `],
     "SHARECOLL_T": ["Sdílení collabů", "Collab sharing"],
     "SHARECOLL_D": [`Pokud využiješ collab nástroje a zaškrtneš toto políčko, tak kdokoliv poté bude moct využít <b style="color: tomato;">tvá nastavení</b> collabu pro jeho seznam.`,
@@ -288,7 +297,10 @@ var jsStr = {
     "SAV_CHANG": ["Uložit úpravy", "Save changes"],
     "DELETE": ["Smazat", "Delete"],
     "CONFIRM": ["Přidat", "Add"],
-    "CANCEL": ["Zrušit", "Cancel"]
+    "CANCEL": ["Zrušit", "Cancel"],
+
+    // saves
+    "FAV_LEVELS": ["- Oblíbené levely -","- Favorite Levels -"]
 }
 
 function slapArrayIntoObject(arr) {
