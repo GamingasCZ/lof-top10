@@ -300,7 +300,8 @@ var jsStr = {
     "CANCEL": ["Zrušit", "Cancel"],
 
     // saves
-    "FAV_LEVELS": ["- Oblíbené levely -","- Favorite Levels -"]
+    "FAV_LEVELS": ["- Oblíbené levely -","- Favorite Levels -"],
+    "NOFAVED": ["Zatím nemáš nic v oblíbených!", "You haven't saved anything yet!"]
 }
 
 function slapArrayIntoObject(arr) {

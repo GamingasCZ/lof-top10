@@ -602,7 +602,7 @@ function generateList(boards, listData) {
 						$((k.target).children[3].children[icon].children).attr("src", DISABLE_GDB + "ttps://gdbrowser.com/icon/freedom69?" + cube)
 					}
 				}
-				catch (e) { console.log(e) }
+				catch (e) {}
 
 				$(k.target).off("mouseover")
 			})

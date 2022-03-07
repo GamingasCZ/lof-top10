@@ -15,12 +15,10 @@ $(function () {
   });
 
   $("#sortBut").on("click", function () {
-    if (filteredData.length > 1) {
+    if (JSON.parse(decodeURIComponent(localStorage.getItem("favorites"))).length > 1) {
       let getObject;
       if (filteredData == null)
-        getObject = JSON.parse(
-          decodeURIComponent(localStorage.getItem("favorites"))
-        );
+        getObject = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")));
       else getObject = sorting ? filteredData : filteredData.reverse();
 
       if (sorting) {
@@ -71,7 +69,7 @@ function generateFaves() {
 
   if (favorites == null || Object.keys(favorites).length == 0) {
     $(".listContainer").html(
-      "<p class='uploadText' style='text-align: center; color: #f9e582'>Zatím nemáš nic v oblíbených!</p>"
+      `<p class='uploadText' style='text-align: center; color: #f9e582'>${jsStr["NOFAVED"][LANG]}</p>`
     );
   } else {
     if (!sorting) favorites.reverse();
