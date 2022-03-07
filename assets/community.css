@@ -368,7 +368,7 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     width: 102%;
     margin-top: -2.8vw;
     height: 5vw;
-    margin-bottom: -1.9vw;
+    margin-bottom: -1vw;
     background: transparent;
     border: none;
     margin-left: -1vw;
@@ -385,7 +385,7 @@ input[type=range]{
 }
 
 input[type=range]::-webkit-slider-runnable-track {
-    width: 90%;
+    max-width: 98%;
     height: 0px;
 }
 
@@ -393,10 +393,10 @@ input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
     height: 16px;
-    width: 16px;
-    background: url("/images/picker.svg");
-    background-size: cover;
-    margin-top: -2vh;
+    width: 8px;
+    background: white;
+    margin: -2vh 0;
+    transform: translateX(1vw);
 }
 
 #slider::-moz-range-thumb {
