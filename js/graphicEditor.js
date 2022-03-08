@@ -142,7 +142,7 @@ function generateFromJSON(event = null) {
             window.location.replace("./upload.html")
         }
         // Is the list hidden?
-        if (lData["hidden"] != "0") {
+        if (data["hidden"] != "0") {
             $(`img[for="hidden"]`).attr("src", "images/check-on.png")
             $(`input[name="hidden"]`).attr("checked", true)
         }
@@ -151,10 +151,10 @@ function generateFromJSON(event = null) {
         $("#mainContent").text("");
         $(".previewButton").removeClass("disabled");
 
-        $("#listnm").val(lData["name"])
-        $("#creatornm").val(lData["creator"])
+        $("#listnm").val(data["name"])
+        $("#creatornm").val(data["creator"])
 
-        levelList = JSON.parse(lData["data"]);
+        levelList = JSON.parse(data["data"]);
         $(".titImgInp").val(levelList["titleImg"])
         $("#bgcolorPicker").val(levelList["pageBGcolor"])
         colorizePage()
@@ -164,7 +164,7 @@ function generateFromJSON(event = null) {
         }
         updateSmPos()
         displayCard("1")
-        isHidden = lData["hidden"] != "0";
+        isHidden = data["hidden"] != "0";
     })
 }
 

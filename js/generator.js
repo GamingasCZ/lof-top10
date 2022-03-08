@@ -723,7 +723,7 @@ $(function () {
 
 	$(".passInput").val("");
 	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
-	if (location.search != "") {
+	if (location.search != "" && !location.pathname.includes("upload")) {
 		let paramGetter = new URLSearchParams(window.location.search)
 		let params = Object.fromEntries(paramGetter.entries());
 		let listQueries = Object.keys(params)
