@@ -1,8 +1,7 @@
 <?php
 
-// Probably ugly ass code
-
 require("secrets.php");
+header('Content-type: application/json'); // Return as JSON
 
 $mysqli = new mysqli($hostname, $username, $password, $database);
 $time = new DateTime();
@@ -12,33 +11,22 @@ if ($mysqli -> connect_errno) {
   exit();
 }
 
-$fuckupData = array($_POST["creator"],$_POST["lName"],$_POST["listData"]);
-$i = 0;
-foreach ($fuckupData as $post) {
-  if ($fuckupData[$i] == "") {
-    echo "1";
-    $mysqli -> close();
-    exit();
-  }
-  $fuckupData[$i] = htmlspecialchars($post);
-  $i += 1;
-}
-
+// Checking request
+error_reporting(0);
+$fuckupData = sanitizeInput(array($_POST["creator"],$_POST["lName"],$_POST["listData"]));
 $timestamp = $time -> getTimestamp();
 
+// Generate id if list private
 if (isset($_POST["hidden"])) { $hidden = privateIDGenerator($fuckupData["lname"], $fuckupData["creator"], $timestamp); }
 else { $hidden = "0"; }
 
+// Password for editing
 $pass = passwordGenerator($_POST["lName"], $_POST["creator"], $timestamp);
 
-
-$query = sprintf("INSERT INTO `lists`(`creator`,`name`,`data`,`timestamp`,`hidden`) VALUES ('%s','%s','%s','%s','%s')",
-                $fuckupData[0],
-                $fuckupData[1],
-                $fuckupData[2],
-                $timestamp,
-                $hidden);
-$result = $mysqli -> query($query);
+// Send to database
+$teplate = "INSERT INTO `lists`(`creator`,`name`,`data`,`timestamp`,`hidden`) VALUES (?,?,?,?,?)";
+$values = array($fuckupData[0], $fuckupData[1], $fuckupData[2], $timestamp, $hidden);
+doRequest($mysqli, $teplate, $values, "sssss");
 
 if (isset($_POST["hidden"])) {
     // Hidden lists

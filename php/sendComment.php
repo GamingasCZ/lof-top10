@@ -11,22 +11,11 @@ Return codes:
 */
 
 require("secrets.php");
+header('Content-type: application/json'); // Return as JSON
 
 // Checking request
 error_reporting(0);
-
-$fuckupData = array($_POST["creator"], $_POST["comment"], $_POST["comType"], $_POST["listID"], $_POST["comColor"]);
-$i = 0;
-foreach ($fuckupData as $post) {
-    if ($fuckupData[$i] == "") {
-      echo "1";
-      exit();
-    }
-    $fuckupData[$i] = htmlspecialchars(strip_tags(htmlspecialchars_decode($post)));
-    $i += 1;
-  }
-
-error_reporting(1);
+$fuckupData = sanitizeInput(array($_POST["creator"], $_POST["comment"], $_POST["comType"], $_POST["listID"], $_POST["comColor"]));
 
 // Checking comment and user string length
 if (strlen($_POST["comment"]) > 300 || strlen($_POST["creator"]) > 20) {
@@ -57,32 +46,26 @@ $verified = 1;
 $chkUsername = @file_get_contents("https://gdbrowser.com/api/profile/" . $_POST["creator"]);
 if ($chkUsername === FALSE) {
   $verified = 2; // GDBrowser is down :(
-}
-elseif ($chkUsername === "-1") {
+} elseif ($chkUsername === "-1") {
   $verified = 0; // User doesn't exist
 }
 
 
 $mysqli = new mysqli($hostname, $username, $password, $database);
 
-if ($mysqli -> connect_errno) {
-    echo "0";
-    exit();
-  }
+if ($mysqli->connect_errno) {
+  echo "0";
+  exit();
+}
 
 $time = new DateTime();
 
-// Prepare query template
-$query = $mysqli -> prepare("INSERT INTO `comments` (`username`,`comment`,`comType`,`bgcolor`,`listID`,`verified`,`timestamp`)
-                  VALUES (?, ?, ?, ?, ?, ?, ?)");
+$template = "INSERT INTO `comments` (`username`,`comment`,`comType`,`bgcolor`,`listID`,`verified`,`timestamp`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+$values = array($fuckupData[0], $fuckupData[1], $fuckupData[2], $fuckupData[4], $fuckupData[3], $verified, $time->getTimestamp());
+$result = doRequest($mysqli, $template, $values, "sssssss");
+print_r($result);
 
-// Fill in template
-$query -> bind_param("sssssss",
-    $fuckupData[0], $fuckupData[1], $fuckupData[2], $fuckupData[4], $fuckupData[3], $verified, $time -> getTimestamp());
-
-$query -> execute();
-$query -> close();
 echo "6";
-$mysqli -> close();
+$mysqli->close();
 
 ?>

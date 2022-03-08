@@ -451,8 +451,7 @@ input:disabled {
     background-color: rgb(212, 113, 113);
     color: rgb(255, 0, 0);
     border: none;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin: 0% 2% 1%;
 }
 
 #jsonBox {

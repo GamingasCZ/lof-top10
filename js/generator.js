@@ -727,7 +727,7 @@ $(function () {
 		let paramGetter = new URLSearchParams(window.location.search)
 		let params = Object.fromEntries(paramGetter.entries());
 		let listQueries = Object.keys(params)
-		var listID = params["id"]
+		var listID = listQueries.includes("id") ? params["id"] : params["pid"]
 
 		// Password input removal
 		if (!listQueries.some(e => (/id|pid/g).test(e))) {
@@ -780,20 +780,20 @@ $(function () {
 						$("#crown").remove();
 					}
 					else {
-						boards = data[0]["data"];
-						$(".titles").append(`<p style="margin-bottom: 0;">${data[0]["name"]}</p>
+						boards = data["data"];
+						$(".titles").append(`<p style="margin-bottom: 0;">${data["name"]}</p>
 						<hr class="lineSplitGeneral">
-						<p style="font-size: 3vw;margin-top: 0;">- ${data[0]["creator"]} -</p>`);
+						<p style="font-size: 3vw;margin-top: 0;">- ${data["creator"]} -</p>`);
 						$(".titleImage").attr("src", boards["titleImg"]);
-						$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
-						generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"]]);
+						$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+						generateList(boards, [encodeURIComponent(data["id"]), data["name"]]);
 					}
 				}
 			}
 			)
 		}
 		else if (listQueries.includes("pid")) {
-			$.get("./php/getLists.php?pid=" + listID[1], function (data) {
+			$.get("./php/getLists.php?pid=" + listID, function (data) {
 				if (data == 1) {
 					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
 					$(".searchTools").remove();
@@ -801,14 +801,13 @@ $(function () {
 					$("#crown").remove();
 				}
 				else {
-					data[3].replace("&quot;", "\"");
-					let boards = JSON.parse(data[2]);
-					$(".titles").append(`<p>${data[1]}</p>
+					boards = data["data"];
+					$(".titles").append(`<p style="margin-bottom: 0;">${data["name"]}</p>
 					<hr class="lineSplitGeneral">
-					<p style="font-size: 3vw;">- ${data[0]} -</p>`);
+					<p style="font-size: 3vw;margin-top: 0;">- ${data["creator"]} -</p>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
-					$("title").html(`${data[1]} | ${jsStr["GDLISTS"][LANG]}`)
-					generateList(boards, [data[1], data[3]]);
+					$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+					generateList(boards, [encodeURIComponent(data["id"]), data["name"]]);
 				}
 			}
 			)

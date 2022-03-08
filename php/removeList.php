@@ -7,50 +7,36 @@ Return codes:
 3 - Success!
 */
 
-
 require("secrets.php");
+header('Content-type: application/json'); // Return as JSON
 
 $mysqli = new mysqli($hostname, $username, $password, $database);
 
 if ($mysqli -> connect_errno) {
+  http_response_code(500);
   echo "0";
   exit();
 }
 
 // Checking request
 error_reporting(0);
-
-$fuckupData = array($_POST["id"],$_POST["pwdEntered"]);
-$i = 0;
-foreach ($fuckupData as $post) {
-  if ($fuckupData[$i] == "") {
-    echo "1";
-    $mysqli -> close();
-    exit();
-  }
-  $fuckupData[$i] = htmlspecialchars($post);
-  $i += 1;
-}
-
-error_reporting(1);
+$fuckupData = sanitizeInput(array($_POST["id"],$_POST["pwdEntered"]));
 
 // Password check
-$check = $mysqli -> query("SELECT * FROM `lists` WHERE `id`=".join("",array_slice($fuckupData,0,1)));
-$listData = $check -> fetch_assoc();
+$listData = doRequest($mysqli, "SELECT * FROM `lists` WHERE `id` = ?", [strval($fuckupData[0])], "i");
 $listPass = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
 
 // Invalid password
 if ($listPass != $fuckupData[1]) {
   echo "2";
+  http_response_code(401);
   $mysqli -> close();
   exit();
 }
 
 // Removing list
-$query = sprintf("DELETE FROM `lists` WHERE `id`=".$listData["id"]);
-$result = $mysqli -> query($query);
+doRequest($mysqli, "DELETE FROM `lists` WHERE `id` = ?", [$listData["id"]], "i");
 echo "3";
 
 $mysqli -> close();
-
 ?>

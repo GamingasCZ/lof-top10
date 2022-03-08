@@ -138,15 +138,12 @@ function generateFromJSON(event = null) {
     let postReq = { "pwdEntered": listID[3], "retData": "1" };
     postReq[listType] = listID[1];
     
-    $.post("./php/pwdCheckAction.php", postReq, function (data) {
-        if (["1","2"].includes(data)) {
+    $.post("./php/pwdCheckAction.php", postReq, function (lData) {
+        if (["1","2"].includes(lData)) {
             window.location.replace("./upload.html")
         }
-
-        let lData = $("#listData").html(data).text()
-        lData = lData.split(";-!-;")
         // Is the list hidden?
-        if (lData[3] != "0") {
+        if (lData["hidden"] != "0") {
             $(`img[for="hidden"]`).attr("src", "images/check-on.png")
             $(`input[name="hidden"]`).attr("checked", true)
         }
@@ -155,10 +152,10 @@ function generateFromJSON(event = null) {
         $("#mainContent").text("");
         $(".previewButton").removeClass("disabled");
 
-        $("#listnm").val(lData[0])
-        $("#creatornm").val(lData[1])
+        $("#listnm").val(lData["name"])
+        $("#creatornm").val(lData["creator"])
 
-        levelList = JSON.parse(lData[2]);
+        levelList = JSON.parse(lData["data"]);
         $(".titImgInp").val(levelList["titleImg"])
         $("#bgcolorPicker").val(levelList["pageBGcolor"])
         colorizePage()
@@ -169,7 +166,7 @@ function generateFromJSON(event = null) {
         updateSmPos()
         displayCard("1")
         
-        isHidden = lData[3] != "0";
+        isHidden = lData["hidden"] != "0";
     })
 }
 
@@ -405,11 +402,11 @@ function loadLevel(pos) {
     $("#lineSplit" + pos).css("background-color", `rgb(${rgb.join(",")})`);
 
     // Setting card buttons
-    $("#colorPicker" + listLenght).on("change", changeColPicker);
-    $(".idbox" + listLenght).on("change keyup", changeIDbox);
-    $(".cardLName" + listLenght).on("keyup", changeLevelName);
-    $(".cardLCreator" + listLenght).on("keyup", changeLevelCreator);
-    $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
+    $("#colorPicker" + pos).on("change", changeColPicker);
+    $(".idbox" + pos).on("change keyup", changeIDbox);
+    $(".cardLName" + pos).on("keyup", changeLevelName);
+    $(".cardLCreator" + pos).on("keyup", changeLevelCreator);
+    $(".cardLVideo" + pos).on("change", changeLevelVideo);
 }
 
 function updateCardData(prevID, newID) {

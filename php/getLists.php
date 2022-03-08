@@ -15,15 +15,24 @@ if ($mysqli->connect_errno) {
 
 function parseResult($rows, $singleList=false) {
   $ind = 0;
-  foreach ($rows as $row) {
-    if (base64_decode($row["data"], true) == true) {
-      $row["data"] = base64_decode($row["data"]);
+  if (!$singleList) {
+    foreach ($rows as $row) {
+      if (base64_decode($row["data"], true) == true) {
+        $row["data"] = base64_decode($row["data"]);
+      }
+      $row["data"] = json_decode(htmlspecialchars_decode($row["data"]));
+      
+      if ($singleList) { $rows["data"] = $row["data"]; }
+      else { $rows[$ind]["data"] = $row["data"]; }
+      $ind += 1;
     }
-    $row["data"] = json_decode(htmlspecialchars_decode($row["data"]));
-    
-    if ($singleList) { $rows["data"] = $row["data"]; }
-    else { $rows[$ind]["data"] = $row["data"]; }
-    $ind += 1;
+  }
+  else {
+    // Single list
+    if (base64_decode($rows["data"], true) == true) {
+      $rows["data"] = base64_decode($rows["data"]);
+    }
+    $rows["data"] = json_decode(htmlspecialchars_decode($rows["data"]));
   }
 
   echo json_encode($rows);
@@ -33,35 +42,16 @@ if (count($_GET) == 1) {
   // Loading a single list
   if (in_array("id", array_keys($_GET))) {
     // Private lists can't be accessed by their id!
-    $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' AND `id`=" . $_GET["id"]);
-    if ($result == false) {
-      // When the ID is gay (does this even work?)
-      echo "2";
-    }
-    else {
-      $rows = $result->fetch_all(MYSQLI_ASSOC);
+    $result = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden` = '0' AND `id` = ?", [$_GET["id"]], "s");
+    if (count($result) == 0) { echo "2"; }
+    else { parseResult($result, true); }
 
-      if (count($rows) == 0) { echo "1"; } // When the pID is invalid
-      else { parseResult($rows); }
-    }
   } elseif (in_array("pid", array_keys($_GET))) {
     // Private lists
-    $result = $mysqli->query(sprintf("SELECT * FROM `lists` WHERE `hidden`='%s'", $_GET["pid"]));
-    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    $result = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden`= ?", [$_GET["pid"]], "s");
 
-    if (count($rows) == 0) { echo "1"; } // When the pID is invalid
-    else { parseResult($rows); }
-  }
-
-  // Searching
-  elseif (in_array("search", array_keys($_GET))) {
-    // Search is useless for now
-    exit();
-    $result = $mysqli->query("SELECT * FROM `lists` WHERE `name` LIKE '%" . $_GET["search"] . "%'");
-    $rows = $result->fetch_all(MYSQLI_ASSOC);
-    
-    if (count($rows) == 0) { echo "1"; } // When the pID is invalid
-    else { parseResult($rows); }
+    if (count($result) == 0) { echo "2"; } // When the pID is invalid
+    else { parseResult($result, true); }
   }
 }
 

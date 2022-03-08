@@ -93,16 +93,15 @@ $(function () {
   });
 
   // Adds a placeholder to the comment area
-  var selectPholder =
-    placeholders[parseInt(Math.random() * placeholders.length)];
+  var selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
   $(".comInpArea").text(selectPholder);
-  $("#comFont").css("color", "rgba(255,255,255,0.5)");
+  $(".comInpArea").css("color", "rgba(255,255,255,0.5) !important");
 
   // Placeholder related stuff
   $(".comInpArea").on("blur", () => {
     if (actualText.length == 1) {
       $(".comInpArea").text(selectPholder);
-      $("#comFont").css("color", "rgba(255,255,255,0.5)");
+      $(".comInpArea").css("color", "rgba(255,255,255,0.5) !important");
     }
   });
 
@@ -111,7 +110,7 @@ $(function () {
       $(".comInpArea")["0"].innerText = "";
     }
 
-    $("#comFont").css("color", "rgba(255,255,255,1)");
+    $(".comInpArea").css("color", "rgba(255,255,255,1) !important");
   });
 
   // MAIN comment handling stuff
@@ -211,37 +210,64 @@ function addEmoji(id) {
   }
 }
 
-var lastOpenedPanel = -1
+var lastOpenedPanel = -1;
 function displayPanel(what) {
-  if (what == 1) { // Emoji
-    $(".colorPicker").hide()
-    $(".listEmoji").show()
-  }
-  else { // Color picker
+  if (what == 1) {
+    // Emoji
+    $(".colorPicker").hide();
+    $(".listEmoji").show();
+  } else {
+    // Color picker
     if ($(".colorPicker").length < 1) {
-      let color = makeColorElement(getHueFromHEX(commentColor), getLightnessFromHEX(commentColor))
-      color.on("input", k => {
-          let isChangingValue = false;
-          if (k.target.previousElementSibling.className == "hueChanger") isChangingValue = true
-          let lightness = isChangingValue ? k.target.value : getLightnessFromHEX(commentColor)
-          let hue = isChangingValue ? getHueFromHEX(commentColor) : k.target.value
-  
-          $("#commentMaker").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`);
-          $("#commentMaker").css("border-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
-          $(".comInpArea").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
-          $(".comInpThings").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-10}%)`);
-          $(".emojiPanel").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
-          $("#verticalLine").css("border-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
-  
-          let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness+"%");
-          commentColor = inHex;
-        });
-      
-      color.appendTo($(".emojiPanel"))
+      let color = makeColorElement(
+        getHueFromHEX(commentColor),
+        getLightnessFromHEX(commentColor)
+      );
+      color.on("input", (k) => {
+        let isChangingValue = false;
+        if (k.target.previousElementSibling.className == "hueChanger")
+          isChangingValue = true;
+        let lightness = isChangingValue
+          ? k.target.value
+          : getLightnessFromHEX(commentColor);
+        let hue = isChangingValue
+          ? getHueFromHEX(commentColor)
+          : k.target.value;
+
+        $("#commentMaker").css(
+          "background-color",
+          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`
+        );
+        $("#commentMaker").css(
+          "border-color",
+          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
+        );
+        $(".comInpArea").css(
+          "background-color",
+          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
+        );
+        $(".comInpThings").css(
+          "background-color",
+          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 10}%)`
+        );
+        $(".emojiPanel").css(
+          "background-color",
+          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
+        );
+        $("#verticalLine").css(
+          "border-color",
+          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
+        );
+
+        let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");
+        commentColor = inHex;
+      });
+
+      color.appendTo($(".emojiPanel"));
     }
 
-    $(".colorPicker").show()
-    $(".listEmoji").hide()
+    $(".colorPicker").show();
+    $(".listEmoji").hide();
   }
 
   if (lastOpenedPanel == what || $(".emojiPanel").css("display") == "none") {
@@ -251,7 +277,7 @@ function displayPanel(what) {
       $(".emojiPanel").slideUp(50);
     }
   }
-  lastOpenedPanel = what
+  lastOpenedPanel = what;
 }
 
 function sendComment() {
@@ -275,7 +301,7 @@ function sendComment() {
       };
 
       $.post("./php/sendComment.php", postData, (data) => {
-        if (data.match("6")) {
+        if (data == 6) {
           // Success text
           $(".comUserError").show();
           $(".comUserError").css("color", "#5df469 !important");
@@ -368,34 +394,34 @@ function comBox(cd, dcc, edcc) {
   let profPic = "";
   let clickable = ["", ""];
   let comColor = "#b9efb1";
-  let time = chatDate(cd[7]);
+  let time = chatDate(cd["timestamp"]);
 
-  if (cd[7].length == 9) {
-    cd[7] *= 10;
+  if (cd["timestamp"].length == 9) {
+    cd["timestamp"] *= 10;
   } // First comment's date is not in milliseconds
-  let nT = new Date(cd[7] * 1000);
+  let nT = new Date(cd["timestamp"] * 1000);
 
   // Is user verified?
-  if (cd[6] == 1) {
-    profPic = `<img class="pIcon " style="padding: 0.5vw;transform: scale(2);" src="https://gdbrowser.com/icon/${cd[0]}">`;
+  if (cd["verified"] == 1) {
+    profPic = `<img class="pIcon " style="padding: 0.5vw;transform: scale(2);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
     clickable[0] = "clickable";
-    clickable[1] = `onclick="profile('${cd[0]}')`;
+    clickable[1] = `onclick="profile('${cd["username"]}')`;
     comColor = "#f9f99a";
   }
 
   // OwO, adding emojis
-  while (cd[1].match(/&\d+/g) != null) {
-    let sel = cd[1].indexOf(cd[1].match(/&\d+/));
-    let selStart = cd[1].slice(0, sel);
-    let emojiID = cd[1].slice(sel + 1, sel + 3);
+  while (cd["comment"].match(/&\d+/g) != null) {
+    let sel = cd["comment"].indexOf(cd["comment"].match(/&\d+/));
+    let selStart = cd["comment"].slice(0, sel);
+    let emojiID = cd["comment"].slice(sel + 1, sel + 3);
     if (emojiID > EMOJI_AM) {
       emojiID = "sad";
     }
 
     // fix this if you add more than 100 emojis :O
-    let selEnd = cd[1].slice(sel + 3);
+    let selEnd = cd["comment"].slice(sel + 3);
 
-    cd[1] =
+    cd["comment"] =
       selStart +
       `<img class="emojis" src="./images/emoji/${emojiID}.png">` +
       selEnd;
@@ -414,7 +440,7 @@ function comBox(cd, dcc, edcc) {
                       "rgb(" + edcc.join(",") + ")"
                     } 10px; height: 2.3vw;">
             ${profPic}
-            <h3 style="margin-left: 1%; color: ${comColor};">${cd[0]}</h3>
+            <h3 style="margin-left: 1%; color: ${comColor};">${cd["username"]}</h3>
             <h3 id="comFont" 
                 style="margin: 0 0 0 auto; cursor: help;"
                 title="${nT.getDay() + 1}.${
@@ -423,8 +449,8 @@ function comBox(cd, dcc, edcc) {
         </div>
     
         <div class="comTextArea" id="comFont" style="width: 99%; background-color: ${
-          cd[3]
-        };">${cd[1]}</div>
+          cd["bgcolor"]
+        };">${cd["comment"]}</div>
     
     </div>
     `;
@@ -455,58 +481,29 @@ function debugComments(am) {
 
 function displayComments(data) {
   const PER_PAGE = 5;
-  data = data.slice(0, -5);
 
   $("#commentList").html("");
   $(".noComm").hide();
 
-  try {
-    if (data.match(/\|-!-\|/g).length > 0) {
-      let comArray = data.split("|-!-|");
+  if (data == 2 || data == "") {
+    $(".noComm").show();
+    return null;
+  }
+  data.reverse();
 
-      comArray.reverse();
+  // Max page
+  maxPage = Math.ceil(data.length / PER_PAGE);
+  $("#maxPage").text("/" + maxPage);
 
-      // Deleteee  e e
-      if (comArray.indexOf("") != -1) {
-        comArray.splice(comArray.indexOf(""), 1);
-      }
-      if (comArray.indexOf("\n") != -1) {
-        comArray.splice(comArray.indexOf("\n"), 1);
-      }
+  for (x = page * PER_PAGE; x < page * PER_PAGE + PER_PAGE; x++) {
+    let commentData = data[x]
 
-      // Max page
-      maxPage = Math.ceil(comArray.length / PER_PAGE);
-      $("#maxPage").text("/" + maxPage);
+    let darkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
+    let evenDarkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
 
-      for (x = page * PER_PAGE; x < page * PER_PAGE + PER_PAGE; x++) {
-        let commentData = comArray[x].split(";-!-;");
-
-        let darkerComColor = HEXtoRGB(commentData[3], 40);
-        let evenDarkerComColor = HEXtoRGB(commentData[3], 40);
-
-        $("#commentList").append(
-          comBox(commentData, darkerComColor, evenDarkerComColor)
-        );
-      }
-    } else {
-      throw "ok";
-    }
-  } catch (error) {
-    if (data == 2 || data == "") {
-      $(".noComm").show();
-      return null;
-    }
-
-    if (data.match(/\|/g) == null || data.endsWith("|\n")) {
-      let commentData = data.split(";-!-;");
-
-      let darkerComColor = HEXtoRGB(commentData[3], 40);
-      let evenDarkerComColor = HEXtoRGB(commentData[3], 40);
-
-      $("#commentList").append(
-        comBox(commentData, darkerComColor, evenDarkerComColor)
-      );
-    }
+    $("#commentList").append(
+      comBox(commentData, darkerComColor, evenDarkerComColor)
+    );
   }
 }
 
