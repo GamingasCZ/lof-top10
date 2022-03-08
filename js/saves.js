@@ -144,7 +144,7 @@ function removeFromList(obj, id, el, listName, pos) {
     localStorage.setItem("favorites", JSON.stringify(currData));
     localStorage.setItem("favoriteIDs", JSON.stringify(currIDs));
 
-    sender = "http://gamingas.wz.cz";
+    sender = "http://www.gamingas.wz.cz";
     if (window.location.protocol == "file:") sender = "*"; // Allow all if running locally
 
     window.parent.postMessage(

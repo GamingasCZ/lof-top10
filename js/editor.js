@@ -121,7 +121,6 @@ function updateList() {
             "isNowHidden": isHidden
         }
         $.post("./php/updateList.php", postData, function (data) {
-            let updateData = data.split(";-!-;")
             window.location.replace(`http://www.gamingas.wz.cz/lofttop10/upload.html?update=1`);
         })
     }
