@@ -336,15 +336,7 @@ function sendComment() {
           $(".comUserError").text(jsStr["C_ERR"][LANG] + data);
           setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
             }
-        }
-      });
-
-      if (window.location.protocol.includes("file")) {
-        $(".sendBut").removeClass("disabled");
-        $(".comUserError").show();
-        $(".comUserError").text("Lokálně nejde posílat komentáře!");
-        setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-      }
+        })
     }
   }
 }
