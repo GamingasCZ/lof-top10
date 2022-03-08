@@ -137,20 +137,12 @@ function generateFromJSON(event = null) {
     }
     let postReq = { "pwdEntered": listID[3], "retData": "1" };
     postReq[listType] = listID[1];
-
     $.post("./php/pwdCheckAction.php", postReq, function (data) {
         if (["1", "2"].includes(data)) {
             window.location.replace("./upload.html")
         }
-        if (event) {
-            var data = JSON.stringify(boards);
-            data = ";;" + data + ";0";
-        }
-
-        let lData = $("#listData").html(data).text()
-        lData = lData.split(";-!-;")
         // Is the list hidden?
-        if (lData[3] != "0") {
+        if (lData["hidden"] != "0") {
             $(`img[for="hidden"]`).attr("src", "images/check-on.png")
             $(`input[name="hidden"]`).attr("checked", true)
         }
@@ -159,10 +151,10 @@ function generateFromJSON(event = null) {
         $("#mainContent").text("");
         $(".previewButton").removeClass("disabled");
 
-        $("#listnm").val(lData[0])
-        $("#creatornm").val(lData[1])
+        $("#listnm").val(lData["name"])
+        $("#creatornm").val(lData["creator"])
 
-        levelList = JSON.parse(lData[2]);
+        levelList = JSON.parse(lData["data"]);
         $(".titImgInp").val(levelList["titleImg"])
         $("#bgcolorPicker").val(levelList["pageBGcolor"])
         colorizePage()
@@ -172,8 +164,7 @@ function generateFromJSON(event = null) {
         }
         updateSmPos()
         displayCard("1")
-
-        isHidden = lData[3] != "0";
+        isHidden = lData["hidden"] != "0";
     })
 }
 
@@ -261,6 +252,7 @@ function displayCard(id) {
         $("#top" + id.toString()).css("transform", "scaleY(0.8)");
         $("#top" + id.toString()).show();
         $("#top" + id.toString()).css("transform", "scaleY(1)");
+        $(".cardExtrasContainer").hide()
         updateSmPos()
 
         // Disable/Enable search buttons depending on if there's text in them
@@ -283,17 +275,17 @@ function availFill(type, sel, key, pos) {
     }
 }
 
-function changeColPicker() {
-    let chosenColor = $(this).val()
-    let cardSelected = ($(this)[0]["id"]).match(/[0-9]/g).join("")
+async function changeColPicker(chosenColor, target, isChangingValue) {
+    let lightness = await isChangingValue ? chosenColor : getLightnessFromHEX(levelList[target]["color"])
+    let hue = await isChangingValue ? getHueFromHEX(levelList[target]["color"]) : chosenColor
 
-    let rgb = HEXtoRGB(chosenColor, 40)
+    $("#top" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`);
+    $("#top" + target).css("border-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+    $("#lineSplit" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+    $(".cardContainer" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
 
-    $("#top" + cardSelected).css("background-color", chosenColor);
-    $("#top" + cardSelected).css("border-color", `rgb(${rgb.join(",")})`);
-    $("#lineSplit" + cardSelected).css("background-color", `rgb(${rgb.join(",")})`);
-
-    levelList[cardSelected]["color"] = chosenColor;
+    let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness+"%");
+    levelList[target]["color"] = inHex;
 }
 
 function changeIDbox(k) {
@@ -384,19 +376,18 @@ function addLevel() {
     $("#top" + listLenght).css("transform", "scaleY(1)");
 
     // Random color generation
-    let rgb = randomColor()
+    let hsl = randomColor();
 
-    let darker = rgb.map(c => c - 40);
+    let darker = HEXtoRGB(hsl, 40);
 
-    $("#top" + listLenght).css("background-color", `rgb(${rgb.join(",")})`);
+    $("#top" + listLenght).css("background-color", hsl);
     $("#top" + listLenght).css("border-color", `rgb(${darker.join(",")})`);
-    $("#smtop" + listLenght).css("background-color", `rgb(${rgb.join(",")})`);
+    $(".cardContainer" + listLenght).css("background-color", `rgb(${darker.join(",")})`);
+    $("#smtop" + listLenght).css("background-color", hsl);
     $("#smtop" + listLenght).css("border-color", `rgb(${darker.join(",")})`);
     $("#lineSplit" + listLenght).css("background-color", `rgb(${darker.join(",")})`);
 
-
-    let inhex = rgb.map(c => ((c).toString(16).length == 1 ? "0" + (c).toString(16) : (c).toString(16)))
-    levelList[listLenght]["color"] = "#" + inhex.join("");
+    levelList[listLenght]["color"] = hsl;
 
     // Sets the color of the added card
     $("#colorPicker" + listLenght).on("change", changeColPicker);
@@ -404,6 +395,7 @@ function addLevel() {
     $(".cardLName" + listLenght).on("keyup", changeLevelName);
     $(".cardLCreator" + listLenght).on("keyup", changeLevelCreator);
     $(".cardLVideo" + listLenght).on("change", changeLevelVideo);
+
 }
 
 function loadLevel(pos) {
@@ -455,6 +447,9 @@ function updateCardData(prevID, newID) {
     $("#colorPicker" + prevID).attr("id", "colorPicker" + newID);
     $(".colButton" + prevID).attr("onclick", "showCollabTools(" + newID + ")");
     $(".colButton" + prevID).attr("class", "button colButton" + newID);
+    $(".cardContainer" + prevID).attr("class", "cardExtrasContainer cardContainer" + newID);
+    $(".cPickerBut" + prevID).attr("onclick", "openColorPicker(" + newID + ")");
+    $(".cPickerBut" + prevID).attr("class", "button cardButton cPickerBut" + newID);
 
     if (parseInt(prevID) != parseInt(newID)) {
         levelList[prevID] = levelList[newID + "waiting"];
@@ -469,6 +464,17 @@ function updateCardData(prevID, newID) {
 
 }
 
+function openColorPicker(lp) {
+    $('.cardContainer'+lp).text('')
+    $('.cardContainer'+lp).slideToggle(50)
+
+    let color = makeColorElement(getHueFromHEX(levelList[lp]["color"]), getLightnessFromHEX(levelList[lp]["color"]))
+    color.on("input", k => {
+        changeColPicker($(k.target).val(), lp, k.target.previousElementSibling.className == "hueChanger")
+    })
+    color.appendTo($(".cardContainer"+lp))
+}
+
 function removeLevel(id) {
     delete levelList[($(".listPosition" + id.toString()).val())];
 
@@ -479,6 +485,8 @@ function removeLevel(id) {
 
     for (j = id + 1; j <= Object.keys(levelList).length - ADDIT_VALS; j++) {
         updateCardData(j, j - 1);
+        availFill(0,$(".cardLName" + id), "freedom69", id)
+        availFill(1,$(".cardLCreator" + id), "freedom69", id)
     }
 
     // Adds the tutorial, when the list is empty
@@ -516,10 +524,10 @@ function card(index, rndColor) {
     <div class="positionEdit" id="top${index}">
         <div style="display: flex">
             <div style="display: flex; align-items: center;">
-                <p style="margin: 2%;">ID:</p>
-                <input autocomplete="off" id="posInputBox" class="idbox${index} cardInput" type="text" style=" margin-left: 4%; transform: translateY(0%);">
+                <img id="posInputPics" src="./images/star.png">
+                <input autocomplete="off" placeholder="${jsStr["L_LEVID"][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text" style="transform: translateY(0%);">
 
-                <img id="fillButton" src="./images/getStats.png" onclick="getDetailsFromID(${index})" style="float: none;" class="fillID button disabled idDetailGetter${index}">
+                <img id="fillButton" src="./images/getStats.png" onclick="getDetailsFromID(${index})"class="fillID button disabled idDetailGetter${index}">
             </div>
 
             <div class="positionButtons">
@@ -539,7 +547,7 @@ function card(index, rndColor) {
 
         <div style="display: flex; flex-wrap: wrap;">
             <div style="display: flex; flex-wrap: wrap; width: 100%; align-items: center;">
-                <img id="posInputPics" src="./images/gauntlet.png">
+                <img id="posInputPics" src="./images/island.png">
                 <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr["L_NAME"][LANG]}">
 
                 <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
@@ -548,24 +556,25 @@ function card(index, rndColor) {
                 
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
-                <input id="posInputBox" class="cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
-                <img class="button colButton${index}" style="float: none;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
+                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
+                <img class="button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
                 <div style="display: flex; align-items: center;">
                     <img id="posInputPics" src="./images/yticon.png">
-                    <input style="margin: 5%;" class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
+                    <input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
                 </div>
                 
-                <div style="display: flex; justify-content: right; flex-grow: 1; align-items: center;">
+                <div class="cardButtonsContainer">
                     <img title="${jsStr["DEL_CARD"][LANG]}" class="removerButton${index} button cardButton"
                         onclick="removeLevel(${index})" src="./images/delete.png">
 
-                    <img class="button cardButton" onclick="document.querySelector('#colorPicker${index}').click();" src="./images/colorSelect.png">
-                    <input style="display: none;" title="${jsStr["CARD_COL"][LANG]}" type="color" id="colorPicker${index}" class="cardButton cpicker" value="${rndColor}">
+                    <img class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
                 </div>
-            </div>   
+            </div>
+
+            <div class="cardExtrasContainer cardContainer${index}"></div>
         </div>
     </div>
 </div>
@@ -649,23 +658,23 @@ $(function () {
         $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
         $("#submitbutton").attr("onclick", "updateList()")
 
-        $("#submitarea").append(`<input onclick="removeList()" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
+        $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
     }
 
-    $(window).on("resize", function () {
-        // Editor disable on portrait orientaton
-        if ($(window).width() < $(window).height()) {
-            $(".headerTitle").text(jsStr["MOBILE_ED"][LANG]);
-            $("#mainContent").hide()
-            $(".headerButtons").hide()
-        }
-        else {
-            $(".headerTitle").html(jsStr["LEVELS"][LANG]);
-            $("#mainContent").show()
-            $(".headerButtons").show()
-        }
+    // $(window).on("resize", function () {
+    //     // Editor disable on portrait orientaton
+    //     if ($(window).width() < $(window).height()) {
+    //         $(".headerTitle").text(jsStr["MOBILE_ED"][LANG]);
+    //         $("#mainContent").hide()
+    //         $(".headerButtons").hide()
+    //     }
+    //     else {
+    //         $(".headerTitle").html(jsStr["LEVELS"][LANG]);
+    //         $("#mainContent").show()
+    //         $(".headerButtons").show()
+    //     }
 
-    })
+    // })
 
     $("#bgcolorPicker").on("change", function () {
         colorizePage()

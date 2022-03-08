@@ -1,9 +1,6 @@
 var LANG = 0;
 const LANG_AM = 2;
-
-var strings = [
-    ["title", "index.html", 0, ["Top 10 Levelů od Fanoušků", "Top 10 Fan Levels"]],
-    [".lList", "index.html", "title", ["Seznam levelů", "Level List"]],
+var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"]],
     [".colMembers", "index.html", 0, ["Členové", "Members"]],
     [".lComm", "index.html", "title", ["Komentáře", "Comments"]],
     ["h3:nth-child(1)", "index.html", 0, ["Komentář", "Comment"]],
@@ -13,8 +10,21 @@ var strings = [
     [".sendBut", "index.html", "title", ["Odeslat komentář", "Send Comment"]],
     [".comTitles", "index.html", 0, ["- Komentáře -", "- Comments -"]],
     ["#pageStr", 0, 0, ["Strana: ", "Page: "]],
+    [".commBut", 0, 0, ["Komunitní", "Community"]],
+    [".savedBut", 0, 0, ["Uložené", "Saved"]],
+    [".langText", 0, 0, ["Jazyk", "Language"]],
+    ["#czech", 0, 0, ["Čeština", "Czech"]],
+    ["#english", 0, 0, ["Angličtina", "English"]],
+    ["#skinText", 0, 0, ["Vzhled", "Skin"]],
+    [".anims", 0, 0, ["Animace", "Animations"]],
     [".noComm", "index.html", 0, ["- Žádné komentáře -", "- No Comments -"]],
     [".passInput", "index.html", "placeholder", ["Heslo", "Password"]],
+    ["#jumpToText", "index.html", 0, ["Skočit na...", "Jump to..."]],
+    ["#jumpToBut", "index.html", "title", ["Skočit na...", "Jump to..."]],
+    ["#shareText", "index.html", 0, ["Sdílet", "Share"]],
+    ["#shareBut", "index.html", "title", ["Sdílet", "Share"]],
+
+    ["title", "upload.html", 0, ["Komunitní seznamy | GD Seznamy", "Community Lists | GD Lists"]],
     [".debugTitle", "index.html",0, ["Přidat komentáře:", "Add comments:"]],
     [".pageBy", 0, 0, ["Vytvořil ", "Created by"]],
 
@@ -32,9 +42,13 @@ var strings = [
     [".setTitle", "upload.html", 0, ["- Nastavení -", "- Settings -"]],
     ["#submitbutton", "upload.html", "value", ["Nahrát", "Upload"]],
     ["label[for='private']", "upload.html", 0, ["Soukromý seznam", "Private List"]],
+    ["label[for='shareCollab']", "upload.html", 0, ["Sdílet collaby", "Share Collabs"]],
     [".titles", "upload.html", 0, ["- Komunitní seznamy -", "- Community Lists -"]],
     ["#sortStr", "upload.html", 0, ["Řazení: ", "Sorting: "]],
     ["#searchBar", "upload.html", "placeholder", ["Hledání", "Search"]],
+
+    ["#sortStr", "packs.html", 0, ["Řazení: ", "Sorting: "]],
+    ["#searchBar", "packs.html", "placeholder", ["Hledání", "Search"]],
 
     [".collabTTitle","upload.html",0,["- Nastavení collabu -","- Collab Settings -"]],
     [".verifierRole","upload.html","placeholder",["Role","Role"]],
@@ -66,7 +80,9 @@ var strings = [
     ["#h_role","upload.html",0,["Role","Role"]],
     ["#h_part","upload.html",0,["Část","Part"]],
     ["#h_color","upload.html",0,["Barva","Color"]],
-    [".errTitle","upload.html",0,["Jejda!","Oh no!"]]
+    [".errTitle","upload.html",0,["Jejda!","Oh no!"]],
+
+    ["title","packs.html",0,["Uložené levely | GD Seznamy", "Saved Levels | GD Lists"]]
 ]
 
 var jsStr = {
@@ -77,6 +93,7 @@ var jsStr = {
     "NO_IMG": ["./images/ne.png","./images/no.png"],
 
     // editor
+    "CZECH": ["Čeština", "Czech"],
     "EMPT_L": ["Snažiš se poslat <b style='color:cyan'>prázdný seznam!</b>", "You're trying to send an <b style='color:cyan'>empty list!</b>"],
     "LIST_L": ["Jméno tvého seznamu by mělo být delší :).",
         "The name of your list should be longer :)."],
@@ -119,8 +136,30 @@ var jsStr = {
     "L_NOYEAR": ["<p>Tenhle rok neexistuje :D</p>", "<p>This year doesn't exist :D</p>"],
     "CHECKING": ["Kontrolování...", "Checking..."],
     "INC_PWD": ["Heslo je nesprávné!", "Incorrect password!"],
+    "CLICKS": ["Kliknutí: ","Clicks: "],
+    "SKIN1": ["Výchozí", "Default"],
+    "SKIN2": ["Pluska", "Addition"],
+    "SKIN3": ["Čáry", "Lines"],
+    "SKIN4": ["Nevím", "k"],
+    "SKIN5": ["Bloky", "Blocks"],
+    "SKIN6": ["Freedom69", "Freedom69"],
+    "SKIN7": ["Výchozí", "Default"],
+    "SKIN8": ["Výchozí", "Default"],
+    "GDLISTS": ["GD Seznamy","GD Lists"],
+    "FAV_REM": ["Odstranit z oblíbených", "Remove from Favorites"],
+    "FAV_ADD": ["Přidat do oblíbených", "Add to Favorites"],
+    "COMMUNITY": ["Komunitní", "Community"],
+    "SAVED": ["Uložené", "Saved"],
+    "SHOW_PROFILE": ["Zobrazit profil", "Show profile"],
+    "NONEXISTENT_L": ["Neexistující seznam", "Nonexistent list"],
+    "DEBUG_L": ["Debug seznam", "Debug List"],
+    "PREVIEW_L": ["Náhled seznamu", "List Preview"],
+    "CLOSE": ["Zavřít", "Close"],
 
     // helpDialogs
+    "LICENSE": ["Licence","License"],
+    "NEWSKIN_T": ["Nový skin", "New Skin!"],
+    "NEWSKIN_D": ["Odemknul jsi nový skin! Vyzkoušej ho v nastavení :).<br><br>Klikej dál!","You've unlocked a new skin! Apply it in the settings :).<br><br>Keep on clicking!"],
     "UPLOAD_T": ["Obrázky seznamu", "List Header Images"],
     "UPLOAD_D": [`Jestli chceš svůj seznam pořádně vyzdobit, můžeš k němu přidat obrázek, který se u něho zobrazí!<br />
         <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
@@ -146,12 +185,16 @@ var jsStr = {
             <b style="color: #ffff00;">Color:</b> Color of the creator's name in the finished list.`],
     "RMROLE_T": ["Smazání poslední role", "Removing last role"],
     "RMROLE_D": [`Smazáním poslední role smazeš i všechny členy. Pokračovat?<br><br>
-    <img src="images/yeees.png" style="width: 10vw" class="button" onclick="killEverything()">
-    <img src="images/ne.png" style="width: 10vw" class="button" onclick="closeHelp()">
+
+    <button class="button uploadText eventButton" onclick="killEverything()">Ano</button>
+    <button class="button uploadText eventButton" onclick="closeHelp()">Ne</button>
     `, `Deleting the last role will also delete all members. Continue?<br><br>
-    <img src="images/yeeesEng.png" style="width: 10vw" class="button" onclick="killEverything()">
-    <img src="images/no.png" style="width: 10vw" class="button" onclick="closeHelp()">
+    <button class="button uploadText eventButton" onclick="killEverything()">Yes</button>
+    <button class="button uploadText eventButton" onclick="closeHelp()">No</button>
     `],
+    "SHARECOLL_T": ["Sdílení collabů", "Collab sharing"],
+    "SHARECOLL_D": [`Pokud využiješ collab nástroje a zaškrtneš toto políčko, tak kdokoliv poté bude moct využít <b style="color: tomato;">tvá nastavení</b> collabu pro jeho seznam.`,
+                    `If you've used collab tools and tick this check, anyone will be able to use your collab settings for their lists.`],
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],
@@ -159,6 +202,7 @@ var jsStr = {
         `<p class="helpText">Click the <img width=5% id="plusSign" src="images/add.png"> to add a level!</p>`],
     "L_MOVE_D": ["Přesunout level níž", "Move level up"],
     "L_MOVE_U": ["Přesunout level výš", "Move level down"],
+    "L_LEVID": ["ID levelu", "Level ID"],
     "L_NAME": ["Jméno levelu", "Level Name"],
     "L_BUILDER": ["Tvůrce", "Creator"],
     "L_VIDEO": ["Video", "Video"],
@@ -261,19 +305,70 @@ var jsStr = {
     "SAV_CHANG": ["Uložit úpravy", "Save changes"],
     "DELETE": ["Smazat", "Delete"],
     "CONFIRM": ["Přidat", "Add"],
-    "CANCEL": ["Zrušit", "Cancel"]
+    "CANCEL": ["Zrušit", "Cancel"],
+
+    // saves
+    "FAV_LEVELS": ["- Oblíbené levely -","- Favorite Levels -"],
+    "NOFAVED": ["Zatím nemáš nic v oblíbených!", "You haven't saved anything yet!"]
+}
+
+function slapArrayIntoObject(arr) {
+    let obj = {}
+    for (let i = 0; i < arr.length; i += 2) {
+        obj[arr[i]] = arr[i+1]
+    }
+    return obj
+}
+
+function getCookie(val="") {
+    let allCooks = document.cookie;
+    if (allCooks == "") return null // No cookies set
+    
+    let arrayOfCooks = allCooks.split("; ");
+    let finishedCooks = [];
+    
+    arrayOfCooks.forEach(x => {
+        if (x.includes("=")) {
+            finishedCooks.push(x.split("=")[0])
+            finishedCooks.push(x.split("=")[1])
+            };
+    })
+        
+    finishedCooks = slapArrayIntoObject(finishedCooks)
+    if (val != "") {
+        let getSearched = Object.keys(finishedCooks).indexOf(val);
+        if (getSearched != -1) { // Not found
+            let searchObj = {};
+            return Object.values(finishedCooks)[getSearched]
+            }
+        else return false;
+    }
+    else return finishedCoocks;
+}
+
+function makeCookie(val) { // Also works for changing cookies
+    let expireDate = "Sun, 1 Jan 2040 12:00:00 UTC"
+    document.cookie = `${val[0]}=${encodeURIComponent(val[1])}; expires=${expireDate}; SameSite=Lax`
 }
 
 $(function () {
-    var currLang = localStorage.getItem("lang");
+    var currLang = getCookie("lang");
     if (currLang == null) {
-        $(".notify").show();
         let getLang = navigator.language;
         if (["cs", "sk"].includes(getLang)) { currLang = 0; }
         else { currLang = 1; }
-        localStorage.setItem("lang", currLang);
+        
+        makeCookie(["lang", currLang])
     }
     LANG = currLang;
+    $($(".settingsDropdown").children()[currLang]).attr("selected", true)
+    
+    
+    $(".settingsDropdown:not(.skins)").on("change", () => {
+        let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
+        makeCookie(["lang", switchLang])
+        window.location.reload();
+    })
 })
 
 function changeLang() {
@@ -281,7 +376,7 @@ function changeLang() {
     if (LANG >= LANG_AM) {
         LANG = 0
     }
-    localStorage.setItem("lang", LANG);
+    makeCookie(["lang", switchLang])
     window.location.reload()
 }
 

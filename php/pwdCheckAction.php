@@ -1,17 +1,19 @@
 <?php
-
-require("secrets.php");
-
 /*
 Return codes:
 0 - Error connecting to database
 1 - Empty/incomplete request
 2 - Incorrect password
+3 - Success!!
 */
+
+require("secrets.php");
+header('Content-type: application/json'); // Return as JSON
 
 $mysqli = new mysqli($hostname, $username, $password, $database);
 if ($mysqli -> connect_errno) {
     echo "0";
+    http_response_code(500);
     exit();
 }
 
@@ -25,10 +27,10 @@ elseif (isset($_POST["pid"])) {
 }
 else {
     echo "1";
+    http_response_code(400);
     exit();
 }
-
-error_reporting(1);
+$datacheck = sanitizeInput([$listType[0], $_POST["pwdEntered"], $_POST["retData"]]);
 
 $datacheck = [$listType[0], $_POST["pwdEntered"], $_POST["retData"]];
 if (in_array("", $datacheck)) {
@@ -36,22 +38,19 @@ if (in_array("", $datacheck)) {
     exit();
 }
 
-$getList = $mysqli -> query(sprintf("SELECT * FROM `lists` WHERE `%s`='%s'", $listType[1], $datacheck[0]));
-$listData = $getList -> fetch_assoc();
-
+$listData = doRequest($mysqli, sprintf("SELECT * FROM `lists` WHERE `%s`= ?", $listType[1]), [$datacheck[0]], "s");
 $listPwd = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
 
 if ($_POST["pwdEntered"] != $listPwd) {
     sleep(4);
     echo "2";
+    http_response_code(400);
     exit();
 }
 else {
     if ($_POST["retData"] == "1") {
-        if (base64_decode($listData["data"], true) == true) {
-            $listData["data"] = base64_decode($listData["data"]);
-            }
-        echo sprintf("%s;-!-;%s;-!-;%s;-!-;%s",$listData["name"],$listData["creator"],$listData["data"],$listData["hidden"]);
+        $listData["data"] = htmlspecialchars_decode($listData["data"]);
+        echo json_encode($listData);
     }
     else {
         echo "3";

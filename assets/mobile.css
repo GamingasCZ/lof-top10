@@ -1,0 +1,110 @@
+@media only screen and (max-width: 600px) {
+    .button:not(.noMobileResize) {
+        width: 5
+        
+        vw !important;
+        height: auto !important;
+    }
+    }
+
+@media only screen and (max-width: 550px) {
+
+.comTextArea {
+    height: 20vw;
+}
+
+.boxHeader {
+    flex-direction: column;
+}
+
+/* Changes navbar style */
+.mobilePicker {
+    display: block;
+}
+.menuPicker {
+    display: none;
+}
+
+.button:not(.noMobileResize), .logo {
+    width: 8vw !important;
+    height: auto !important;
+}
+
+/* Buttons in comment box */
+.comFooterButton {
+    transform: scale(0.7);
+    margin: 0% -2vw;
+}
+
+/* Page switcher in comments */
+#commentTool {
+    width: 80%
+}
+
+.settingsMenu {
+    right: 7vw;
+    top: 19vw;
+    transform: scale(1.5);
+}
+
+#shareContainer {
+    font-size: 4vw;
+}
+#shareTools {
+    width: 75%;
+    left: 0;
+}
+.searchTools:not(#commentTool) { margin-top: 10vw }
+
+#jumpToTools {
+    top: 0;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    left: 0;
+    padding: 0;
+}
+
+.listInfo { margin-top: 8vh !important; }
+#crown {
+    transform: translateY(7.7vw) !important;
+    width: 25vw;
+}
+
+#collabTools {
+    margin: 0;
+    border: none;
+    border-radius: 0px;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+.graphPerc {
+    font-size: 2.5vw;
+}
+.graphContainer { 
+    height: 5.5vw;
+}
+
+.uploadBG:not(#jumpToTools, #shareTools) {
+    margin: 0vw;
+}
+
+#levelUpload {
+    margin-top: 15% !important;
+}
+
+.communityTitle { margin: 5vh 0 -5vh 0; }
+.savedTitle { margin: 4vh 0 -3vh 0vw; }
+
+/* Hides help text in searchTool/CommentTool */
+#pageStr, #sortStr { display: none; }
+
+#collabTools > .editorHeader { padding: 0 6vw 0 0; }
+.socInp { width: 40vw !important;}
+.percCollab { width: 3vw !important; height: 2vw !important; padding: 0 !important; }
+.tableCpicker { height: 5vw !important; }
+}

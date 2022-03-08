@@ -16,9 +16,15 @@
     }
 }
 
-@keyframes advyout {
-    from { background-position-x: 0px }
-    to { background-position-x: 285px }
+@keyframes headerScroll {
+  from {
+    background-position-x: 0px;
+    background-position-y: 0px;
+  }
+  to {
+    background-position-x: 64px;
+    background-position-y: 64px;
+  }
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
@@ -34,24 +40,49 @@ body {
 
 @font-face {
     font-family: pusab;
-    src: url("../assets/PusabFIX.otf") format("opentype");
+    src: url("../assets/Poppins-Medium.ttf");
 }
+@font-face {
+  font-family: light;
+  src: url("../assets/MerriweatherSans-Light.ttf");
+}
+
 @font-face {
     font-family: chatFont;
     src: url("../assets/chatFont.ttf");
 }
 
-.shade {
-  background-image: linear-gradient(green,#00000000);
-  text-align: center;
-  font-family: "oxygene";
-  font-size: 2.5vw;
-  color: #5df469;
-  text-shadow: -1px -1px 0 white,1px 1px 0 white,-1px -1px 0 white,1px 1px 0 white;
+.logo {
+  width: 3.7vw;
+  height: auto;
+  padding-left: 1vw;
+  /* transform: scale(1) translateY(0.1vw);
+  transition-duration: 0.2s; */
+  transform-origin: center;
+  -ms-interpolation-mode: bicubic;
+}
+/* .logo:hover {
+  transform: scale(1.05) translateY(0.1vw);
+}
+.logo:active {
+  animation-name: logoPoint;
+  animation-duration: 0.2s;
+} */
+
+@keyframes logoPoint {
+  0% {
+    transform: scale(1.05) translateY(0.1vw);
+  }
+  50% {
+    transform: scale(1.15) translateY(0.2vw) rotate(-20deg);
+  }
+  100% {
+    transform: scale(1.05) translateY(0.1vw);
+  }
 }
 
 span {
-  font-size: 5vw;
+  font-size: calc(80% + 1vw);;
   max-width: 80%;
   display: block;
 }
@@ -64,22 +95,21 @@ span {
 
 /*Nadpis v custom Listu*/
 .titles {
-    font-size: 5vw;
+    font-size: calc(80% + 3vw);
     color: white;
-    margin: auto;
     text-align: center;
-    font-family: pusab;  
+    font-family: pusab;
 }
 
 /* just so stuff doesn't break :D*/
 .comTitles {
-  font-size: 5vw;
+  font-size: calc(100% + 3vw);
   color: white;
   margin: auto;
   text-align: center;
   font-family: pusab;  
 }
-
+.listInfo { margin-top: 7vh; }
 
 .title {
   width: 50vw;
@@ -93,18 +123,107 @@ span {
   transition-duration: 0.3s;
 }
 
+#listLevelSub {
+  font-size: calc(70% + 1.2vw);
+}
+
+#listLevelName {
+  text-align: center;
+  font-size: calc(175% + 2vw);;
+}
+
+.listOptions > div {
+  display: flex;
+}
+
 .box {
   background-color: #43a045;
   background-image: url("../images/cardBg.png");
-  padding: 32px 30px 50px 50px;
-  margin: 50px 10% 50px 10%;
+  padding: 1vw 3vw 2vw 3vw;
+  margin: 2.5vw 7vw 2.5vw 7vw;
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
-  font-size: 3vw;
   font-family: "pusab";
   color: white;
-  -webkit-text-stroke: black 0.17vw;
-  text-shadow: rgba(0,0,0,0.5) 3px 3px 4px;
+  text-shadow: rgba(0,0,0,0.5) 0.2vw 0.2vw 0.3vw;
 }
+
+.boxLinksContainer {
+  display: flex;
+  margin-right: 2vw;
+}
+
+.settingsDropdown {
+  background: #012b003d;
+  border: none;
+  border-radius: 0.5vw;
+  font-size: calc(40% + 1vw) !important;
+  text-align: center;
+  box-shadow: #0009 0vw 0vw 1vw;
+}
+
+.siteSettingsChild {
+  display: flex;
+  flex-direction: column;
+  background: #0000004a;
+  border-radius: 1vw;
+  align-items: center;
+  padding: 0.9vw;
+  margin-bottom: 0.2vw;
+  width: max-content;
+}
+
+.siteSettingsChild > p {
+  margin: 0;
+}
+
+u {
+  color: rgb(131, 181, 255);
+  text-decoration-thickness: 0.1vw;
+  cursor: pointer;
+}
+
+.settingsMenu {
+  position: absolute;
+  float: right;
+  background: #222;
+  right: 1vw;
+  top: 6vw;
+  padding: 0.5vw;
+  width: max-content;
+  border-radius: 1vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.favoriteStar {
+  position: relative;
+  bottom: 0.6vw;
+  left: 3%;
+  width: 4vw;
+  float: right;
+}
+
+.scrollToTop {
+  width: 4vw;
+  transform: rotate(90deg) !important;
+  opacity: 0;
+  transition: opacity 0.2s linear;
+  pointer-events: all;
+  margin: 1%;
+}
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
 
 .boxHeader {
   display: flex;
@@ -200,7 +319,6 @@ span {
   transition: opacity 0.1s;
   transform: scaleY(0.8);
   font-size: 1.5vw;
-  -webkit-text-stroke: 0.1vw black;
 }
 
 .graphLine {
@@ -253,28 +371,13 @@ span {
   margin: 0px 8vw 0px 0px;
 }
 .yearButtonImg {
-  width: 16vw;
-  height: max-content;
-  margin: 2vw;
-}
-
-.notify {
-  position: relative;
-  right: 1vw;
-  transform: scale(0.6);
-  bottom: -9vw;
-  margin: -17vw !important;
-  background: url("../images/notify.png");
-  background-position-y: 0%;
-  background-repeat: repeat;
-  background-size: auto;
-  background-size: contain;
-  padding: 7%;
-  background-repeat: no-repeat;
-  background-position-y: -7px;
-  height: 95px;
+  height: 4vw;
+  border: none;
+  margin: 0 !important;
+  background: linear-gradient(180deg, #08ff0024, transparent);
+  font-size: calc(80% + 1vw) !important;
   cursor: pointer;
-  display: none;
+  padding: 0 2vw;
 }
 
 .verticalSplitter {
@@ -293,6 +396,7 @@ html, body {
     max-width: 100%;
     overflow-x: hidden;
     height: 100%;
+    scroll-behavior: smooth;
 }
 
 .button {
@@ -345,10 +449,11 @@ html, body {
 }
 
 #crown {
-  transform: translateY(120px);
   display: block;
   margin-left: auto;
   margin-right: auto;
+  opacity: 0;
+  width: 15vw;
 }
 
 .boards { margin-top: -5vw; }
@@ -358,30 +463,29 @@ html, body {
 
 /* Entire comment box, including user input box */
 #commentMaker {
-  margin: 2vw 5vw;
-  padding: 1vw;
+  margin: 5vw 5vw 0;
+  padding: 0.5vw;
 }
 
 /* Comment text area */
 .comTextArea {
   background-color: salmon;
   border: none;
-  height: 10vw;
+  height: 8vw;
   border-radius: 10px;
   resize: none;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   width: 102%;
-  padding: 1%;
+  padding: 0.5%;
   overflow: auto;
   white-space: pre-wrap;
   word-wrap: anywhere;
 }
 
 #comFont {
-  -webkit-text-stroke: black 0px;
   font-family: chatFont, serif;
-  font-size: 2.5vw;
+  font-size: calc(60% + 1vw);
   line-height: 1.1;
   color: white;
 }
@@ -395,13 +499,11 @@ html, body {
   justify-content: space-between;
   width: inherit;
   /*i despise css.*/
-  height: 4.2vw;
   padding: 0 1%;
 }
 
 /* Specific stuff relating to the cbox footer and header */
 #comBoxHeader {
-  margin-bottom: -2vw !important;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
@@ -410,13 +512,11 @@ html, body {
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   justify-content: right !important;
-  height: auto;
 }
 
 /* Text placement in the cbox footer and header */
 .comBoxThings > h3 {
-  position: relative;
-  bottom: 2.5vw;
+  margin: 0;
 }
 
 /* User input box */
@@ -435,19 +535,20 @@ html, body {
 /* Hypermodern buttons in cbox footer */
 .comFooterButton {
   background: none;
-  border: white solid 0.3vw;
+  border: white solid 0.2vw;
   color: white;
   border-radius: 10px;
   cursor: pointer;
-  margin: 0.5% 1% 0.5% 1%;
+  margin: -0.4% -1% -0.4% -1%;
+  transform: scale(0.6);
   height: min-content;
 }
 
 #verticalLine {
-    margin: 1% 2%;
-    height: auto;
-    border-style: solid;
-    border-radius: 15px;
+  margin: 0.5% 2%;
+  height: auto;
+  border-style: solid;
+  border-radius: 15px;
 }
 
 /* Comment color picker */
@@ -465,7 +566,7 @@ html, body {
 
 /* laughing crying emoji yes XDDDDDDDD */
 .emojis {
-  width: 2.2vw;
+  width: 1em;
   pointer-events: none;
   user-select: text;
 }
@@ -474,8 +575,6 @@ html, body {
 .comUserError {
   color: tomato !important;
   padding-left: 1vw;
-  font-size: 2vw !important;
-  -webkit-text-stroke: black 0.1vw !important;
   margin: 0 !important;
 }
 
@@ -483,11 +582,19 @@ html, body {
   background-color: coral;
   display: flex;
   justify-content: flex-start;
+  overflow-y: hidden;
   overflow-x: auto;
+  margin-top: 0.5vw;
+  border-radius: 1vw;
 }
 .listEmoji {
   padding: 0.5vw;
-  width: 3.5vw;
+  width: 40px;
+}
+
+.emojiPanel > .colorPicker {
+  width: 100%;
+  padding: 1% 2%;
 }
 
 #commentList {
@@ -515,14 +622,54 @@ html, body {
 .password {
     display: flex;
     justify-content: flex-end;
-    align-items: flex-end;
-    flex-grow: 1;
+    align-items: center;
+}
+
+header {
+  background-color: #222;
+  background-image: url("../images/navbarBG.png");
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  position: fixed;
+  width: 100vw;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  transition: transform 0.05s ease-in;
+}
+
+.mobilePicker {
+  text-align: center;
+  font-family: pusab;
+  font-size: 2em;
+  background: linear-gradient(180deg, #08ff0024, transparent);
+  color: white;
+  border: none;
+  padding: 0 1vw;
+  display: none;
+}
+
+footer {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+iframe {
+  width: 100vw;
+  height: 65em;
+  overflow: hidden;
+  border: none;
 }
 
 .eventButton {
-  background-color: #2d6da6 !important;
-  padding: 0.3% 1%;
-  margin: 0.5%;
-  margin-left: 4%;
+  background-color: #2d6ea6 !important;
+  padding: 0% 1%;
+  margin-left: 1%;
   border-radius: 10%;
+}
+
+.mobileButton:not(.noMobileResize) {
+  width: 8vw !important;
+  height: auto !important;
 }

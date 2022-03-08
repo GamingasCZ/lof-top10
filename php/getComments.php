@@ -7,8 +7,7 @@
 */
 
 require("secrets.php");
-
-$fuckupID = htmlspecialchars($_GET["listid"]);
+header('Content-type: application/json'); // Return as JSON
 
 // Does the request have an id?
 if (count($_GET) != 1 || isset($_GET["listid"]) === FALSE) {
@@ -16,6 +15,8 @@ if (count($_GET) != 1 || isset($_GET["listid"]) === FALSE) {
     exit();
 }
 
+$fuckupID = preg_match("/-?\d+/", $_GET["listid"], $match);
+$fuckupID = $match[0];
 // Is the ID valid?
 if ($_GET["listid"] == "-1") {
     echo "3";
@@ -41,9 +42,12 @@ if (count($rows) == 0) {
     exit();
 }
 
+$ind = 0;
 foreach ($rows as $row) {
-    echo htmlspecialchars_decode(join(";-!-;", $row)) . "|-!-|";
+    $rows[$ind]["comment"] = htmlspecialchars_decode($row["comment"]);
+    $ind += 1;
 }
+echo json_encode($rows);
 
 $mysqli -> close();
 

@@ -20,7 +20,11 @@ function checkJson(data) {
         $(".errorBox").text(jsStr["SUCC_UPL"][LANG]);
 
         // 1.5/3 Je seznam prázdný?
-        if (Object.keys(parsedData).length-ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
+        if (Object.keys(parsedData).length - ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
+
+        if (data.length > 25000) {
+            throw (`Tvůj seznam je moc velký! (${(data.length/25000).toFixed(2)}% nad limitem!). Smaž nějaké levely/collaby z levelů!`)
+        }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
         for (i = 1; i < Object.keys(parsedData).length - ADDIT_VALS; i++) {
@@ -46,7 +50,7 @@ function checkJson(data) {
             $(".errorBox").html(error);
         }
 
-        setTimeout(() => {$(".errNotif").fadeOut(200)}, 2000);
+        setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
         return false
     }
 }
@@ -55,81 +59,42 @@ var isHidden = $("input[name='hidden']").attr("checked") == "checked";
 var page = 0;
 var maxPage = 0;
 var listNames = [];
-function displayComLists(data) {
-    // Zbavení se line breaku
-    data = data.slice(0, -2);
+function displayComLists(doita) {
+    $(".customLists").children().remove();
 
-    $(".customLists").children().remove()
+    let data = JSON.parse(JSON.stringify(doita)).reverse();
+    let listAmount = Object.keys(data).length;
 
-    try {
-        if (data.match(/\|/g).length > 0) {
-            let listsArray = data.split("|-!-|");
+    maxPage = Math.ceil(listAmount / 4);
+    $("#maxPage").text("/" + maxPage);
 
-            // Deleteee  e e
-            if (listsArray.indexOf("") != -1) { listsArray.splice(listsArray.indexOf(""), 1) }
-            if (listsArray.indexOf("\n") != -1) { listsArray.splice(listsArray.indexOf("\n"), 1) }
-
-            maxPage = Math.ceil(listsArray.length / 4);
-            $("#maxPage").text("/" + maxPage);
-
-            // List sorting
-            if (!sorting) {
-                listsArray.reverse();
-            }
-
-            // Appends list names (only needs to be done once)
-            if (listNames.length == 0) {
-                listsArray.forEach((val) => listNames.push(val.split(";-!-;")[1]));
-            }
-
-
-            for (i = 4 * page; i < 4 * page + 4; i++) {
-                let listData = (listsArray[i]).split(";-!-;");
-                let listColor = JSON.parse(listData[2])["1"]["color"]
-                let rgb = [];
-                for (j = 1; j < 6; j += 2) {
-                    rgb.push(parseInt("0x" + listColor.slice(j, j + 2)) - 40);
-                }
-                $(".customLists").append(`
-        <a style="text-decoration: none;" href="./index.html?id=${listData[3]}">
-            <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(",")})">
-                <div class="uploadText">${listData[1]}</div>
-                <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}${listData[0]}</div>
-            </div>
-        </a>
-                `);
-            }
-        }
-        else {
-            throw ("ok");
-        }
-    }
-
-    catch (error) {
-        if (data.match(/\|/g) == null || data.endsWith("|\n")) {
-            let listData = (data).split(";-!-;");
-
-            let listColor = JSON.parse(listData[2])["1"]["color"]
-            let rgb = [];
-            for (j = 1; j < 6; j += 2) {
-                rgb.push(parseInt("0x" + listColor.slice(j, j + 2)) - 40);
-            }
-
-            if (listNames.length == 0) {
-                listNames.push(listData[1]);
-            }
+    if (Object.keys(data).length > 0) {
+        data.slice(4 * page, 4 * page + 4).forEach(list => {
+            let listColor = list["data"]["1"].color;
+            let darkCol = HEXtoRGB(listColor, 40);
+            let lightCol = HEXtoRGB(listColor, -60);
 
             $(".customLists").append(`
-        <a style="text-decoration: none;" href="http://www.gamingas.wz.cz/lofttop10/index.html?id=${listData[3]}">
-        <div id="listPreview" class="button" style="background-color: ${listColor}; border-color: rgb(${rgb.join(',')})">
-            <div class="uploadText">${listData[1]}</div>
-            <div class="uploadText">${jsStr["CREATOR_BY"][LANG]}${listData[0]}</div>
-        </div>
-    </a>
-                `);
-        }
-
+            <a style="text-decoration: none;" href="./index.html?id=${list.id}">
+                <div id="listPreview" class="button noMobileResize" style="background-image: linear-gradient(39deg, ${listColor}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
+                    <div class="uploadText">${list.name}</div>
+                    <div class="uploadText">- ${list.creator} -</div>
+                </div>
+            </a>
+                    `);
+        });
     }
+}
+
+function showFaves() {
+    if ($("iframe").css("display") != "none") { $(".searchTools").show(); $(".uploadBG:not(#collabTools)").show(); $(".titles").show(); $(".customLists").show(); $("iframe").hide(); $(".smallUploaderDialog").hide(); return null}
+
+    $(".searchTools").hide();
+    $(".uploadBG:not(#collabTools)").hide();
+    $(".titles").hide();
+    $(".customLists").hide();
+
+    $("iframe").show();
 }
 
 function uploadList() {
@@ -167,25 +132,18 @@ var debug_mode = false;
 var deeta = '';
 var ogDeeta = '';
 
-// List generator
-// if (debug_mode) {
-//     for (let i = 0; i < 4; i++) {
-//         deeta += `${i};${btoa(i * 48514654894984 / 1.848564)};{"1":{"color":"rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})"}};45;10|`
-
-//     }
-// }
-
 function debugLists(am) {
     // not translatable, because I don't feel like it :D
     let adj = ["Big", "Small", "Good", "Bad", "Funny", "Stupid", "Furry", "Christian", "Best", "Gay", "Nice", "Thicc", "OwO", "Cringe", "Big PP", "Life-changing", "Gamingas", "Reddit", "Dramatic", "Hot", "Shit"]
-    let noun = ["Levels", "Collabs", "Megacollabs", "Layouts", "Deco", "Effect Levels", "Grass Levels", "Glow Levels", "2.1 Levels", "Wave Levels", "Virgin Levels", "Extreme Demon Levels","Viprin Levels",
-                "Main Levels", "List Levels", "Dangerous Levels", "Gauntlet Levels","Energetic Levels", "Questionable Levels"]
+    let noun = ["Levels", "Collabs", "Megacollabs", "Layouts", "Deco", "Effect Levels", "Grass Levels", "Glow Levels", "2.1 Levels", "Wave Levels", "Virgin Levels", "Extreme Demon Levels", "Viprin Levels",
+        "Main Levels", "List Levels", "Dangerous Levels", "Gauntlet Levels", "Energetic Levels", "Questionable Levels"]
     if (am == 2) {
-        deeta = "";
+        deeta = [];
         for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-            deeta += `${i};-!-;Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]};-!-;{"1":{"color":"${RGBtoHEX(randomColor())}"}};-!-;45;-!-;10|-!-|`
+            deeta.push({ "creator": i, "name": `Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]}`, "data": { "1": { "color": randomColor() } }, "id": 45, "timestamp": 10 })
         }
         ogDeeta = deeta;
+
         displayComLists(deeta);
     }
     else {
@@ -207,7 +165,7 @@ $(function () {
 
     // Sort button action
     $("#sortBut").on("click", function () {
-        displayComLists(deeta.split("|-!-|").reverse().join("|-!-|"))
+        displayComLists(deeta.reverse())
         if (sorting) {
             $("#sortBut").css("transform", "scaleY(1)");
             $("#sortBut").attr("title", jsStr["NEWEST"][LANG])
@@ -287,11 +245,13 @@ $(function () {
 <img style="padding-left: 3%" src=./images/check.png>
 <p class="uploadText" style="padding: 0 3% 0 3%">${jsStr["LIST_SUCC_UPL"][LANG]} ${pstr}</p>
 
-<div style="margin-top: 5%;">
-<h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
-<div class="shareBG uploadText">${currWebsite}
-<img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
-</div>
+<div style="display:flex; flex-direction: column">
+    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
+    <div class="uploadText shareContainer">
+        <p class="shareBG uploadText">${currWebsite}</p>
+        <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
+    </div>
+    </div>
 </div>
 
 `);
@@ -313,12 +273,6 @@ $(function () {
     }
     else { $(".debugTools").remove() }
 
-    // Mobile optimzations
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        $(".uploadBG").css("margin", "0")
-        $(".uploadBG").css("border", "none")
-        $("body").css("margin", "0")
-    }
 })
 
 function hideUploader() {
@@ -359,7 +313,7 @@ function removeList() {
     // Confirm remove
     $(".boom").append(`<div class="uploadText removeScreen">
     <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.png"><br />
-    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -1.74em;" src="./images/szn1.png">
+    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -3.04em;" src="./images/szn1.png">
     <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">${jsStr["CONF_DEL"][LANG]}</p>
     <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
         <img id="rmbutton" onclick="confirmDelete()" class="button" src="${jsStr["YES_IMG"][LANG]}">
@@ -375,8 +329,8 @@ function removeList() {
     })
 
     $("#rmbutton").on("mouseover", function () {
-        $("#rmimg1").css("transform", "translateY(-10%)");
-        $("#rmimg2").css("transform", "translateY(10%)");
+        $("#rmimg1").css("transform", "translateY(-5%)");
+        $("#rmimg2").css("transform", "translateY(5%)");
         $(".boom").css("background-color", "rgb(11, 0, 0)");
     })
     $("#rmbutton").on("mouseout", function () {
@@ -416,9 +370,8 @@ function search() {
         displayComLists(deeta);
     }
     else {
-        let regex = new RegExp(";.*(" + query + ").*;{", "ig"); // Matches all strings that contain "query"
-        let splitData = deeta.split("|-!-|");
-        let filteredData = splitData.filter((val) => val.match(regex));
+        let regex = new RegExp(".*(" + query + ").*", "ig"); // Matches all strings that contain "query"
+        let filteredData = deeta.filter(val => JSON.stringify(val).match(regex));
         if (filteredData.length == 0) {
             $(".customLists").children().remove()
             page = 0;
@@ -429,23 +382,9 @@ function search() {
         else {
             page = 0;
             $("#pageSwitcher").val("1");
-            deeta = "";
-            filteredData.forEach((val) => deeta += val + "|-!-|");
+            deeta = filteredData;
 
-            displayComLists(filteredData.join("|-!-|"));
+            displayComLists(filteredData);
         }
-    }
-}
-
-function checkCheckbox(changeVal) {
-    if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
-        $(`img[for="${changeVal}"]`).attr("src", "images/check-off.png")
-        $(`input[name="${changeVal}"]`).attr("checked", false)
-
-    }
-    else {
-        $(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
-        $(`input[name="${changeVal}"]`).attr("checked", true)
-
     }
 }

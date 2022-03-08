@@ -7,63 +7,48 @@ Return codes:
 3 - Success!
 */
 
-
 require("secrets.php");
+header('Content-type: application/json'); // Return as JSON
 
 $mysqli = new mysqli($hostname, $username, $password, $database);
 
 if ($mysqli -> connect_errno) {
+  http_response_code(500);
   echo "0";
   exit();
 }
 
 // Checking request
 error_reporting(0);
-
-$fuckupData = array($_POST["id"],$_POST["pwdEntered"]);
-$i = 0;
-foreach ($fuckupData as $post) {
-  if ($fuckupData[$i] == "") {
-    echo "1";
-    $mysqli -> close();
-    exit();
-  }
-  $fuckupData[$i] = htmlspecialchars($post);
-  $i += 1;
-}
-
-error_reporting(1);
+$fuckupData = sanitizeInput(array($_POST["id"],$_POST["pwdEntered"]));
 
 // Password check
 if ($_POST["isHidden"] == 0) {
-  $check = $mysqli -> query("SELECT * FROM `lists` WHERE `id`=".$fuckupData[0]);
+  $listData = doRequest($mysqli, "SELECT * FROM `lists` WHERE `id` = ?", [strval($fuckupData[0])], "i");
 }
 else {
-  $check = $mysqli -> query("SELECT * FROM `lists` WHERE `hidden`='".$fuckupData[0]."'");
+  $listData = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden` = ?", [strval($fuckupData[0])], "s");
 }
 
-echo "SELECT * FROM `lists` WHERE `hidden`=".$fuckupData[0];
-
-$listData = $check -> fetch_assoc();
 $listPass = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
 
 // Invalid password
 if ($listPass != $fuckupData[1]) {
   echo "2";
+  http_response_code(401);
   $mysqli -> close();
   exit();
 }
 
 // Removing list
+
 if ($_POST["isHidden"] == 0) {
-  $check = sprintf("DELETE FROM `lists` WHERE `id`=%s",$listData["id"]);
+  doRequest($mysqli, "DELETE FROM `lists` WHERE `id` = ?", [$listData["id"]], "i");
 }
 else {
-  $check = sprintf("DELETE FROM `lists` WHERE`hidden`='%s'",$listData["hidden"]);
+  doRequest($mysqli, "DELETE FROM `lists` WHERE `hidden` = ?", [$listData["hidden"]], "s");
 }
-$result = $mysqli -> query($check);
 echo "3";
 
 $mysqli -> close();
-
 ?>
