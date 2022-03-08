@@ -29,16 +29,15 @@ It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Lev
 - [X] Searching through online lists
 - [X] Private lists
 - [X] Languages
-
+- [X] Saving lists
+- [X] Responsive layout
 #### Todo:
 
 - [ ] Comment replies
 - [ ] Movable lists
 - [ ] Tick off finished levels
-- [ ] Saving lists
 - [ ] Linking your GD account
 - [ ] Card backgrounds
-- [ ] Responsive layout
 - [ ] Tournaments
 
 # Assets
