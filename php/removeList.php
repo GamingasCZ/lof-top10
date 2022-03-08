@@ -23,7 +23,13 @@ error_reporting(0);
 $fuckupData = sanitizeInput(array($_POST["id"],$_POST["pwdEntered"]));
 
 // Password check
-$listData = doRequest($mysqli, "SELECT * FROM `lists` WHERE `id` = ?", [strval($fuckupData[0])], "i");
+if ($_POST["isHidden"] == 0) {
+  $listData = doRequest($mysqli, "SELECT * FROM `lists` WHERE `id` = ?", [strval($fuckupData[0])], "i");
+}
+else {
+  $listData = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden` = ?", [strval($fuckupData[0])], "s");
+}
+
 $listPass = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
 
 // Invalid password
@@ -35,7 +41,13 @@ if ($listPass != $fuckupData[1]) {
 }
 
 // Removing list
-doRequest($mysqli, "DELETE FROM `lists` WHERE `id` = ?", [$listData["id"]], "i");
+
+if ($_POST["isHidden"] == 0) {
+  doRequest($mysqli, "DELETE FROM `lists` WHERE `id` = ?", [$listData["id"]], "i");
+}
+else {
+  doRequest($mysqli, "DELETE FROM `lists` WHERE `hidden` = ?", [$listData["hidden"]], "s");
+}
 echo "3";
 
 $mysqli -> close();

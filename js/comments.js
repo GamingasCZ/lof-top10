@@ -1,17 +1,13 @@
-const EMOJI_AM = 17;
+const EMOJI_AM = 18;
 function getID() {
-  let paramGetter = new URLSearchParams(window.location.search);
-  let params = Object.fromEntries(paramGetter.entries());
+    let paramGetter = new URLSearchParams(window.location.search)
+    let params = Object.fromEntries(paramGetter.entries());
 
-  if (params["id"] != null) {
-    return params["id"];
-  } // Community level
-  // 2019 or 2021 list
-  else if (params["year"] != null) {
-    return params["year"] == 2019 ? -2 : -3;
-  } else {
-    return -2;
-  } // Is 2019 list
+    if (params["pid"] != null) { return -10} // Disable comments on private lists
+    if (params["id"] != null) { return params["id"] } // Community level
+    // 2019 or 2021 list
+    else if (params["year"] != null) { return params["year"] == 2019 ? -2 : -3 }
+    else { return -2 } // Is 2019 list
 }
 const LIST_ID = getID();
 
@@ -68,6 +64,15 @@ var actualText = "";
 var midText = "";
 var commentColor = "";
 $(function () {
+  // Disabling comments on private lists
+  if (LIST_ID == -10) {
+      $(".lComm").remove()
+      $(".lList").remove()
+      $(".comments").remove()
+
+      return null
+  }
+
   var placeholders = [
     jsStr["PHOLD1"][LANG],
     jsStr["PHOLD2"][LANG],
@@ -330,6 +335,7 @@ function sendComment() {
           $(".comUserError").show();
           $(".comUserError").text(jsStr["C_ERR"][LANG] + data);
           setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
+            }
         }
       });
 

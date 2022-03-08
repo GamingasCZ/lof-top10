@@ -25,6 +25,11 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#shareBut", "index.html", "title", ["Sdílet", "Share"]],
 
     ["title", "upload.html", 0, ["Komunitní seznamy | GD Seznamy", "Community Lists | GD Lists"]],
+    [".debugTitle", "index.html",0, ["Přidat komentáře:", "Add comments:"]],
+    [".pageBy", 0, 0, ["Vytvořil ", "Created by"]],
+
+    [".debugTitle", "upload.html", 0, ["Seznamy k vygenerování:", "Generate lists:"]],
+    ["title", "upload.html", 0, ["Komunitní seznamy", "Community Lists"]],
     [".uploadTitle", "upload.html", 0, ["Nahrávání", "Upload"]],
     ["#listnm", "upload.html", "placeholder", ["Jméno seznamu", "List Name"]],
     ["#creatornm", "upload.html", "placeholder", ["Tvůrce", "List Creator"]],
@@ -98,6 +103,8 @@ var jsStr = {
     "CREA_TOOL": ["Lidi musí psat slohovky, aby tě oslovili :D?", "That's a very long name... :D"],
     "GG_NEVER": ["Nikdy nebudeš Gamingasem :).",
         "You will never be Gamingas :)."],
+    "NO_NAME_C": ["Level na %d místě nemá <b style='color:lime'>jméno!</b>", "Level at position %d doesn't have a <b style='color:lime'>name!</b>"],
+    "NO_CREA_C": ["Level na %d místě nemá <b style='color:lime'>tvůrce!</b>", "Level at position %d doesn't have a <b style='color:lime'>creator!</b>"],
     "SUCC_UPL": ["Všechno je v pořádku!", "Everything is ok!"],
     "NO_JSON": ["Nic jsi nezadal... :D", "You have not entered anything... :D"],
     "CREATOR_BY": ["Od: ", "By: "],
@@ -161,9 +168,9 @@ var jsStr = {
         <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
         <b style="color: tomato;">You don't have to add an image!</b>`],
     "PRIVATE_T": ["Soukromé seznamy", "Private Lists"],
-    "PRIVATE_D": [`Soukromé seznamy se <b style="color: lime;">nezobrazí veřejně</b> a mají <b style="color: tomato">speciální odkaz</b> k přístupu.<br><br>
+    "PRIVATE_D": [`Soukromé seznamy se <b style="color: lime;">nezobrazí veřejně</b>, mají <b style="color: tomato">speciální odkaz</b> k přístupu a <b style="color: #28dcfc">nejde u nich psát komentáře</b>.<br><br>
 	      <b style="color:yellow">Kdykoliv můžeš upravit seznam a udělat ho veřejný.</b>`
-        , `Private lists <b style="color: lime;">won't show up publicly</b> and you access them with a <b style="color: tomato">special link.</b><br><br>
+        , `Private lists <b style="color: lime;">won't show up publicly</b>, you access them with a <b style="color: tomato">special link</b> and <b style="color: #28dcfc">they cannot be commented on</b>.<br><br>
           <b style="color:yellow">You can edit the list anytime and make it public.</b>`],
     "HUM_T": ["Členové v collabu","Collab members"],
     "HUM_D": [`<b style="color: #ffff00;">Jméno:</b> Sem patří jméno člověka, který měl část v collabu. Lupa najde jeho GD profil a udělá ho jeho profil klikatelný v dokončeném seznamu.<br><br>
@@ -255,6 +262,7 @@ var jsStr = {
     "GDB_FAIL": ["Nepodařilo se připojit k GDBrowseru :/", "Connecting to GDBrowser failed :/"],
     "COM_L": ["Komentář by měl mít víc než 10 znaků!", "Comment must be more than 10 char. long!"],
     "COMU_L": ["Tvé jméno by mělo mít víc než 4 znaky!", "Username must be more than 4 char. long"],
+    "LOCAL_F": ["Lokálně nejde posílat komentáře!", "Cannot send comments locally!"],
     "C_SENT": ["Odesláno!", "Sent!"],
     "C_ERR": ["Nepodařilo se odeslat komentář! Kód: ", "Sending comment failed! Code: "],
     "YEAR": ["rokem", "year ago"],

@@ -32,8 +32,13 @@ else {
 }
 $datacheck = sanitizeInput([$listType[0], $_POST["pwdEntered"], $_POST["retData"]]);
 
-$listData = doRequest($mysqli, sprintf("SELECT * FROM `lists` WHERE `%s`= ?", $listType[1]), [$datacheck[0]], "s");
+$datacheck = [$listType[0], $_POST["pwdEntered"], $_POST["retData"]];
+if (in_array("", $datacheck)) {
+    echo "1";
+    exit();
+}
 
+$listData = doRequest($mysqli, sprintf("SELECT * FROM `lists` WHERE `%s`= ?", $listType[1]), [$datacheck[0]], "s");
 $listPwd = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
 
 if ($_POST["pwdEntered"] != $listPwd) {

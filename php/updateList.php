@@ -5,6 +5,7 @@ Return codes:
 1 - Empty request
 2 - Invalid password
 3 - Success!
+4 - No changes made to list
 */
 
 
@@ -31,6 +32,12 @@ else {
     $listData = doRequest($mysqli, "SELECT * FROM `lists` WHERE `id` = ?", [$fuckupData[0]], "i");
 }
 
+// When no changes are made in the list
+if ($listData["data"] == $fuckupData[2]) {
+    echo "4";
+    exit();
+}
+
 $listPass = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
 
 // Invalid password
@@ -55,7 +62,6 @@ else {
     doRequest($mysqli, "UPDATE `lists` SET `data`='%s', `hidden`='0' WHERE `hidden`='%s'", [$_POST["listData"], $_POST["id"]], "ss");
 }
 
-// Updating list data
 echo "3";
 
 $mysqli -> close();

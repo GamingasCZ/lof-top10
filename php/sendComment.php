@@ -63,7 +63,6 @@ $time = new DateTime();
 $template = "INSERT INTO `comments` (`username`,`comment`,`comType`,`bgcolor`,`listID`,`verified`,`timestamp`) VALUES (?, ?, ?, ?, ?, ?, ?)";
 $values = array($fuckupData[0], $fuckupData[1], $fuckupData[2], $fuckupData[4], $fuckupData[3], $verified, $time->getTimestamp());
 $result = doRequest($mysqli, $template, $values, "sssssss");
-print_r($result);
 
 echo "6";
 $mysqli->close();

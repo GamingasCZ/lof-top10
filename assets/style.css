@@ -30,9 +30,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
 
 body {
-  background-image: url("../images/bg.png");
-  background-color: #020202;
-  margin: 0;
+    background: black url("../images/advyout.png");
+    animation-name: advyout;
+    animation-iteration-count: infinite;
+    animation-duration: 10s;
+    animation-timing-function: linear;
+    margin: 0;
 }
 
 @font-face {
@@ -334,6 +337,15 @@ u {
   width: 3vw;
   margin-right: 1vw;
   height: 3vw;
+}
+
+#discordTag {
+  padding-right: 1.5vw;
+  margin: 0;
+  font-size: 1.5vw;
+  -webkit-text-stroke: 0.1vw black;
+  color: #c8fcc7;
+  padding-right: 2vw;
 }
 
 .popup {
