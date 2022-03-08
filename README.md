@@ -6,8 +6,8 @@ It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Lev
 ### Check it out [here](http://gamingas.wz.cz/lofttop10/)
 
 # Screenshots
-![list](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/Screenshot_20210820_235638.png)
-![editor](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/Screenshot_20210820_235838.png)
+![list](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/Screenshot_20220309_003817.png)
+![editor](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/Screenshot_20220309_003937.png)
 
 
 # Features
