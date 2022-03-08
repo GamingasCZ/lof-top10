@@ -1,5 +1,5 @@
 const ADDIT_VALS = 1;
-const DISABLE_GDB = "x" // Change to anything else than "h" to break requests
+const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
 
 // These are not real people :<'
 const fakeNames = ["Voiprin", "Sarprong", "ZentricSigma", "Darwing", "ExpoD", "J0hnram", "Jayuff", "AligaThePeter", "Divpan", "Acidity", "Doorami", "DanZBro", "FunnyBone"]
