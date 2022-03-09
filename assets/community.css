@@ -629,6 +629,74 @@ input:disabled {
     height: 2.8vw;
 }
 
+.diffContainer {
+    background: url("../images/faces/diffContainer.png");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: contain;
+    background-position: 0.45vw 0.1vw;
+    background-repeat: no-repeat;
+  }
+.diffIcon {
+    width: 2.5vw;
+    height: auto;
+    position: absolute;
+}
+
+.diffFace {
+    width: 3vw;
+    padding: 0.5vw 0.5vw;
+}
+.difficultyPicker {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: clip;
+}
+.diffFaces {
+    max-width: 78%;
+    overflow-x: auto;
+}
+.faceSelected {
+    background: #0000006e;
+    border-radius: 1vw;
+}
+.diffOptions {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.336);
+    border-radius: 1vw;
+    padding: 0 1vw;
+}
+#inpEpic:checked, #inpFeatured:checked {
+    -moz-appearance: none;
+    background: url("../images/check-on.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 1vw;
+}
+#inpEpic, #inpFeatured {
+    -moz-appearance: none;
+    background: url("../images/check-off.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 1vw;
+}
+
+#epicGlow {
+    z-index: -1;
+    width: 3.5vw;
+    bottom: 0.4vw;
+    right: 0.48vw;
+}
+#featuredGlow {
+    z-index: -1;
+    width: 3.4vw;
+}
+
 .cpicker {
     width: inherit;
     height: inherit;

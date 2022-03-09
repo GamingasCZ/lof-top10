@@ -111,10 +111,68 @@ function saveGDBresult(id, data) {
     if (typeof levelList[id]["creator"] == "object") { levelList[id]["creator"][0] = [jsonData["author"], 1] } // Collab tools enabled
     else { levelList[id]["creator"] = jsonData["author"]; } // Not enabled
 
+    saveDifficulty(jsonData["difficulty"], jsonData["featured"], jsonData["epic"], id)
+
     $(".idbox" + id).val(jsonData["id"]);
     levelList[id]["levelID"] = jsonData["id"]
 }
 
+function saveDifficulty(difficulty, featured, epic, listPos) {
+    // bad gdbrowser response
+    let stringDiffs = ["NA", "Easy", "Medium", "Hard", "Harder", "Insane", "Easy Demon", "Medium Demon", "Hard Demon", "Insane Demon", "Extreme Demon", "Auto"]
+    if (typeof difficulty == "string") difficulty = stringDiffs.indexOf(difficulty)
+    // If not string, I passed it in as an integer (hopefully :P), corresponds to prev. line
+
+    $($(".diffMain")[listPos-1]).attr("src", `images/faces/${difficulty}.png`)
+    $(".faceSelected").removeClass("faceSelected")
+    $($(`.diffFace`)[difficulty]).addClass("faceSelected")
+
+    $("#inpEpic").prop("checked", 0)
+    $("#inpFeatured").prop("checked", 0)
+    if (epic != -1) {
+        if (!epic) $("#inpEpic").prop("checked", featured)
+        else if (!featured) $("#inpFeatured").prop("checked", epic)
+    }
+    else {
+        $("#inpEpic").prop("checked", featured[1] == 1)
+        $("#inpFeatured").prop("checked", featured[1] == 2)
+    }
+
+    let rate = 0;
+    if (epic != -1) { // featured passed -1 when epic passed the value from levelList
+        if (epic) { $($(".diffBack")[listPos-1]).attr("src", `images/faces/epic.png`); rate = 2; $($(".diffBack")[listPos-1]).attr("id", `epicGlow`); }
+        else if (featured) { $($(".diffBack")[listPos-1]).attr("src", `images/faces/featured.png`); rate = 1; $($(".diffBack")[listPos-1]).attr("id", `featuredGlow`); }
+        else { $($(".diffBack")[listPos-1]).attr("src", ``); $($(".diffBack")[listPos-1]).attr("id", `epicGlow`); }
+    }
+    else rate = featured[1]
+    levelList[listPos]["difficulty"] = [difficulty, rate]
+}
+function openDiffPicker(lp) {
+    $('.cardContainer' + lp).text('')
+    $('.cardContainer' + lp).slideToggle(50)
+    let diff = levelList[lp]["difficulty"]
+
+    let difficulties = [];
+    for (i = 0; i < 12; i++) difficulties.push(`<img class="button diffFace" onclick="saveDifficulty(${i}, levelList[${lp}]['difficulty'], -1, ${lp})" src='images/faces/${i}.png'>`)
+    difficulties = difficulties.join("\n")
+
+    $('.cardContainer' + lp).append(`
+    <div class="difficultyPicker">
+        <div class="diffFaces">${difficulties}</div>
+        <div class="diffOptions">
+            <div>
+                <input onchange="saveDifficulty(levelList[${lp}]['difficulty'][0], 1, 0, ${lp})" id="inpEpic" class="button setCheckbox" type="checkbox"></input>
+                <label for="inpEpic" class="uploadText">Featured</label>
+            </div>
+            <div>
+                <input onchange="saveDifficulty(levelList[${lp}]['difficulty'][0], 0, 1, ${lp})" id="inpFeatured" class="button setCheckbox" type="checkbox"></input>
+                <label for="inpFeatured" class="uploadText">Epic</label>
+            </div>
+        </div>
+    </div>`)
+
+    saveDifficulty(diff[0], diff, -1, lp)
+}
 function colorizePage() {
     let selColor = $("#bgcolorPicker").val()
 
@@ -216,6 +274,8 @@ function moveCard(position, currID) {
 
     updateSmPos();
     document.getElementById("top" + listPlacement).scrollIntoView();
+    $(".cardExtrasContainer").text('')
+    $(".cardExtrasContainer").hide()
     return true;
 }
 
@@ -252,6 +312,7 @@ function displayCard(id) {
         $("#top" + id.toString()).css("transform", "scaleY(0.8)");
         $("#top" + id.toString()).show();
         $("#top" + id.toString()).css("transform", "scaleY(1)");
+        $(".cardExtrasContainer").text('')
         $(".cardExtrasContainer").hide()
         updateSmPos()
 
@@ -280,11 +341,11 @@ async function changeColPicker(chosenColor, target, isChangingValue) {
     let hue = await isChangingValue ? getHueFromHEX(levelList[target]["color"]) : chosenColor
 
     $("#top" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`);
-    $("#top" + target).css("border-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
-    $("#lineSplit" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
-    $(".cardContainer" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+    $("#top" + target).css("border-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`);
+    $("#lineSplit" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`);
+    $(".cardContainer" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`);
 
-    let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness+"%");
+    let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");
     levelList[target]["color"] = inHex;
 }
 
@@ -370,7 +431,8 @@ function addLevel() {
         "creator": "",
         "levelID": null,
         "video": null,
-        "color": ""
+        "color": "",
+        "difficulty": [0,0]
     };
 
     $("#top" + listLenght).css("transform", "scaleY(1)");
@@ -450,6 +512,8 @@ function updateCardData(prevID, newID) {
     $(".cardContainer" + prevID).attr("class", "cardExtrasContainer cardContainer" + newID);
     $(".cPickerBut" + prevID).attr("onclick", "openColorPicker(" + newID + ")");
     $(".cPickerBut" + prevID).attr("class", "button cardButton cPickerBut" + newID);
+    $(".dPick" + prevID).attr("onclick", "openDiffPicker(" + newID + ")");
+    $(".dPick" + prevID).attr("class", "button cardButton diffContainer dPick"+newID);
 
     if (parseInt(prevID) != parseInt(newID)) {
         levelList[prevID] = levelList[newID + "waiting"];
@@ -465,14 +529,14 @@ function updateCardData(prevID, newID) {
 }
 
 function openColorPicker(lp) {
-    $('.cardContainer'+lp).text('')
-    $('.cardContainer'+lp).slideToggle(50)
+    $('.cardContainer' + lp).text('')
+    $('.cardContainer' + lp).slideToggle(50)
 
     let color = makeColorElement(getHueFromHEX(levelList[lp]["color"]), getLightnessFromHEX(levelList[lp]["color"]))
     color.on("input", k => {
         changeColPicker($(k.target).val(), lp, k.target.previousElementSibling.className == "hueChanger")
     })
-    color.appendTo($(".cardContainer"+lp))
+    color.appendTo($(".cardContainer" + lp))
 }
 
 function removeLevel(id) {
@@ -485,8 +549,8 @@ function removeLevel(id) {
 
     for (j = id + 1; j <= Object.keys(levelList).length - ADDIT_VALS; j++) {
         updateCardData(j, j - 1);
-        availFill(0,$(".cardLName" + id), "freedom69", id)
-        availFill(1,$(".cardLCreator" + id), "freedom69", id)
+        availFill(0, $(".cardLName" + id), "freedom69", id)
+        availFill(1, $(".cardLCreator" + id), "freedom69", id)
     }
 
     // Adds the tutorial, when the list is empty
@@ -571,10 +635,16 @@ function card(index, rndColor) {
                         onclick="removeLevel(${index})" src="./images/delete.png">
 
                     <img class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
+                    <div class="button cardButton diffContainer dPick${index}" onclick="openDiffPicker(${index})">
+                        <img class="diffIcon diffMain" src="./images/faces/0.png">
+                        <img class="diffIcon diffBack">
+                    </div>
+                    <img class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/bgSelect.png">
                 </div>
             </div>
 
-            <div class="cardExtrasContainer cardContainer${index}"></div>
+            <div class="cardExtrasContainer cardContainer${index}">
+            </div>
         </div>
     </div>
 </div>

@@ -554,6 +554,19 @@ function generateList(boards, listData) {
 			$("body").css("background-color", boards["pageBGcolor"])
 		}
 
+		// Setting difficulty face
+		let diff = ""
+		if (boards[bIndex]["difficulty"] != undefined) {
+			let data = boards[bIndex]["difficulty"]
+			let glow = "";
+			if (data[1] != 0) {
+				glow = "<img src='images/faces/" + ( glow == 1 ? "featured" : "epic") + ".png'>"
+			}
+			
+			diff = `<div><img style="width: 4vw;" src="images/faces/${data[0]}.png">${glow}</div>`
+		}
+		
+
 		let hasID = ["", null].includes(boards[bIndex]["levelID"])
 		let preview = window.location.search.includes("preview")
 		let isDebugList = window.location.protocol.includes("file") & window.location.search.includes("id")
@@ -570,7 +583,7 @@ function generateList(boards, listData) {
 				${favoriteCheck ? star : ""}
 			</div>
 			<div class="boxHeader">
-				<span id="listLevelName">${boards[bIndex]["levelName"]}</span>
+				<span id="listLevelName">${diff}<p style="margin: 0; margin-left: 2vw;">${boards[bIndex]["levelName"]}</p></span>
 				<div class="boxLinksContainer">
 					${video}
 					${ID[0]}

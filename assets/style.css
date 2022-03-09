@@ -125,7 +125,8 @@ span {
 
 #listLevelName {
   text-align: center;
-  font-size: calc(175% + 2vw);;
+  font-size: calc(175% + 2vw);
+  display: flex;
 }
 
 .listOptions > div {
