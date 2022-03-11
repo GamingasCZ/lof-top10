@@ -1,5 +1,6 @@
 const MAX_GDB_SCROLL = 5
 
+var openedPane = 0
 function getDetailsFromID(id) {
     // Tohle budeš pak muset předělat, až bude všechno fungovat :D
     let givenID = $(".idbox" + id).val();
@@ -123,6 +124,10 @@ function saveDifficulty(difficulty, featured, epic, listPos) {
     if (typeof difficulty == "string") difficulty = stringDiffs.indexOf(difficulty)
     // If not string, I passed it in as an integer (hopefully :P), corresponds to prev. line
 
+    if (difficulty == 0) {
+        featured = 0; epic = 0;
+    }
+
     $($(".diffMain")[listPos-1]).attr("src", `images/faces/${difficulty}.png`)
     $(".faceSelected").removeClass("faceSelected")
     $($(`.diffFace`)[difficulty]).addClass("faceSelected")
@@ -149,7 +154,9 @@ function saveDifficulty(difficulty, featured, epic, listPos) {
 }
 function openDiffPicker(lp) {
     $('.cardContainer' + lp).text('')
-    $('.cardContainer' + lp).slideToggle(50)
+    if (openedPane == 2 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
+    openedPane = 2
+
     let diff = levelList[lp]["difficulty"]
 
     let difficulties = [];
@@ -173,6 +180,36 @@ function openDiffPicker(lp) {
 
     saveDifficulty(diff[0], diff, -1, lp)
 }
+
+const changeBG = (ind, pos) => {levelList[pos]["background"][0] = ind}
+const changeGrad = (ind, pos) => {levelList[pos]["background"][1] = ind}
+function openBGPicker(lp) {
+    $('.cardContainer' + lp).text('')
+    if (openedPane == 3 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
+    openedPane = 3
+
+    let titles = ["Žádné", "Výchozí", "YouTube náhled", "Šrafování"]
+    let bgs = ["none","original","youtube","stripes"];
+    bgs = bgs.map(i => `<img class='button bgPick' onclick='changeBG(${bgs.indexOf(i)}, ${lp})' title='${titles[bgs.indexOf(i)]}' src='images/bgIcons/${i}.svg'>`).join("\n")
+
+    $('.cardContainer' + lp).append(`
+    <div class="difficultyPicker">
+        <div class="diffFaces">${bgs}</div>
+        <div class="diffOptions">
+            <div>
+                <input onchange='changeGrad($("#inpGrad").prop("checked"), ${lp})' id="inpGrad" class="button setCheckbox" type="checkbox"></input>
+                <label for="inpGrad" class="uploadText">Přechod</label>
+            </div>
+            <div class="bgSettingsContainer">
+                <img src="images/gauntlet.png" style="width: 3vw;" class="button">
+                <img src="images/preview.png" style="width: 3vw;" class="button">
+            </div>
+        </div>
+    </div>`)
+
+    $("#inpGrad").prop("checked", levelList[lp]["background"][1])
+}
+
 function colorizePage() {
     let selColor = $("#bgcolorPicker").val()
 
@@ -432,7 +469,8 @@ function addLevel() {
         "levelID": null,
         "video": null,
         "color": "",
-        "difficulty": [0,0]
+        "difficulty": [0,0],
+        "background": [1, true, 30, 100] //BG, gradient, alpha, brightness
     };
 
     $("#top" + listLenght).css("transform", "scaleY(1)");
@@ -530,7 +568,8 @@ function updateCardData(prevID, newID) {
 
 function openColorPicker(lp) {
     $('.cardContainer' + lp).text('')
-    $('.cardContainer' + lp).slideToggle(50)
+    if (openedPane == 1 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
+    openedPane = 1
 
     let color = makeColorElement(getHueFromHEX(levelList[lp]["color"]), getLightnessFromHEX(levelList[lp]["color"]))
     color.on("input", k => {
@@ -634,12 +673,12 @@ function card(index, rndColor) {
                     <img title="${jsStr["DEL_CARD"][LANG]}" class="removerButton${index} button cardButton"
                         onclick="removeLevel(${index})" src="./images/delete.png">
 
-                    <img class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
-                    <div class="button cardButton diffContainer dPick${index}" onclick="openDiffPicker(${index})">
+                    <img title="Barva karty" class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
+                    <div title="Obtížnost levelu" class="button cardButton diffContainer dPick${index}" onclick="openDiffPicker(${index})">
                         <img class="diffIcon diffMain" src="./images/faces/0.png">
                         <img class="diffIcon diffBack">
                     </div>
-                    <img class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/bgSelect.png">
+                    <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.png">
                 </div>
             </div>
 
