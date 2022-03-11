@@ -487,14 +487,14 @@ function displayComments(data) {
     $(".noComm").show();
     return null;
   }
-  data.reverse();
+  let comArray = JSON.parse(JSON.stringify(data)).reverse();
 
   // Max page
-  maxPage = Math.ceil(data.length / PER_PAGE);
+  maxPage = Math.ceil(comArray.length / PER_PAGE);
   $("#maxPage").text("/" + maxPage);
 
   for (x = page * PER_PAGE; x < page * PER_PAGE + PER_PAGE; x++) {
-    let commentData = data[x]
+    let commentData = comArray[x]
 
     let darkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
     let evenDarkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
