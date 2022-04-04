@@ -52,6 +52,23 @@ if (count($_GET) == 1) {
 
     if (count($result) == 0) { echo "2"; } // When the pID is invalid
     else { parseResult($result, true); }
+  } elseif (in_array("random", array_keys($_GET))) {
+    // Picking a random list
+    $query = $mysqli->query("SELECT `id` FROM `lists` WHERE `hidden`=0");
+    $result = $query->fetch_all(MYSQLI_ASSOC);
+    $ids = array();
+
+    for ($i=0; $i < sizeof($result); $i++) { 
+      array_push($ids, $result[$i]["id"]);
+    }
+
+    $getList = $mysqli->query("SELECT * FROM `lists` WHERE `id`=" . $ids[array_rand($ids)]);
+    parseResult($getList->fetch_all(MYSQLI_ASSOC));
+
+  }
+  elseif (in_array("homepage", array_keys($_GET))) {
+    $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC LIMIT 3 ");
+    parseResult($result->fetch_all(MYSQLI_ASSOC));
   }
 }
 

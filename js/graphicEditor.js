@@ -201,13 +201,25 @@ function openBGPicker(lp) {
                 <label for="inpGrad" class="uploadText">Přechod</label>
             </div>
             <div class="bgSettingsContainer">
-                <img src="images/gauntlet.png" style="width: 3vw;" class="button">
+                <img src="images/gauntlet.png" style="width: 3vw;" class="button" onclick="showBGdialog()">
                 <img src="images/preview.png" style="width: 3vw;" class="button">
             </div>
         </div>
     </div>`)
 
     $("#inpGrad").prop("checked", levelList[lp]["background"][1])
+}
+
+function hideBGdialog() {
+    $(".bgProps").fadeOut(100)
+    $(".boom").fadeOut(100)
+    $(".gdSlider").off("onclick")
+}
+function showBGdialog() {
+    $(".bgProps").fadeIn(100)
+    $(".boom").css("background-color", "#000000a0")
+    $(".boom").show()
+    $(".boom").animate({"opacity":100}, 200)
 }
 
 function colorizePage() {
@@ -438,7 +450,7 @@ function changeLevelVideo() {
     levelList[position]["video"] = selection;
 }
 
-function addLevel() {
+async function addLevel() {
     var listLenght = Object.keys(levelList).length - ADDIT_VALS;
     if (listLenght == 1) {
         // Removing tutorial
@@ -459,7 +471,7 @@ function addLevel() {
     updateSmPos();
 
     // Adds the CARD!
-    $("#mainContent").append(card(listLenght));
+    await $("#mainContent").append(await card(listLenght));
     // Skryje zabalenou kartu právě přidané karty
     $("#smtop" + listLenght).hide();
     // Adds the card to the JSON
@@ -619,28 +631,28 @@ var levelList = {
     "pageBGcolor": "#020202"
 }
 
-function card(index, rndColor) {
+function card(index) {
     return `
-<div class="card${index}">
+    <div class="card${index}">
     <div onclick="displayCard(${index});" class="smallPosEdit" id="smtop${index}">
     </div>
     <div class="positionEdit" id="top${index}">
         <div style="display: flex">
             <div style="display: flex; align-items: center;">
                 <img id="posInputPics" src="./images/star.png">
-                <input autocomplete="off" placeholder="${jsStr["L_LEVID"][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text" style="transform: translateY(0%);">
+                <input autocomplete="off" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text" style="transform: translateY(0%);">
 
-                <img id="fillButton" src="./images/getStats.png" onclick="getDetailsFromID(${index})"class="fillID button disabled idDetailGetter${index}">
+                <img id="fillButton" src="./images/getStats.png" onclick="getDetailsFromID(${index})" class="fillID button disabled idDetailGetter${index}">
             </div>
 
             <div class="positionButtons">
-                <img title="${jsStr["L_MOVE_D"][LANG]}" onclick="moveCard('up',${index})" 
+                <img title="${jsStr['L_MOVE_D'][LANG]}" onclick="moveCard('up',${index})" 
                      class="button upmover${index}" style="transform: rotate(90deg);" id="moveLPosButton"
                      src="./images/arrow.png">
 
                 <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" disabled="true" value="${index}">
 
-                <img title="${jsStr["L_MOVE_U"][LANG]}" onclick="moveCard('down',${index})"
+                <img title="${jsStr['L_MOVE_U'][LANG]}" onclick="moveCard('down',${index})"
                         class="button downmover${index}" style="transform: rotate(-90deg);" id="moveLPosButton"
                         src="./images/arrow.png">
             </div>
@@ -651,7 +663,7 @@ function card(index, rndColor) {
         <div style="display: flex; flex-wrap: wrap;">
             <div style="display: flex; flex-wrap: wrap; width: 100%; align-items: center;">
                 <img id="posInputPics" src="./images/island.png">
-                <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr["L_NAME"][LANG]}">
+                <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr['L_NAME'][LANG]}">
 
                 <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
 
@@ -659,18 +671,18 @@ function card(index, rndColor) {
                 
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
-                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
+                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="width: 15vw;display: inline-flex;"><br />
                 <img class="button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
                 <div style="display: flex; align-items: center;">
                     <img id="posInputPics" src="./images/yticon.png">
-                    <input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
+                    <input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr['L_VIDEO'][LANG]}">
                 </div>
                 
                 <div class="cardButtonsContainer">
-                    <img title="${jsStr["DEL_CARD"][LANG]}" class="removerButton${index} button cardButton"
+                    <img title="${jsStr['DEL_CARD'][LANG]}" class="removerButton${index} button cardButton"
                         onclick="removeLevel(${index})" src="./images/delete.png">
 
                     <img title="Barva karty" class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
@@ -678,7 +690,6 @@ function card(index, rndColor) {
                         <img class="diffIcon diffMain" src="./images/faces/0.png">
                         <img class="diffIcon diffBack">
                     </div>
-                    <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.png">
                 </div>
             </div>
 
@@ -689,46 +700,26 @@ function card(index, rndColor) {
 </div>
     `;
 }
-
-var fupPos = 0;
+// <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.png">
 function preview() {
     if (checkJson(JSON.stringify(levelList)) == false) {
         return null;
     }
 
-    if (Object.keys(levelList).length - ADDIT_VALS > 1) {
-        let data = JSON.stringify(levelList);
-        let encodedData = [];
-        for (i = 0; i < data.length; i++) {
-            encodedData.push(data.charCodeAt(i));
-        }
-        encodedData = btoa(encodedData.join(","));
-        sessionStorage.setItem("previewJson", encodedData);
-        window.open("./index.html?preview=1", "_blank")
+    let data = JSON.stringify(levelList);
+    let encodedData = [];
+    for (i = 0; i < data.length; i++) {
+        encodedData.push(data.charCodeAt(i));
     }
-    else {
-        $(".headerTitle").text(fuckupMessages[fupPos]);
-        fupPos++
-        if (fupPos > fuckupMessages.length) {
-            fupPos = 0;
-        }
-    }
+    encodedData = btoa(encodedData.join(","));
+    sessionStorage.setItem("previewJson", encodedData);
+    window.open("./index.html?preview=1", "_blank")
+    
 }
 
 
 var fuckupMessages;
 $(function () {
-    fuckupMessages = [
-        jsStr["FUP1"][LANG], jsStr["FUP2"][LANG], jsStr["FUP3"][LANG], jsStr["FUP4"][LANG],
-        jsStr["FUP5"][LANG], jsStr["FUP6"][LANG], jsStr["FUP7"][LANG], jsStr["FUP8"][LANG],
-        jsStr["FUP9"][LANG], jsStr["FUP10"][LANG], jsStr["FUP11"][LANG], jsStr["FUP12"][LANG],
-        jsStr["FUP13"][LANG], jsStr["FUP14"][LANG], jsStr["FUP15"][LANG], jsStr["FUP16"][LANG], "...",
-        jsStr["FUP17"][LANG], jsStr["FUP18"][LANG], jsStr["FUP19"][LANG], jsStr["FUP20"][LANG],
-        jsStr["FUP21"][LANG], jsStr["FUP22"][LANG], jsStr["FUP23"][LANG], jsStr["FUP24"][LANG],
-        jsStr["FUP25"][LANG], jsStr["FUP26"][LANG], jsStr["FUP27"][LANG], jsStr["FUP28"][LANG],
-        jsStr["FUP29"][LANG], jsStr["FUP30"][LANG], jsStr["FUP31"][LANG], jsStr["FUP32"][LANG], jsStr["FUP33"][LANG]
-    ];
-
     $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
 
     // Keyboard stuff
@@ -769,21 +760,6 @@ $(function () {
 
         $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
     }
-
-    // $(window).on("resize", function () {
-    //     // Editor disable on portrait orientaton
-    //     if ($(window).width() < $(window).height()) {
-    //         $(".headerTitle").text(jsStr["MOBILE_ED"][LANG]);
-    //         $("#mainContent").hide()
-    //         $(".headerButtons").hide()
-    //     }
-    //     else {
-    //         $(".headerTitle").html(jsStr["LEVELS"][LANG]);
-    //         $("#mainContent").show()
-    //         $(".headerButtons").show()
-    //     }
-
-    // })
 
     $("#bgcolorPicker").on("change", function () {
         colorizePage()

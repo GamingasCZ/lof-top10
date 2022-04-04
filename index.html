@@ -16,14 +16,14 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script rel="text/javascript" src="./js/languages.js"></script>
-  <script rel="text/javascript" src="./js/generator.js"></script>
   <script rel="text/javascript" src="./js/comments.js"></script>
+  <script rel="text/javascript" src="./js/generator.js"></script>
   <script rel="text/javascript" src="./js/color.js"></script>
   <script rel="text/javascript" src="./js/helpDialogs.js"></script>
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Geometry Dash Level Lists">
-  <meta name="twitter:description" content="What levels might this list contain?">
+  <meta name="twitter:description" content="Create and browse lists of GD levels!">
   <meta name="twitter:image" content="http://gamingas.wz.cz/lofttop10/images/twitImg.png">
 
   <title>GD Seznamy</title>
@@ -35,48 +35,7 @@
       onclick="document.body.scrollTop = 0">
   </div>
   
-  <header>
-    <div style="display: flex; align-items: center;">
-      <img src="images/gdSezn.svg" class="logo">
-    </div>
-    <div class="menuPicker">
-      <button class="yearButtonImg uploadText" onclick="switchLoFList('index.html?year=2019')">2019</button><button
-        class="yearButtonImg uploadText" onclick="switchLoFList('index.html?year=2021')">2021</button><button
-        class="yearButtonImg commBut uploadText" src=""
-        onclick="window.location.assign('upload.html')">Komunitní</button><button
-        class="yearButtonImg savedBut uploadText" src="" onclick="showFaves()">Uložené</button>
-    </div>
-    <select class="mobilePicker" onchange="switchSite($(this)[0].value)">
-      <option class="yearButtonImg uploadText">2019</option>
-      <option class="yearButtonImg uploadText">2021</option>
-      <option class="yearButtonImg commBut uploadText" src="./images/community.png">Komunitní</option>
-      <option class="yearButtonImg savedBut uploadText" src="./images/community.png">Uložené</option>
-    </select>
-    <div style="justify-content: right; display: flex; align-items: center;">
-      <img class="button" src="images/gauntlet.png" style="width: 3vw; padding-right: 1vw;"
-        onclick="$('.settingsMenu').fadeToggle(100)">
-    </div>
-    <div class="settingsMenu" style="display: none;">
-      <div class="siteSettingsChild">
-        <p class="uploadText langText">Jazyk</p>
-        <select class="uploadText settingsDropdown">
-          <option id="czech">Čeština</option>
-          <option id="english">Angličtina</option>
-        </select>
-      </div>
-      <!-- <div class="siteSettingsChild">
-        <p class="uploadText skinText">Skin</p>
-        <select class="uploadText settingsDropdown skins">
-        </select>
-      </div> -->
-      <div class="siteSettingsChild">
-        <p class="uploadText anims">Animace</p>
-        <img src="images/check-on.png" for="anim" class="button" style="width: 3vw;"
-          onclick="checkCheckbox('anim', switchAnims)">
-        <input type="checkbox" style="display: none;" name="anim">
-      </div>
-    </div>
-  </header>
+  <nav><div class="navPlaceholder"></div></nav>
 
   <div class="boom" id="popupBG"></div>
 
@@ -140,6 +99,7 @@
     <div>
       <img src="images/jumpBut.png" onclick="showJumpTo()" style="width: 3.5vw;" id="jumpToBut" class="button lJumpTo" title="Skočit na...">
       <img src="images/shareBut.png" onclick="listShare()" style="width: 3.5vw; margin-left: 0.5vw;" id="shareBut" class="button lShare" title="Sdílet">
+      <img src="images/pinList.png" onclick="pinList()" style="width: 3.5vw; margin-left: 0.5vw;" id="pinBut" class="button lShare" title="Připnout seznam">
     </div>
 
     <div class="password">
@@ -149,7 +109,7 @@
     </div>
   </div>
 
-  <iframe src="packs.html?type=favorites" loading="eager" style="display: none; transform: translateY(4vw);" scrolling="no"></iframe>
+  <iframe src="packs.html?type=homepage" loading="eager" style="display:none;" scrolling="no"></iframe>
 
   <div class="comments">
     <div class="searchTools uploadText debugTools">
@@ -228,7 +188,7 @@
   </div>
 
   <div class="boards">
-    <img src="./images/crown.png" id="crown" align="center">
+    <img src="./images/crown.png" id="crown" style="display: none;">
   </div>
 </body>
 <footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.5) translateY(4vw);">

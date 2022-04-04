@@ -116,7 +116,8 @@ var jsStr = {
     "LIST_UPDATED": ["Seznam byl aktualizovan!", "The list has been updated!"],
     "KEEP_PWD": ["Schovej si heslo, protože pomocí neho mužeš upravit/smazat seznam!",
         "Keep the password, because you can edit/delete the list with it!"],
-    "LIST_SUCC_UPL": ["Seznam byl nahran!", "The list has been uploaded!"],
+    "LIST_SUCC_UPL": ["Seznam byl nahrán!", "The list has been uploaded!"],
+    "LIST_FAIL_UPL": ["Seznam se nepodařilo nahrát! Kód: ", "List upload failed! Code: "],
     "SHARE": ["Sdílet", "Share"],
     "CONF_DEL": ["Opravdu chceš smazat svůj seznam?", "Are you sure you want to delete the list?"],
     "NO_RES": ["- Žádné výsledky -", "- No results -"],
@@ -195,6 +196,11 @@ var jsStr = {
     "SHARECOLL_T": ["Sdílení collabů", "Collab sharing"],
     "SHARECOLL_D": [`Pokud využiješ collab nástroje a zaškrtneš toto políčko, tak kdokoliv poté bude moct využít <b style="color: tomato;">tvá nastavení</b> collabu pro jeho seznam.`,
                     `If you've used collab tools and tick this check, anyone will be able to use your collab settings for their lists.`],
+    "PINNEDLIST_T": ["Připnuté seznamy", "Pinned Lists"],
+    "PINNEDLIST_D": [`Pokud se k nějakému seznamu často vracíš, můžeš si ho připnout!<br>Připnuté seznamy se zobrazí na domovské stránce k rychlému přístupu. Můžeš jich mít maximálně 5!<br><br>
+                      Seznam připneš připínacím tlačítkem na stránce se seznamem.`],
+    "OFFICIALLIST_T": ["Oficiální seznamy", "Official Lists"],
+    "OFFICIALLIST_D": [`Původně stránka sloužila k zobrazování nejlepších levelů z Levelů od Fanoušků. `],
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],
@@ -213,39 +219,6 @@ var jsStr = {
     "LEVELS": ["Levely", "Levels"],
     "MOBILE_ED": ["Pro použití editoru si otoč mobil ;).", "Turn your phone into landscape to use the editor ;)."],
     "DELETE": ["Smazat", "Delete"],
-    "FUP1": ["Přidej prosím level :).", "Please add a level :)."],
-    "FUP2": ["Nejdřív přidej level!", "Add a level first!"],
-    "FUP3": ["Tím klikáním nic neuděláš :D.", "Your clicking won't do anything :D."],
-    "FUP4": ["Oho, snažíš se mě vyzvat na zápas?", "Heh, is this a challenge?"],
-    "FUP5": ["Mám času dost! Klikej dál.", "I have a ton of time! Keep clicking."],
-    "FUP6": ["Svůj náhled ale nedostaneš.", "You'll never get your preview though."],
-    "FUP7": ["Je zábava tě sledovat :D.", "It's fun watching you :D."],
-    "FUP8": ["Jdu si udělat chutný nápoj!", "I'll go make something to drink!"],
-    "FUP9": ["Zelený, nebo černý čaj?", "Black or green tea?"],
-    "FUP10": ["Asi se nemusím ptát...", "You're not really listening..."],
-    "FUP11": ["Jen klikej dál!", "Keep clicking!"],
-    "FUP12": ["Energií tvého prstu ohřívám konvici :D.", "I'm using your finger's energy to heat up my kettle :D."],
-    "FUP13": ["Konvice již vaří.", "The kettle is on fire."],
-    "FUP14": ["A mám čaj připravený.", "And my tea is done."],
-    "FUP15": ["Klikáš vážně dobře!", "You're a real good clicker!"],
-    "FUP16": ["Je poznat, že jsi Geodeš hráč.", "You're the Dash in Geometry Dash."],
-    "FUP17": ["Oh né! Co jsem to udělal!", "Oh no! What have I done!"],
-    "FUP18": ["Mohu za to všechno já!", "It's all my fault!"],
-    "FUP19": ["Zasekl jsem tě do nekonečné smyčky klikání.", "You're stuck in infinite click loop."],
-    "FUP20": ["Jak tě ale mám zastavit?", "How do I stop you?"],
-    "FUP21": ["Mohl bych být hnusák a nechat tě tu... :<'", "I could just leave you here... :<'"],
-    "FUP22": ["Čaj už mám skoro dopitý.", "I'm running out of tea."],
-    "FUP23": ["Vařící čaj...", "Boiling tea..."],
-    "FUP24": ["To je jedno!", "Oh well..."],
-    "FUP25": ["Hohó! Pokračuj, protože odcházím.", "You can continue, because I'm leaving!"],
-    "FUP26": ["Ano! Toto je můj poslední dialog!", "Yes! This is my last dialog!"],
-    "FUP27": ["Úplně poslední!", "Totally last!"],
-    "FUP28": ["Spočítejme to spolu!", "Let's count it down!"],
-    "FUP29": ["Tři!", "Three."],
-    "FUP30": ["Dva.", "Two."],
-    "FUP31": ["Jedna.", "One."],
-    "FUP32": ["Zahraj si SuperGamingasBros. :D.", "Please play SuperGamingasBros. :D"],
-    "FUP33": ["Konec!", "End!"],
 
     // comments
     "PHOLD1": ["Tvůj seznam je...",
@@ -338,12 +311,11 @@ function getCookie(val="") {
     if (val != "") {
         let getSearched = Object.keys(finishedCooks).indexOf(val);
         if (getSearched != -1) { // Not found
-            let searchObj = {};
             return Object.values(finishedCooks)[getSearched]
             }
         else return false;
     }
-    else return finishedCoocks;
+    else return finishedCooks;
 }
 
 function makeCookie(val) { // Also works for changing cookies
@@ -362,13 +334,6 @@ $(function () {
     }
     LANG = currLang;
     $($(".settingsDropdown").children()[currLang]).attr("selected", true)
-    
-    
-    $(".settingsDropdown:not(.skins)").on("change", () => {
-        let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
-        makeCookie(["lang", switchLang])
-        window.location.reload();
-    })
 })
 
 function changeLang() {

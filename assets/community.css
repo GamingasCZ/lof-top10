@@ -10,8 +10,8 @@
 
 .helpButton {
     /*position: absolute;*/
-    width: 3vw;
-    height: 3vw;
+    width: 2vw;
+    height: 2vw;
     /*right: 23%;*/
 }
 #helpTitle {
@@ -63,8 +63,8 @@
     border-radius: 10px;
 }
 .uploadMainInp {
-    font-size: calc(30% + 2vw) !important;
-    padding: 1vw !important;
+    font-size: var(--normalFont) !important;
+    padding: 0 1vw !important;
 }
 .uploadText {
     color: white;
@@ -75,7 +75,7 @@
 }
 
 .uploadTitle {
-    font-size: 5vw;
+    font-size: var(--xlFont);
     margin: auto;
     display: block;
     text-shadow: 0.17vw 0.17vw rgb(61, 131, 79),
@@ -175,7 +175,7 @@ td > * {
 
 .collabTables th {
     background: rgba(0,0,0,0.1) !important;
-    font-size: 2vw;
+    font-size: var(--bigFont);
 }
 
 tr:nth-child(odd) {
@@ -187,7 +187,7 @@ tr > td:nth-child(2n) {
 }
 
 #collabInp::placeholder {
-    font-size: 1.5vw;
+    font-size: var(--smallFont);
 }
 
 #collabInp {
@@ -195,7 +195,7 @@ tr > td:nth-child(2n) {
     transform: none;
     width: 15vw;
     margin: 0.5%;
-    font-size: 1.5vw;
+    font-size: var(--smallFont);
     background-color: #FFFFFF50;
     border-color: #FFFFFF50;
     -moz-appearance: textfield;
@@ -217,10 +217,11 @@ input::-webkit-inner-spin-button {
     border-radius: 0.5vw;
     padding: 1%;
     margin: 0;
-    font-size: 1.5vw;
+    font-size: var(--smallFont);
 }
 
-input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .tableCpicker) {
+/*Would it be better to get rid of this lmao?*/
+input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .tableCpicker, .homeSearch) {
     margin-left: auto;
     margin-right: auto;
     background-color: rgb(36, 36, 36);
@@ -228,9 +229,8 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     border-radius: 5%;
     padding: 3px 5px;
     color: white;
-    height: 2.8vh;
     font-family: "pusab";
-    font-size: calc(50% + 1vw);
+    font-size: var(--normalFont);
     display: flex;
     justify-content: center;
     width: 20em;
@@ -243,8 +243,8 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
 
 #imageArrow {
     display: flex;
-    width: 5%;
-    height: 5%;
+    width: 4%;
+    height: 4%;
     align-self: center;
     transform: scaleY(1);
     transition-duration: 0s;
@@ -301,7 +301,7 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     padding: 0 0vw 3vw 2vw;
 }
 #shareContainer {
-    font-size: 2vw;
+    font-size: var(--normalFont);
     margin: 0 2vw 2vw 0vw;
     border: none;
     opacity: 1 !important;
@@ -332,7 +332,7 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     width: 90%;
     margin-left: 2.5%;
     justify-content: flex-start;
-    font-size: calc(50% + 1vwh);
+    font-size: var(--normalFont);
     padding: 1%;
 }
 
@@ -346,9 +346,8 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     color: white;
     transform: translateY(-20%);
     width: 25vw;
-    height: 4vh;
     font-family: "pusab";
-    font-size: calc(70% + 0.5vw);
+    font-size: var(--bigFont);
 }
 .cardButtonsContainer {
     display: flex;
@@ -412,12 +411,12 @@ input::-webkit-input-placeholder {
     opacity: 0.5;
     color: white;
     font-family: "pusab";
-    font-size: calc(50% + 1vw);
+    font-size: var(--smallFont);
 }
 input::-moz-placeholder {
     color: white;
     font-family: "pusab";
-    font-size: calc(50% + 1vw);
+    font-size: var(--smallFont);
 }
 
 input:disabled {
@@ -477,7 +476,7 @@ input:disabled {
     color: white;
     padding: 0% 2% 0% 2%;
     margin: 1.5% 7%;
-    border: white 7px solid;
+    border: white 0.5ch solid;
     border-radius: 5px;
     display: block;
 }
@@ -569,6 +568,7 @@ input:disabled {
     transform: translate(0);
     transition: background-color 50ms;
     padding: 0.2vw 0 0.2vw 0.7vw;
+    max-height: 2.5vw;
 }
 
 .lineSplitGeneral {
@@ -625,7 +625,7 @@ input:disabled {
 	height: 4vw;
 }
 #positionDisplay {
-    font-size: 3.5vw;
+    font-size: var(--xlFont);
     height: 2.8vw;
 }
 
@@ -684,12 +684,41 @@ input:disabled {
     justify-content: center;
     gap: 1vw;
 }
-#centered {
-    justify-content: center;
-    align-items: center;
-    pointer-events: all;
+.bgProps {
+    position: absolute;
+    z-index: 5;
+    left: 25%;
+    display: none;
+}
+.bgPropsMain {
+    padding: 0 1vw 1vw 1vw;
+}
+.gdSlider::-moz-range-progress {
+    background: url("../images/sliderBar-uhd.png");
+    height: 0.4em;
+    border-radius: 1vw;
+    transform: translate(0.2vw);
+}
+.gdSlider::-moz-range-thumb {
+    background: url("../images/sliderthumb-uhd.png");
+    background-size: 1em;
+    transform: scale(2);
+    border: none;
 }
 
+.gdSlider::-moz-range-track {
+    background: url("../images/slidergroove-uhd.png");
+    background-repeat: no-repeat;
+    height: 0.8em;
+    background-size: cover;
+    background-position-y: center;
+}
+.gdSlider {
+    width: 20vw;
+    border: none;
+    background: none;
+    font-size: var(--bigFont);
+}
 #inpEpic:checked, #inpFeatured:checked, #inpGrad:checked {
     -moz-appearance: none;
     background: url("../images/check-on.png");
@@ -897,7 +926,7 @@ input:disabled {
     border: none;
     background-color: #111;
     border-radius: 10px;
-    font-size: calc(80% + 1vw);;
+    font-size: var(--normalFont);
     font-family: "pusab";
     color: white;
 }

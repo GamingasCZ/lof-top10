@@ -1,15 +1,66 @@
 <?php
 
+/*
+Return codes: 
+0 - Connection error
+1 - Empty request
+2 - Invalid listName length
+3 - Invalid listCreator length
+4 - List too big
+*/
+
 require("secrets.php");
 header('Content-type: application/json'); // Return as JSON
+
+// DEBUGG!!!!!!! DELEEEETE
+// echo json_encode([12345, 1]);
+echo 1;
+exit();
 
 $mysqli = new mysqli($hostname, $username, $password, $database);
 $time = new DateTime();
 
+// Cannot connect to database
 if ($mysqli -> connect_errno) {
   echo "0";
   exit();
 }
+
+// Invalid listName length
+if (strlen($_POST["lName"]) < 3 || strlen($_POST["lName"]) < 40) {
+  echo "2";
+  exit();
+}
+
+// Invalid listCreator length
+if (strlen($_POST["creator"]) < 3 || strlen($_POST["creator"]) < 20) {
+  echo "3";
+  exit();
+}
+
+// Check list size
+if (strlen($_POST["listData"]) > 25000) {
+  echo "4";
+  exit();
+}
+
+// List checking
+$parsedList = json_decode($_POST["listData"]);
+if ($parsedList == null) {
+  // List is not a JSON
+  echo "5";
+  exit();
+}
+
+$ADDIT_VALS = 2;
+if (count($parsedList) < (1 + $ADDIT_VALS) || count($parsedList) > (50 + $ADDIT_VALS)) {
+  // Check list length
+  echo "5";
+}
+else {
+  
+}
+
 
 // Checking request
 error_reporting(0);
@@ -41,6 +92,6 @@ else {
 }
 $mysqli -> close();
 
-header("location:http://www.gamingas.wz.cz/lofttop10/upload.html?password=" . $pass . "&id=" . $listID);
+echo json_encode([$pass, $listID]);
 
 ?>

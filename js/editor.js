@@ -23,7 +23,7 @@ function checkJson(data) {
         if (Object.keys(parsedData).length - ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
 
         if (data.length > 25000) {
-            throw (`Tvůj seznam je moc velký! (${(data.length/25000).toFixed(2)}% nad limitem!). Smaž nějaké levely/collaby z levelů!`)
+            throw (`Tvůj seznam je moc velký! (${(data.length / 25000).toFixed(2)}% nad limitem!). Smaž nějaké levely/collaby z levelů!`)
         }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
@@ -65,11 +65,11 @@ function displayComLists(doita) {
     let data = JSON.parse(JSON.stringify(doita)).reverse();
     let listAmount = Object.keys(data).length;
 
-    maxPage = Math.ceil(listAmount / 4);
+    maxPage = Math.ceil(listAmount / 10);
     $("#maxPage").text("/" + maxPage);
 
     if (Object.keys(data).length > 0) {
-        data.slice(4 * page, 4 * page + 4).forEach(list => {
+        data.slice(10 * page, 10 * page + 10).forEach(list => {
             let listColor = list["data"]["1"].color;
             let darkCol = HEXtoRGB(listColor, 40);
             let lightCol = HEXtoRGB(listColor, -60);
@@ -87,7 +87,16 @@ function displayComLists(doita) {
 }
 
 function showFaves() {
-    if ($("iframe").css("display") != "none") { $(".searchTools").show(); $(".uploadBG:not(#collabTools)").show(); $(".titles").show(); $(".customLists").show(); $("iframe").hide(); $(".smallUploaderDialog").hide(); return null}
+    if ($("iframe").css("display") != "none") {
+        $(".searchTools").show();
+        $(".uploadBG:not(#collabTools)").show();
+        $(".titles").show(); $(".customLists").show();
+        $("iframe").hide(); $(".smallUploaderDialog").hide();
+        $(".mobilePicker > div")[2].style.filter = "none"
+        $(".mobilePicker > div > h6")[2].innerHTML = "Uložené"
+        $($(".mobilePicker > div > img")[2]).attr("src", "images/savedMobHeader.svg")
+        return null
+    }
 
     $(".searchTools").hide();
     $(".uploadBG:not(#collabTools)").hide();
@@ -95,13 +104,58 @@ function showFaves() {
     $(".customLists").hide();
 
     $("iframe").show();
+    $(".mobilePicker > div").css("filter", "none")
+    $(".mobilePicker > div")[2].style.filter = "var(--redHighlight)"
+    $(".mobilePicker > div > h6")[2].innerHTML = "Zavřít"
+    $($(".mobilePicker > div > img")[2]).attr("src", "images/close.svg")
 }
 
 function uploadList() {
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
         $("#listData").attr("value", JSON.stringify(levelList));
-        $("#levelUpload").submit();
+
+        $("#submitbutton").replaceWith($("<img class='loading' style='animation-name: loading;' src='images/loading.png'>"))
+
+        // Is the "hidden" checkbox checked?
+        if ($("input[name='hidden']").attr("checked") == "checked") { var listHidden = "1" }
+        else { var listHidden = "0" }
+
+        let postData = {
+            "listData": JSON.stringify(levelList),
+            "lName": $("#listnm").val(),
+            "lCreator": $("#creatornm").val(),
+            "hidden": listHidden,
+        }
+
+        $.post("./php/sendList.php", postData, function (data) {
+            //0 - password, 1 - listID
+            // Change depending on your website
+            data = JSON.parse(data)
+            let error = data.length != 2
+
+            let currWebsite
+            let pstr
+            let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
+            if (!error) {
+                currWebsite = `${window.location.origin + "/lofttop10"}/?${isNaN(data[1]) ? "pid" : "id"}=${data[1]}`;
+                pstr = `${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${data[0]}</b>`;
+            }
+
+            $(".uploaderDialog").html(`
+                <img style="padding-left: 3%" src=./images/${!error ? "check" : "error"}.png >
+                <p class="uploadText" style="padding: 0 3% 0 3%">${sendMess}</p>
+
+                <div style="display:flex; flex-direction: column${error ? ';display: none;' : ';'}">
+                    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
+                    <div class="uploadText shareContainer">
+                        <p class="shareBG uploadText">${currWebsite}</p>
+                        <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
+                    </div>
+                </div >
+
+            `);
+        })
     }
 }
 function updateList() {
@@ -112,14 +166,19 @@ function updateList() {
         else { var listHidden = "0" }
 
         // will later also update uploadList()
-        let data = location.search.slice(1).split(/[=&]/g);
+        let paramGetter = new URLSearchParams(window.location.search)
+        let params = Object.fromEntries(paramGetter.entries());
         let postData = {
             "listData": JSON.stringify(levelList),
-            "id": data[1],
-            "pwdEntered": data[3],
+            "id": params.edit,
+            "pwdEntered": params.pass,
             "hidden": listHidden,
             "isNowHidden": isHidden
         }
+
+        $("#submitbutton").html("<img class='loading' src='images/loading.png'>")
+        $("#removebutton").remove()
+
         $.post("./php/updateList.php", postData, function (data) {
             window.location.replace(`http://www.gamingas.wz.cz/lofttop10/upload.html?update=1`);
         })
@@ -155,6 +214,9 @@ function debugLists(am) {
 
 var sorting = false;
 $(function () {
+    // Do nothing if in editor
+    if (window.location.search.includes("editor")) { $(".uploader").show(); return }
+
     $("#pageSwitcher").on("change", function () {
         page = parseInt($(this).val()) - 1;
         if (page > maxPage) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
@@ -212,13 +274,20 @@ $(function () {
 
 
     if (location.search != "") {
-        let password = location.search.slice(1).split(/[=&]/g);
+        let paramGetter = new URLSearchParams(window.location.search)
+        let params = Object.fromEntries(paramGetter.entries());
 
-        if (["edit", "pedit"].includes(password[0]) & password[2] == "pass") {
+        if (params.browse != null) $(".browser").show()
+
+        if (params.edit != null) {
             generateFromJSON()
             isHidden = $("input[name='hidden']").attr("checked") == "checked";
         }
-        else if (password[0] == "update") {
+        else if (params.s != null) {
+            $("#searchBar").val(params.s)
+            search()
+        }
+        else if (params.update != null) {
 
             $(".uploaderDialog").html(`
             <img style="padding-left: 3%" src=./images/check.png>
@@ -228,32 +297,6 @@ $(function () {
             </div>
             
             `);
-        }
-        else if (password[0] == "event") {
-            if (password[1] == 1) { checkCheckbox("event"); }
-            else { checkCheckbox("event"); generateFromJSON(boards); }
-            $("#listnm").val("Lepší seznam");
-        }
-        else {
-            // Change depending on your website
-            let currWebsite = `http://gamingas.wz.cz/lofttop10/?${isNaN(password[3]) ? "pid" : "id"}=${password[3]}`;
-
-            var pstr = `${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${password[1]}</b>`;
-
-            $(".uploaderDialog").html(`
-<img style="padding-left: 3%" src=./images/check.png>
-<p class="uploadText" style="padding: 0 3% 0 3%">${jsStr["LIST_SUCC_UPL"][LANG]} ${pstr}</p>
-
-<div style="display:flex; flex-direction: column">
-    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
-    <div class="uploadText shareContainer">
-        <p class="shareBG uploadText">${currWebsite}</p>
-        <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
-    </div>
-    </div>
-</div>
-
-`);
         }
     }
 
@@ -273,16 +316,6 @@ $(function () {
     else { $(".debugTools").remove() }
 
 })
-
-function hideUploader() {
-    $(".uploaderDialog").hide();
-    $(".smallUploaderDialog").show();
-}
-function showUploader() {
-    $(".uploaderDialog").show()
-    $(".smallUploaderDialog").hide();
-}
-
 
 function closeRmScreen() {
     $(".removeScreen").fadeOut(100)

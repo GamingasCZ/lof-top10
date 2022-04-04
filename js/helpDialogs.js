@@ -34,6 +34,14 @@ $(function () {
         "license": {
             "title": jsStr["LICENSE"][LANG],
             "content": "Načítání..."
+        },
+        "pinnedLists": {
+            "title": jsStr["PINNEDLIST_T"][LANG],
+            "content": jsStr["PINNEDLIST_D"][LANG]
+        },
+        "officialLists": {
+            "title": jsStr["OFFICIALLIST_T"][LANG],
+            "content": jsStr["OFFICIALLIST_D"][LANG]
         }
     }
 })

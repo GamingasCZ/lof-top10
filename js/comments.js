@@ -4,10 +4,8 @@ function getID() {
     let params = Object.fromEntries(paramGetter.entries());
 
     if (params["pid"] != null) { return -10} // Disable comments on private lists
-    if (params["id"] != null) { return params["id"] } // Community level
-    // 2019 or 2021 list
-    else if (params["year"] != null) { return params["year"] == 2019 ? -2 : -3 }
-    else { return -2 } // Is 2019 list
+    if (params["id"] != null) { return params["id"] } // Community level/2019 or 2021 list (-2,-3)
+    else { return -9 } // Is Homepage
 }
 const LIST_ID = getID();
 
@@ -64,6 +62,9 @@ var actualText = "";
 var midText = "";
 var commentColor = "";
 $(function () {
+  // Is on homepage? (do not load)
+  if (LIST_ID == -9) return
+
   // Disabling comments on private lists
   if (LIST_ID == -10) {
       $(".lComm").remove()

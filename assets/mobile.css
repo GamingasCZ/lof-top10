@@ -19,7 +19,7 @@
 
 /* Changes navbar style */
 .mobilePicker {
-    display: block;
+    display: flex;
 }
 .menuPicker {
     display: none;

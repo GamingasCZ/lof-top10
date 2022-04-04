@@ -1,0 +1,76 @@
+<header class="titles">Vítej v GD seznamech!</header>
+<form id="homepageHeader" class="inlineFlex"
+    onsubmit="redirectParent('/upload.html?browse&s='+encodeURIComponent($('.homeSearch').val()))">
+    <input placeholder="Hledat seznamy..." id="homepageSearch" class="homeSearch" required></input>
+    <button type="submit" class="button">
+        <img style="width: var(--xlFont); height: fit-content;" src="images/searchButton.svg">
+    </button>
+</form>
+<div class="inlineFlex" id="homepageHeader">
+    <button class="homepageBigButton button noMobileResize" onclick="redirectParent('/upload.html?editor')"><img src="images/plus.svg">
+        <h2 class="uploadText">Vytvořit seznam</h2>
+    </button>
+    <button class="homepageBigButton button noMobileResize" onclick="redirectParent('/index.html?random')"><img src="images/dice.svg">
+        <h2 class="uploadText">Zkusit štestí</h2>
+    </button>
+</div>
+<ul style="padding: 0;">
+    <li class="homepageTitles">Nejnovější
+        <button class="homepageBigButton button noMobileResize" id="categoryBut" onclick="redirectParent('/upload.html?browse')">
+            <img src="images/more.svg">
+            <div class="uploadText">Více</div>
+        </button>
+    </li>
+    <div class="newestLists">
+        <div class="uploadText" style="color: #f98282; margin-left: 5vw;">- Nepodařilo se načíst seznamy! -</div>
+    </div>
+
+    <li class="homepageTitles">Připnuté
+        <img src="images/help.png" id="homepageHelp" class="helpButton button"
+            onclick="window.parent.window.openHelp('pinnedLists')">
+    </li>
+    <div class="pinnedLists">
+        <div class="uploadText" style="color: #f9e582; margin-left: 5vw;">- Zatím jsi nepřipnul žádné seznamy! -</div>
+    </div>
+
+    <li class="homepageTitles">Naposledy navštívené</li>
+    <div class="recentlyViewed">
+        <div class="uploadText" style="color: #f9e582; margin-left: 5vw;">- Zatím jsi nenavštívil žádné seznamy! -</div>
+    </div>
+
+    <li class="homepageTitles">Výběr z uložených
+        <button class="homepageBigButton button noMobileResize" id="categoryBut" onclick="showSaves('favorites')">
+            <img src="images/more.svg">
+            <div class="uploadText">Více</div>
+        </button>
+    </li>
+    <div class="savedLists">
+        <div class="uploadText" style="color: #f9e582; margin-left: 5vw;">- Zatím jsi neuložil žádné seznamy! -</div>
+    </div>
+
+    <li class="homepageTitles">Naposledy upravený
+        <button class="homepageBigButton button noMobileResize" id="categoryBut">
+            <img src="images/more.svg">
+            <div class="uploadText">Více</div>
+        </button>
+    </li>
+
+    <li class="homepageTitles">Tvé nahrané 
+        <button class="homepageBigButton button noMobileResize" id="categoryBut">
+            <img src="images/more.svg">
+            <div class="uploadText">Více</div>
+        </button>
+    </li>
+
+    <li class="homepageTitles">Oficiální
+        <img src="images/help.png" id="homepageHelp" class="helpButton button">
+    </li>
+</ul>
+<div class="button IXstyle noMobileResize" id="listPreview" onclick="redirectParent('/index.html?id=-2')">
+    <div class="uploadText">Top 10 Levelů od Fanoušků 2019</div>
+    <div class="uploadText">- GamingasCZ -</div>
+</div>
+<div class="button XXIstyle noMobileResize" id="listPreview" onclick="redirectParent('/index.html?id=-3')">
+    <div class="uploadText">Top 15 Levelů od Fanoušků 2021</div>
+    <div class="uploadText">- GamingasCZ -</div>
+</div>

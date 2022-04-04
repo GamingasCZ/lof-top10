@@ -29,54 +29,23 @@
   <div class="errNotText uploadText errorBox">Toto je test!</div>
 </div>
 
-<div class="overlay" id="centered">
-  <div class="uploadBG">
-    <img src="./images/delete.png" class="button" style="width: 6%; height: max-content;" onclick="hideCollabTools()">
-    <p class="uploadText">Průhlednost</p>
-    <input type="range" min="0" max="100">
-    <p class="uploadText">Sytost</p>
-    <input type="range" min="0" max="200">
+<!--
+<div class="uploadBG bgProps">
+  <img src="./images/delete.png" class="button" style="width: 6%; height: max-content; float: right;"
+    onclick="hideBGdialog()">
+  <div class="bgPropsMain">
+    <p class="uploadText" style="margin-bottom: 0;">Průhlednost</p>
+    <input class="gdSlider" type="range" min="0" max="100">
+    <p class="uploadText" style="margin-bottom: 0;">Sytost</p>
+    <input class="gdSlider" type="range" min="0" max="200">
   </div>
 </div>
+-->
 
 <body>
-  <header>
-    <div style="display: flex; align-items: center;">
-      <img src="images/gdSezn.svg" class="logo">
-    </div>
-    <div style="justify-content: center" class="menuPicker">
-      <button class="yearButtonImg uploadText" onclick="switchLoFList('index.html?year=2019')">2019</button><button
-        class="yearButtonImg uploadText" onclick="switchLoFList('index.html?year=2021')">2021</button><button
-        class="yearButtonImg commBut uploadText" src=""
-        onclick="window.location.assign('upload.html')">Komunitní</button><button
-        class="yearButtonImg savedBut uploadText" src="" onclick="showFaves()">Uložené</button>
-    </div>
-    <select class="mobilePicker" onchange="switchSite($(this)[0].value)">
-      <option class="yearButtonImg uploadText">2019</option>
-      <option class="yearButtonImg uploadText">2021</option>
-      <option class="yearButtonImg commBut uploadText" src="./images/community.png" selected>Komunitní</option>
-      <option class="yearButtonImg savedBut uploadText" src="./images/community.png">Uložené</option>
-    </select>
-    <div style="justify-content: right; display: flex; align-items: center;">
-      <img class="button" src="images/gauntlet.png" style="width: 3vw; padding-right: 1vw;"
-        onclick="$('.settingsMenu').fadeToggle(100)">
-    </div>
-    <div class="settingsMenu" style="display: none;">
-      <div class="siteSettingsChild">
-        <p class="uploadText langText">Jazyk</p>
-        <select class="uploadText settingsDropdown">
-          <option id="czech">Čeština</option>
-          <option id="english">Angličtina</option>
-        </select>
-      </div>
-      <div class="siteSettingsChild">
-        <p class="uploadText anims">Animace</p>
-        <img src="images/check-on.png" for="anim" class="button" style="width: 3vw;"
-          onclick="checkCheckbox('anim', switchAnims)">
-        <input type="checkbox" style="display: none;" name="anim">
-      </div>
-    </div>
-  </header>
+  <nav>
+    <div class="navPlaceholder"></div>
+  </nav>
 
   <!-- Collab tools -->
   <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
@@ -86,11 +55,11 @@
     </div>
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 12%;">
       <img class="hostIcon" src="./images/bytost.png" style="margin-right: 1vw;">
-      <input id="posInputBox" class="verifierRole cardInput" autocomplete="off" type="text" placeholder="Role nahrávatele"
-        style="width: 15vw;" onchange="chMainName($(this), 3)" value="Host">:
+      <input id="posInputBox" class="verifierRole cardInput" autocomplete="off" type="text"
+        placeholder="Role nahrávatele" style="width: 15vw;" onchange="chMainName($(this), 3)" value="Host">:
       <input id="posInputBox" class="verifier cardInput" autocomplete="off" type="text" placeholder="Nahrál"
         style="width: 25vw; margin: 0vw 1vw;" onchange="chMainName($(this), 1)">
-      <img class="button"  src="images/getStats.png" onclick="chMainName($(this), 2)">
+      <img class="button" src="images/getStats.png" onclick="chMainName($(this), 2)">
     </div>
 
     <div class="editorHeader collabHeader uploadText collabBar">
@@ -101,15 +70,16 @@
         <button class="button uploadText eventButton noMobileResize" onclick="addRole(2)">Tester</button>
       </div>
       <div class="collabHButtons" style="width: 11vw;">
-        <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')" style="width: 3vw;height: fit-content;"
-          src="images/paste.png" title="Vložit ze schránky">
+        <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')"
+          style="width: 3vw;height: fit-content;" src="images/paste.png" title="Vložit ze schránky">
         <img class="button roleAddButton" onclick="addRole()" style="width: 3vw;margin-left: 0.4vw;height: fit-content;"
           src="images/add.png" title="Přidat roli">
       </div>
     </div>
     <div class="collabBG collabHeader collabDIV">
       <table style="display: none;" class="collabTables collabRoles">
-        <p class="uploadText noRolAdded">K přidání role vyber předvolbu, nebo klikni na<img id="plusSign" style="width: 2.2%" src="images/add.png"></p>
+        <p class="uploadText noRolAdded">K přidání role vyber předvolbu, nebo klikni na<img id="plusSign"
+            style="width: 2.2%" src="images/add.png"></p>
       </table>
     </div>
 
@@ -133,43 +103,42 @@
       </div>
 
       <div class="collabHButtons" style="width: 11vw;">
-        <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)" style="width: 3vw; height: fit-content;"
-          src="images/paste.png" title="Vložit ze schránky">
+        <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)"
+          style="width: 3vw; height: fit-content;" src="images/paste.png" title="Vložit ze schránky">
         <img class="button disabled addHumanButton" onclick="addCollabHuman()"
           style="width: 3vw;margin-left: 0.2vw;height: fit-content;" src="images/add.png" title="Přidat člověka">
       </div>
     </div>
     <div class="collabBG collabHeader collabDIV" style="height: 39.7%;;">
       <p class="uploadText noRoles">K přidání členů přidej roli.</p>
-      <p style="display: none;" class="uploadText addRoles">K přidání člena klikni na<img style="width: 2.2%" id="plusSign"
-          src="images/add.png"></p>
+      <p style="display: none;" class="uploadText addRoles">K přidání člena klikni na<img style="width: 2.2%"
+          id="plusSign" src="images/add.png"></p>
       <table style="display: none;" class="collabTables collabHumans">
         <tr class="collabTables">
           <th class="collabTables" style="width: 26%;">
-            <img src="images/bytost.png" style="width: 2vw;"
-           ><div id="h_name" style="display:inline">Jméno</div
-           ><img src="images/help.png" class="button smallHelp noMobileResize helpButton"
-              onclick="openHelp('humansHelp')">
+            <img src="images/bytost.png" style="width: 2vw;">
+            <div id="h_name" style="display:inline">Jméno</div><img src="images/help.png"
+              class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 14%;">
-            <img src="images/like.png" style="width: 2vw;"
-           ><div id="h_social" style="display:inline">Sítě</div
-           ><img src="images/help.png" class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
+            <img src="images/like.png" style="width: 2vw;">
+            <div id="h_social" style="display:inline">Sítě</div><img src="images/help.png"
+              class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 25%;">
-            <img src="images/part.png" style="width: 2vw;"
-           ><div id="h_role" style="display:inline">Role</div
-           ><img src="images/help.png" class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
+            <img src="images/part.png" style="width: 2vw;">
+            <div id="h_role" style="display:inline">Role</div><img src="images/help.png"
+              class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 15%;">
-            <img src="images/length.png" style="width: 2vw;"
-           ><div id="h_part" style="display:inline">Část</div
-           ><img src="images/help.png" class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
+            <img src="images/length.png" style="width: 2vw;">
+            <div id="h_part" style="display:inline">Část</div><img src="images/help.png"
+              class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 13%;">
-            <img src="images/colorSelect.png" style="width: 2vw;"
-           ><div id="h_color" style="display:inline">Barva</div
-           ><img src="images/help.png" class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
+            <img src="images/colorSelect.png" style="width: 2vw;">
+            <div id="h_color" style="display:inline">Barva</div><img src="images/help.png"
+              class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables"></th>
         </tr>
@@ -179,7 +148,7 @@
 
   </div>
 
-  <iframe src="packs.html?type=favorites" loading="eager" style="display: none; transform: translateY(4vw);" scrolling="no"></iframe>
+  <iframe src="packs.html?type=favorites" loading="eager" style="display: none;" scrolling="no"></iframe>
 
   <div class="helpBG" style="display: none;"></div>
   <div class="popupHelp uploadText" style="display: none;">
@@ -189,97 +158,93 @@
     </div>
   </div>
 
-  <div class="uploadBG smallUploaderDialog" style="display: none;">
-    <button align="center" class="button uploadText uploadTitle noMobileResize" onclick="showUploader()" type="button"
-      title="Ukázat nahrávací dialog">
-      Nahrávání
-    </button>
-  </div>
-
-  <form id="levelUpload" action="php/sendList.php" method="post" class="uploadBG uploaderDialog">
-    <button class="button uploadText uploadTitle noMobileResize" type="button" onclick="hideUploader()"
-      title="Sbalit nahrávací dialog">
-      Nahrávání
-    </button>
-    <br />
-    <input name="listData" id="listData" type="hidden" value="">
-    <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="Jméno seznamu"><br />
-    <input name="creator" type="text" id="creatornm" class="uploadMainInp" placeholder="Tvůrce"><br />
-    <div style="display: flex; justify-content: center; margin-right: 1.7vw;">
-      <img src="images/arrow.png" id="imageArrow" class="button" title="Ukázat náhled obrázku">
-      <input type="text" onchange="updateTitImg()" id="tImgMargin" class="titImgInp uploadMainInp" placeholder="Obrázek seznamu">
-      <img src="images/help.png" class="button helpButton" onclick="openHelp('upload')">
-    </div>
-    <div class="imgPreview">
-      <img src="" id="imagePrev" class="uploadText" style="width: inherit;">
-      <p id="imgError" class="uploadText" style="color: tomato;"></p>
-    </div>
-    <br />
-    <div class="listColPicker">
-      <label align="center" for="bgcolor" class="uploadText colorLabel">Barva pozadí:</label>
-      <input name="bgcolor" type="color" id="bgcolorPicker" value="#020202">
-    </div>
-
-    <div class="editorHeader"
-      style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-      <p class="headerTitle uploadText">Levely</p>
-      <div style="display: flex;">
-        <img src="images/preview.png" title="Náhled seznamu" onclick="preview()"
-          class="button previewButton disabled headerButtons">
-        <img src="images/add.png" title="Přidat level do seznamu" onclick="addLevel()"
-          class="button addCardButton headerButtons">
+  <div class="uploader" style="display: none;">
+    <form id="levelUpload" action="php/sendList.php" method="post" class="uploadBG uploaderDialog">
+      <div align="center" class="uploadText uploadTitle">
+        Nahrávání
+      </div>
+      <br />
+      <input name="listData" id="listData" type="hidden" value="">
+      <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="Jméno seznamu"><br />
+      <input name="creator" type="text" id="creatornm" class="uploadMainInp" placeholder="Tvůrce"><br />
+      <div style="display: flex; justify-content: center; margin-right: 1.7vw;">
+        <img src="images/arrow.png" id="imageArrow" class="button" title="Ukázat náhled obrázku">
+        <input type="text" onchange="updateTitImg()" id="tImgMargin" class="titImgInp uploadMainInp"
+          placeholder="Obrázek seznamu">
+        <img src="images/help.png" class="button helpButton" onclick="openHelp('upload')">
+      </div>
+      <div class="imgPreview">
+        <img src="" id="imagePrev" class="uploadText" style="width: inherit;">
+        <p id="imgError" class="uploadText" style="color: tomato;"></p>
+      </div>
+      <br />
+      <div class="listColPicker">
+        <label align="center" for="bgcolor" class="uploadText colorLabel">Barva pozadí:</label>
+        <input name="bgcolor" type="color" id="bgcolorPicker" value="#020202">
       </div>
 
+      <div class="editorHeader"
+        style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+        <p class="headerTitle uploadText">Levely</p>
+        <div style="display: flex;">
+          <img src="images/preview.png" title="Náhled seznamu" onclick="preview()"
+            class="button previewButton disabled headerButtons">
+          <img src="images/add.png" title="Přidat level do seznamu" onclick="addLevel()"
+            class="button addCardButton headerButtons">
+        </div>
+
+      </div>
+
+      <div class="editorHeader uploadText" id="mainContent">
+      </div>
+
+      <p class="uploadText setTitle"> Nastavení -</p>
+      <div class="settingsBG">
+        <div class="setting">
+          <input type="checkbox" style="display: none;" name="hidden">
+          <img src="images/check-off.png" onclick='checkCheckbox("hidden")' for="hidden" class="setCheckbox button">
+          <label for="private" class="uploadText setLabel">Soukromý seznam</label>
+          <img src="images/help.png" class="button setHelp" onclick="openHelp('private')">
+        </div>
+      </div>
+
+      <div id="submitarea">
+        <input onclick="uploadList()" type="button" class="button noMobileResize" id="submitbutton" value="Nahrát">
+      </div>
+
+    </form>
+  </div>
+
+  <div class="browser" style="display: none;">
+    <p class="titles communityTitle">- Komunitní seznamy -</p>
+
+    <!-- Debug Tools -->
+    <div class="searchTools uploadText debugTools">
+      <span class="debugTitle">Seznamy k vygenerování:</span>
+      <img class="button pageBut" src="images/arrow-left.png" onclick="debugLists(-1)">
+      <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="10">
+      <img class="button pageBut" src="images/arrow-right.png" onclick="debugLists(1)">
+      <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugLists(2)">
     </div>
 
-    <div class="editorHeader uploadText" id="mainContent">
-    </div>
-
-    <p class="uploadText setTitle"> Nastavení -</p>
-    <div class="settingsBG">
-      <div class="setting">
-        <input type="checkbox" style="display: none;" name="hidden">
-        <img src="images/check-off.png" onclick='checkCheckbox("hidden")' for="hidden" class="setCheckbox button"
-          >
-        <label for="private" class="uploadText setLabel">Soukromý seznam</label>
-        <img src="images/help.png" class="button setHelp" onclick="openHelp('private')">
+    <div class="searchTools uploadText" style="justify-content: center;">
+      <span style="padding-right: 2%;" id="sortStr">Řazení: </span>
+      <img src="images/sort.png" id="sortBut" class="button" style="width: 4%; transition-duration: 0s;">
+      <div class="page">
+        <span style="padding-right: 2%;" id="pageStr">Strana: </span>
+        <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
+        <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
+        <span id="maxPage">/1</span>
+        <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
+      </div>
+      <div class="search">
+        <input placeholder="Hledání" autocomplete="off" class="pageIndicator" id="searchBar">
+        <img src="./images/getStats.png" class="button passImg" style="float: none" onclick="search()">
       </div>
     </div>
 
-    <div id="submitarea">
-      <input onclick="uploadList()" type="button" class="button noMobileResize" id="submitbutton" value="Nahrát">
-    </div>
-
-  </form>
-
-  <p class="titles communityTitle">- Komunitní seznamy -</p>
-
-  <!-- Debug Tools -->
-  <div class="searchTools uploadText debugTools">
-    <span class="debugTitle" style="font-size: 2vw;">Seznamy k vygenerování:</span>
-    <img class="button pageBut" src="images/arrow-left.png" onclick="debugLists(-1)">
-    <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
-    <img class="button pageBut" src="images/arrow-right.png" onclick="debugLists(1)">
-    <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugLists(2)">
+    <div class="customLists uploadText"></div>
   </div>
-
-  <div class="searchTools uploadText" style="justify-content: center;">
-    <span style="padding-right: 2%;" id="sortStr">Řazení: </span>
-    <img src="images/sort.png" id="sortBut" class="button" style="width: 4%; transition-duration: 0s;">
-    <div class="page">
-      <span style="padding-right: 2%;" id="pageStr">Strana: </span>
-      <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
-      <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-      <span id="maxPage">/1</span>
-      <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
-    </div>
-    <div class="search">
-      <input placeholder="Hledání" autocomplete="off" class="pageIndicator" id="searchBar">
-      <img src="./images/getStats.png" class="button passImg" style="float: none" onclick="search()">
-    </div>
-  </div>
-
-  <div class="customLists uploadText"></div>
 
   <!--Explosion-->
   <div class="boom"></div>
@@ -289,7 +254,8 @@
   <p class="uploadText pageBy">Vytvořil </p>
   <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
   <span class="uploadText"> | 2021-2022 | </span>
-  <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github" src="images/github.png"></a>
+  <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github"
+      src="images/github.png"></a>
   <a onclick="openHelp('license')" class="uploadText gamLink"> Licence</a>
 </footer>
 

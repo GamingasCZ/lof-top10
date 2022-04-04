@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16mm"
+   height="16mm"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04, custom)"
+   sodipodi:docname="wave.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#000000"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="4.489899"
+     inkscape:cx="51.337458"
+     inkscape:cy="26.281215"
+     inkscape:window-width="1558"
+     inkscape:window-height="874"
+     inkscape:window-x="42"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2" />
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="powerstroke"
+       id="path-effect944"
+       is_visible="true"
+       lpeversion="1"
+       offset_points="0,4.99214"
+       not_jump="false"
+       sort_points="true"
+       interpolator_type="CubicBezierJohan"
+       interpolator_beta="0.2"
+       start_linecap_type="zerowidth"
+       linejoin_type="extrp_arc"
+       miter_limit="4"
+       scale_width="1"
+       end_linecap_type="zerowidth" />
+    <inkscape:path-effect
+       effect="powerstroke"
+       id="path-effect907"
+       is_visible="true"
+       lpeversion="1"
+       offset_points="0,4.99214"
+       not_jump="false"
+       sort_points="true"
+       interpolator_type="CubicBezierJohan"
+       interpolator_beta="0.2"
+       start_linecap_type="zerowidth"
+       linejoin_type="extrp_arc"
+       miter_limit="4"
+       scale_width="1"
+       end_linecap_type="zerowidth" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Vrstva 2"
+     style="display:inline">
+    <g
+       id="g4112"
+       transform="matrix(0.63257635,0,0,0.63257635,2.9426581,7.6188062)">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 15.705138,7.9508471 c 0,0 -7.0062943,-3.3084951 -10.3462567,-4.8718507 -0.719388,-0.1686925 -1.7036174,-0.4955531 -1.7304832,0.4330631 0.026029,0.7205273 0.5950735,1.0391983 1.0117209,1.458713 0.7385624,0.6918468 1.254675,1.5707734 1.5590787,2.4593153 0.063099,0.2665818 0.1004979,0.545795 0.07425,0.8184824 C 6.2415208,8.5802562 6.1203498,8.899934 5.9948907,9.2086328 5.63584,10.198756 4.8937781,10.742047 4.2646816,11.412291 c -0.1647946,0.178205 -0.3393148,0.355976 -0.4517813,0.57107 -0.078911,0.150919 -0.1626714,0.319267 -0.1481786,0.488954 0.016527,0.193504 0.1080667,0.401259 0.2610848,0.520851 0.1464498,0.114459 0.3583361,0.115606 0.5440965,0.122041 0.3063093,0.01061 0.6243287,-0.025 0.9089628,-0.138668 C 8.9155063,11.564141 15.705138,7.9508471 15.705138,7.9508471 Z"
+         id="path1697"
+         sodipodi:nodetypes="cccccaccaaaasc" />
+      <circle
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path3624"
+         cx="2.6633761"
+         cy="8.073204"
+         r="2.5455828" />
+    </g>
+  </g>
+</svg>

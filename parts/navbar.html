@@ -1,0 +1,50 @@
+<div style="display: flex; align-items: center;">
+  <a href="index.html"><img src="images/gdl.svg" class="logo button"></a>
+</div>
+<div class="menuPicker">
+  <button class="yearButtonImg uploadText" onclick="switchLoFList('upload.html?editor')">
+    <img src="images/editorMobHeader.svg">
+    <h4>Editor</h4>
+  </button>
+  <button class="yearButtonImg uploadText" onclick="switchLoFList('upload.html?browse')">
+    <img src="images/browseMobHeader.svg">
+    <h4>Seznamy</h4>
+  </button>
+  <button class="yearButtonImg savedBut uploadText" src="" onclick="showFaves()">
+    <img src="images/savedMobHeader.svg"><h4>Uložené</h4></button>
+</div>
+<div class="mobilePicker" onchange="switchSite($(this)[0].value)">
+  <div onclick="switchLoFList('upload.html?editor')"><img src="images/editorMobHeader.svg">
+    <h6>Editor</h6>
+  </div>
+  <div onclick="switchLoFList('upload.html?browse')"><img src="images/browseMobHeader.svg">
+    <h6>Seznamy</h6>
+  </div>
+  <div onclick="showFaves()"><img src="images/savedMobHeader.svg">
+    <h6>Uložené</h6>
+  </div>
+</div>
+<div style="justify-content: right; display: flex; align-items: center;">
+  <img class="button" src="images/gauntlet.png" style="width: 2.5vw; padding-right: 1vw;"
+    onclick="$('.settingsMenu').fadeToggle(100)">
+</div>
+<div class="settingsMenu" style="display: none;">
+  <div class="siteSettingsChild">
+    <p class="uploadText langText">Jazyk</p>
+    <select class="uploadText settingsDropdown">
+      <option id="czech">Čeština</option>
+      <option id="english">Angličtina</option>
+    </select>
+  </div>
+  <!-- <div class="siteSettingsChild">
+      <p class="uploadText skinText">Skin</p>
+      <select class="uploadText settingsDropdown skins">
+      </select>
+    </div> -->
+  <div class="siteSettingsChild">
+    <p class="uploadText anims">Animace</p>
+    <img src="images/check-on.png" for="anim" class="button" style="width: 3vw;"
+      onclick="checkCheckbox('anim', switchAnims)">
+    <input type="checkbox" style="display: none;" name="anim">
+  </div>
+</div>
