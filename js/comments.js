@@ -1,11 +1,13 @@
 const EMOJI_AM = 18;
 function getID() {
-    let paramGetter = new URLSearchParams(window.location.search)
-    let params = Object.fromEntries(paramGetter.entries());
+  let paramGetter = new URLSearchParams(window.location.search)
+  let params = Object.fromEntries(paramGetter.entries());
 
-    if (params["pid"] != null) { return -10} // Disable comments on private lists
-    if (params["id"] != null) { return params["id"] } // Community level/2019 or 2021 list (-2,-3)
-    else { return -9 } // Is Homepage
+  if (params["preview"] != null) { return -8 } // List preview from editor
+  if (params["pid"] != null) { return -10 } // Disable comments on private lists
+  if (params["random"] != null) { return -10 } // Disable comments on private lists
+  if (params["id"] != null) { return params["id"] } // Community level/2019 or 2021 list (-2,-3)
+  else { return -9 } // Is Homepage
 }
 const LIST_ID = getID();
 
@@ -67,11 +69,11 @@ $(function () {
 
   // Disabling comments on private lists
   if (LIST_ID == -10) {
-      $(".lComm").remove()
-      $(".lList").remove()
-      $(".comments").remove()
+    $(".lComm").remove()
+    $(".lList").remove()
+    $(".comments").remove()
 
-      return null
+    return null
   }
 
   var placeholders = [
@@ -180,7 +182,7 @@ $(function () {
   });
 
   // Hide debug tools when not running locally
-  if (!window.location.protocol.includes("file")) {
+  if (window.location.port == "") {
     $(".debugTools").remove();
   }
 });
@@ -326,6 +328,8 @@ function sendComment() {
           $(".comInpArea").text("");
           updateCharLimit();
 
+          $("body")[0].scrollTop = 0 // Scroll to top to show comment
+
           // 10 second comment rate limit
           setTimeout(() => {
             $(".sendBut").removeClass("disabled");
@@ -336,8 +340,8 @@ function sendComment() {
           $(".comUserError").show();
           $(".comUserError").text(jsStr["C_ERR"][LANG] + data);
           setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-            }
-        })
+        }
+      })
     }
   }
 }
@@ -351,39 +355,33 @@ function chatDate(stamp) {
   }
 
   if (seconds > 31557600) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 31557600)} ${
-      Math.floor(seconds / 31557600) == 1
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 31557600)} ${Math.floor(seconds / 31557600) == 1
         ? jsStr["YEAR"][LANG]
         : jsStr["YEARS"][LANG]
-    }`;
+      }`;
   } else if (seconds > 2629800) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 2629800)} ${
-      Math.floor(seconds / 2629800) == 1
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 2629800)} ${Math.floor(seconds / 2629800) == 1
         ? jsStr["MONTH"][LANG]
         : jsStr["MONTHS"][LANG]
-    }`;
+      }`;
   } else if (seconds > 86400) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 86400)} ${
-      Math.floor(seconds / 86400) == 1
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 86400)} ${Math.floor(seconds / 86400) == 1
         ? jsStr["DAY"][LANG]
         : jsStr["DAYS"][LANG]
-    }`;
+      }`;
   } else if (seconds > 3600) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 3600)} ${
-      Math.floor(seconds / 3600) == 1
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 3600)} ${Math.floor(seconds / 3600) == 1
         ? jsStr["HOUR"][LANG]
         : jsStr["HOURS"][LANG]
-    }`;
+      }`;
   } else if (seconds > 60) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 60)} ${
-      Math.floor(seconds / 60) == 1
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 60)} ${Math.floor(seconds / 60) == 1
         ? jsStr["MINUTE"][LANG]
         : jsStr["MINUTES"][LANG]
-    }`;
+      }`;
   } else if (seconds >= 10) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds)} ${
-      jsStr["SECONDS"][LANG]
-    }`;
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds)} ${jsStr["SECONDS"][LANG]
+      }`;
   } else if (seconds < 10) {
     return jsStr["FEWSECS"][LANG];
   }
@@ -402,7 +400,7 @@ function comBox(cd, dcc, edcc) {
 
   // Is user verified?
   if (cd["verified"] == 1) {
-    profPic = `<img class="pIcon " style="padding: 0.5vw;transform: scale(2);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
+    profPic = `<img class="pIcon" style="height: var(--biggerFont);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
     clickable[0] = "clickable";
     clickable[1] = `onclick="profile('${cd["username"]}')`;
     comColor = "#f9f99a";
@@ -429,27 +427,23 @@ function comBox(cd, dcc, edcc) {
   return `
     <div style="margin-bottom: 2vw">
     
-        <div class="comBoxThings ${
-          clickable[0]
-        } uploadText" id="comBoxHeader" ${clickable[1]}"
+        <div class="comBoxThings ${clickable[0]
+    } uploadText" id="comBoxHeader" ${clickable[1]}"
             style="margin-bottom: 0 !important;
                     justify-content: flex-start;
                     background-color: ${"rgb(" + dcc.join(",") + ")"};
-                    border: solid ${
-                      "rgb(" + edcc.join(",") + ")"
-                    } 10px; height: 2.3vw;">
+                    border: solid ${"rgb(" + edcc.join(",") + ")"
+    } 4px;">
             ${profPic}
             <h3 style="margin-left: 1%; color: ${comColor};">${cd["username"]}</h3>
             <h3 id="comFont" 
                 style="margin: 0 0 0 auto; cursor: help;"
-                title="${nT.getDay() + 1}.${
-    nT.getMonth() + 1
-  }.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
+                title="${nT.getDay() + 1}.${nT.getMonth() + 1
+    }.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
         </div>
     
-        <div class="comTextArea" id="comFont" style="width: 99%; background-color: ${
-          cd["bgcolor"]
-        };">${cd["comment"]}</div>
+        <div class="comTextArea" id="comFont" style="width: 99%; background-color: ${cd["bgcolor"]
+    };">${cd["comment"]}</div>
     
     </div>
     `;
@@ -461,14 +455,20 @@ var deeta = "";
 
 function debugComments(am) {
   if (am == 2) {
-    deeta = "";
+    deeta = [];
     for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-      deeta += `${
-        fakeNames[Math.floor(Math.random() * fakeNames.length)]
-      };-!-;This is a comment!;-!-;0;-!-;${randomColor()};-!-;-2;-!-;27;-!-;0;-!-;${Math.floor(
-        (Math.random() * Date.now()) / 1000
-      )}|-!-|`;
+      deeta.push({
+        "username": fakeNames[Math.floor(Math.random() * fakeNames.length)],
+        "comment": "This is a comment!",
+        "comType": "0",
+        "bgcolor": randomColor(),
+        "listID": "-2",
+        "comID": "27",
+        "verified": "1",
+        "timestamp": Math.floor((Math.random() * Date.now()) / 1000)
+      })
     }
+
     displayComments(deeta);
   } else {
     $("#lDebugAm").val(parseInt($("#lDebugAm").val()) + am);
@@ -479,7 +479,12 @@ function debugComments(am) {
 }
 
 function displayComments(data) {
+  // Don't do anything on list previews
+  if (LIST_ID == -8) return
+
   const PER_PAGE = 5;
+
+  $("#commAmount").text(data.length)
 
   $("#commentList").html("");
   $(".noComm").hide();

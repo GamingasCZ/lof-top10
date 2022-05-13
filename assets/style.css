@@ -38,6 +38,7 @@
   --xlFont: clamp(2rem, 3.5vw, 5rem);
   --lightHighlight: invert(0.4) sepia(1) saturate(1.5) hue-rotate(90deg);
   --redHighlight: invert(0.4) sepia(1) saturate(4) hue-rotate(300deg);
+  --greenGradient: linear-gradient(9deg, #142019, #045124);
 }
 
 body {
@@ -113,6 +114,7 @@ span {
     color: white;
     text-align: center;
     font-family: pusab;
+    margin: 1vw 0;
 }
 
 /* just so stuff doesn't break :D*/
@@ -143,6 +145,7 @@ span {
   text-align: center;
   font-size: var(--xlFont);
   display: flex;
+  align-items: center;
 }
 
 .listOptions > div {
@@ -202,7 +205,7 @@ u {
   float: right;
   background: #222;
   right: 1vw;
-  top: 6vw;
+  top: 4vw;
   padding: 0.5vw;
   width: max-content;
   border-radius: 1vw;
@@ -242,6 +245,7 @@ u {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: row;
 }
 
 .boxLink {
@@ -389,15 +393,16 @@ u {
   background: #131313;
   font-size: var(--bigFont) !important;
   cursor: pointer;
-  padding: 0 2vw;
+  padding: 0.3vw 2vw;
   border-radius: 0.7vw;
   display: flex;
   gap: 1vw;
-  align-items: center;
+  align-items: end;
 }
 
 .yearButtonImg > h4 {
   margin: 0;
+  line-height: 100%;
 }
 
 .yearButtonImg > img {
@@ -484,6 +489,19 @@ html, body {
 /* List always shows by default */
 .comments { display: none;}
 
+#commAmount {
+  background: #d94242;
+  height: 50%;
+  font-size: 0.5em;
+  padding: 0px 0.3em;
+  border-radius: 20%;
+  margin-left: -1vh;
+  line-height: 2;
+  margin-top: 2.5vh;
+  margin-right: -1vh;
+  z-index: 5;
+}
+
 /* Entire comment box, including user input box */
 #commentMaker {
   margin: 5vw 5vw 0;
@@ -517,7 +535,7 @@ html, body {
 .comBoxThings {
   display: flex;
   margin: 0;
-  align-content: flex-end;
+  align-items: center;
   background-color: crimson;
   justify-content: space-between;
   width: inherit;
@@ -649,7 +667,7 @@ html, body {
 }
 
 nav {
-  background-image: linear-gradient(9deg, #142019, #045124);
+  background-image: var(--greenGradient);
   animation-iteration-count: infinite;
   animation-duration: 2s;
   animation-timing-function: linear;
@@ -675,6 +693,9 @@ nav {
   gap: 30%;
 }
 
+.mobilePicker > div {
+  min-width: 1em;
+}
 
 .mobilePicker > div > h6 {
   margin: -0.8em 0 0;
@@ -690,10 +711,9 @@ footer {
 }
 
 iframe {
-  width: 100vw;
-  height: 65em;
-  overflow: hidden;
-  border: none;
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .eventButton {
@@ -716,7 +736,11 @@ iframe {
 }
 
 #homepageHeader {
-  margin: 1em 0;
+  margin: 0 0 1em;
+  min-height: 30vh;
+  align-items: end;
+  background: url(../images/introGrad2.png);
+
 }
 
 #homepageSearch {
@@ -747,7 +771,7 @@ iframe {
   align-items: center;
 }
 
-.homepageBigButton > img { width: 3vw; }
+.homepageBigButton > img { width: var(--biggerFont); }
 .homepageBigButton > * { padding: 0 1em; margin: 0.2vw 0 !important; }
 a {text-decoration: none;}
 .IXstyle { background-image: linear-gradient(90deg, #4d7151, #1b8e28); border-color: #0f4615 !important; }
@@ -755,7 +779,7 @@ a {text-decoration: none;}
 
 .navPlaceholder {
   width: 90%;
-  padding: 1.2vw;
+  padding: 0.8vw;
   background: #0000002a;
   margin: 0.8vw auto;
   border-radius: 1vw;
@@ -773,3 +797,70 @@ a {text-decoration: none;}
 }
 #categoryBut:hover { transform: scale(0.52) translate(-3vw, 1vw); }
 #categoryBut:active { transform: scale(0.55) translate(-3vw, 1vw); }
+
+/* Text color */
+cy { color: yellow; }
+cr { color: tomato }
+cg { color: lime }
+cb { color: #28DCFC ;}
+
+#centeredPopup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 !important;
+}
+
+.levelPicker {
+  background-image: var(--greenGradient);
+  z-index: 5;
+  padding: 2vw;
+  display: grid;
+  border-radius: 10px;
+  padding-top: 0;
+  padding-right: 0;
+}
+
+/*Close button*/
+.levelPicker > img {
+  width: 3vw;
+  justify-self: end;
+}
+
+.levelPickerContainer {
+	min-height: 65vh;
+	background: #0000003d;
+	display: flex;
+	flex-direction: column;
+	border-radius: 10px;
+	margin-top: 10px;
+	padding: 10px;
+	gap: 0;
+	max-height: 65vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#favBubble {
+  min-width: calc(100% - 2.5vw);
+  justify-content: left;
+}
+
+.noSaves {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  opacity: 0.3;
+}
+.noSaves > img { width: 40%; }
+.noSaves > p { max-width: 50%; text-align: center; }
+
+.searchWithIcon::placeholder {
+  background: url(../images/searchOpaque.svg) no-repeat;
+  background-size: var(--smallFont);
+  background-position-x: 1vw;
+  background-position-y: center;
+}

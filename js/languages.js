@@ -8,7 +8,7 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     [".comFooterButton:nth-child(1)", "index.html", "title", ["Barva komentáře", "Comment Color"]],
     [".comFooterButton:nth-child(2)", "index.html", "title", ["Emotikony", "Emoji"]],
     [".sendBut", "index.html", "title", ["Odeslat komentář", "Send Comment"]],
-    [".comTitles", "index.html", 0, ["- Komentáře -", "- Comments -"]],
+    [".comTitles", "index.html", 0, ["Komentáře", "Comments"]],
     ["#pageStr", 0, 0, ["Strana: ", "Page: "]],
     [".commBut", 0, 0, ["Komunitní", "Community"]],
     [".savedBut", 0, 0, ["Uložené", "Saved"]],
@@ -29,7 +29,7 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     [".pageBy", 0, 0, ["Vytvořil ", "Created by"]],
 
     [".debugTitle", "upload.html", 0, ["Seznamy k vygenerování:", "Generate lists:"]],
-    ["title", "upload.html", 0, ["Komunitní seznamy", "Community Lists"]],
+    [".communityTitle", "upload.html", 0, ["Komunitní seznamy", "Community Lists"]],
     [".uploadTitle", "upload.html", 0, ["Nahrávání", "Upload"]],
     ["#listnm", "upload.html", "placeholder", ["Jméno seznamu", "List Name"]],
     ["#creatornm", "upload.html", "placeholder", ["Tvůrce", "List Creator"]],
@@ -43,12 +43,6 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#submitbutton", "upload.html", "value", ["Nahrát", "Upload"]],
     ["label[for='private']", "upload.html", 0, ["Soukromý seznam", "Private List"]],
     ["label[for='shareCollab']", "upload.html", 0, ["Sdílet collaby", "Share Collabs"]],
-    [".titles", "upload.html", 0, ["- Komunitní seznamy -", "- Community Lists -"]],
-    ["#sortStr", "upload.html", 0, ["Řazení: ", "Sorting: "]],
-    ["#searchBar", "upload.html", "placeholder", ["Hledání", "Search"]],
-
-    ["#sortStr", "packs.html", 0, ["Řazení: ", "Sorting: "]],
-    ["#searchBar", "packs.html", "placeholder", ["Hledání", "Search"]],
 
     [".collabTTitle","upload.html",0,["- Nastavení collabu -","- Collab Settings -"]],
     [".verifierRole","upload.html","placeholder",["Role","Role"]],
@@ -164,26 +158,26 @@ var jsStr = {
     "UPLOAD_T": ["Obrázky seznamu", "List Header Images"],
     "UPLOAD_D": [`Jestli chceš svůj seznam pořádně vyzdobit, můžeš k němu přidat obrázek, který se u něho zobrazí!<br />
         <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
-        <b style="color: tomato;">Nemusíš přidávat žádný obrázek!</b>`
+        <cr>Nemusíš přidávat žádný obrázek!</cr>`
         , `If you really want to spice up your list, you can add an image, that'll display as the header!<br />
         <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
-        <b style="color: tomato;">You don't have to add an image!</b>`],
+        <cr>You don't have to add an image!</cr>`],
     "PRIVATE_T": ["Soukromé seznamy", "Private Lists"],
-    "PRIVATE_D": [`Soukromé seznamy se <b style="color: lime;">nezobrazí veřejně</b>, mají <b style="color: tomato">speciální odkaz</b> k přístupu a <b style="color: #28dcfc">nejde u nich psát komentáře</b>.<br><br>
-	      <b style="color:yellow">Kdykoliv můžeš upravit seznam a udělat ho veřejný.</b>`
-        , `Private lists <b style="color: lime;">won't show up publicly</b>, you access them with a <b style="color: tomato">special link</b> and <b style="color: #28dcfc">they cannot be commented on</b>.<br><br>
-          <b style="color:yellow">You can edit the list anytime and make it public.</b>`],
+    "PRIVATE_D": [`Soukromé seznamy se <cg>nezobrazí veřejně</cg>, mají <cr>speciální odkaz</cr> k přístupu a <cb>nejde u nich psát komentáře</cb>.<br><br>
+	      <cy>Kdykoliv můžeš upravit seznam a udělat ho veřejný.<cy>`
+        , `Private lists <cg>won't show up publicly</cg>, you access them with a <cr>special link</cr> and <cb>they cannot be commented on</cb>.<br><br>
+          <cy>You can edit the list anytime and make it public.<cy>`],
     "HUM_T": ["Členové v collabu","Collab members"],
-    "HUM_D": [`<b style="color: #ffff00;">Jméno:</b> Sem patří jméno člověka, který měl část v collabu. Lupa najde jeho GD profil a udělá ho jeho profil klikatelný v dokončeném seznamu.<br><br>
-    <b style="color: #ffff00;">Sítě:</b> Slouží k přidávání sociálních sítí, na kterých lze člena najít. Dvojitým klikem na náhled se dá rychle síť smazat.<br><br>
-    <b style="color: #ffff00;">Role:</b> Pomoc není potřeba :D<br><br>
-    <b style="color: #ffff00;">Část:</b> V procentech odkud pokud dělal člen na části.<br><br>
-    <b style="color: #ffff00;">Barva:</b> Barva jména člena, která se objeví v hotovém seznamu.`,
-            `<b style="color: #ffff00;">Name:</b> Here goes the GD username of the creator who was taken part in the collab. The search icon will find their profile and make it visitable in the finished list.<br><br>
-            <b style="color: #ffff00;">Links:</b> Used for adding the creator's social media sites. Double-clicking a finished icon will quickly delete the link.<br><br>
-            <b style="color: #ffff00;">Role:</b> No help needed :D<br><br>
-            <b style="color: #ffff00;">Part:</b> Where the creator started and ended making his part, in percentage.<br><br>
-            <b style="color: #ffff00;">Color:</b> Color of the creator's name in the finished list.`],
+    "HUM_D": [`<cy">Jméno:</cy> Sem patří jméno člověka, který měl část v collabu. Lupa najde jeho GD profil a udělá ho jeho profil klikatelný v dokončeném seznamu.<br><br>
+    <cy">Sítě:</cy> Slouží k přidávání sociálních sítí, na kterých lze člena najít. Dvojitým klikem na náhled se dá rychle síť smazat.<br><br>
+    <cy">Role:</cy> Pomoc není potřeba :D<br><br>
+    <cy">Část:</cy> V procentech odkud pokud dělal člen na části.<br><br>
+    <cy">Barva:</cy> Barva jména člena, která se objeví v hotovém seznamu.`,
+            `<cy">Name:</cy> Here goes the GD username of the creator who was taken part in the collab. The search icon will find their profile and make it visitable in the finished list.<br><br>
+            <cy">Links:</cy> Used for adding the creator's social media sites. Double-clicking a finished icon will quickly delete the link.<br><br>
+            <cy">Role:</cy> No help needed :D<br><br>
+            <cy">Part:</cy> Where the creator started and ended making his part, in percentage.<br><br>
+            <cy">Color:</cy> Color of the creator's name in the finished list.`],
     "RMROLE_T": ["Smazání poslední role", "Removing last role"],
     "RMROLE_D": [`Smazáním poslední role smazeš i všechny členy. Pokračovat?<br><br>
 
@@ -194,13 +188,13 @@ var jsStr = {
     <button class="button uploadText eventButton" onclick="closeHelp()">No</button>
     `],
     "SHARECOLL_T": ["Sdílení collabů", "Collab sharing"],
-    "SHARECOLL_D": [`Pokud využiješ collab nástroje a zaškrtneš toto políčko, tak kdokoliv poté bude moct využít <b style="color: tomato;">tvá nastavení</b> collabu pro jeho seznam.`,
+    "SHARECOLL_D": [`Pokud využiješ collab nástroje a zaškrtneš toto políčko, tak kdokoliv poté bude moct využít <cr>tvá nastavení</cr> collabu pro jeho seznam.`,
                     `If you've used collab tools and tick this check, anyone will be able to use your collab settings for their lists.`],
     "PINNEDLIST_T": ["Připnuté seznamy", "Pinned Lists"],
-    "PINNEDLIST_D": [`Pokud se k nějakému seznamu často vracíš, můžeš si ho připnout!<br>Připnuté seznamy se zobrazí na domovské stránce k rychlému přístupu. Můžeš jich mít maximálně 5!<br><br>
-                      Seznam připneš připínacím tlačítkem na stránce se seznamem.`],
+    "PINNEDLIST_D": [`Pokud se k nějakému seznamu často vracíš, můžeš si ho připnout!<br>Připnuté seznamy se zobrazí na domovské stránce k rychlému přístupu. Můžeš jich mít <cy>maximálně 5</cy>!<br><br>
+                      Seznam připneš <cb>připínacím tlačítkem</cb> na stránce se <cr>seznamem</cr>.`],
     "OFFICIALLIST_T": ["Oficiální seznamy", "Official Lists"],
-    "OFFICIALLIST_D": [`Původně stránka sloužila k zobrazování nejlepších levelů z Levelů od Fanoušků. `],
+    "OFFICIALLIST_D": [`Toto jsou seznamy s nejlepšími levely z Levelů od Fanoušků!`, `These lists contain the best levels from my level request series!`],
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],
@@ -281,8 +275,54 @@ var jsStr = {
     "CANCEL": ["Zrušit", "Cancel"],
 
     // saves
-    "FAV_LEVELS": ["- Oblíbené levely -","- Favorite Levels -"],
+    "FAV_LEVELS": ["Oblíbené levely","Favorite Levels"],
     "NOFAVED": ["Zatím nemáš nic v oblíbených!", "You haven't saved anything yet!"]
+}
+
+var parts = {
+    "navbar": [
+        ["Editor", "Editor"],
+        ["Seznamy", "Lists"],
+        ["Uložené", "Saved"],
+        ["Editor", "Editor"],
+        ["Seznamy", "Lists"],
+        ["Uložené", "Saved"],
+        ["Jazyk", "Language"],
+        ["Čeština", "Czech"],
+        ["Angličtina", "English"],
+        ["Animace", "Animations"]
+    ],
+    "homepage": [
+        ["Hledat seznamy...", "Search for lists..."],
+        ["Vytvořit seznam","Create a list"],
+        ["Zkusit štestí","Try luck"],
+        ["Nejnovější", "Newest"],
+        ["Více", "More"],
+        ["- Nepodařilo se načíst seznamy! -","- Loading lists failed! -"],
+        ["Připnuté", "Pinned"],
+        ["- Zatím jsi nepřipnul žádné seznamy! -", "- You haven't pinned any lists yet! -"],
+        ["Naposledy navštívené", "Recently visited"],
+        ["- Zatím jsi nenavštívil žádné seznamy! -", "- You haven't looked at any lists yet! -"],
+        ["Výběr z uložených","Favorites mix"],
+        ["Více","More"],
+        ["- Zatím jsi neuložil žádné levely! -", "- You haven't saved any levels yet! -"],
+        ["Oficiální", "Official"],
+        ["Top 10 Levelů od Fanoušků 2019","Top 10 Request Levels 2019"],
+        ["Top 15 Levelů od Fanoušků 2021","Top 15 Request Levels 2021"]
+    ],
+    "listViewer": [
+        ["Řazení:", "Sorting:"],
+        ["Strana:", "Page:"],
+        ["Hledání", "Search"]
+    ]
+}
+
+function translateDoc(doc, ind) {
+    for (let word = 0; word < parts[ind].length; word++) {
+        doc = doc.replace(/%%s/, parts[ind][word][LANG])
+    }
+
+    return doc
 }
 
 function slapArrayIntoObject(arr) {
@@ -323,7 +363,7 @@ function makeCookie(val) { // Also works for changing cookies
     document.cookie = `${val[0]}=${encodeURIComponent(val[1])}; expires=${expireDate}; SameSite=Lax`
 }
 
-$(function () {
+$(function() {
     var currLang = getCookie("lang");
     if (currLang == null) {
         let getLang = navigator.language;
@@ -336,15 +376,6 @@ $(function () {
     $($(".settingsDropdown").children()[currLang]).attr("selected", true)
 })
 
-function changeLang() {
-    LANG = parseInt(LANG) + 1
-    if (LANG >= LANG_AM) {
-        LANG = 0
-    }
-    makeCookie(["lang", switchLang])
-    window.location.reload()
-}
-
 function translate() {
     /* Strings:
 0 - Selector
@@ -353,7 +384,6 @@ function translate() {
 3 - Strings array
 
     */
-
     strings.forEach(i => {
         // Replace depending on the directory
         let isIndex = location.pathname == "/loftop10/" & i[1] == "index.html";

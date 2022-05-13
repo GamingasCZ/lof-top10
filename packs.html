@@ -3,39 +3,14 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, user-scalable=0">
-
-  <link rel="stylesheet" href="./assets/style.css">
-  <link rel="stylesheet" href="./assets/community.css">
-  <link rel="stylesheet" href="./assets/mobile.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script rel="text/javascript" src="./js/languages.js"></script>
   <script rel="text/javascript" src="./js/saves.js"></script>
-  <script rel="text/javascript" src="./js/color.js"></script>
 
   <title>Uložené levely | GD Seznamy</title>
 </head>
 
-<body style="background: transparent; overflow-x: visible;">
-  <p class="titles savedTitle"></p>
-  <div class="searchTools savesTools uploadText" style="justify-content: center">
-    <span style="padding-right: 2%;" id="sortStr">Řazení: </span>
-    <img src="images/sort.png" id="sortBut" class="button" style="width: 3%; transition-duration: 0s;">
-    <div class="page">
-      <span style="padding-right: 2%;" id="pageStr">Strana: </span>
-      <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
-      <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-      <span id="maxPage">/1</span>
-      <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
-    </div>
-    <div class="search">
-      <input placeholder="Hledání" autocomplete="off" class="pageIndicator" id="searchBar">
-      <img src="./images/getStats.png" class="button passImg" style="float: none" onclick="search()">
-    </div>
-  </div>
-  <div class="listContainer"></div>
+<body>
 </body>
-<script>$(function () { translate() });</script>
 
 </html>

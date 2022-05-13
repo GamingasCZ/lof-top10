@@ -450,6 +450,74 @@ function changeLevelVideo() {
     levelList[position]["video"] = selection;
 }
 
+function addFromFaves() {
+    $(".levelPickerContainer").text("")
+
+    if (favesData != null) makeFavesPicker()
+    else $("iframe").attr("src","./packs.html?type=favorites")
+    
+    $(".boom").show()
+    $(".boom").css("background-color", "black")
+    $(".boom").css("opacity","0.7")
+    $(".levelPicker").fadeIn(70)
+}
+function hideFavePicker() {
+    $(".boom").css("background-color", "white")
+    $(".boom").css("opacity","0")
+    $(".boom").hide()
+    $(".levelPicker").fadeOut(70)
+
+}
+
+function addPicked(ind) {
+    var listLenght = Object.keys(levelList).length - ADDIT_VALS;
+    levelList[listLenght] = {
+        "levelName": favesData[ind][0],
+        "creator": favesData[ind][1],
+        "levelID": favesData[ind][2],
+        "video": null,
+        "color": favesData[ind][3],
+        "difficulty": [0,0],
+        "background": [1, true, 30, 100] //BG, gradient, alpha, brightness
+    };
+    loadLevel(listLenght)
+    displayCard(listLenght)
+}
+
+let favesData
+window.addEventListener("message", mess => {
+    let state = mess.data;
+    if (state == "favorites") {
+        favesData = JSON.parse($("iframe")[0].contentDocument.body.innerText)
+        makeFavesPicker()
+        }
+    }
+)
+
+function makeFavesPicker() {
+    if (favesData.length == 0) {
+        // No saved levels
+        $(".levelPickerContainer").append(`
+<div class="noSaves">
+    <img src="./images/savedMobHeader.svg">
+    <p class="uploadText">Nemáš žádné uložené levely!</p>
+</div>
+        `)
+        return
+    }
+
+    favesData.forEach(data => {
+        // Delete collab text
+        if (data[1].includes("(Collab)")) {
+            data[1] = data[1].split(" ").slice(0,-1).join(" ")
+        }
+
+        $(".levelPickerContainer").append(`
+        <div id="favBubble" class="roleBubble button" style="background-color: ${data[3]};" onclick="addPicked(${favesData.indexOf(data)})">${data[0]} - ${data[1]}
+        </div>
+        `)
+})}
+
 async function addLevel() {
     var listLenght = Object.keys(levelList).length - ADDIT_VALS;
     if (listLenght == 1) {
@@ -511,6 +579,9 @@ async function addLevel() {
 }
 
 function loadLevel(pos) {
+    // Do not go over 50 levels
+    if (pos > 50) return
+
     $("#mainContent").append(card(pos))
     refreshCardDetails(pos)
 
@@ -520,12 +591,15 @@ function loadLevel(pos) {
     $("#top" + pos).css("border-color", `rgb(${rgb.join(",")})`);
     $("#lineSplit" + pos).css("background-color", `rgb(${rgb.join(",")})`);
 
+    $("#smtop"+pos).hide()
     // Setting card buttons
     $("#colorPicker" + pos).on("change", changeColPicker);
     $(".idbox" + pos).on("change keyup", changeIDbox);
     $(".cardLName" + pos).on("keyup", changeLevelName);
     $(".cardLCreator" + pos).on("keyup", changeLevelCreator);
     $(".cardLVideo" + pos).on("change", changeLevelVideo);
+
+    $(".helpText").hide()
 }
 
 function updateCardData(prevID, newID) {

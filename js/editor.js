@@ -76,7 +76,7 @@ function displayComLists(doita) {
 
             $(".customLists").append(`
             <a style="text-decoration: none;" href="./index.html?id=${list.id}">
-                <div id="listPreview" class="button noMobileResize" style="background-image: linear-gradient(39deg, ${listColor}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
+                <div id="listPreview" class="noMobileResize" style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${listColor}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
                     <div class="uploadText">${list.name}</div>
                     <div class="uploadText">- ${list.creator} -</div>
                 </div>
@@ -86,12 +86,49 @@ function displayComLists(doita) {
     }
 }
 
+
+function showBGColorPicker() {
+    if ($(".bgcolorContainer").css("display") == "none") {
+        $(".bgcolorContainer").text("")
+        $(".bgcolorContainer").slideDown(50)
+
+        let hue = getHueFromHEX(levelList.pageBGcolor)
+        let val = getLightnessFromHEX(levelList.pageBGcolor)+"%"
+        let val2 = getLightnessFromHEX(levelList.pageBGcolor)/2+"%"
+
+        $(".bgcolorContainer").append(makeColorElement(hue,val2))
+    
+        $(".bgcolorContainer >> input")[0].addEventListener("input", k => {
+            $("body").css("background-color", HSLtoHEX(k.target.value, "37%", val))
+            $(":root").css("--greenGradient",`linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+            hue = k.target.value
+
+            let hex = HSLtoHEX(hue, "37%", val)
+            levelList.pageBGcolor = hex
+            $("#bgcolorPicker").css("background", hex)
+        })
+        $(".bgcolorContainer >> input")[1].addEventListener("input", k => {
+            $("body").css("background-color", HSLtoHEX(hue, "37%", (k.target.value)+"%"))
+            val = (k.target.value*2)+"%"
+
+            let hex = HSLtoHEX(hue, "37%", val)
+            levelList.pageBGcolor = hex
+            $("#bgcolorPicker").css("background", hex)
+        })
+    
+    }
+    else {
+        $(".bgcolorContainer").slideUp(50)
+    }
+}
+
 function showFaves() {
     if ($("iframe").css("display") != "none") {
         $(".searchTools").show();
         $(".uploadBG:not(#collabTools)").show();
         $(".titles").show(); $(".customLists").show();
         $("iframe").hide(); $(".smallUploaderDialog").hide();
+        
         $(".mobilePicker > div")[2].style.filter = "none"
         $(".mobilePicker > div > h6")[2].innerHTML = "Uložené"
         $($(".mobilePicker > div > img")[2]).attr("src", "images/savedMobHeader.svg")
@@ -215,29 +252,8 @@ function debugLists(am) {
 var sorting = false;
 $(function () {
     // Do nothing if in editor
+    $(".pickerContainer").on("click", showBGColorPicker)
     if (window.location.search.includes("editor")) { $(".uploader").show(); return }
-
-    $("#pageSwitcher").on("change", function () {
-        page = parseInt($(this).val()) - 1;
-        if (page > maxPage) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
-        if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
-        displayComLists(deeta);
-    })
-
-    // Sort button action
-    $("#sortBut").on("click", function () {
-        displayComLists(deeta.reverse())
-        if (sorting) {
-            $("#sortBut").css("transform", "scaleY(1)");
-            $("#sortBut").attr("title", jsStr["NEWEST"][LANG])
-        }
-        else {
-            $("#sortBut").css("transform", "scaleY(-1)");
-            $("#sortBut").attr("title", jsStr["OLDEST"][LANG])
-        }
-        sorting = !sorting
-    })
-
 
     // List image preview action
     $("#imageArrow").on("click", function () {
@@ -271,21 +287,59 @@ $(function () {
             $("#imagePrev").attr("src", $(".titImgInp").val())
         }
     })
+    // Showing color picker
 
-
+    let isSearching = false
     if (location.search != "") {
         let paramGetter = new URLSearchParams(window.location.search)
         let params = Object.fromEntries(paramGetter.entries());
 
-        if (params.browse != null) $(".browser").show()
+        if (params.browse != null) {
+            $(".browser").show()
+            $.get("../parts/listViewer.html", dt => {
+                $(".browser").append(translateDoc(dt,"listViewer"))
+
+                // Generates stuff
+                $.get("./php/getLists.php", data => {
+                    if (typeof data != "object") { $(".listContainer").text(jsStr["NO_RES"][LANG]); return; }
+                    deeta = data;
+                    ogDeeta = data;
+                    displayComLists(deeta);
+                    
+                    if (isSearching) search()
+                });
+
+                $("#pageSwitcher").on("change", function () {
+                    page = parseInt($(this).val()) - 1;
+                    if (page > maxPage) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
+                    if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
+                    displayComLists(deeta);
+                })
+            
+                // Sort button action
+                $("#sortBut").on("click", function () {
+                    displayComLists(deeta.reverse())
+                    if (sorting) {
+                        $("#sortBut").css("transform", "scaleY(1)");
+                        $("#sortBut").attr("title", jsStr["NEWEST"][LANG])
+                    }
+                    else {
+                        $("#sortBut").css("transform", "scaleY(-1)");
+                        $("#sortBut").attr("title", jsStr["OLDEST"][LANG])
+                    }
+                    sorting = !sorting
+                })
+            })
+        }
 
         if (params.edit != null) {
             generateFromJSON()
             isHidden = $("input[name='hidden']").attr("checked") == "checked";
         }
         else if (params.s != null) {
+            $(".browser").show()
             $("#searchBar").val(params.s)
-            search()
+            isSearching = true
         }
         else if (params.update != null) {
 
@@ -302,14 +356,7 @@ $(function () {
 
     $(".smallUploaderDialog").hide();
 
-    // Generates stuff
-    $.get("./php/getLists.php", function (data) {
-        deeta = data;
-        ogDeeta = data;
-        displayComLists(deeta);
-    });
-
-    if (window.location.protocol.includes("file")) {
+    if (window.location.port != "") {
         $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
         $(".debugTools").show()
     }

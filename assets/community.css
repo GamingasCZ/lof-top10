@@ -20,9 +20,6 @@
     text-align: center
 }
 
-.communityTitle { margin: 5vh 0 -2vh 0; }
-.communityTitle { margin: 0; }
-
 .hueChanger {
     box-shadow: rgba(255, 255, 255, 0.35) 0px 0px 0vw 0.2vw;
 }
@@ -43,7 +40,7 @@
 }
 .popupHelp {
     background-color: rgb(50, 63, 50);
-    border: rgb(24, 24, 24) 10px solid;
+    border: rgb(24, 24, 24) 0.7vw solid;
     border-radius: 10px;
     position: fixed;
     margin: auto;
@@ -52,15 +49,16 @@
     left: 10%;
     padding: 0.8%;
     top: 2%;
-    max-height: 40vw;
+    max-height: 50vh;
     overflow-y: auto;
 }
 
 .uploadBG {
-    background-color: rgb(50, 63, 50);
-    margin: 12vh 10vw 2vw;
-    border: rgb(24, 24, 24) 10px solid;
+    background: var(--greenGradient);
+    margin: 0 10vw 2vw;
+    border: none;
     border-radius: 10px;
+    box-shadow: black 5px 5px 41px
 }
 .uploadMainInp {
     font-size: var(--normalFont) !important;
@@ -72,17 +70,6 @@
     font-size: calc(60% + 1vw);
     line-height: 150%;
     text-shadow: rgba(0,0,0,0.5) 0.1vw 0.1vw 0.2vw;
-}
-
-.uploadTitle {
-    font-size: var(--xlFont);
-    margin: auto;
-    display: block;
-    text-shadow: 0.17vw 0.17vw rgb(61, 131, 79),
-    -0.17vw -0.17vw rgb(61, 131, 79),
-    -0.17vw 0.17vw rgb(61, 131, 79),
-     0.17vw -0.17vw rgb(61, 131, 79);
-
 }
 
 .errNotif {
@@ -224,9 +211,6 @@ input::-webkit-inner-spin-button {
 input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .tableCpicker, .homeSearch) {
     margin-left: auto;
     margin-right: auto;
-    background-color: rgb(36, 36, 36);
-    border:rgb(36, 36, 36) 0.3vw solid;
-    border-radius: 5%;
     padding: 3px 5px;
     color: white;
     font-family: "pusab";
@@ -234,7 +218,11 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
     display: flex;
     justify-content: center;
     width: 20em;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 25px;
 }
+
 
 .inputErr {
     animation-name: inputError;
@@ -265,14 +253,27 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
 }
 
 #bgcolorPicker {
+	display: flex;
+	width: 2.5vw;
+	height: 2.5vw;
+	margin-left: 2%;
+	margin-right: 0;
+	border: 0.5vh white solid;
+	background: none;
+	border-radius: 0.5vw;
+	padding: 0;
+    background: #020202;
+}
+
+.pickerContainer > * {
+    position: absolute;
+}
+.pickerContainer {
+    position: relative;
     display: flex;
-    border: none;
-    width: 10vw;
-    padding: 0.4%;
-    height: 7vh;
-    margin-left: 2%;
-    margin-right: 0;
-    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    left: 3vw;
 }
 
 .colorLabel {
@@ -348,6 +349,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
     width: 25vw;
     font-family: "pusab";
     font-size: var(--bigFont);
+    max-height: var(--biggerFont);
 }
 .cardButtonsContainer {
     display: flex;
@@ -428,6 +430,15 @@ input:disabled {
     justify-content: center;
     align-items: center;
     margin-bottom: 1.3vw;
+    flex-direction: column;
+}
+
+.bgcolorContainer {
+    width: 90%;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 1vw;
+    box-sizing: border-box;
+    border-radius: 10px;
 }
 
 #submitarea {
@@ -479,14 +490,14 @@ input:disabled {
     border: white 0.5ch solid;
     border-radius: 5px;
     display: block;
-}
-
-#listPreview:visited {
-    background-color: rgb(64, 153, 56);
+    background-size: 150vw;
+    background-position-x: right;
+    transition: background-position-x 0.5s;
 }
 
 #listPreview:hover {
-    background-color: tomato;
+    background-position-x: left;
+    cursor: pointer;
 }
 
 .hostIcon {
@@ -494,7 +505,6 @@ input:disabled {
 }
 
 .editorHeader {
-    background-color: rgb(89, 185, 89);
     margin: 0%;
     padding: 0 1%;
     display: flex;
@@ -522,12 +532,11 @@ input:disabled {
 }
 
 .helpText {
-    display: inherit;
-    text-align: center;
+    display: flex;
+    align-items: center;
 }
 
 #mainContent, .collabBG {
-    background-color: rgb(44, 99, 44);
     text-align: left;
     background-image: url("../images/fade.png");
     background-repeat: repeat-x;
@@ -568,7 +577,6 @@ input:disabled {
     transform: translate(0);
     transition: background-color 50ms;
     padding: 0.2vw 0 0.2vw 0.7vw;
-    max-height: 2.5vw;
 }
 
 .lineSplitGeneral {
@@ -616,6 +624,7 @@ input:disabled {
     text-align: center;
     margin: 0.5%;
     transform: translate(0);
+    font-size: var(--normalFont) !important;
 }
 
 .cardButton {
@@ -639,7 +648,7 @@ input:disabled {
     background-repeat: no-repeat;
   }
 .diffIcon {
-    width: 2.5vw;
+    width: 50%;
     height: auto;
     position: absolute;
 }
@@ -662,6 +671,8 @@ input:disabled {
     display: flex;
     gap: 0.5vw;
     align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 .faceSelected {
     background: #0000006e;
@@ -725,6 +736,8 @@ input:disabled {
     background-size: contain;
     background-repeat: no-repeat;
     padding: 1vw;
+    background-position: center;
+    vertical-align: middle;
 }
 #inpEpic, #inpFeatured, #inpGrad {
     -moz-appearance: none;
@@ -732,17 +745,19 @@ input:disabled {
     background-size: contain;
     background-repeat: no-repeat;
     padding: 1vw;
+    background-position: center;
+    vertical-align: middle;
 }
 
 #epicGlow {
     z-index: -1;
-    width: 3.5vw;
+    width: 70%;
     bottom: 0.4vw;
     right: 0.48vw;
 }
 #featuredGlow {
     z-index: -1;
-    width: 3.4vw;
+    width: 70%;
 }
 
 .cpicker {
@@ -797,6 +812,7 @@ input:disabled {
     top: 0;
     opacity: 0;
     display: none;
+    z-index: 4;
 }
 .removeImg {
     transition-duration: 0.5s;
@@ -809,7 +825,7 @@ input:disabled {
     margin-right: 2.5%;
 }
 .settingsBG {
-    background-color: rgb(36, 36, 36);
+    background-color: rgba(255, 255, 255, 0.08);
     margin: 0% 21% 3%;
     padding: 1%;
     border-radius: inherit;
@@ -846,7 +862,7 @@ input:disabled {
 }
 
 .searchTools {
-    background-color: #1e1e1e;
+    background-image: linear-gradient(9deg, #0a100d, #022812);
     border-radius: 1vw;
     margin: 1% 2%;
     padding: 0.5%;

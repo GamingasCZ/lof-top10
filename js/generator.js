@@ -5,16 +5,6 @@ const isInEditor = window.location.pathname.includes("upload");
 // These are not real people :<'
 const fakeNames = ["Voiprin", "Sarprong", "ZentricSigma", "Darwing", "ExpoD", "J0hnram", "Jayuff", "AligaThePeter", "Divpan", "Acidity", "Doorami", "DanZBro", "FunnyBone"]
 
-// Default 2019 board
-if (!isInEditor) {
-	if (LIST_ID == -2 || window.location.pathname.match("upload") == -1) {
-		var boards = { "1": { "levelName": "Snowy", "creator": [["MurlocGD", true, "Host"], [{ "name": "Level", "id": 1646438090943 }], [{ "name": "MurlocGD", "role": 1646438090943, "part": [0, 41], "color": "#62a0ea", "socials": [[0, "https://youtube.com/channel/httpswww.youtube.comchannelUC8"]], "verified": [122, 15, 16, true] }, { "name": "pizzagamerhu", "role": 1646438090943, "part": [41, 100], "color": "#7d7dff", "socials": [[0, "https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"], [2, "https://twitch.tv/pizzagamerhu"]], "verified": [35, 41, 3, false] }]], "levelID": "39776379", "video": "FBJUt0U4kUw", "color": "#a3003c" }, "2": { "levelName": "Garatun", "creator": "TellConfig", "levelID": "55787317", "video": "yXo6jY_W6LM", "color": "#009194" }, "3": { "levelName": "Gold Ring", "creator": "ShadowBurnSK", "levelID": null, "video": "uT2n-35x1CA", "color": "#3d2900" }, "4": { "levelName": "FiFqo Calling Rebirth", "creator": "GD Mini", "levelID": null, "video": "WLJ0rVXIDP4", "color": "#44a300" }, "5": { "levelName": "Gamingas", "creator": "Qrange", "levelID": "59654444", "video": "V1zGo03x4Po", "color": "#a34100" }, "6": { "levelName": "Infinity Gamingas", "creator": [["jazerplay", true, "Nahrál"], [{ "name": "Level", "id": 1646438293839 }], [{ "name": "jazerplay", "role": 1646438293839, "part": [0, 50], "color": "#a30088", "socials": [], "verified": [130, 12, 9, false] }, { "name": "playergeoCZ", "role": 1646438293839, "part": [50, 100], "color": "#a38d00", "socials": [], "verified": [107, 17, 18, false] }]], "levelID": null, "video": null, "color": "#5c5c00" }, "7": { "levelName": "Deltarune", "creator": "EidamGD", "levelID": null, "video": "3u3ptITvG5g", "color": "#a30010" }, "8": { "levelName": "GG geddon", "creator": "Jakubko2005", "levelID": "52409692", "video": "ljaAtxqcngg", "color": "#995200" }, "9": { "levelName": "rainbow travel", "creator": "playergeoCZ", "levelID": "55029144", "video": "FBJUt0U4kUw", "color": "#00a396" }, "10": { "levelName": "Fracture", "creator": "ImSamo", "levelID": null, "video": "WLJ0rVXIDP4", "color": "#230057" }, "titleImg": "", "pageBGcolor": "#020202" }
-	}
-	else if (LIST_ID == -3 || window.location.pathname.match("upload") != -1) {
-		var boards = { "1": { "levelName": "Vajcia", "creator": "ImSamo", "levelID": "64832786", "video": "-aYFb6mtrvY", "color": "#a37a00" }, "2": { "levelName": "Gamingas", "creator": "Qrange", "levelID": "59654444", "video": "V1zGo03x4Po", "color": "#600094" }, "3": { "levelName": "TsukI", "creator": "ImSamo", "levelID": "58937627", "video": "Ia7_kV6riOQ", "color": "#a3009e" }, "4": { "levelName": "level482", "creator": "ImSamo", "levelID": null, "video": "-bq_rvgtukM", "color": "#a39e00" }, "5": { "levelName": "Wibes", "creator": "ShadowBurnSK", "levelID": "55974905", "video": "MWGR6W0cMNw", "color": "#a31800" }, "6": { "levelName": "Calm Blue", "creator": "playergeoCZ", "levelID": "70205309", "video": "AuokRDWcTu4", "color": "#0070a3" }, "7": { "levelName": "Okurka", "creator": "TellConfig", "levelID": null, "video": "Ia7_kV6riOQ", "color": "#023800" }, "8": { "levelName": "Night Light", "creator": "EidamGD", "levelID": "63562152", "video": "pU4kA6s0yWM", "color": "#14003d" }, "9": { "levelName": "Krestan Miso", "creator": "Jazerplay", "levelID": null, "video": "7FoxMO8u38Q", "color": "#567000" }, "10": { "levelName": "Paradox World", "creator": "Jakubko2005", "levelID": "54941993", "video": "F0OM9qN8oCI", "color": "#47006b" }, "11": { "levelName": "Pichlace", "creator": "Jakubko2005", "levelID": "64609075", "video": "apxi5fELZlA", "color": "#2ca300" }, "12": { "levelName": "Doom arrived", "creator": "Jakubko2005", "levelID": "55948676", "video": "8RVqO6HsptU", "color": "#003d1f" }, "13": { "levelName": "Infinity Journey", "creator": [["playergeoCZ", [107, 17, 18, false], "Host"], [{ "name": "Level", "id": 1646506536018 }], [{ "name": "playergeoCZ", "role": 1646506536018, "part": ["0", "15"], "color": "#3d3846", "socials": [], "verified": [107, 17, 18, false] }, { "name": "Jakubko2005", "role": 1646506536018, "part": ["15", "28"], "color": "#004baf", "socials": [[0, "https://youtube.com/channel/httpswww.youtube.comchannelUC"]], "verified": [116, 22, 17, true] }, { "name": "jazerplay", "role": 1646506536018, "part": ["28", "37"], "color": "#a3a000", "socials": [], "verified": [130, 12, 9, false] }, { "name": "ShadowBurnSK", "role": 1646506536018, "part": ["37", "49"], "color": "#a34400", "socials": [], "verified": [37, 10, 14, true] }, { "name": "jablicko", "role": 1646506536018, "part": ["54", "58"], "color": "#6200a3", "socials": [], "verified": [31, 18, 12, false] }, { "name": "TellConfig", "role": 1646506536018, "part": ["58", "69"], "color": "#00a344", "socials": [], "verified": [1, 0, 3, false] }, { "name": "ekokekokos", "role": 1646506536018, "part": ["69", "81"], "color": "#00a31b", "socials": [], "verified": 0 }, { "name": "Patas Matas", "role": 1646506536018, "part": ["49", "54"], "color": "#000ba3", "socials": [], "verified": 0 }, { "name": "playergeoCZ", "role": 1646506536018, "part": ["85", "100"], "color": "#0049a3", "socials": [], "verified": [107, 17, 18, false] }]], "levelID": "61102013", "video": "paGz3CzbOVk", "color": "#536600" }, "14": { "levelName": "D e s e r t", "creator": "playergeoCZ", "levelID": "56179232", "video": "OJl6WIf-qGA", "color": "#a39b00" }, "15": { "levelName": "Hell Note", "creator": [["jazeplay", true, "Verifier"], [{ "name": "Level", "id": 1646506461617 }], [{ "name": "jazerplay", "role": 1646506461617, "part": ["0", "100"], "color": "#a30800", "socials": [], "verified": [130, 12, 9, false] }]], "levelID": "57149934", "video": "vZucsa43bNs", "color": "#1f0000" }, "titleImg": "", "pageBGcolor": "#020202" }
-	}
-}
-
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 
 function onIDCopyClick(pos, index) {
@@ -506,7 +496,7 @@ function generateList(boards, listData) {
 				glow = "<img src='images/faces/" + (glow == 1 ? "featured" : "epic") + ".png'>"
 			}
 
-			diff = `<div><img style="width: 4vw;" src="images/faces/${data[0]}.png">${glow}</div>`
+			diff = `<img style="width: 4vw; height: fit-content;" src="images/faces/${data[0]}.png">${glow}`
 		}
 
 
@@ -597,13 +587,15 @@ function generateList(boards, listData) {
 	if ($(".box")[params.goto - 1] != undefined) $(".box")[params.goto - 1].scrollIntoView()
 }
 
-function pinList() {
+function pinList(rem = null) {
 	let getPinned = getCookie("pinnedLists")
-	let pinnedLists = getPinned === false ? [] : JSON.parse(decodeURIComponent(getPinned))
+	let pinnedLists = [null,false].includes(getPinned) ? [] : JSON.parse(decodeURIComponent(getPinned))
+
+	rem = rem == null ? LIST_ID : rem
 
 	let indToRemove = [0, false]
 	pinnedLists.forEach(arr => {
-		if (arr[0] == LIST_ID) indToRemove[1] = true
+		if (arr[0] == rem) indToRemove[1] = true
 		if (!indToRemove[1]) indToRemove[0]++
 	});
 	if (indToRemove[1]) {
@@ -658,22 +650,46 @@ function fave(th, id, data) {
 	savePage.postMessage([JSON.stringify(currData), JSON.stringify(currIDs)], sender)
 }
 
+let viewingFaves = false
 async function showFaves() {
-	if ($("iframe").css("display") != "none" && $("iframe").attr("src") != "packs.html?type=homepage") { $(".boards").show(); $(".listOptions").show(); $(".titles").show(); $(".titleImage").show(); $("iframe").hide(); return }
+	$("iframe").attr("src", "packs.html?type=favorites")
 
-	$(".boards").hide();
-	$(".comments").hide();
-	$(".listOptions").hide();
-	$(".titles").hide();
-	$(".titleImage").hide();
+	$(".mobilePicker > div")[2].style.filter = "none"
+	$(".mobilePicker > div > h6")[2].innerHTML = "Uložené"
+	$($(".mobilePicker > div > img")[2]).attr("src", "images/savedMobHeader.svg")
 
-	// Reloads iframe and loads new faved levels
-	await $("iframe").attr("src", "packs.html?type=favorites");
-	setTimeout(() => $("iframe").fadeIn(50), 100)
+	if (viewingFaves) {
+		$("body > *").hide();
+		if (LIST_ID == -9) $("#homepageContainer").show()
+		else if ($(".lList")[0].classList.includes("disabled")) $(".boards").show()
+		else $(".comments").show();
+		viewingFaves = false
+	}
+	else {
+		$("body > *").hide();
+		$("#favoritesContainer").show();
+		$("#favoritesContainer").text("")
+		let favesData = JSON.parse($("iframe")[0].contentDocument.body.innerText)
+		viewingFaves = true
+	}
+
 }
 
 function switchLoFList(page, goto = null) {
 	if (window.location.href.includes(page)) {
+		// Going back from faves in upload.html
+		if (window.location.pathname.includes("upload")) {
+			if (window.location.query.includes("browse")) {
+				$(".uploader").hide()
+				$(".browser").show()
+			}
+			else {
+				$(".uploader").show()
+				$(".browser").hide()
+			}
+			return
+		}
+
 		// Returning from favorites page doesn't need reloading
 		$(".boards").fadeIn(50);
 		$(".listOptions").fadeIn(50);
@@ -699,36 +715,112 @@ function debugCards() {
 	return JSON.parse(str)
 }
 
+const MAX_ON_PAGE = 4;
+function homeCards(obj, custElement = ".listContainer", previewType = 1) {
+	// Do nothing if empty
+	if (obj == null || obj == false) return
+
+	$(custElement).text("");
+
+	$("#maxPage").text("/" + maxPage);
+	obj.slice(MAX_ON_PAGE * page, MAX_ON_PAGE * page + MAX_ON_PAGE)
+		.forEach((object) => {
+			if ([1, 3].includes(previewType)) { // Favorite level
+				let darkCol = HEXtoRGB(object[3], 40);
+				$(custElement).append(`
+				<div class="noMobileResize" id="listPreview" href="#" style="background: rgb(${HEXtoRGB(
+					object[3]
+				)}); display:flex; border-color: rgb(${darkCol.join(",")});">
+					<div style="width: 100%">
+						<p class="uploadText" style="margin: 0;">${object[0]} - ${object[1]
+					}</p>
+						<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">
+						<a href="./index.html?id=${object[4]}&goto=${object[6]}">
+							<u>${object[5]}</u>
+						</a> - ${jsStr["L_LEVID"][LANG]}: ${object[2]}</p>
+					</div>
+					<div style="${previewType == 3 ? 'display: none;' : ''}">
+						<img class="button" onclick="removeFromList('fav', ${object[2]
+					}, $(this), '${object[5]}', ${object[6]
+					});" style="width: 4vw" src="images/delete.png">
+					</div>
+				</div>
+				`);
+			}
+			else if ([2, 5].includes(previewType)) { // Recently viewed list / Pinned list
+				let lightCol = HEXtoRGB(object[3], -60)
+				let darkCol = HEXtoRGB(object[3], 40)
+				$(custElement).append(`
+				<a style="display: flex; align-items: center" href="./index.html?id=${object[0]}">
+				  <div id="listPreview" class="noMobileResize")"
+					  style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${object[3]}, rgb(${lightCol.join(",")}));
+							 border-color: rgb(${darkCol.join(",")}); margin: 1.5% ${previewType == 5 ? 1 : 7}% 1.5% 7%; flex-grow: 1;">
+					  <div class="boxHeader" style="flex-direction: row !important;">
+						<div>
+						  <p class="uploadText" style="margin: 0;">${object[1]}</p>
+						  <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object[2]} -</p>
+						</div>
+						<div>
+						  <p class="uploadText" style="margin: 0; font-size: var(--miniFont);">${window.parent.window.chatDate(object[4] / 1000)}</p>
+						</div>
+					  </div>
+				  </div>
+				  ${previewType == 5 ? '<img src="images/unpinList.png" onclick="unpinFromPreview(' + object[0] + ',this)" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">' : ''}
+				</a>
+				`);
+			}
+			else if (previewType == 4) { // Newest lists
+				let level1col = object["data"][1].color
+				let lightCol = HEXtoRGB(level1col, -60)
+				let darkCol = HEXtoRGB(level1col, 40)
+				$(custElement).append(`
+				<a id="listPreview" class="noMobileResize" href="./index.html?id=${object["id"]}"
+					 style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${level1col}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
+					<div style="width: 100%">
+						<p class="uploadText" style="margin: 0;">${object["name"]}</p>
+						<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object["creator"]} -</p>
+					</div>
+				</div>
+				`);
+			}
+
+		});
+}
+
+function makeHP() {
+	let homepageData = JSON.parse($("iframe")[0].contentDocument.body.innerText)
+	console.log(homepageData)
+	homeCards(homepageData.recViewed, ".recentlyViewed", 2)
+	homeCards(homepageData.pinned, ".pinnedLists", 5)
+	homeCards(homepageData.favPicks, ".savedLists", 3)
+	homeCards(homepageData.newest, ".newestLists", 4)
+}
+
 var listData = "";
 var debugPwd = 0;
 const repeatBG = [false, true, false]
 const unlockSkinsReq = [0, 10, 100, 250, 500, 1000, 2000, 3000, 5000, 7500, 10000];
+var boards
 $(async function () {
-	await $.get("../parts/navbar.html", navbar => {
-		$("nav").html(navbar)
+	// Default 2019 board
+	if (!isInEditor) {
+		if (LIST_ID == -2 || window.location.pathname.match("upload") == -1) {
+			await $.get("../assets/2019.json", json => boards = json)
+		}
+		else if (LIST_ID == -3 || window.location.pathname.match("upload") != -1) {
+			await $.get("../assets/2021.json", json => boards = json)
+		}
+	}
+
+	await $.get("./parts/navbar.html", navbar => {
+		$("nav").html(translateDoc(navbar, "navbar"))
 	})
 	$(".settingsDropdown:not(.skins)").on("change", () => {
 		let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
 		makeCookie(["lang", switchLang])
-		window.location.road();
+		window.location.reload();
 	})
 	$($(".settingsDropdown:not(.skins) > option")[LANG]).attr("selected", true)
-
-	window.addEventListener("message", mess => {
-		let intent = mess.data[0];
-		if (intent == "loading") {
-			switchLoFList(mess.data[1], mess.data[2]);
-		}
-		else if (intent == "removing") {
-			localStorage.setItem("favorites", JSON.stringify(mess.data[1][0]))
-			localStorage.setItem("favoriteIDs", JSON.stringify(mess.data[1][1]))
-
-			// What a wonderful method
-			if ($("title").text().includes(mess.data[1][3])) $($(".favoriteStar")[mess.data[1][2]]).removeClass("disabled")
-		}
-		else if (intent == "redirect") window.location.assign(mess.data[1])
-		else if (intent == "showFaves") showFaves()
-	})
 
 	if (localStorage.getItem("anims") == null) localStorage.setItem("anims", 1)
 	$("input[name='anim']").attr("checked", localStorage.getItem("anims") == true ? true : false)
@@ -747,7 +839,7 @@ $(async function () {
 	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
 
 	let getPinned = getCookie("pinnedLists")
-	if (getPinned !== false) {
+	if (getPinned !== null & getPinned !== false) {
 		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
 			if (arr[0] == LIST_ID) {
 				$("#pinBut").attr("src", "images/unpinList.png")
@@ -756,10 +848,17 @@ $(async function () {
 		});
 	}
 
+	// GENERATING HOMEPAGE!
 	if (LIST_ID == -9) {
 		$(".searchTools").remove();
 		$("#crown").remove();
-		$("iframe").show()
+
+		await $.get("../parts/homepage.html", page => {
+			$("#homepageContainer").html(translateDoc(page, "homepage"))
+		})
+
+		await $("iframe").attr("src", "packs.html?type=homepage")
+		makeHP()
 	}
 	else {
 		let paramGetter = new URLSearchParams(window.location.search)
@@ -787,14 +886,17 @@ $(async function () {
 			$(".searchTools").remove();
 			$(".titleImage").attr("src", boards["titleImg"]);
 			$("title").html(`${jsStr["PREVIEW_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-			generateList(boards, [0, 0]);
+			LIST_NAME = null
+			LIST_CREATOR = "person"
+			generateList(boards, [LIST_ID, LIST_NAME]);
 		}
 		else if (listQueries.includes("random")) {
 			$.get("php/getLists.php?random=1", data => {
+				data = data[0]
 				boards = data["data"];
-				$(".titles").append(`<p style="margin-bottom: 0;">${data["name"]}</p>
+				$(".titles").append(`<p style="margin: 0;">${data["name"]}</p>
 				<hr class="lineSplitGeneral">
-				<p style="font-size: 3vw;margin-top: 0;">- ${data["creator"]} -</p>`);
+				<p style="font-size: 3vw;margin: 0;">- ${data["creator"]} -</p>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -820,9 +922,9 @@ $(async function () {
 			else if (window.location.protocol.includes("file") || window.location.port != "") {
 				boards = debugCards();
 				debugPwd = Math.ceil(Math.random() * 9999999999)
-				$(".titles").append(`<p style="color: tomato; margin-bottom: 0;">Debug List</p>
+				$(".titles").append(`<p style="color: tomato; margin: 0;">Debug List</p>
 				<hr class="lineSplitGeneral">
-				<p style="font-size: 3vw; margin-top: 0;">- Dasher123 -</p>
+				<p style="font-size: 3vw; margin: 0;">- Dasher123 -</p>
 				<p style="font-size: 3vw;">Pass: ${debugPwd}</p>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`${jsStr["DEBUG_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
@@ -839,9 +941,9 @@ $(async function () {
 					}
 					else {
 						boards = data["data"];
-						$(".titles").append(`<p style="margin-bottom: 0;">${data["name"]}</p>
+						$(".titles").append(`<p style="margin: 0;">${data["name"]}</p>
 					<hr class="lineSplitGeneral">
-					<p style="font-size: 3vw;margin-top: 0;">- ${data["creator"]} -</p>`);
+					<p style="font-size: 3vw;margin: 0;">- ${data["creator"]} -</p>`);
 						$(".titleImage").attr("src", boards["titleImg"]);
 						$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -865,9 +967,9 @@ $(async function () {
 				}
 				else {
 					boards = data["data"];
-					$(".titles").append(`<p style="margin-bottom: 0;">${data["name"]}</p>
+					$(".titles").append(`<p style="margin: 0;">${data["name"]}</p>
 					<hr class="lineSplitGeneral">
-					<p style="font-size: 3vw;margin-top: 0;">- ${data["creator"]} -</p>`);
+					<p style="font-size: 3vw;margin: 0;">- ${data["creator"]} -</p>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
 					$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 

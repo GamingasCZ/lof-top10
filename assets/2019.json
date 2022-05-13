@@ -1,0 +1,180 @@
+{
+  "1": {
+    "levelName": "Snowy",
+    "creator": [
+      [
+        "MurlocGD",
+        true,
+        "Host"
+      ],
+      [
+        {
+          "name": "Level",
+          "id": 1646438090943
+        }
+      ],
+      [
+        {
+          "name": "MurlocGD",
+          "role": 1646438090943,
+          "part": [
+            0,
+            41
+          ],
+          "color": "#62a0ea",
+          "socials": [
+            [
+              0,
+              "https://youtube.com/channel/httpswww.youtube.comchannelUC8"
+            ]
+          ],
+          "verified": [
+            122,
+            15,
+            16,
+            true
+          ]
+        },
+        {
+          "name": "pizzagamerhu",
+          "role": 1646438090943,
+          "part": [
+            41,
+            100
+          ],
+          "color": "#7d7dff",
+          "socials": [
+            [
+              0,
+              "https://youtube.com/channel/UCpN7j5gNrbDIHI_K-MSnL0w"
+            ],
+            [
+              2,
+              "https://twitch.tv/pizzagamerhu"
+            ]
+          ],
+          "verified": [
+            35,
+            41,
+            3,
+            false
+          ]
+        }
+      ]
+    ],
+    "levelID": "39776379",
+    "video": "FBJUt0U4kUw",
+    "color": "#a3003c"
+  },
+  "2": {
+    "levelName": "Garatun",
+    "creator": "TellConfig",
+    "levelID": "55787317",
+    "video": "yXo6jY_W6LM",
+    "color": "#009194"
+  },
+  "3": {
+    "levelName": "Gold Ring",
+    "creator": "ShadowBurnSK",
+    "levelID": null,
+    "video": "uT2n-35x1CA",
+    "color": "#3d2900"
+  },
+  "4": {
+    "levelName": "FiFqo Calling Rebirth",
+    "creator": "GD Mini",
+    "levelID": null,
+    "video": "WLJ0rVXIDP4",
+    "color": "#44a300"
+  },
+  "5": {
+    "levelName": "Gamingas",
+    "creator": "Qrange",
+    "levelID": "59654444",
+    "video": "V1zGo03x4Po",
+    "color": "#a34100"
+  },
+  "6": {
+    "levelName": "Infinity Gamingas",
+    "creator": [
+      [
+        "jazerplay",
+        true,
+        "Nahrál"
+      ],
+      [
+        {
+          "name": "Level",
+          "id": 1646438293839
+        }
+      ],
+      [
+        {
+          "name": "jazerplay",
+          "role": 1646438293839,
+          "part": [
+            0,
+            50
+          ],
+          "color": "#a30088",
+          "socials": [],
+          "verified": [
+            130,
+            12,
+            9,
+            false
+          ]
+        },
+        {
+          "name": "playergeoCZ",
+          "role": 1646438293839,
+          "part": [
+            50,
+            100
+          ],
+          "color": "#a38d00",
+          "socials": [],
+          "verified": [
+            107,
+            17,
+            18,
+            false
+          ]
+        }
+      ]
+    ],
+    "levelID": null,
+    "video": null,
+    "color": "#5c5c00"
+  },
+  "7": {
+    "levelName": "Deltarune",
+    "creator": "EidamGD",
+    "levelID": null,
+    "video": "3u3ptITvG5g",
+    "color": "#a30010"
+  },
+  "8": {
+    "levelName": "GG geddon",
+    "creator": "Jakubko2005",
+    "levelID": "52409692",
+    "video": "ljaAtxqcngg",
+    "color": "#995200"
+  },
+  "9": {
+    "levelName": "rainbow travel",
+    "creator": "playergeoCZ",
+    "levelID": "55029144",
+    "video": "FBJUt0U4kUw",
+    "color": "#00a396"
+  },
+  "10": {
+    "levelName": "Fracture",
+    "creator": "ImSamo",
+    "levelID": null,
+    "video": "WLJ0rVXIDP4",
+    "color": "#230057"
+  },
+  "titleImg": "",
+  "pageBGcolor": "#020202"
+}

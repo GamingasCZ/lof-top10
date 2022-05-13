@@ -9,6 +9,10 @@
 
 @media only screen and (max-width: 550px) {
 
+.searchButs {
+    transform: none !important;
+}
+
 .comTextArea {
     height: 20vw;
 }
@@ -54,7 +58,6 @@
     width: 75%;
     left: 0;
 }
-.searchTools:not(#commentTool) { margin-top: 10vw }
 
 #jumpToTools {
     top: 0;
@@ -67,7 +70,6 @@
     padding: 0;
 }
 
-.listInfo { margin-top: 8vh !important; }
 #crown {
     transform: translateY(7.7vw) !important;
     width: 25vw;
@@ -93,12 +95,10 @@
     margin: 0vw;
 }
 
-#levelUpload {
-    margin-top: 15% !important;
+.diffContainer {
+    width: 7.5vw !important;
+    height: 7.5vw !important;
 }
-
-.communityTitle { margin: 5vh 0 -5vh 0; }
-.savedTitle { margin: 4vh 0 -3vh 0vw; }
 
 /* Hides help text in searchTool/CommentTool */
 #pageStr, #sortStr { display: none; }

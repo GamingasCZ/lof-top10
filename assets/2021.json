@@ -1,0 +1,297 @@
+{
+  "1": {
+    "levelName": "Vajcia",
+    "creator": "ImSamo",
+    "levelID": "64832786",
+    "video": "-aYFb6mtrvY",
+    "color": "#a37a00"
+  },
+  "2": {
+    "levelName": "Gamingas",
+    "creator": "Qrange",
+    "levelID": "59654444",
+    "video": "V1zGo03x4Po",
+    "color": "#600094"
+  },
+  "3": {
+    "levelName": "TsukI",
+    "creator": "ImSamo",
+    "levelID": "58937627",
+    "video": "Ia7_kV6riOQ",
+    "color": "#a3009e"
+  },
+  "4": {
+    "levelName": "level482",
+    "creator": "ImSamo",
+    "levelID": null,
+    "video": "-bq_rvgtukM",
+    "color": "#a39e00"
+  },
+  "5": {
+    "levelName": "Wibes",
+    "creator": "ShadowBurnSK",
+    "levelID": "55974905",
+    "video": "MWGR6W0cMNw",
+    "color": "#a31800"
+  },
+  "6": {
+    "levelName": "Calm Blue",
+    "creator": "playergeoCZ",
+    "levelID": "70205309",
+    "video": "AuokRDWcTu4",
+    "color": "#0070a3"
+  },
+  "7": {
+    "levelName": "Okurka",
+    "creator": "TellConfig",
+    "levelID": null,
+    "video": "Ia7_kV6riOQ",
+    "color": "#023800"
+  },
+  "8": {
+    "levelName": "Night Light",
+    "creator": "EidamGD",
+    "levelID": "63562152",
+    "video": "pU4kA6s0yWM",
+    "color": "#14003d"
+  },
+  "9": {
+    "levelName": "Krestan Miso",
+    "creator": "Jazerplay",
+    "levelID": null,
+    "video": "7FoxMO8u38Q",
+    "color": "#567000"
+  },
+  "10": {
+    "levelName": "Paradox World",
+    "creator": "Jakubko2005",
+    "levelID": "54941993",
+    "video": "F0OM9qN8oCI",
+    "color": "#47006b"
+  },
+  "11": {
+    "levelName": "Pichlace",
+    "creator": "Jakubko2005",
+    "levelID": "64609075",
+    "video": "apxi5fELZlA",
+    "color": "#2ca300"
+  },
+  "12": {
+    "levelName": "Doom arrived",
+    "creator": "Jakubko2005",
+    "levelID": "55948676",
+    "video": "8RVqO6HsptU",
+    "color": "#003d1f"
+  },
+  "13": {
+    "levelName": "Infinity Journey",
+    "creator": [
+      [
+        "playergeoCZ",
+        [
+          107,
+          17,
+          18,
+          false
+        ],
+        "Host"
+      ],
+      [
+        {
+          "name": "Level",
+          "id": 1646506536018
+        }
+      ],
+      [
+        {
+          "name": "playergeoCZ",
+          "role": 1646506536018,
+          "part": [
+            "0",
+            "15"
+          ],
+          "color": "#3d3846",
+          "socials": [],
+          "verified": [
+            107,
+            17,
+            18,
+            false
+          ]
+        },
+        {
+          "name": "Jakubko2005",
+          "role": 1646506536018,
+          "part": [
+            "15",
+            "28"
+          ],
+          "color": "#004baf",
+          "socials": [
+            [
+              0,
+              "https://youtube.com/channel/httpswww.youtube.comchannelUC"
+            ]
+          ],
+          "verified": [
+            116,
+            22,
+            17,
+            true
+          ]
+        },
+        {
+          "name": "jazerplay",
+          "role": 1646506536018,
+          "part": [
+            "28",
+            "37"
+          ],
+          "color": "#a3a000",
+          "socials": [],
+          "verified": [
+            130,
+            12,
+            9,
+            false
+          ]
+        },
+        {
+          "name": "ShadowBurnSK",
+          "role": 1646506536018,
+          "part": [
+            "37",
+            "49"
+          ],
+          "color": "#a34400",
+          "socials": [],
+          "verified": [
+            37,
+            10,
+            14,
+            true
+          ]
+        },
+        {
+          "name": "jablicko",
+          "role": 1646506536018,
+          "part": [
+            "54",
+            "58"
+          ],
+          "color": "#6200a3",
+          "socials": [],
+          "verified": [
+            31,
+            18,
+            12,
+            false
+          ]
+        },
+        {
+          "name": "TellConfig",
+          "role": 1646506536018,
+          "part": [
+            "58",
+            "69"
+          ],
+          "color": "#00a344",
+          "socials": [],
+          "verified": [
+            1,
+            0,
+            3,
+            false
+          ]
+        },
+        {
+          "name": "ekokekokos",
+          "role": 1646506536018,
+          "part": [
+            "69",
+            "81"
+          ],
+          "color": "#00a31b",
+          "socials": [],
+          "verified": 0
+        },
+        {
+          "name": "Patas Matas",
+          "role": 1646506536018,
+          "part": [
+            "49",
+            "54"
+          ],
+          "color": "#000ba3",
+          "socials": [],
+          "verified": 0
+        },
+        {
+          "name": "playergeoCZ",
+          "role": 1646506536018,
+          "part": [
+            "85",
+            "100"
+          ],
+          "color": "#0049a3",
+          "socials": [],
+          "verified": [
+            107,
+            17,
+            18,
+            false
+          ]
+        }
+      ]
+    ],
+    "levelID": "61102013",
+    "video": "paGz3CzbOVk",
+    "color": "#536600"
+  },
+  "14": {
+    "levelName": "D e s e r t",
+    "creator": "playergeoCZ",
+    "levelID": "56179232",
+    "video": "OJl6WIf-qGA",
+    "color": "#a39b00"
+  },
+  "15": {
+    "levelName": "Hell Note",
+    "creator": [
+      [
+        "jazeplay",
+        true,
+        "Verifier"
+      ],
+      [
+        {
+          "name": "Level",
+          "id": 1646506461617
+        }
+      ],
+      [
+        {
+          "name": "jazerplay",
+          "role": 1646506461617,
+          "part": [
+            "0",
+            "100"
+          ],
+          "color": "#a30800",
+          "socials": [],
+          "verified": [
+            130,
+            12,
+            9,
+            false
+          ]
+        }
+      ]
+    ],
+    "levelID": "57149934",
+    "video": "vZucsa43bNs",
+    "color": "#1f0000"
+  },
+  "titleImg": "",
+  "pageBGcolor": "#020202"
+}

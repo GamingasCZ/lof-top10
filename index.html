@@ -15,10 +15,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script rel="text/javascript" src="./js/languages.js"></script>
-  <script rel="text/javascript" src="./js/comments.js"></script>
-  <script rel="text/javascript" src="./js/generator.js"></script>
-  <script rel="text/javascript" src="./js/color.js"></script>
+  <script rel="text/javascript" src="./js/languages.js" async></script>
+  <script rel="text/javascript" src="./js/comments.js" async></script>
+  <script rel="text/javascript" src="./js/generator.js" async></script>
+  <script rel="text/javascript" src="./js/color.js" async></script>
   <script rel="text/javascript" src="./js/helpDialogs.js"></script>
 
   <meta name="twitter:card" content="summary">
@@ -84,6 +84,10 @@
     </div>
   </div>
 
+  <iframe src="" loading="eager" style="display:none;" scrolling="no"></iframe>
+  <div id="homepageContainer"></div>
+  <div id="favoritesContainer" style="display: none;"></div>
+
   <div class="titles listInfo"></div>
 
   <img class="titleImage">
@@ -94,6 +98,7 @@
         title="Seznam levelů">
       <img src="images/comments.png" onclick="listComments()" style="width: 3.5vw;" class="button lComm"
         title="Komentáře">
+      <div id="commAmount">1</div>
     </div>
 
     <div>
@@ -109,8 +114,6 @@
     </div>
   </div>
 
-  <iframe src="packs.html?type=homepage" loading="eager" style="display:none;" scrolling="no"></iframe>
-
   <div class="comments">
     <div class="searchTools uploadText debugTools">
       <span class="debugTitle" style="font-size: 2.6vw;">Přidat komentáře:</span>
@@ -119,8 +122,6 @@
       <img class="button pageBut" src="images/arrow-right.png" onclick="debugComments(1)">
       <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugComments(2)">
     </div>
-
-    <p class="comTitles">- Komentáře -</p>
 
     <div class="searchTools uploadText" id="commentTool" style="justify-content: center;">
       <div class="page">

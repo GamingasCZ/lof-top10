@@ -148,7 +148,7 @@
 
   </div>
 
-  <iframe src="packs.html?type=favorites" loading="eager" style="display: none;" scrolling="no"></iframe>
+  <iframe src="" loading="eager" style="display: none;" scrolling="no"></iframe>
 
   <div class="helpBG" style="display: none;"></div>
   <div class="popupHelp uploadText" style="display: none;">
@@ -158,11 +158,18 @@
     </div>
   </div>
 
+  <div style="display: none;" id="centeredPopup" class="uploadText levelPicker">
+    <div style="display: flex;">
+      <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText">Uložené levely</span>
+      <img onclick="hideFavePicker()" src="./images/delete.png" style="width: 3vw;" class="button">
+    </div>
+    <input placeholder="        Hledat level..." class="searchWithIcon" style="margin-right: 2vw;">
+    <div class="levelPickerContainer" style="margin-right: 2vw;"></div>
+  </div>
+
   <div class="uploader" style="display: none;">
+    <p class="titles uploadTitle">Nahrávání</p>
     <form id="levelUpload" action="php/sendList.php" method="post" class="uploadBG uploaderDialog">
-      <div align="center" class="uploadText uploadTitle">
-        Nahrávání
-      </div>
       <br />
       <input name="listData" id="listData" type="hidden" value="">
       <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="Jméno seznamu"><br />
@@ -179,8 +186,14 @@
       </div>
       <br />
       <div class="listColPicker">
-        <label align="center" for="bgcolor" class="uploadText colorLabel">Barva pozadí:</label>
-        <input name="bgcolor" type="color" id="bgcolorPicker" value="#020202">
+        <div style="display: flex;">
+          <label align="center" for="bgcolor" class="uploadText colorLabel">Barva pozadí:</label>
+          <div class="pickerContainer button">
+            <img src="./images/edit.svg" style="z-index: 1;">
+            <div id="bgcolorPicker"></div>
+          </div>
+        </div>
+        <p class="bgcolorContainer" style="display: none;"></p>
       </div>
 
       <div class="editorHeader"
@@ -189,6 +202,8 @@
         <div style="display: flex;">
           <img src="images/preview.png" title="Náhled seznamu" onclick="preview()"
             class="button previewButton disabled headerButtons">
+          <img src="images/addfromFaves.png" title="Přidat z uložených" onclick="addFromFaves()"
+            class="button addCardButton headerButtons">
           <img src="images/add.png" title="Přidat level do seznamu" onclick="addLevel()"
             class="button addCardButton headerButtons">
         </div>
@@ -216,7 +231,7 @@
   </div>
 
   <div class="browser" style="display: none;">
-    <p class="titles communityTitle">- Komunitní seznamy -</p>
+    <p class="titles communityTitle">Komunitní seznamy</p>
 
     <!-- Debug Tools -->
     <div class="searchTools uploadText debugTools">
@@ -226,24 +241,6 @@
       <img class="button pageBut" src="images/arrow-right.png" onclick="debugLists(1)">
       <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugLists(2)">
     </div>
-
-    <div class="searchTools uploadText" style="justify-content: center;">
-      <span style="padding-right: 2%;" id="sortStr">Řazení: </span>
-      <img src="images/sort.png" id="sortBut" class="button" style="width: 4%; transition-duration: 0s;">
-      <div class="page">
-        <span style="padding-right: 2%;" id="pageStr">Strana: </span>
-        <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
-        <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-        <span id="maxPage">/1</span>
-        <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
-      </div>
-      <div class="search">
-        <input placeholder="Hledání" autocomplete="off" class="pageIndicator" id="searchBar">
-        <img src="./images/getStats.png" class="button passImg" style="float: none" onclick="search()">
-      </div>
-    </div>
-
-    <div class="customLists uploadText"></div>
   </div>
 
   <!--Explosion-->
