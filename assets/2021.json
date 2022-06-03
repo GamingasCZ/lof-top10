@@ -4,84 +4,96 @@
     "creator": "ImSamo",
     "levelID": "64832786",
     "video": "-aYFb6mtrvY",
-    "color": "#a37a00"
+    "color": "#a37a00",
+    "difficulty": [4,1]
   },
   "2": {
     "levelName": "Gamingas",
     "creator": "Qrange",
     "levelID": "59654444",
     "video": "V1zGo03x4Po",
-    "color": "#600094"
+    "color": "#600094",
+    "difficulty": [4,0]
   },
   "3": {
     "levelName": "TsukI",
     "creator": "ImSamo",
     "levelID": "58937627",
     "video": "Ia7_kV6riOQ",
-    "color": "#a3009e"
+    "color": "#a3009e",
+    "difficulty": [5,1]
   },
   "4": {
     "levelName": "level482",
     "creator": "ImSamo",
     "levelID": null,
     "video": "-bq_rvgtukM",
-    "color": "#a39e00"
+    "color": "#a39e00",
+    "difficulty": [5,0]
   },
   "5": {
     "levelName": "Wibes",
     "creator": "ShadowBurnSK",
     "levelID": "55974905",
     "video": "MWGR6W0cMNw",
-    "color": "#a31800"
+    "color": "#a31800",
+    "difficulty": [4,0]
   },
   "6": {
     "levelName": "Calm Blue",
     "creator": "playergeoCZ",
     "levelID": "70205309",
     "video": "AuokRDWcTu4",
-    "color": "#0070a3"
+    "color": "#0070a3",
+    "difficulty": [4,0]
   },
   "7": {
     "levelName": "Okurka",
     "creator": "TellConfig",
     "levelID": null,
     "video": "Ia7_kV6riOQ",
-    "color": "#023800"
+    "color": "#023800",
+    "difficulty": [3,0]
   },
   "8": {
     "levelName": "Night Light",
     "creator": "EidamGD",
     "levelID": "63562152",
     "video": "pU4kA6s0yWM",
-    "color": "#14003d"
+    "color": "#14003d",
+    "difficulty": [4,0]
   },
   "9": {
     "levelName": "Krestan Miso",
     "creator": "Jazerplay",
     "levelID": null,
     "video": "7FoxMO8u38Q",
-    "color": "#567000"
+    "color": "#567000",
+    "difficulty": [4,0]
   },
   "10": {
     "levelName": "Paradox World",
     "creator": "Jakubko2005",
     "levelID": "54941993",
     "video": "F0OM9qN8oCI",
-    "color": "#47006b"
+    "color": "#47006b",
+    "difficulty": [4,0]
   },
   "11": {
     "levelName": "Pichlace",
     "creator": "Jakubko2005",
     "levelID": "64609075",
     "video": "apxi5fELZlA",
-    "color": "#2ca300"
+    "color": "#2ca300",
+    "difficulty": [4,0]
   },
   "12": {
     "levelName": "Doom arrived",
     "creator": "Jakubko2005",
     "levelID": "55948676",
     "video": "8RVqO6HsptU",
-    "color": "#003d1f"
+    "color": "#003d1f",
+    "difficulty": [4,0]
   },
   "13": {
     "levelName": "Infinity Journey",
@@ -246,14 +258,16 @@
     ],
     "levelID": "61102013",
     "video": "paGz3CzbOVk",
-    "color": "#536600"
+    "color": "#536600",
+    "difficulty": [4,0]
   },
   "14": {
     "levelName": "D e s e r t",
     "creator": "playergeoCZ",
     "levelID": "56179232",
     "video": "OJl6WIf-qGA",
-    "color": "#a39b00"
+    "color": "#a39b00",
+    "difficulty": [3,0]
   },
   "15": {
     "levelName": "Hell Note",
@@ -290,7 +304,8 @@
     ],
     "levelID": "57149934",
     "video": "vZucsa43bNs",
-    "color": "#1f0000"
+    "color": "#1f0000",
+    "difficulty": [8,0]
   },
   "titleImg": "",
   "pageBGcolor": "#020202"

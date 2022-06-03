@@ -13,7 +13,7 @@ header('Content-type: application/json'); // Return as JSON
 $mysqli = new mysqli($hostname, $username, $password, $database);
 if ($mysqli -> connect_errno) {
     echo "0";
-    http_response_code(500);
+    //http_response_code(500);
     exit();
 }
 
@@ -27,7 +27,7 @@ elseif (isset($_POST["pid"])) {
 }
 else {
     echo "1";
-    http_response_code(400);
+    //http_response_code(400);
     exit();
 }
 $datacheck = sanitizeInput([$listType[0], $_POST["pwdEntered"], $_POST["retData"]]);
@@ -44,7 +44,7 @@ $listPwd = passwordGenerator($listData["name"], $listData["creator"], $listData[
 if ($_POST["pwdEntered"] != $listPwd) {
     sleep(4);
     echo "2";
-    http_response_code(400);
+    //http_response_code(400);
     exit();
 }
 else {

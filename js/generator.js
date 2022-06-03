@@ -41,7 +41,7 @@ function listShare() {
 
 	$("#shareContainer").on("mouseover", () => $("#shareContainer")[0].select())
 
-	let cringeText = encodeURIComponent(`Mrkni se na můj Geodeš seznam - gamingas.wz.cz/?${link}`)
+	let cringeText = encodeURIComponent(`${jsStr['CHECKOUT']} - gamingas.wz.cz/?${link}`)
 
 	let shareLinks = ["https://twitter.com/intent/tweet?text=" + cringeText, "https://www.reddit.com/submit?url=" + cringeText]
 
@@ -485,6 +485,11 @@ function generateList(boards, listData) {
 		// Setting page BG from list
 		if (Object.keys(boards).indexOf("pageBGcolor") != -1) {
 			$("body").css("background-color", boards["pageBGcolor"])
+			if (boards["pageBGcolor"] != "#020202") {
+				let hue = getHueFromHEX(boards["pageBGcolor"])
+				$(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+				$("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
+			}
 		}
 
 		// Setting difficulty face
@@ -493,10 +498,10 @@ function generateList(boards, listData) {
 			let data = boards[bIndex]["difficulty"]
 			let glow = "";
 			if (data[1] != 0) {
-				glow = "<img src='images/faces/" + (glow == 1 ? "featured" : "epic") + ".png'>"
+				glow = `<img class="${data[1] == 1 ? "listDiffRate" : "listDiffEpicRate"}" src='images/faces/${data[1] == 1 ? "featured" : "epic"}.png'>`
 			}
 
-			diff = `<img style="width: 4vw; height: fit-content;" src="images/faces/${data[0]}.png">${glow}`
+			diff = `<div class="listDiffContainer"><img class="listDiffFace" src="images/faces/${data[0]}.png">${glow}</div>`
 		}
 
 
@@ -589,7 +594,7 @@ function generateList(boards, listData) {
 
 function pinList(rem = null) {
 	let getPinned = getCookie("pinnedLists")
-	let pinnedLists = [null,false].includes(getPinned) ? [] : JSON.parse(decodeURIComponent(getPinned))
+	let pinnedLists = [null, false].includes(getPinned) ? [] : JSON.parse(decodeURIComponent(getPinned))
 
 	rem = rem == null ? LIST_ID : rem
 
@@ -600,13 +605,13 @@ function pinList(rem = null) {
 	});
 	if (indToRemove[1]) {
 		$("#pinBut").attr("src", "images/pinList.png")
-		$("#pinBut").attr("title", "Připnout seznam")
+		$("#pinBut").attr("title", jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
 		pinnedLists = pinnedLists.reverse().slice(0, 5)
 	}
 	else {
 		$("#pinBut").attr("src", "images/unpinList.png")
-		$("#pinBut").attr("title", "Odepnout seznam")
+		$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
 		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime()])
 	}
 
@@ -645,48 +650,43 @@ function fave(th, id, data) {
 
 	let savePage = $("iframe")[0].contentWindow
 	sender = "http://gamingas.wz.cz"
-	if (window.location.protocol == "file:") sender = "*" // Allow all if running locally
+	if (window.location.port != "") sender = "*" // Allow all if running locally
 
 	savePage.postMessage([JSON.stringify(currData), JSON.stringify(currIDs)], sender)
+}
+
+let currListIDs = []
+function removeFave(remID) {
+	if (typeof boards != "undefined" && currListIDs.length == 0) Object.values(boards).forEach(x => currListIDs.push(x.levelID))
+
+	let savePage = $("iframe")[0].contentWindow
+	sender = "http://gamingas.wz.cz"
+	if (window.location.port != "") sender = "*" // Allow all if running locally
+
+	let i = 0
+	currentListData["#favoritesContainer"].forEach(x => {
+		if (parseInt(x[2]) == remID) {
+			currentListData["#favoritesContainer"].splice(i, 1)
+		}
+		i++
+	});
+
+	savePage.postMessage(["remove", remID], sender)
+	if (currListIDs.includes(remID.toString())) {
+		$(`div.box:nth-child(${2 + currListIDs.indexOf(remID.toString())}) > div:nth-child(1) > img:nth-child(1)`).removeClass("disabled")
+	}
 }
 
 let viewingFaves = false
 async function showFaves() {
 	$("iframe").attr("src", "packs.html?type=favorites")
-
-	$(".mobilePicker > div")[2].style.filter = "none"
-	$(".mobilePicker > div > h6")[2].innerHTML = "Uložené"
-	$($(".mobilePicker > div > img")[2]).attr("src", "images/savedMobHeader.svg")
-
-	if (viewingFaves) {
-		$("body > *").hide();
-		if (LIST_ID == -9) $("#homepageContainer").show()
-		else if ($(".lList")[0].classList.includes("disabled")) $(".boards").show()
-		else $(".comments").show();
-		viewingFaves = false
-	}
-	else {
-		$("body > *").hide();
-		$("#favoritesContainer").show();
-		$("#favoritesContainer").text("")
-		let favesData = JSON.parse($("iframe")[0].contentDocument.body.innerText)
-		viewingFaves = true
-	}
-
 }
 
-function switchLoFList(page, goto = null) {
-	if (window.location.href.includes(page)) {
+function switchLoFList(site, goto = null) {
+	if (window.location.href.includes(site)) {
 		// Going back from faves in upload.html
 		if (window.location.pathname.includes("upload")) {
-			if (window.location.query.includes("browse")) {
-				$(".uploader").hide()
-				$(".browser").show()
-			}
-			else {
-				$(".uploader").show()
-				$(".browser").hide()
-			}
+			if ($("#favoritesContainer").css("display") != "none") showFaves()
 			return
 		}
 
@@ -696,34 +696,34 @@ function switchLoFList(page, goto = null) {
 		$(".comments").fadeOut(50);
 		$(".titles").fadeIn(50);
 
-		$("iframe").fadeOut(50)
+		showFaves()
 
 		// HOW DOES THIS WORK??!! You shouldn't have to subtract 4
 		if (goto != null) $(".box")[goto - 4].scrollIntoView();
 
 	}
-	else window.location.assign(goto == null ? page : page + `&goto=${goto}`)
+	else window.location.assign(goto == null ? site : site + `&goto=${goto}`)
 }
 
 function debugCards() {
 	// Returns a randomly generated board
-	let str = '{"titleImg": "",';
+	let str = { "titleImg": "https://i.cdn.turner.com/v5cache/CARTOON/site/Images/i88/johnnytest_180x180.png", "pageBGcolor": "#53a3aa" };
 	for (let i = 1; i < Math.ceil(Math.random() * 20) + 1; i++) {
-		str += `"${i}": {"levelName": "Debug #${i}","creator": "${fakeNames[Math.floor(Math.random() * fakeNames.length)]}","levelID": 128, "video": "9ywnLQywz74","color":"${randomColor()}"},`
+		str[i] = { "levelName": "Debug #" + i, "creator": fakeNames[Math.floor(Math.random() * fakeNames.length)], "levelID": 128, "video": "9ywnLQywz74", "color": randomColor() }
 	}
-	str = str.slice(0, -2) + "}}"
-	return JSON.parse(str)
+	return str
 }
 
-const MAX_ON_PAGE = 4;
-function homeCards(obj, custElement = ".listContainer", previewType = 1) {
+// const MAX_ON_PAGE = 4;
+function homeCards(obj, custElement = ".listContainer", previewType = 1, overwriteMax = false, custPagination = 0) {
 	// Do nothing if empty
 	if (obj == null || obj == false) return
 
 	$(custElement).text("");
 
-	$("#maxPage").text("/" + maxPage);
-	obj.slice(MAX_ON_PAGE * page, MAX_ON_PAGE * page + MAX_ON_PAGE)
+	let MAX_ON_PAGE = overwriteMax ? overwriteMax : 4
+
+	obj.slice(MAX_ON_PAGE * custPagination, MAX_ON_PAGE * custPagination + MAX_ON_PAGE)
 		.forEach((object) => {
 			if ([1, 3].includes(previewType)) { // Favorite level
 				let darkCol = HEXtoRGB(object[3], 40);
@@ -740,9 +740,8 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1) {
 						</a> - ${jsStr["L_LEVID"][LANG]}: ${object[2]}</p>
 					</div>
 					<div style="${previewType == 3 ? 'display: none;' : ''}">
-						<img class="button" onclick="removeFromList('fav', ${object[2]
-					}, $(this), '${object[5]}', ${object[6]
-					});" style="width: 4vw" src="images/delete.png">
+						<img class="button" onclick="removeFave(${object[2]});"
+						     style="width: 4vw" src="images/delete.png">
 					</div>
 				</div>
 				`);
@@ -754,7 +753,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1) {
 				<a style="display: flex; align-items: center" href="./index.html?id=${object[0]}">
 				  <div id="listPreview" class="noMobileResize")"
 					  style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${object[3]}, rgb(${lightCol.join(",")}));
-							 border-color: rgb(${darkCol.join(",")}); margin: 1.5% ${previewType == 5 ? 1 : 7}% 1.5% 7%; flex-grow: 1;">
+							 border-color: rgb(${darkCol.join(",")}); margin: 0.85% ${previewType == 5 ? 1 : 7}% 0.85% 7%; flex-grow: 1;">
 					  <div class="boxHeader" style="flex-direction: row !important;">
 						<div>
 						  <p class="uploadText" style="margin: 0;">${object[1]}</p>
@@ -765,8 +764,8 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1) {
 						</div>
 					  </div>
 				  </div>
-				  ${previewType == 5 ? '<img src="images/unpinList.png" onclick="unpinFromPreview(' + object[0] + ',this)" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">' : ''}
 				</a>
+				${previewType == 5 ? '<img src="images/unpinList.png" onclick="unpinFromPreview(' + object[0] + ',this)" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">' : ''}
 				`);
 			}
 			else if (previewType == 4) { // Newest lists
@@ -788,12 +787,16 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1) {
 }
 
 function makeHP() {
-	let homepageData = JSON.parse($("iframe")[0].contentDocument.body.innerText)
-	console.log(homepageData)
+	let homepageData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
 	homeCards(homepageData.recViewed, ".recentlyViewed", 2)
 	homeCards(homepageData.pinned, ".pinnedLists", 5)
 	homeCards(homepageData.favPicks, ".savedLists", 3)
 	homeCards(homepageData.newest, ".newestLists", 4)
+}
+
+function drawFaves(favesData) {
+	// Generate list
+	listViewerDrawer(favesData, "#favoritesContainer", 1)
 }
 
 var listData = "";
@@ -812,15 +815,84 @@ $(async function () {
 		}
 	}
 
-	await $.get("./parts/navbar.html", navbar => {
+	$('img').on('dragstart', function (event) { event.preventDefault(); });
+
+	window.addEventListener("message", async state => {
+		if (state.data == "homepage" && !isInEditor) makeHP()
+		else if (state.data == "favorites") {
+			if (viewingFaves) {
+				$(".mobilePicker > div").eq(2).css("filter", "none")
+				$(".mobilePicker > div > h6").eq(2).text(jsStr["SAVED"][LANG])
+				$(".mobilePicker > div > img").eq(2).attr("src", "images/savedMobHeader.svg")
+
+				$($(".menuPicker > button > img")[2]).attr("src", "images/savedMobHeader.svg")
+				$($(".menuPicker > button > h4")[2]).text(jsStr["SAVED"][LANG])
+				$("button.yearButtonImg:nth-child(3) > *").css("filter", "none")
+
+				$("body > *:not(nav,footer)").hide();
+
+				if (!isInEditor) {
+					if (LIST_ID == -9) $("#homepageContainer").show()
+
+					$(".listMaster").show()
+				}
+				else {
+					if (window.location.search.includes("editor")) $(".uploader").show()
+					else $(".browser").show()
+				}
+				viewingFaves = false
+			}
+			else {
+				$(".mobilePicker > div").eq(2).css("filter", "var(--redHighlight)")
+				$(".mobilePicker > div > h6").eq(2).text(jsStr["CLOSE"][LANG])
+				$(".mobilePicker > div > img").eq(2).attr("src", "images/close.svg")
+
+				$($(".menuPicker > button > img")[2]).attr("src", "images/close.svg")
+				$($(".menuPicker > button > h4")[2]).text(jsStr["CLOSE"][LANG])
+				$("button.yearButtonImg:nth-child(3) > *").css("filter", "var(--redHighlight)")
+
+				$("body > *:not(nav,footer)").hide();
+				$("#favoritesContainer").show();
+				let favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
+
+				if ($("#favoritesContainer > p").length == 0) {
+					await $.get("../parts/listViewer.html", data => {
+						$("#favoritesContainer").append(translateDoc(data, "listViewer"))
+						$("#favoritesContainer > p").text(jsStr["FAV_LEVELS"][LANG])
+					})
+				}
+				drawFaves(favesData)
+
+				viewingFaves = true
+			}
+		}
+		else if (state.data == "refreshList") {
+			let favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
+			drawFaves(favesData)
+		}
+		else if (state.data[0] == "removed") {
+			originalListData["#favoritesContainer"] = state.data[1]
+
+			drawFaves(currentListData["#favoritesContainer"])
+		}
+	})
+
+	$.get("./parts/navbar.html", navbar => {
 		$("nav").html(translateDoc(navbar, "navbar"))
+
+		// Setting mobile picker in navbar to curr site name
+		if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
+		if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
+
+		$($(".settingsDropdown > option")[LANG]).attr("selected", true)
+
+		$(".settingsDropdown").on("change", () => {
+			let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
+			makeCookie(["lang", switchLang])
+			window.location.reload();
+		})
+
 	})
-	$(".settingsDropdown:not(.skins)").on("change", () => {
-		let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
-		makeCookie(["lang", switchLang])
-		window.location.reload();
-	})
-	$($(".settingsDropdown:not(.skins) > option")[LANG]).attr("selected", true)
 
 	if (localStorage.getItem("anims") == null) localStorage.setItem("anims", 1)
 	$("input[name='anim']").attr("checked", localStorage.getItem("anims") == true ? true : false)
@@ -828,10 +900,6 @@ $(async function () {
 	let animsEnabled = localStorage.getItem("anims") == true
 
 	if (!animsEnabled) $("body").css("scroll-behavior", "unset")
-
-	// Setting mobile picker in navbar to curr site name
-	if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
-	if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
 
 	if (isInEditor) return
 
@@ -843,7 +911,7 @@ $(async function () {
 		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
 			if (arr[0] == LIST_ID) {
 				$("#pinBut").attr("src", "images/unpinList.png")
-				$("#pinBut").attr("title", "Odepnout seznam")
+				$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
 			}
 		});
 	}
@@ -853,12 +921,11 @@ $(async function () {
 		$(".searchTools").remove();
 		$("#crown").remove();
 
-		await $.get("../parts/homepage.html", page => {
-			$("#homepageContainer").html(translateDoc(page, "homepage"))
+		$.get("../parts/homepage.html", site => {
+			$("#homepageContainer").html(translateDoc(site, "homepage"))
 		})
 
-		await $("iframe").attr("src", "packs.html?type=homepage")
-		makeHP()
+		$("iframe").attr("src", "packs.html?type=homepage")
 	}
 	else {
 		let paramGetter = new URLSearchParams(window.location.search)
@@ -876,14 +943,22 @@ $(async function () {
 		}
 
 		if (listQueries.includes("preview") & params["preview"] == "1") {
-			let decodeData = atob(sessionStorage.getItem("previewJson")).split(",");
+			$(".searchTools").remove();
+			let previewData = sessionStorage.getItem("previewJson")
+			if (previewData == null) {
+				$("#crown").remove()
+				$(".titles").append(jsStr["NO_PREV_DATA"][LANG]);
+				return
+			}
+
+			let decodeData = atob(previewData).split(",");
 			let decodedData = "";
 			for (i = 0; i < decodeData.length; i++) {
 				decodedData += String.fromCharCode(decodeData[i]);
 			}
 			boards = JSON.parse(decodedData);
 			$(".titles").append(jsStr["PREVIEW"][LANG]);
-			$(".searchTools").remove();
+
 			$(".titleImage").attr("src", boards["titleImg"]);
 			$("title").html(`${jsStr["PREVIEW_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 			LIST_NAME = null
@@ -900,10 +975,14 @@ $(async function () {
 				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
+				LIST_ID = parseInt(data["id"])
+
 				LIST_NAME = data["name"]
 				LIST_CREATOR = data["creator"]
 
 				generateList(boards, [encodeURIComponent(data["id"]), data["name"]]);
+
+				refreshComments()
 			})
 		}
 		else if (listQueries.includes("id")) {
@@ -1013,27 +1092,22 @@ $(async function () {
 });
 
 function checkPassword() {
-	let listID = location.search.slice(1).split("=");
 	let passEntered = $(".passInput").val();
 
 	// POLISH THIS LATER!!!
-
 	$(".passInput").attr("disabled", true);
 	$(".passInput").val(jsStr["CHECKING"][LANG]);
 	$(".passInput").css("background-color", "#82fc80")
 
 	$(".passImg").addClass("disabled");
 
-	let listType = "id";
-	if (listID[0] == "pid") {
-		listType = "pid";
-	}
 	let postReq = { "pwdEntered": passEntered, "retData": "0" };
-	postReq[listType] = listID[1];
+	let isPrivate = window.location.search.includes("pid") ? "pid" : "id"
+	postReq[isPrivate] = LIST_ID;
 
 	$.post("./php/pwdCheckAction.php", postReq, function (data) {
 		// Incorrect pwd
-		if (["1", "2"].includes(data)) {
+		if (data != 3) {
 			//testing
 			$(".passInput").css("background-color", "#fc8093")
 			$(".passInput").val(jsStr["INC_PWD"][LANG])
@@ -1043,14 +1117,16 @@ function checkPassword() {
 				$(".passInput").val("")
 			}, 1000)
 		}
-		else if (data == 3) {
-			window.location.href = `http://www.gamingas.wz.cz/lofttop10/upload.html?editor&edit=${listID[1]}&pass=${passEntered}`;
+		else {
+			sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, passEntered, isPrivate]))
+			window.location.href = `./upload.html?editing`;
 		}
 	})
 
-	if (window.location.protocol.includes("file")) {
+	if (window.location.port != "") {
 		if (passEntered == debugPwd) {
-			window.location.href = `./upload.html?editor&edit=${listID[1]}&pass=${passEntered}`
+			sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, passEntered, isPrivate]))
+			window.location.href = `./upload.html?editing`
 		}
 	}
 }
@@ -1067,5 +1143,128 @@ function checkCheckbox(changeVal, runFun = null) {
 		$(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
 		$(`input[name="${changeVal}"]`).attr("checked", true)
 		runFun(true)
+	}
+}
+
+let page = {} // [page, maxPage]
+function pageSwitch(num, data, parent, ctype) {
+	if (page[parent][0] + num < 0) {
+		page[parent][0] = 0
+	}
+	else if (page[parent][0] + num > page[parent][1] - 1) {
+		page[parent][0] = page[parent][1] - 1;
+	}
+	else {
+		page[parent][0] += num;
+		$(`${parent} #pageSwitcher`).val(page[parent][0] + 1);
+		listViewerDrawer(data, parent, ctype)
+	}
+}
+
+function search(data, parent, ctype) {
+	let query = $(`${parent} #searchBar`).val();
+	if (query == "") {
+		// Reset stuff
+		page[parent][0] = 0;
+		$(`${parent} #pageSwitcher`).val("1");
+		currentListData[parent] = originalListData[parent]
+		listViewerDrawer(currentListData[parent], parent, ctype)
+	}
+	else {
+		let regex = new RegExp(".*(" + query + ").*", "ig"); // Matches all strings that contain "query"
+		let filteredData = data.filter(val => JSON.stringify(val).match(regex));
+		if (filteredData.length == 0) {
+			$(`${parent} .customLists`).empty()
+			page[parent][0] = 0;
+			$(`${parent} #pageSwitcher`).val("1");
+			$(`${parent} #maxPage`).text("/1")
+			$(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
+			currentListData[parent] = []
+		}
+		else {
+			page[parent][0] = 0;
+			$(`${parent} #pageSwitcher`).val("1");
+			currentListData[parent] = filteredData
+			listViewerDrawer(currentListData[parent], parent, ctype)
+		}
+	}
+
+}
+
+let sorting = {}
+function sortingList(data, parent, ctype) {
+	listViewerDrawer(data.reverse(), parent, ctype)
+	if (sorting[parent]) {
+		$(`${parent} #sortBut`).css("transform", "scaleY(1)");
+		$(`${parent} #sortBut`).attr("title", jsStr["NEWEST"][LANG])
+	}
+	else {
+		$(`${parent} #sortBut`).css("transform", "scaleY(-1)");
+		$(`${parent} #sortBut`).attr("title", jsStr["OLDEST"][LANG])
+	}
+	sorting[parent] = !sorting[parent]
+}
+
+let originalListData = {}
+let currentListData = {}
+function listViewerDrawer(data, parent, cardType) {
+	// Store original list data
+	if (originalListData[parent] == undefined) {
+		originalListData[parent] = data; currentListData[parent] = data; originalListData[parent].init = true
+	}
+	if (sorting[parent] == undefined) sorting[parent] = false
+	if (page[parent] == undefined) page[parent] = [0, 0]
+
+	// Clear old cards
+	$(`${parent} .customLists`).empty();
+
+	// We want to sort from newest to oldest by default
+	let reversed = JSON.parse(JSON.stringify(data)).reverse();
+
+	// Set max page text
+	let listAmount = Object.keys(reversed).length;
+	page[parent][1] = Math.ceil(listAmount / 10);
+	$(`${parent} #maxPage`).text("/" + page[parent][1]);
+
+	if (originalListData[parent].init) {
+		// List sorting click action
+		$(`${parent} #sortBut`).click(() => {
+			sortingList(currentListData[parent], parent, cardType)
+		})
+
+		// List search button action
+		$(`${parent} .doSearch`).click(() => {
+			search(originalListData[parent], parent, cardType)
+		})
+
+		// Typing in a page (TODO: Add object as page)
+		$(`${parent} #pageSwitcher`).on("change", function () {
+			if (!isNaN(parseInt($(this).val()))) {
+				pageSwitch(parseInt($(this).val()) - page[parent][0] - 1, currentListData[parent], parent, cardType)
+			}
+		})
+
+		// Page -1 (left) action
+		$(`${parent} .pageBut`).eq(0).click(() => {
+			pageSwitch(-1, currentListData[parent], parent, cardType)
+		})
+		// Page +1 (right) action
+		$(`${parent} .pageBut`).eq(1).click(() => {
+			pageSwitch(1, currentListData[parent], parent, cardType)
+		})
+
+		delete originalListData[parent].init
+	}
+
+	// Draw Cards
+	if (Object.keys(data).length > 0) {
+		homeCards(data, `${parent} .customLists`, cardType, 10, page[parent][0])
+	}
+	else {
+		$(`${parent} #maxPage`).text("/1");
+		// No favorites
+		if (cardType == 1) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center; color: #f9e582">${jsStr["NOFAVED"][LANG]}</p>`);
+		// Object is empty
+		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}
 }

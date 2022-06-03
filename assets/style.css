@@ -32,7 +32,7 @@
 :root {
   --smallFont: clamp(0.5rem, 1.4vw, 1.8rem);
   --miniFont: clamp(0.5rem, 1.4vw, 1.8rem);
-  --normalFont: calc(60% + 1vw);
+  --normalFont: clamp(0.7rem, 1.6vw, 2rem);
   --bigFont: calc(80% + 1vw);
   --biggerFont: clamp(1.2rem, 2.5vw, 2.8rem);
   --xlFont: clamp(2rem, 3.5vw, 5rem);
@@ -397,7 +397,7 @@ u {
   border-radius: 0.7vw;
   display: flex;
   gap: 1vw;
-  align-items: end;
+  align-items: center;
 }
 
 .yearButtonImg > h4 {
@@ -406,7 +406,7 @@ u {
 }
 
 .yearButtonImg > img {
-  width: 2vw;
+  width: var(--normalFont);
 }
 
 .verticalSplitter {
@@ -499,7 +499,7 @@ html, body {
   line-height: 2;
   margin-top: 2.5vh;
   margin-right: -1vh;
-  z-index: 5;
+  z-index: 1;
 }
 
 /* Entire comment box, including user input box */
@@ -666,6 +666,10 @@ html, body {
     align-items: center;
 }
 
+.passInput::placeholder {
+  background-image: url(../images/edit.svg) !important;
+}
+
 nav {
   background-image: var(--greenGradient);
   animation-iteration-count: infinite;
@@ -738,7 +742,7 @@ iframe {
 #homepageHeader {
   margin: 0 0 1em;
   min-height: 30vh;
-  align-items: end;
+  align-items: flex-end;
   background: url(../images/introGrad2.png);
 
 }
@@ -845,6 +849,7 @@ cb { color: #28DCFC ;}
 #favBubble {
   min-width: calc(100% - 2.5vw);
   justify-content: left;
+  max-height: none !important;
 }
 
 .noSaves {

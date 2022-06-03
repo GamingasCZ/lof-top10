@@ -8,24 +8,26 @@
   <link rel="stylesheet" href="./assets/style.css">
   <link rel="stylesheet" href="./assets/community.css">
   <link rel="stylesheet" href="./assets/mobile.css">
-  <link rel="icon" href="./images/gdbrowser.png">
+  <link rel="icon" href="./images/gdl.svg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script rel="text/javascript" src="./js/languages.js" async></script>
+  <script rel="text/javascript" src="./js/languages.js"></script>
   <script rel="text/javascript" src="./js/comments.js" async></script>
   <script rel="text/javascript" src="./js/generator.js" async></script>
   <script rel="text/javascript" src="./js/color.js" async></script>
-  <script rel="text/javascript" src="./js/helpDialogs.js"></script>
+  <script rel="text/javascript" src="./js/helpDialogs.js" async></script>
 
+  <meta name="theme-color" content="#032210">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Geometry Dash Level Lists">
   <meta name="twitter:description" content="Create and browse lists of GD levels!">
   <meta name="twitter:image" content="http://gamingas.wz.cz/lofttop10/images/twitImg.png">
 
+  <meta name="description" content="Create, share and browse lists of Geometry Dash levels!">
   <title>GD Seznamy</title>
 </head>
 
@@ -88,109 +90,113 @@
   <div id="homepageContainer"></div>
   <div id="favoritesContainer" style="display: none;"></div>
 
-  <div class="titles listInfo"></div>
+  <div class="listMaster">
 
-  <img class="titleImage">
+    <div class="titles listInfo"></div>
 
-  <div class="searchTools listOptions uploadText" style="justify-content: space-between; opacity: 0;">
-    <div>
-      <img src="images/list.png" onclick="listList()" style="width: 3.5vw; margin-right: 0.5vw;" class="button lList disabled"
-        title="Seznam levelů">
-      <img src="images/comments.png" onclick="listComments()" style="width: 3.5vw;" class="button lComm"
-        title="Komentáře">
-      <div id="commAmount">1</div>
+    <img class="titleImage">
+
+    <div class="searchTools listOptions uploadText" style="justify-content: space-between; opacity: 0;">
+      <div>
+        <img src="images/list.png" onclick="listList()" style="width: 3.5vw; margin-right: 0.5vw;" class="button lList disabled"
+          title="Seznam levelů">
+        <img src="images/comments.png" onclick="listComments()" style="width: 3.5vw;" class="button lComm"
+          title="Komentáře">
+        <div id="commAmount">1</div>
+      </div>
+
+      <div>
+        <img src="images/jumpBut.png" onclick="showJumpTo()" style="width: 3.5vw;" id="jumpToBut" class="button lJumpTo" title="Skočit na...">
+        <img src="images/shareBut.png" onclick="listShare()" style="width: 3.5vw; margin-left: 0.5vw;" id="shareBut" class="button lShare" title="Sdílet">
+        <img src="images/pinList.png" onclick="pinList()" style="width: 3.5vw; margin-left: 0.5vw;" id="pinBut" class="button lPin" title="Připnout seznam">
+      </div>
+
+      <div class="password">
+        <input type="text" class="passInput searchWithIcon" placeholder="Heslo"
+          style="margin: 0% 2% 0%; width: 13vw; transform: none;">
+        <img src="./images/searchButton.svg" onclick="checkPassword()" class="button passImg" style="width: 4vw;">
+      </div>
     </div>
 
-    <div>
-      <img src="images/jumpBut.png" onclick="showJumpTo()" style="width: 3.5vw;" id="jumpToBut" class="button lJumpTo" title="Skočit na...">
-      <img src="images/shareBut.png" onclick="listShare()" style="width: 3.5vw; margin-left: 0.5vw;" id="shareBut" class="button lShare" title="Sdílet">
-      <img src="images/pinList.png" onclick="pinList()" style="width: 3.5vw; margin-left: 0.5vw;" id="pinBut" class="button lShare" title="Připnout seznam">
+    <div class="comments">
+      <div class="searchTools uploadText debugTools">
+        <span class="debugTitle" style="font-size: 2.6vw;">Přidat komentáře:</span>
+        <img class="button pageBut" src="images/arrow-left.png" onclick="debugComments(-1)">
+        <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
+        <img class="button pageBut" src="images/arrow-right.png" onclick="debugComments(1)">
+        <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugComments(2)">
+      </div>
+
+      <div class="searchTools uploadText" id="commentTool" style="justify-content: center;">
+        <div class="page">
+          <span id="pageStr" style="padding-right: 2%;">Strana: </span>
+          <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
+          <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
+          <span id="maxPage">/1</span>
+          <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
+        </div>
+        <img onclick="$('#commentMaker')[0].scrollIntoView()" src="images/add.png" class="button" style="width: 3vw; margin-right: 1vw;">
+        <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button" style="width: 3vw;">
+      </div>
+
+      <div id="commentList"></div>
+      <p class="uploadText noComm" style="text-align: center;">- Žádné komentáře -</p>
+
+      <div class="positionEdit" id="commentMaker">
+        <div style="display: flex; align-items: center; padding-left: 1%; margin-bottom: 0.5vw;">
+          <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 2.5vw;">
+          <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno" maxlength="20">
+          <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg" style="height: max-content;">
+          <h5 class="uploadText comUserError"></h5>
+        </div>
+    
+        <div class="comBox">
+          <div class="uploadText comBoxThings comInpThings" id="comBoxHeader">
+            <h3>Komentář</h3>
+            <h3 id="charLimit">0/300</h3>
+          </div>
+    
+          <div style="display: flex; width: inherit;">
+            <div contenteditable="" class="uploadText comTextArea comInpArea" id="comFont"></div>
+          </div>
+    
+          <div class="uploadText comBoxThings comInpThings" id="comBoxFooter">
+    
+            <button class="comFooterButton" title="Barva komentáře" onclick="displayPanel(2)">
+              <svg width="90" height="40">
+                <image xlink:href="./images/color.svg" width="90" height="40" />
+              </svg>
+              <!-- <input type="color" class="cpicker cardButton" id="comCPicker"> -->
+            </button>
+    
+            <button class="comFooterButton" title="Emotikony" onclick="displayPanel(1)">
+              <svg width="90" height="40">
+                <image xlink:href="./images/emoji.svg" width="90" height="40" />
+              </svg>
+            </button>
+    
+            <hr id="verticalLine">
+    
+            <button class="comFooterButton sendBut" title="Odeslat komentář" onclick="sendComment()">
+              <svg width="90" height="40">
+                <image xlink:href="./images/send.svg" width="90" height="40" />
+              </svg>
+            </button>
+    
+          </div>
+        </div>
+    
+        <div class="emojiPanel"></div>
+    
+      </div>
+
     </div>
 
-    <div class="password">
-      <input type="text" class="cardInput passInput" placeholder="Heslo"
-        style="margin: 0% 2% 0%; height: 2.3vw; transform: none;">
-      <img src="./images/getStats.png" onclick="checkPassword()" class="button passImg" style="height: fit-content;">
+    <div class="boards">
+      <img src="./images/crown.png" id="crown" style="display: none;">
     </div>
   </div>
-
-  <div class="comments">
-    <div class="searchTools uploadText debugTools">
-      <span class="debugTitle" style="font-size: 2.6vw;">Přidat komentáře:</span>
-      <img class="button pageBut" src="images/arrow-left.png" onclick="debugComments(-1)">
-      <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
-      <img class="button pageBut" src="images/arrow-right.png" onclick="debugComments(1)">
-      <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugComments(2)">
-    </div>
-
-    <div class="searchTools uploadText" id="commentTool" style="justify-content: center;">
-      <div class="page">
-        <span id="pageStr" style="padding-right: 2%;">Strana: </span>
-        <img class="button pageBut" src="images/arrow-left.png" onclick="pageSwitch(-1)">
-        <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-        <span id="maxPage">/1</span>
-        <img class="button pageBut" src="images/arrow-right.png" onclick="pageSwitch(1)">
-      </div>
-      <img onclick="$('#commentMaker')[0].scrollIntoView()" src="images/add.png" class="button" style="width: 3vw; margin-right: 1vw;">
-      <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button" style="width: 3vw;">
-    </div>
-
-    <div id="commentList"></div>
-    <p class="uploadText noComm" style="text-align: center;">- Žádné komentáře -</p>
-
-    <div class="positionEdit" id="commentMaker">
-      <div style="display: flex; align-items: center; padding-left: 1%; margin-bottom: 0.5vw;">
-        <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 2.5vw;">
-        <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno" maxlength="20">
-        <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg" style="height: max-content;">
-        <h5 class="uploadText comUserError"></h5>
-      </div>
   
-      <div class="comBox">
-        <div class="uploadText comBoxThings comInpThings" id="comBoxHeader">
-          <h3>Komentář</h3>
-          <h3 id="charLimit">0/300</h3>
-        </div>
-  
-        <div style="display: flex; width: inherit;">
-          <div contenteditable="" class="uploadText comTextArea comInpArea" id="comFont"></div>
-        </div>
-  
-        <div class="uploadText comBoxThings comInpThings" id="comBoxFooter">
-  
-          <button class="comFooterButton" title="Barva komentáře" onclick="displayPanel(2)">
-            <svg width="90" height="40">
-              <image xlink:href="./images/color.svg" width="90" height="40" />
-            </svg>
-            <!-- <input type="color" class="cpicker cardButton" id="comCPicker"> -->
-          </button>
-  
-          <button class="comFooterButton" title="Emotikony" onclick="displayPanel(1)">
-            <svg width="90" height="40">
-              <image xlink:href="./images/emoji.svg" width="90" height="40" />
-            </svg>
-          </button>
-  
-          <hr id="verticalLine">
-  
-          <button class="comFooterButton sendBut" title="Odeslat komentář" onclick="sendComment()">
-            <svg width="90" height="40">
-              <image xlink:href="./images/send.svg" width="90" height="40" />
-            </svg>
-          </button>
-  
-        </div>
-      </div>
-  
-      <div class="emojiPanel"></div>
-  
-    </div>
-
-  </div>
-
-  <div class="boards">
-    <img src="./images/crown.png" id="crown" style="display: none;">
-  </div>
 </body>
 <footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.5) translateY(4vw);">
   <p class="uploadText pageBy">Vytvořil </p>
@@ -200,6 +206,5 @@
       src="images/github.png"></a>
   <a onclick="openHelp('license')" class="uploadText gamLink"> Licence</a>
 </footer>
-<script>$(function () { translate(); })</script>
 
 </html>

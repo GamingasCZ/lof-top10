@@ -71,6 +71,8 @@ function getHueFromHEX(color) {
   var maxCol = Math.max(...rgb);
   var minCol = Math.min(...rgb);
 
+  if (maxCol-minCol == 0) return 0
+
   if (rgb.indexOf(maxCol) == 0) {
     var hue = (rgb[1] - rgb[2]) / (maxCol - minCol); // Red
   } else if (rgb.indexOf(maxCol) == 1) {

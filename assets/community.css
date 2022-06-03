@@ -1,8 +1,8 @@
-
 @keyframes inputError {
     from {
         background-color: rgba(243, 70, 70, 0.5);
     }
+
     to {
         background-color: rgba(36, 36, 36, 0.5);
     }
@@ -14,6 +14,7 @@
     height: 2vw;
     /*right: 23%;*/
 }
+
 #helpTitle {
     font-size: 2.5vw;
     margin: 1vw;
@@ -28,16 +29,18 @@
     margin-bottom: 0;
     text-align: center;
 }
+
 .helpBG {
-	background-color: #000000a1;
-	/* margin: 100%; */
-	position: fixed;
-	top: 0px;
-	z-index: 4;
-	width: 100%;
-	height: 100%;
+    background-color: #000000a1;
+    /* margin: 100%; */
+    position: fixed;
+    top: 0px;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
     background-image: url("../images/thinkAn.gif");
 }
+
 .popupHelp {
     background-color: rgb(50, 63, 50);
     border: rgb(24, 24, 24) 0.7vw solid;
@@ -60,21 +63,23 @@
     border-radius: 10px;
     box-shadow: black 5px 5px 41px
 }
+
 .uploadMainInp {
     font-size: var(--normalFont) !important;
     padding: 0 1vw !important;
 }
+
 .uploadText {
     color: white;
     font-family: "pusab";
-    font-size: calc(60% + 1vw);
+    font-size: var(--normalFont);
     line-height: 150%;
-    text-shadow: rgba(0,0,0,0.5) 0.1vw 0.1vw 0.2vw;
+    text-shadow: rgba(0, 0, 0, 0.5) 0.1vw 0.1vw 0.2vw;
 }
 
 .errNotif {
     z-index: 2;
-    transform: translate(30vw,20vh);
+    transform: translate(30vw, 20vh);
     width: 40vw;
     position: absolute;
     pointer-events: none;
@@ -90,11 +95,11 @@
 }
 
 #collabTools {
-	position: fixed;
-	width: 95%;
-	height: 90vh;
-	right: -8%;
-	bottom: 0%;
+    position: fixed;
+    width: 95%;
+    height: 90vh;
+    right: -8%;
+    bottom: 0%;
     z-index: 4;
     display: flex;
     padding: 0;
@@ -124,10 +129,12 @@
     flex-wrap: wrap;
     justify-content: center;
     min-height: 100%;
+    align-content: flex-start;
 }
+
 .roleBubble {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     max-height: 3vw;
     padding: 0.1vw 1vw;
@@ -135,10 +142,14 @@
     margin: 1%;
     width: 25vw;
 }
+.roleControls { display: flex; }
+.roleControls > img { width: 2.5vw; height: 2.5vw; }
+
 .roleButtons {
     display: flex;
     max-height: 2.5vw;
 }
+
 #roleInp {
     border: none !important;
     background: none !important;
@@ -148,7 +159,7 @@
     outline: none;
 }
 
-td > * {
+td>* {
     vertical-align: middle;
 }
 
@@ -156,12 +167,13 @@ td > * {
     width: 2vw;
     vertical-align: middle;
 }
+
 .collabTables th div {
     margin: 0vw 0 0 0.5vw;
 }
 
 .collabTables th {
-    background: rgba(0,0,0,0.1) !important;
+    background: rgba(0, 0, 0, 0.1) !important;
     font-size: var(--bigFont);
 }
 
@@ -169,8 +181,8 @@ tr:nth-child(odd) {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-tr > td:nth-child(2n) {
-	background: rgba(0,0,0,0.2);
+tr>td:nth-child(2n) {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 #collabInp::placeholder {
@@ -188,11 +200,32 @@ tr > td:nth-child(2n) {
     -moz-appearance: textfield;
     max-height: 0%;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+    -webkit-appearance: none;
 }
 
+.roleHead,
+.humHead {
+    display: block;
+}
+
+.mobileTabSwitcher {
+    display: flex;
+    justify-content: space-evenly;
+    background: #00000047;
+    margin: 1%;
+    border-radius: 5px;
+}
+
+.mobileTabSwitcher>button {
+    font-size: var(--biggerFont);
+    background: #ffffff91;
+    margin: 1%;
+    min-width: 7em;
+    border-radius: 25px;
+}
 
 .collabHeader {
     max-height: auto;
@@ -208,7 +241,7 @@ input::-webkit-inner-spin-button {
 }
 
 /*Would it be better to get rid of this lmao?*/
-input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .tableCpicker, .homeSearch) {
+input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCpicker, .homeSearch) {
     margin-left: auto;
     margin-right: auto;
     padding: 3px 5px;
@@ -237,13 +270,14 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
     transform: scaleY(1);
     transition-duration: 0s;
 }
+
 .imgPreview {
-    margin: 0% 22.5% 3%;
     padding: 2%;
-    background-color: rgb(29, 29, 29);
-    border-radius: 0px 0px 10px 10px;
     width: 40vw;
     display: none;
+    margin: 2% 22.5% 3%;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
 }
 
 
@@ -253,27 +287,32 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
 }
 
 #bgcolorPicker {
-	display: flex;
-	width: 2.5vw;
-	height: 2.5vw;
-	margin-left: 2%;
-	margin-right: 0;
-	border: 0.5vh white solid;
-	background: none;
-	border-radius: 0.5vw;
-	padding: 0;
+    display: flex;
+    width: 4vh;
+    height: 4vh;
+    margin-left: 2%;
+    margin-right: 0;
+    border: 0.5vh white solid;
+    background: none;
+    border-radius: 0.5vw;
+    padding: 0;
     background: #020202;
 }
 
-.pickerContainer > * {
+.pickerContainer>* {
     position: absolute;
 }
+
+.pickerContainer > img {
+    width: 3.5vh;
+}
+
 .pickerContainer {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    left: 3vw;
+    left: 2vw;
 }
 
 .colorLabel {
@@ -301,6 +340,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
     z-index: 4;
     padding: 0 0vw 3vw 2vw;
 }
+
 #shareContainer {
     font-size: var(--normalFont);
     margin: 0 2vw 2vw 0vw;
@@ -309,6 +349,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
     padding: 1vw;
     width: 80% !important;
 }
+
 #jumpToTools {
     width: 50vw;
     height: calc(37vh + 18vw);
@@ -318,6 +359,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
     left: 11vw;
     top: 1vw;
 }
+
 .jumpToContainer {
     display: flex;
     flex-direction: row;
@@ -328,6 +370,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
     overflow-y: auto;
     overflow-x: hidden;
 }
+
 #jumpBubble {
     background: #ff6161;
     width: 90%;
@@ -341,7 +384,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
 .cardInput {
     margin: 15px 30%;
     background-color: rgb(36, 36, 36);
-    border:rgb(36, 36, 36) 5px solid;
+    border: rgb(36, 36, 36) 5px solid;
     border-radius: 5%;
     padding: 3px 5px;
     color: white;
@@ -351,12 +394,14 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
     font-size: var(--bigFont);
     max-height: var(--biggerFont);
 }
+
 .cardButtonsContainer {
     display: flex;
     justify-content: flex-end;
     flex-grow: 1;
     align-items: center;
 }
+
 .cardExtrasContainer {
     display: none;
     padding: 1%;
@@ -374,6 +419,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
     border: none;
     margin-left: -1vw;
 }
+
 #sliderImg {
     width: 100%;
     height: 2vw;
@@ -381,7 +427,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .pageIndicator, .searchBar, .setCh
     pointer-events: none;
 }
 
-input[type=range]{
+input[type=range] {
     -webkit-appearance: none;
 }
 
@@ -415,6 +461,7 @@ input::-webkit-input-placeholder {
     font-family: "pusab";
     font-size: var(--smallFont);
 }
+
 input::-moz-placeholder {
     color: white;
     font-family: "pusab";
@@ -446,14 +493,16 @@ input:disabled {
     justify-content: center;
     align-items: center;
 }
+
 #submitbutton {
-	width: auto;
+    width: auto;
     padding: 0.5% 1%;
     height: auto;
     background-color: rgb(113, 212, 113);
     border: none;
     margin: 0% 2% 1%;
 }
+
 #removebutton {
     width: auto;
     padding: 0.5% 1%;
@@ -466,7 +515,7 @@ input:disabled {
 
 #jsonBox {
     background-color: rgb(36, 36, 36);
-    border:rgb(36, 36, 36) 5px solid;
+    border: rgb(36, 36, 36) 5px solid;
     border-radius: 5%;
     width: 90%;
     height: 100vh;
@@ -487,7 +536,7 @@ input:disabled {
     color: white;
     padding: 0% 2% 0% 2%;
     margin: 1.5% 7%;
-    border: white 0.5ch solid;
+    border: white 0.3vw solid;
     border-radius: 5px;
     display: block;
     background-size: 150vw;
@@ -536,11 +585,12 @@ input:disabled {
     align-items: center;
 }
 
-#mainContent, .collabBG {
+#mainContent,
+.collabBG {
     text-align: left;
     background-image: url("../images/fade.png");
     background-repeat: repeat-x;
-    height: 20%;
+    height: 100%;
 }
 
 .smallHelp {
@@ -550,7 +600,8 @@ input:disabled {
 }
 
 
-.positionEdit, .smallPosEdit {
+.positionEdit,
+.smallPosEdit {
     margin: 1%;
     background-color: darksalmon;
     border: salmon 5px solid;
@@ -628,25 +679,23 @@ input:disabled {
 }
 
 .cardButton {
-	padding-left: 1%;
-	padding-right: 0.5%;
-	width: 4vw;
-	height: 4vw;
+    padding-left: 1%;
+    padding-right: 0.5%;
+    width: 4vw;
+    height: 4vw;
 }
+
 #positionDisplay {
     font-size: var(--xlFont);
     height: 2.8vw;
 }
 
 .diffContainer {
-    background: url("../images/faces/diffContainer.png");
     display: flex;
     justify-content: center;
     align-items: center;
-    background-size: contain;
-    background-position: 0.45vw 0.1vw;
-    background-repeat: no-repeat;
-  }
+}
+
 .diffIcon {
     width: 50%;
     height: auto;
@@ -658,6 +707,7 @@ input:disabled {
     padding: 0.5vw 0.5vw;
     height: fit-content;
 }
+
 .difficultyPicker {
     display: flex;
     flex-direction: row;
@@ -666,6 +716,7 @@ input:disabled {
     overflow-x: auto;
     overflow-y: clip;
 }
+
 .diffFaces {
     width: 78%;
     display: flex;
@@ -674,10 +725,12 @@ input:disabled {
     overflow-x: auto;
     overflow-y: hidden;
 }
+
 .faceSelected {
     background: #0000006e;
     border-radius: 1vw;
 }
+
 .diffOptions {
     display: flex;
     flex-direction: column;
@@ -690,26 +743,31 @@ input:disabled {
     background-color: rgba(255, 255, 255, 0.548);
     border-radius: 1vw;
 }
+
 .bgSettingsContainer {
     display: flex;
     justify-content: center;
     gap: 1vw;
 }
+
 .bgProps {
     position: absolute;
     z-index: 5;
     left: 25%;
     display: none;
 }
+
 .bgPropsMain {
     padding: 0 1vw 1vw 1vw;
 }
+
 .gdSlider::-moz-range-progress {
     background: url("../images/sliderBar-uhd.png");
     height: 0.4em;
     border-radius: 1vw;
     transform: translate(0.2vw);
 }
+
 .gdSlider::-moz-range-thumb {
     background: url("../images/sliderthumb-uhd.png");
     background-size: 1em;
@@ -724,13 +782,17 @@ input:disabled {
     background-size: cover;
     background-position-y: center;
 }
+
 .gdSlider {
     width: 20vw;
     border: none;
     background: none;
     font-size: var(--bigFont);
 }
-#inpEpic:checked, #inpFeatured:checked, #inpGrad:checked {
+
+#inpEpic:checked,
+#inpFeatured:checked,
+#inpGrad:checked {
     -moz-appearance: none;
     background: url("../images/check-on.png");
     background-size: contain;
@@ -739,7 +801,10 @@ input:disabled {
     background-position: center;
     vertical-align: middle;
 }
-#inpEpic, #inpFeatured, #inpGrad {
+
+#inpEpic,
+#inpFeatured,
+#inpGrad {
     -moz-appearance: none;
     background: url("../images/check-off.png");
     background-size: contain;
@@ -750,14 +815,51 @@ input:disabled {
 }
 
 #epicGlow {
-    z-index: -1;
+    z-index: 1;
     width: 70%;
-    bottom: 0.4vw;
-    right: 0.48vw;
+    bottom: 12%;
+    right: 12%;
 }
+
 #featuredGlow {
-    z-index: -1;
+    z-index: 1;
     width: 70%;
+}
+
+#diffBG {
+    width:inherit;
+    z-index: 0;
+}
+.diffMain {
+    z-index: 2;
+}
+
+
+.listDiffContainer {
+    position: relative;
+    width: 4vw;
+    height: 4vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.listDiffFace {
+    width: 100%;
+    height: fit-content;
+    position: absolute;
+    z-index: 2;
+}
+
+.listDiffEpicRate {
+    position: absolute;
+    width: 150%;
+    bottom: -17%;
+}
+.listDiffRate {
+    position: absolute;
+    width: 140%;
+    bottom: -20%;
 }
 
 .cpicker {
@@ -770,26 +872,28 @@ input:disabled {
 }
 
 .shareBG {
-	background-color: #1e1e1e;
-	padding: 1%;
+    background-color: #1e1e1e;
+    padding: 1%;
     border-radius: 10px;
     display: flex;
     margin: 0 1% 0 0;
 }
 
 .shareTitle {
-	margin-left: 3%;
-	color: #1fb1e1;
+    margin-left: 3%;
+    color: #1fb1e1;
     margin: 0 0 0 3%;
 }
+
 .shareContainer {
     display: flex;
     align-items: center;
     margin: 0% 0% 1% 3%;
 }
+
 .shareBut {
-	width: 3vw;
-	height: 3vw;
+    width: 3vw;
+    height: 3vw;
 }
 
 .passText {
@@ -804,8 +908,9 @@ input:disabled {
     filter: invert(100%);
     transition-timing-function: ease-out;
 }
+
 .boom {
-    background-color: white ;
+    background-color: white;
     width: 100%;
     height: 100%;
     position: fixed;
@@ -814,16 +919,18 @@ input:disabled {
     display: none;
     z-index: 4;
 }
+
 .removeImg {
     transition-duration: 0.5s;
     margin-left: 41vw;
 }
+
 #rmbutton {
-    width: 15%;
-    height: 15%;
     margin-left: 2.5%;
     margin-right: 2.5%;
+    font-size: var(--biggerFont);
 }
+
 .settingsBG {
     background-color: rgba(255, 255, 255, 0.08);
     margin: 0% 21% 3%;
@@ -832,14 +939,17 @@ input:disabled {
     display: flex;
     flex-direction: column;
 }
+
 .setting {
     display: flex;
     align-items: center;
     margin-top: 1%;
 }
+
 .setLabel {
     margin: 0%;
 }
+
 .setHelp {
     width: 2vw;
     margin-left: 2%;
@@ -862,7 +972,7 @@ input:disabled {
 }
 
 .searchTools {
-    background-image: linear-gradient(9deg, #0a100d, #022812);
+    background-image: var(--greenGradient);
     border-radius: 1vw;
     margin: 1% 2%;
     padding: 0.5%;
@@ -874,11 +984,15 @@ input:disabled {
     /*flex-wrap: wrap;*/
 }
 
-.noRoles, .noRolAdded, .addRoles {
+.noRoles,
+.noRolAdded,
+.addRoles {
     margin-left: 1%;
     color: rgb(173, 230, 185);
 }
-.noRolAdded, .addRoles > img {
+
+.noRolAdded,
+.addRoles>img {
     transform: translateY(0.6vw);
 }
 
@@ -893,6 +1007,7 @@ input:disabled {
     display: flex;
     justify-content: right;
 }
+
 .presetButtonContainer {
     padding: 0.2% 2%;
     display: flex;
@@ -907,7 +1022,7 @@ input:disabled {
 
 .popupArrow {
     position: absolute;
-    top: -1vw; 
+    top: -1vw;
 }
 
 .socialPicker {
@@ -926,6 +1041,7 @@ input:disabled {
     justify-content: center;
     align-items: center;
 }
+
 .search {
     display: flex;
     justify-content: end;
@@ -934,17 +1050,9 @@ input:disabled {
 }
 
 .pageIndicator {
-    width: 10%;
-    padding-left: 0;
-    padding-right: 0;
     text-align: center;
-    min-height: 1.4vw;
-    border: none;
-    background-color: #111;
-    border-radius: 10px;
-    font-size: var(--normalFont);
-    font-family: "pusab";
-    color: white;
+    width: 7% !important;
+    margin: 0 !important;
 }
 
 .pageBut {
@@ -953,6 +1061,7 @@ input:disabled {
     align-self: center;
     margin: 1%;
 }
+
 #searchBar {
     width: 80%;
 }

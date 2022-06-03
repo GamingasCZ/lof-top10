@@ -64,35 +64,40 @@
     ],
     "levelID": "39776379",
     "video": "FBJUt0U4kUw",
-    "color": "#a3003c"
+    "color": "#a3003c",
+    "difficulty": [5,0]
   },
   "2": {
     "levelName": "Garatun",
     "creator": "TellConfig",
     "levelID": "55787317",
     "video": "yXo6jY_W6LM",
-    "color": "#009194"
+    "color": "#009194",
+    "difficulty": [4,0]
   },
   "3": {
     "levelName": "Gold Ring",
     "creator": "ShadowBurnSK",
     "levelID": null,
     "video": "uT2n-35x1CA",
-    "color": "#3d2900"
+    "color": "#3d2900",
+    "difficulty": [4,0]
   },
   "4": {
     "levelName": "FiFqo Calling Rebirth",
     "creator": "GD Mini",
     "levelID": null,
     "video": "WLJ0rVXIDP4",
-    "color": "#44a300"
+    "color": "#44a300",
+    "difficulty": [1,0]
   },
   "5": {
     "levelName": "Gamingas",
     "creator": "Qrange",
     "levelID": "59654444",
     "video": "V1zGo03x4Po",
-    "color": "#a34100"
+    "color": "#a34100",
+    "difficulty": [4,0]
   },
   "6": {
     "levelName": "Infinity Gamingas",
@@ -145,35 +150,40 @@
     ],
     "levelID": null,
     "video": null,
-    "color": "#5c5c00"
+    "color": "#5c5c00",
+    "difficulty": [8,0]
   },
   "7": {
     "levelName": "Deltarune",
     "creator": "EidamGD",
     "levelID": null,
     "video": "3u3ptITvG5g",
-    "color": "#a30010"
+    "color": "#a30010",
+    "difficulty": [4,0]
   },
   "8": {
     "levelName": "GG geddon",
     "creator": "Jakubko2005",
     "levelID": "52409692",
     "video": "ljaAtxqcngg",
-    "color": "#995200"
+    "color": "#995200",
+    "difficulty": [4,0]
   },
   "9": {
     "levelName": "rainbow travel",
     "creator": "playergeoCZ",
     "levelID": "55029144",
     "video": "FBJUt0U4kUw",
-    "color": "#00a396"
+    "color": "#00a396",
+    "difficulty": [4,0]
   },
   "10": {
     "levelName": "Fracture",
     "creator": "ImSamo",
     "levelID": null,
     "video": "WLJ0rVXIDP4",
-    "color": "#230057"
+    "color": "#230057",
+    "difficulty": [5,0]
   },
   "titleImg": "",
   "pageBGcolor": "#020202"

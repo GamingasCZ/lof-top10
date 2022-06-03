@@ -18,11 +18,12 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#skinText", 0, 0, ["Vzhled", "Skin"]],
     [".anims", 0, 0, ["Animace", "Animations"]],
     [".noComm", "index.html", 0, ["- Žádné komentáře -", "- No Comments -"]],
-    [".passInput", "index.html", "placeholder", ["Heslo", "Password"]],
+    [".passInput", "index.html", "placeholder", ["        Heslo", "        Password"]],
     ["#jumpToText", "index.html", 0, ["Skočit na...", "Jump to..."]],
     ["#jumpToBut", "index.html", "title", ["Skočit na...", "Jump to..."]],
     ["#shareText", "index.html", 0, ["Sdílet", "Share"]],
     ["#shareBut", "index.html", "title", ["Sdílet", "Share"]],
+    ["#pinBut", "index.html", "title", ["Připnout seznam", "Pin List"]],
 
     ["title", "upload.html", 0, ["Komunitní seznamy | GD Seznamy", "Community Lists | GD Lists"]],
     [".debugTitle", "index.html",0, ["Přidat komentáře:", "Add comments:"]],
@@ -43,6 +44,8 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#submitbutton", "upload.html", "value", ["Nahrát", "Upload"]],
     ["label[for='private']", "upload.html", 0, ["Soukromý seznam", "Private List"]],
     ["label[for='shareCollab']", "upload.html", 0, ["Sdílet collaby", "Share Collabs"]],
+    [".savePickTit", "upload.html", 0, ["Uložené levely", "Saved levels"]],
+    [".savedFilter", "upload.html", "placeholder", ["        Hledat level...", "        Search levels..."]],
 
     [".collabTTitle","upload.html",0,["- Nastavení collabu -","- Collab Settings -"]],
     [".verifierRole","upload.html","placeholder",["Role","Role"]],
@@ -115,6 +118,11 @@ var jsStr = {
     "SHARE": ["Sdílet", "Share"],
     "CONF_DEL": ["Opravdu chceš smazat svůj seznam?", "Are you sure you want to delete the list?"],
     "NO_RES": ["- Žádné výsledky -", "- No results -"],
+    "TOOBIG1": ["Tvůj seznam je moc velký!", "Your list is too large"],
+    "TOOBIG2": ["nad limitem!", "over the limit!"],
+    "TOOBIG3": ["Smaž nějaké levely/collaby z levelů!", "Remove some levels/collabs from levels"],
+    "YES": ["Ano", "Yes"],
+    "NO": ["Ne", "No"],
 
     // generator
     "LEV_NOEXIST": ["Level neexistuje!", "Level doesn't exist!"],
@@ -150,6 +158,10 @@ var jsStr = {
     "DEBUG_L": ["Debug seznam", "Debug List"],
     "PREVIEW_L": ["Náhled seznamu", "List Preview"],
     "CLOSE": ["Zavřít", "Close"],
+    "CHECKOUT": ["Mrkni se na můj Geodeš seznam", "Check out my GD list"],
+    "PIN_LIST": ["Připnout seznam", "Pin List"],
+    "UNPIN_LIST": ["Odepnout seznam", "Unpin List"],
+    "NO_PREV_DATA": ["Není z čeho udělat náhled!", "There's no data to make a preview from!"],
 
     // helpDialogs
     "LICENSE": ["Licence","License"],
@@ -192,9 +204,12 @@ var jsStr = {
                     `If you've used collab tools and tick this check, anyone will be able to use your collab settings for their lists.`],
     "PINNEDLIST_T": ["Připnuté seznamy", "Pinned Lists"],
     "PINNEDLIST_D": [`Pokud se k nějakému seznamu často vracíš, můžeš si ho připnout!<br>Připnuté seznamy se zobrazí na domovské stránce k rychlému přístupu. Můžeš jich mít <cy>maximálně 5</cy>!<br><br>
-                      Seznam připneš <cb>připínacím tlačítkem</cb> na stránce se <cr>seznamem</cr>.`],
+                      Seznam připneš <cb>připínacím tlačítkem</cb> na stránce se <cr>seznamem</cr>.`,
+                     `You can pin list you frequently return to!<br>Pinned lists show up on the home page for quick access. You can have <cy>up to 5</cy> of them!<br><br>
+                      Pin a list with the <cb>pin button</cb> on the <cr>list page</cr>.
+                     `],
     "OFFICIALLIST_T": ["Oficiální seznamy", "Official Lists"],
-    "OFFICIALLIST_D": [`Toto jsou seznamy s nejlepšími levely z Levelů od Fanoušků!`, `These lists contain the best levels from my level request series!`],
+    "OFFICIALLIST_D": [`Toto jsou seznamy s <cr>nejlepšími levely</cr> z Levelů od Fanoušků!`, `These lists contain the <cr>best levels</cr> from my level request series!`],
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],
@@ -213,6 +228,11 @@ var jsStr = {
     "LEVELS": ["Levely", "Levels"],
     "MOBILE_ED": ["Pro použití editoru si otoč mobil ;).", "Turn your phone into landscape to use the editor ;)."],
     "DELETE": ["Smazat", "Delete"],
+    "MAX_INLIST": ["Víc levelů už se do seznamu nevejde!", "More levels won't fit in the list!"],
+    "SEARCH_NOLVL": ["Neuložil jsi level s tímto jménem!", "No levels found!"],
+    "NOSAVEYET": ["Nemáš žádné uložené levely!", "You don't have any levels saved!"],
+    "CARD_COL": ["Barva karty", "Card color"],
+    "LEV_DIFF": ["Obtížnost levelu", "Level difficulty"],
 
     // comments
     "PHOLD1": ["Tvůj seznam je...",
@@ -313,7 +333,7 @@ var parts = {
     "listViewer": [
         ["Řazení:", "Sorting:"],
         ["Strana:", "Page:"],
-        ["Hledání", "Search"]
+        ["        Hledání", "        Search"]
     ]
 }
 
@@ -374,6 +394,7 @@ $(function() {
     }
     LANG = currLang;
     $($(".settingsDropdown").children()[currLang]).attr("selected", true)
+    translate()
 })
 
 function translate() {

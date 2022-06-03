@@ -23,7 +23,7 @@ function checkJson(data) {
         if (Object.keys(parsedData).length - ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
 
         if (data.length > 25000) {
-            throw (`Tvůj seznam je moc velký! (${(data.length / 25000).toFixed(2)}% nad limitem!). Smaž nějaké levely/collaby z levelů!`)
+            throw (`${jsStr["TOOBIG1"][LANG]} (${(data.length / 25000).toFixed(2)}% ${jsStr["TOOBIG2"][LANG]}).${jsStr["TOOBIG3"][LANG]}`)
         }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
@@ -56,36 +56,7 @@ function checkJson(data) {
 }
 
 var isHidden = $("input[name='hidden']").attr("checked") == "checked";
-var page = 0;
-var maxPage = 0;
 var listNames = [];
-function displayComLists(doita) {
-    $(".customLists").children().remove();
-
-    let data = JSON.parse(JSON.stringify(doita)).reverse();
-    let listAmount = Object.keys(data).length;
-
-    maxPage = Math.ceil(listAmount / 10);
-    $("#maxPage").text("/" + maxPage);
-
-    if (Object.keys(data).length > 0) {
-        data.slice(10 * page, 10 * page + 10).forEach(list => {
-            let listColor = list["data"]["1"].color;
-            let darkCol = HEXtoRGB(listColor, 40);
-            let lightCol = HEXtoRGB(listColor, -60);
-
-            $(".customLists").append(`
-            <a style="text-decoration: none;" href="./index.html?id=${list.id}">
-                <div id="listPreview" class="noMobileResize" style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${listColor}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
-                    <div class="uploadText">${list.name}</div>
-                    <div class="uploadText">- ${list.creator} -</div>
-                </div>
-            </a>
-                    `);
-        });
-    }
-}
-
 
 function showBGColorPicker() {
     if ($(".bgcolorContainer").css("display") == "none") {
@@ -93,58 +64,37 @@ function showBGColorPicker() {
         $(".bgcolorContainer").slideDown(50)
 
         let hue = getHueFromHEX(levelList.pageBGcolor)
-        let val = getLightnessFromHEX(levelList.pageBGcolor)+"%"
-        let val2 = getLightnessFromHEX(levelList.pageBGcolor)/2+"%"
+        let val = getLightnessFromHEX(levelList.pageBGcolor) + "%"
+        let val2 = getLightnessFromHEX(levelList.pageBGcolor)
 
-        $(".bgcolorContainer").append(makeColorElement(hue,val2))
-    
+        $(".bgcolorContainer").append(makeColorElement(hue, val2))
+
         $(".bgcolorContainer >> input")[0].addEventListener("input", k => {
             $("body").css("background-color", HSLtoHEX(k.target.value, "37%", val))
-            $(":root").css("--greenGradient",`linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
             hue = k.target.value
+            $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+            $("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
 
             let hex = HSLtoHEX(hue, "37%", val)
             levelList.pageBGcolor = hex
             $("#bgcolorPicker").css("background", hex)
         })
         $(".bgcolorContainer >> input")[1].addEventListener("input", k => {
-            $("body").css("background-color", HSLtoHEX(hue, "37%", (k.target.value)+"%"))
-            val = (k.target.value*2)+"%"
+            let hue = getHueFromHEX(levelList.pageBGcolor)
+            $("body").css("background-color", HSLtoHEX(hue, "37%", (k.target.value * 2) + "%"))
+            $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+            $("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
+            val = (k.target.value * 2) + "%"
 
             let hex = HSLtoHEX(hue, "37%", val)
             levelList.pageBGcolor = hex
             $("#bgcolorPicker").css("background", hex)
         })
-    
+
     }
     else {
         $(".bgcolorContainer").slideUp(50)
     }
-}
-
-function showFaves() {
-    if ($("iframe").css("display") != "none") {
-        $(".searchTools").show();
-        $(".uploadBG:not(#collabTools)").show();
-        $(".titles").show(); $(".customLists").show();
-        $("iframe").hide(); $(".smallUploaderDialog").hide();
-        
-        $(".mobilePicker > div")[2].style.filter = "none"
-        $(".mobilePicker > div > h6")[2].innerHTML = "Uložené"
-        $($(".mobilePicker > div > img")[2]).attr("src", "images/savedMobHeader.svg")
-        return null
-    }
-
-    $(".searchTools").hide();
-    $(".uploadBG:not(#collabTools)").hide();
-    $(".titles").hide();
-    $(".customLists").hide();
-
-    $("iframe").show();
-    $(".mobilePicker > div").css("filter", "none")
-    $(".mobilePicker > div")[2].style.filter = "var(--redHighlight)"
-    $(".mobilePicker > div > h6")[2].innerHTML = "Zavřít"
-    $($(".mobilePicker > div > img")[2]).attr("src", "images/close.svg")
 }
 
 function uploadList() {
@@ -203,12 +153,11 @@ function updateList() {
         else { var listHidden = "0" }
 
         // will later also update uploadList()
-        let paramGetter = new URLSearchParams(window.location.search)
-        let params = Object.fromEntries(paramGetter.entries());
+        let param = JSON.parse(sessionStorage.getItem("listProps"))
         let postData = {
             "listData": JSON.stringify(levelList),
-            "id": params.edit,
-            "pwdEntered": params.pass,
+            "id": param[0],
+            "pwdEntered": param[1],
             "hidden": listHidden,
             "isNowHidden": isHidden
         }
@@ -217,7 +166,34 @@ function updateList() {
         $("#removebutton").remove()
 
         $.post("./php/updateList.php", postData, function (data) {
-            window.location.replace(`http://www.gamingas.wz.cz/lofttop10/upload.html?update=1`);
+            // Update success
+            if (3 == 3) {
+                $(".uploaderDialog").html(`
+                <div style="padding: 3%">
+                    <img src="./images/check.png" style="width:7%;">
+                    <p class="uploadText">Seznam aktualizován!</p>
+                </div>
+                `)
+            }
+
+            // List is unchanged
+            else if (data == 4) {
+                $(".uploaderDialog").html(`
+                <div style="padding: 3%">
+                    <img src="./images/help.png" style="width:7%;">
+                    <p class="uploadText">Nezměnil jsi nic v seznamu!</p>
+                </div>
+                `)
+            }
+
+            else {
+                $(".uploaderDialog").html(`
+                <div style="padding: 3%">
+                    <img src="./images/error.png" style="width:7%;">
+                    <p class="uploadText">Seznam se nepodařilo aktualizovat!</p>
+                </div>
+                `)
+            }
         })
     }
 }
@@ -235,11 +211,10 @@ function debugLists(am) {
     if (am == 2) {
         deeta = [];
         for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-            deeta.push({ "creator": i, "name": `Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]}`, "data": { "1": { "color": randomColor() } }, "id": 45, "timestamp": 10 })
+            deeta.push({"creator": i, "name": `Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]}`, "data": { "1": { "color": randomColor() } }, "id": 45, "timestamp": 10})
         }
-        ogDeeta = deeta;
 
-        displayComLists(deeta);
+        listViewerDrawer(deeta, ".communityContainer", 4)
     }
     else {
         $("#lDebugAm").val(parseInt($("#lDebugAm").val()) + am)
@@ -247,13 +222,13 @@ function debugLists(am) {
             $("#lDebugAm").val("0")
         }
     }
+    $(".debugTools").remove()
 }
 
-var sorting = false;
 $(function () {
     // Do nothing if in editor
     $(".pickerContainer").on("click", showBGColorPicker)
-    if (window.location.search.includes("editor")) { $(".uploader").show(); return }
+    if (window.location.search.includes("edit")) $(".uploader").show()
 
     // List image preview action
     $("#imageArrow").on("click", function () {
@@ -290,71 +265,36 @@ $(function () {
     // Showing color picker
 
     let isSearching = false
-    if (location.search != "") {
-        let paramGetter = new URLSearchParams(window.location.search)
-        let params = Object.fromEntries(paramGetter.entries());
+    let paramGetter = new URLSearchParams(window.location.search)
+    let params = Object.fromEntries(paramGetter.entries());
 
-        if (params.browse != null) {
-            $(".browser").show()
-            $.get("../parts/listViewer.html", dt => {
-                $(".browser").append(translateDoc(dt,"listViewer"))
+    if (Object.keys(params).length == 0 || params.browse != null || params.s != null) {
+        $(".browser").show()
+        $.get("../parts/listViewer.html", dt => {
+            $(".communityContainer").append(translateDoc(dt, "listViewer"))
 
-                // Generates stuff
-                $.get("./php/getLists.php", data => {
-                    if (typeof data != "object") { $(".listContainer").text(jsStr["NO_RES"][LANG]); return; }
-                    deeta = data;
-                    ogDeeta = data;
-                    displayComLists(deeta);
-                    
-                    if (isSearching) search()
-                });
+            if (params.s != null) {
+                $(".communityContainer").show()
+                $("#searchBar").val(params.s)
+                isSearching = true
+            }
 
-                $("#pageSwitcher").on("change", function () {
-                    page = parseInt($(this).val()) - 1;
-                    if (page > maxPage) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
-                    if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
-                    displayComLists(deeta);
-                })
-            
-                // Sort button action
-                $("#sortBut").on("click", function () {
-                    displayComLists(deeta.reverse())
-                    if (sorting) {
-                        $("#sortBut").css("transform", "scaleY(1)");
-                        $("#sortBut").attr("title", jsStr["NEWEST"][LANG])
-                    }
-                    else {
-                        $("#sortBut").css("transform", "scaleY(-1)");
-                        $("#sortBut").attr("title", jsStr["OLDEST"][LANG])
-                    }
-                    sorting = !sorting
-                })
-            })
-        }
+            // Generates stuff
+            $.get("./php/getLists.php", data => {
+                if (typeof data != "object") { $(".listContainer").text(jsStr["NO_RES"][LANG]); return; }
+                listViewerDrawer(data, ".communityContainer", 4)
 
-        if (params.edit != null) {
-            generateFromJSON()
-            isHidden = $("input[name='hidden']").attr("checked") == "checked";
-        }
-        else if (params.s != null) {
-            $(".browser").show()
-            $("#searchBar").val(params.s)
-            isSearching = true
-        }
-        else if (params.update != null) {
+                if (isSearching) search()
+            });
 
-            $(".uploaderDialog").html(`
-            <img style="padding-left: 3%" src=./images/check.png>
-            <p class="uploadText" style="padding: 0 3% 0 3%">${jsStr["LIST_UPDATED"][LANG]}</p>
-
-            </div>
-            </div>
-            
-            `);
-        }
+        })
     }
 
-    $(".smallUploaderDialog").hide();
+    if (params.editing != null) {
+        generateFromJSON()
+        isHidden = $("input[name='hidden']").attr("checked") == "checked";
+    }
+
 
     if (window.location.port != "") {
         $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
@@ -392,11 +332,11 @@ function removeList() {
     // Confirm remove
     $(".boom").append(`<div class="uploadText removeScreen">
     <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.png"><br />
-    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -3.04em;" src="./images/szn1.png">
+    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -5.4vw;" src="./images/szn1.png">
     <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">${jsStr["CONF_DEL"][LANG]}</p>
     <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
-        <img id="rmbutton" onclick="confirmDelete()" class="button" src="${jsStr["YES_IMG"][LANG]}">
-        <img id="rmbutton" onclick="closeRmScreen()" class="button" src="${jsStr["NO_IMG"][LANG]}">
+        <button id="rmbutton" onclick="confirmDelete()" class="button uploadText eventButton">${jsStr["YES"][LANG]}</button>
+        <button id="rmbutton" onclick="closeRmScreen()" class="button uploadText eventButton">${jsStr["NO"][LANG]}</button>
     <div>
     </div>`);
 
@@ -421,49 +361,6 @@ function removeList() {
 function murderList() {
     $(".boom").css("display", "initial");
 
-    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.replace("./upload.html"));
+    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.replace("./upload.html?editor"));
     $("#levelUpload").addClass("killList");
-}
-
-function pageSwitch(num) {
-    if (page + num < 0) {
-        page = 0
-    }
-    else if (page + num > maxPage - 1) {
-        page = maxPage - 1;
-    }
-    else {
-        page += num;
-        $("#pageSwitcher").val(page + 1);
-        displayComLists(deeta);
-    }
-}
-
-function search() {
-    deeta = ogDeeta;
-    let query = $("#searchBar").val();
-    if (query == "") {
-        // Reset stuff
-        page = 0;
-        $("#pageSwitcher").val("1");
-        displayComLists(deeta);
-    }
-    else {
-        let regex = new RegExp(".*(" + query + ").*", "ig"); // Matches all strings that contain "query"
-        let filteredData = deeta.filter(val => JSON.stringify(val).match(regex));
-        if (filteredData.length == 0) {
-            $(".customLists").children().remove()
-            page = 0;
-            $("#pageSwitcher").val("1");
-            $("#maxPage").text("/1")
-            $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
-        }
-        else {
-            page = 0;
-            $("#pageSwitcher").val("1");
-            deeta = filteredData;
-
-            displayComLists(filteredData);
-        }
-    }
 }

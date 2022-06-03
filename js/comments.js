@@ -5,11 +5,11 @@ function getID() {
 
   if (params["preview"] != null) { return -8 } // List preview from editor
   if (params["pid"] != null) { return -10 } // Disable comments on private lists
-  if (params["random"] != null) { return -10 } // Disable comments on private lists
+  if (params["random"] != null) { return -11 } // -11 will be replaced with actual ID later
   if (params["id"] != null) { return params["id"] } // Community level/2019 or 2021 list (-2,-3)
   else { return -9 } // Is Homepage
 }
-const LIST_ID = getID();
+var LIST_ID = getID();
 
 function listList() {
   // What a shitty function name bruh
@@ -169,13 +169,13 @@ $(function () {
 
   // Page switching
   $("#pageSwitcher").on("change", function () {
-    page = parseInt($(this).val()) - 1;
-    if (page > maxPage - 1) {
-      page = maxPage - 1;
-      $("#pageSwitcher").val(maxPage);
+    commentPage = parseInt($(this).val()) - 1;
+    if (commentPage > maxCommentPage - 1) {
+      commentPage = maxCommentPage - 1;
+      $("#pageSwitcher").val(maxCommentPage);
     }
-    if (page < 1) {
-      page = 0;
+    if (commentPage < 1) {
+      commentPage = 0;
       $("#pageSwitcher").val(1);
     }
     displayComments(deeta);
@@ -449,8 +449,8 @@ function comBox(cd, dcc, edcc) {
     `;
 }
 
-var page = 0;
-var maxPage = 1;
+var commentPage = 0;
+var maxCommentPage = 1;
 var deeta = "";
 
 function debugComments(am) {
@@ -479,12 +479,13 @@ function debugComments(am) {
 }
 
 function displayComments(data) {
-  // Don't do anything on list previews
-  if (LIST_ID == -8) return
+  // Don't do anything on list previews and random lists that haven't replaced LIST_ID
+  if ([-8, -11].includes(LIST_ID) || typeof data == "string") return
 
   const PER_PAGE = 5;
 
-  $("#commAmount").text(data.length)
+  if (data != 2) $("#commAmount").text(data.length)
+  else $("#commAmount").text("0")
 
   $("#commentList").html("");
   $(".noComm").hide();
@@ -496,10 +497,10 @@ function displayComments(data) {
   data.reverse();
 
   // Max page
-  maxPage = Math.ceil(data.length / PER_PAGE);
-  $("#maxPage").text("/" + maxPage);
+  maxCommentPage = Math.ceil(data.length / PER_PAGE);
+  $("#maxPage").text("/" + maxCommentPage);
 
-  for (x = page * PER_PAGE; x < page * PER_PAGE + PER_PAGE; x++) {
+  for (x = commentPage * PER_PAGE; x < commentPage * PER_PAGE + PER_PAGE; x++) {
     let commentData = data[x]
 
     let darkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
@@ -512,13 +513,13 @@ function displayComments(data) {
 }
 
 function pageSwitch(num) {
-  if (page + num < 0) {
-    page = 0;
-  } else if (page + num > maxPage - 1) {
-    page = maxPage - 1;
+  if (commentPage + num < 0) {
+    commentPage = 0;
+  } else if (commentPage + num > maxCommentPage - 1) {
+    commentPage = maxCommentPage - 1;
   } else {
-    page += num;
-    $("#pageSwitcher").val(page + 1);
+    commentPage += num;
+    $("#pageSwitcher").val(commentPage + 1);
     displayComments(deeta);
   }
 }

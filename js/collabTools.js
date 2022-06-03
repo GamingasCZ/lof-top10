@@ -237,8 +237,10 @@ function addRole(preset = null, loading = 0) {
     let roleCode = $(`
     <div class="roleBubble" style="background: ${randomColor()};">
         <input id="roleInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="${jsStr["NAME"][LANG]}" value=${presetName}></input>
-        <img class="button noMobileResize" style="width: 2.5vw; height: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 1)"
-       ><img class="button noMobileResize roleRm" style="width: 2.5vw; height: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 1)">
+        <div class="roleControls">
+            <img class="button noMobileResize" src="images/copy.png" onclick="clipboardTask(1, $(this).parent(), 1)"
+            ><img class="button noMobileResize roleRm" src="images/delete.png" onclick="removeColObject($(this), 1)">
+        </div>
     </div>
     `).appendTo($(".collabRoles"));
     roleInstance.HTMLobject = roleCode[0];
@@ -776,4 +778,15 @@ $(function () {
     })
 
     window.addEventListener("resize", () => { $(".socialPicker").hide() });
+
+    $(".roleTab").click(() => {
+        $(".roleStuff").eq(0).css("display", "flex");
+        $(".roleStuff").eq(1).css("display", "initial");
+        $(".memberStuff").hide()
+    })
+    $(".humanTab").click(() => {
+        $(".memberStuff").eq(0).css("display", "flex");
+        $(".memberStuff").eq(1).css("display", "initial");
+        $(".roleStuff").hide()
+    })
 })

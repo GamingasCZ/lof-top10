@@ -4,21 +4,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="user-scalable=0, width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="stylesheet" href="./assets/style.css">
+  <link rel="stylesheet" href="./assets/community.css">
+  <link rel="stylesheet" href="./assets/mobile.css">
+  <link rel="icon" href="./images/gdl.svg">
 
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="stylesheet" href="assets/community.css">
-  <link rel="stylesheet" href="assets/mobile.css">
+  <meta name="theme-color" content="#032210">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Geometry Dash Level Lists">
+  <meta name="twitter:description" content="Create and browse lists of GD levels!">
+  <meta name="twitter:image" content="http://gamingas.wz.cz/lofttop10/images/twitImg.png">
 
-  <link rel="icon" href="./images/gdbrowser.png">
+  <meta name="description" content="Create, share and browse lists of Geometry Dash levels!">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script rel="text/javascript" src="./js/languages.js"></script>
-  <script rel="text/javascript" src="./js/generator.js"></script>
-  <script rel="text/javascript" src="./js/editor.js"></script>
-  <script rel="text/javascript" src="./js/graphicEditor.js"></script>
-  <script rel="text/javascript" src="./js/helpDialogs.js"></script>
-  <script rel="text/javascript" src="./js/color.js"></script>
-  <script rel="text/javascript" src="./js/collabTools.js"></script>
+  <script rel="text/javascript" src="./js/generator.js" async></script>
+  <script rel="text/javascript" src="./js/editor.js" async></script>
+  <script rel="text/javascript" src="./js/graphicEditor.js" async></script>
+  <script rel="text/javascript" src="./js/helpDialogs.js" async></script>
+  <script rel="text/javascript" src="./js/color.js" async></script>
+  <script rel="text/javascript" src="./js/collabTools.js" async></script>
 
   <title>Komunitní seznamy | GD Seznamy</title>
 </head>
@@ -53,7 +60,7 @@
       <p style="margin: 0 auto;" class="collabTTitle">- Nastavení collabu -</p>
       <img src="./images/delete.png" class="button" style="width: 6%; height: max-content;" onclick="hideCollabTools()">
     </div>
-    <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 12%;">
+    <div style="display: flex; width: 100%; padding: 1%; align-items: center">
       <img class="hostIcon" src="./images/bytost.png" style="margin-right: 1vw;">
       <input id="posInputBox" class="verifierRole cardInput" autocomplete="off" type="text"
         placeholder="Role nahrávatele" style="width: 15vw;" onchange="chMainName($(this), 3)" value="Host">:
@@ -62,7 +69,12 @@
       <img class="button" src="images/getStats.png" onclick="chMainName($(this), 2)">
     </div>
 
-    <div class="editorHeader collabHeader uploadText collabBar">
+    <div class="mobileTabSwitcher" style="display: none;">
+      <button class="button roleTab">Role</button>
+      <button class="button humanTab">Členové</button>
+    </div>
+
+    <div class="editorHeader collabHeader uploadText collabBar roleStuff">
       <div class="uploadText button roleHead" onclick="rollThing(0)">Role</div>
       <div class="presetButtonContainer">
         <button class="button uploadText eventButton noMobileResize" onclick="addRole(0)">Dekorace</button>
@@ -76,14 +88,14 @@
           src="images/add.png" title="Přidat roli">
       </div>
     </div>
-    <div class="collabBG collabHeader collabDIV">
+    <div class="collabBG collabHeader collabDIV roleStuff">
       <table style="display: none;" class="collabTables collabRoles">
         <p class="uploadText noRolAdded">K přidání role vyber předvolbu, nebo klikni na<img id="plusSign"
             style="width: 2.2%" src="images/add.png"></p>
       </table>
     </div>
 
-    <div class="editorHeader collabHeader uploadText collabBar">
+    <div class="editorHeader collabHeader uploadText collabBar memberStuff">
       <div class="uploadText button humHead" onclick="rollThing(1)">Členové</div>
 
       <div style="display: flex; align-items: center; opacity: 0;" class="socSettings">
@@ -109,7 +121,7 @@
           style="width: 3vw;margin-left: 0.2vw;height: fit-content;" src="images/add.png" title="Přidat člověka">
       </div>
     </div>
-    <div class="collabBG collabHeader collabDIV" style="height: 39.7%;;">
+    <div class="collabBG collabHeader collabDIV memberStuff" style="height: 125%;;">
       <p class="uploadText noRoles">K přidání členů přidej roli.</p>
       <p style="display: none;" class="uploadText addRoles">K přidání člena klikni na<img style="width: 2.2%"
           id="plusSign" src="images/add.png"></p>
@@ -150,6 +162,8 @@
 
   <iframe src="" loading="eager" style="display: none;" scrolling="no"></iframe>
 
+  <div id="favoritesContainer" style="display: none;"></div>
+
   <div class="helpBG" style="display: none;"></div>
   <div class="popupHelp uploadText" style="display: none;">
     <img src="./images/delete.png" class="button" style="width: 4%; float: right;" onclick="closeHelp()">
@@ -160,10 +174,10 @@
 
   <div style="display: none;" id="centeredPopup" class="uploadText levelPicker">
     <div style="display: flex;">
-      <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText">Uložené levely</span>
+      <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">Uložené levely</span>
       <img onclick="hideFavePicker()" src="./images/delete.png" style="width: 3vw;" class="button">
     </div>
-    <input placeholder="        Hledat level..." class="searchWithIcon" style="margin-right: 2vw;">
+    <input placeholder="        Hledat level..." class="savedFilter searchWithIcon" style="margin-right: 2vw;">
     <div class="levelPickerContainer" style="margin-right: 2vw;"></div>
   </div>
 
@@ -176,7 +190,7 @@
       <input name="creator" type="text" id="creatornm" class="uploadMainInp" placeholder="Tvůrce"><br />
       <div style="display: flex; justify-content: center; margin-right: 1.7vw;">
         <img src="images/arrow.png" id="imageArrow" class="button" title="Ukázat náhled obrázku">
-        <input type="text" onchange="updateTitImg()" id="tImgMargin" class="titImgInp uploadMainInp"
+        <input type="text" id="tImgMargin" class="titImgInp uploadMainInp"
           placeholder="Obrázek seznamu">
         <img src="images/help.png" class="button helpButton" onclick="openHelp('upload')">
       </div>
@@ -241,6 +255,8 @@
       <img class="button pageBut" src="images/arrow-right.png" onclick="debugLists(1)">
       <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugLists(2)">
     </div>
+
+    <div class="communityContainer"></div>
   </div>
 
   <!--Explosion-->
@@ -255,7 +271,5 @@
       src="images/github.png"></a>
   <a onclick="openHelp('license')" class="uploadText gamLink"> Licence</a>
 </footer>
-
-<script>$(function () { translate(); })</script>
 
 </html>

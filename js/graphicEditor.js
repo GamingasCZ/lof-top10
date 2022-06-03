@@ -128,7 +128,7 @@ function saveDifficulty(difficulty, featured, epic, listPos) {
         featured = 0; epic = 0;
     }
 
-    $($(".diffMain")[listPos-1]).attr("src", `images/faces/${difficulty}.png`)
+    $($(".diffMain")[listPos - 1]).attr("src", `images/faces/${difficulty}.png`)
     $(".faceSelected").removeClass("faceSelected")
     $($(`.diffFace`)[difficulty]).addClass("faceSelected")
 
@@ -145,9 +145,9 @@ function saveDifficulty(difficulty, featured, epic, listPos) {
 
     let rate = 0;
     if (epic != -1) { // featured passed -1 when epic passed the value from levelList
-        if (epic) { $($(".diffBack")[listPos-1]).attr("src", `images/faces/epic.png`); rate = 2; $($(".diffBack")[listPos-1]).attr("id", `epicGlow`); }
-        else if (featured) { $($(".diffBack")[listPos-1]).attr("src", `images/faces/featured.png`); rate = 1; $($(".diffBack")[listPos-1]).attr("id", `featuredGlow`); }
-        else { $($(".diffBack")[listPos-1]).attr("src", ``); $($(".diffBack")[listPos-1]).attr("id", `epicGlow`); }
+        if (epic) { $($(".diffBack")[listPos - 1]).attr("src", `images/faces/epic.png`); rate = 2; $($(".diffBack")[listPos - 1]).attr("id", `epicGlow`); }
+        else if (featured) { $($(".diffBack")[listPos - 1]).attr("src", `images/faces/featured.png`); rate = 1; $($(".diffBack")[listPos - 1]).attr("id", `featuredGlow`); }
+        else { $($(".diffBack")[listPos - 1]).attr("src", ``); $($(".diffBack")[listPos - 1]).attr("id", `epicGlow`); }
     }
     else rate = featured[1]
     levelList[listPos]["difficulty"] = [difficulty, rate]
@@ -181,15 +181,15 @@ function openDiffPicker(lp) {
     saveDifficulty(diff[0], diff, -1, lp)
 }
 
-const changeBG = (ind, pos) => {levelList[pos]["background"][0] = ind}
-const changeGrad = (ind, pos) => {levelList[pos]["background"][1] = ind}
+const changeBG = (ind, pos) => { levelList[pos]["background"][0] = ind }
+const changeGrad = (ind, pos) => { levelList[pos]["background"][1] = ind }
 function openBGPicker(lp) {
     $('.cardContainer' + lp).text('')
     if (openedPane == 3 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
     openedPane = 3
 
     let titles = ["Žádné", "Výchozí", "YouTube náhled", "Šrafování"]
-    let bgs = ["none","original","youtube","stripes"];
+    let bgs = ["none", "original", "youtube", "stripes"];
     bgs = bgs.map(i => `<img class='button bgPick' onclick='changeBG(${bgs.indexOf(i)}, ${lp})' title='${titles[bgs.indexOf(i)]}' src='images/bgIcons/${i}.svg'>`).join("\n")
 
     $('.cardContainer' + lp).append(`
@@ -219,35 +219,34 @@ function showBGdialog() {
     $(".bgProps").fadeIn(100)
     $(".boom").css("background-color", "#000000a0")
     $(".boom").show()
-    $(".boom").animate({"opacity":100}, 200)
+    $(".boom").animate({ "opacity": 100 }, 200)
 }
 
-function colorizePage() {
-    let selColor = $("#bgcolorPicker").val()
-
-    let hue = getHueFromHEX(selColor)
-
-    levelList["pageBGcolor"] = selColor;
-
-    $("body").css("background-color", selColor)
-    $(".editorHeader").css("background-color", "hsl(" + hue + ",40.7%,54%)")
-    $("#mainContent").css("background-color", "hsl(" + hue + ",40.7%,25%)")
-    $(".uploadBG").css("background-color", "hsl(" + hue + ",11.5%,22.2%)")
-    $("#submitbutton").css("background-color", "hsl(" + hue + ",53.5%,63.7%)")
-}
-
-function generateFromJSON(event = null) {
-    let listID = location.search.slice(1).split(/[=&]/g);
-    let listType = "id";
-    if (listID[0] == "pedit") {
-        listType = "pid";
-    }
-    let postReq = { "pwdEntered": listID[3], "retData": "1" };
-    postReq[listType] = listID[1];
+function generateFromJSON() {
+    let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
+    let postReq = { "pwdEntered": loadProps[1], "retData": "1" };
+    postReq[loadProps[2]] = loadProps[0];
     $.post("./php/pwdCheckAction.php", postReq, function (data) {
-        if (["1", "2"].includes(data)) {
-            window.location.replace("./upload.html")
+        // Disabling input boxes when editing a list
+        $(".uploadTitle").text(jsStr["EDITING"][LANG]);
+
+        $("#listnm").attr("disabled", "true");
+        $("#creatornm").attr("disabled", "true");
+
+        $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
+        $("#submitbutton").attr("onclick", "updateList()")
+
+        $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
+
+        if (typeof data == "number") {
+            window.location.replace("./upload.html?editor")
         }
+
+        // Debug list
+        if (window.location.port != "") {
+            data = {"creator":"GaminagsCZ","name":"top 2 nejlepší levely","data":"{\"1\":{\"levelName\":\"LIGMO\",\"creator\":[[\"EidamGD\",[6,12,17,true],\"Host\"],[{\"name\":\"Level\",\"HTMLobject\":{},\"id\":1651926617017}],[{\"name\":\"RealSuni\",\"role\":1651926617017,\"part\":[\"0\",\"3\"],\"color\":\"#ffffff\",\"socials\":[[0,\"https://twitch.tv/OnlyTryingYT\"]],\"HTMLobject\":{},\"verified\":[62,12,12,false]}]],\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[1,0]},\"2\":{\"levelName\":\"LIGMO2\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a3ff00\", \"difficulty\":[1,2]},\"3\":{\"levelName\":\"LIGMO3\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a300ff\", \"difficulty\":[3,1]},\"4\":{\"levelName\":\"LIGMO4\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[5,1]},\"5\":{\"levelName\":\"LIGMO5\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[1,1]},\"titleImg\":\"\",\"pageBGcolor\":\"#53a3aa\"}","id":88,"timestamp":"1651860720","hidden":"0"}
+        }
+
         // Is the list hidden?
         if (data["hidden"] != "0") {
             $(`img[for="hidden"]`).attr("src", "images/check-on.png")
@@ -263,8 +262,11 @@ function generateFromJSON(event = null) {
 
         levelList = JSON.parse(data["data"]);
         $(".titImgInp").val(levelList["titleImg"])
-        $("#bgcolorPicker").val(levelList["pageBGcolor"])
-        colorizePage()
+
+        $("#bgcolorPicker").css("background", levelList["pageBGcolor"])
+        $("body").css("background-color", levelList["pageBGcolor"])
+        let hue = getHueFromHEX(levelList["pageBGcolor"])
+        $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
 
         for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
             loadLevel(y + 1)
@@ -287,6 +289,16 @@ function refreshCardDetails(lp) {
     $(".idbox" + lp).val(levelList[lp]["levelID"])
     $(".cardLVideo" + lp).val(levelList[lp]["video"])
     $("#top" + lp).css("background-color", levelList[lp]["color"])
+
+    if (levelList[lp]["difficulty"] != undefined) {
+        let rate = ["","featured", "epic"][levelList[lp]["difficulty"][1]]
+
+        $(`.dPick${lp} > .diffMain`).attr("src", `images/faces/${levelList[lp]["difficulty"][0]}.png`) // change face
+        if (rate != "") $(`.dPick${lp} > .diffBack`).attr("src", `images/faces/${rate}.png`) // change rate glow
+
+        if (rate == "featured") $(`.dPick${lp} > .diffBack`).attr("id", "featuredGlow") // glow ids
+        else $(`.dPick${lp} > .diffBack`).attr("id", "epicGlow")
+    }
 
     availFill(0, $(".cardLName" + lp), "freedom69", lp)
     availFill(1, $(".cardLCreator" + lp), "freedom69", lp)
@@ -450,23 +462,44 @@ function changeLevelVideo() {
     levelList[position]["video"] = selection;
 }
 
-function addFromFaves() {
-    $(".levelPickerContainer").text("")
+function searchFaves(data) {
+    let searchTerms = data.target.value
+    favesData = OGfavesData.filter(x => (x[0].toLowerCase()).includes(searchTerms.toLowerCase()))
 
-    if (favesData != null) makeFavesPicker()
-    else $("iframe").attr("src","./packs.html?type=favorites")
-    
+    makeFavesPicker()
+}
+
+function addFromFaves() {
+    if (Object.keys(levelList).length - ADDIT_VALS > 50) return
+
+    $(".levelPickerContainer").text("")
+    $(".savedFilter").val("")
+
+    if (favesData != null) { favesData = OGfavesData; makeFavesPicker() }
+    else $("iframe").attr("src", "./packs.html?type=fetchFaves")
+
     $(".boom").show()
     $(".boom").css("background-color", "black")
-    $(".boom").css("opacity","0.7")
+    $(".boom").css("opacity", "0.7")
     $(".levelPicker").fadeIn(70)
 }
 function hideFavePicker() {
     $(".boom").css("background-color", "white")
-    $(".boom").css("opacity","0")
+    $(".boom").css("opacity", "0")
     $(".boom").hide()
     $(".levelPicker").fadeOut(70)
 
+}
+
+function maxAddedDialog() {
+    $(".levelPickerContainer").append(`
+<div class="noSaves">
+    <img src="./images/close.svg">
+    <p class="uploadText">${jsStr["MAX_INLIST"][LANG]}</p>
+</div>
+        `)
+    $(".addCardButton").addClass("disabled")
+    return
 }
 
 function addPicked(ind) {
@@ -477,46 +510,77 @@ function addPicked(ind) {
         "levelID": favesData[ind][2],
         "video": null,
         "color": favesData[ind][3],
-        "difficulty": [0,0],
+        "difficulty": [0, 0],
         "background": [1, true, 30, 100] //BG, gradient, alpha, brightness
     };
     loadLevel(listLenght)
     displayCard(listLenght)
+
+    if (listLenght >= 50) {$(".levelPickerContainer").empty(); maxAddedDialog()}
 }
 
-let favesData
+var favesData
+var OGfavesData
 window.addEventListener("message", mess => {
     let state = mess.data;
-    if (state == "favorites") {
-        favesData = JSON.parse($("iframe")[0].contentDocument.body.innerText)
-        makeFavesPicker()
+    if (state == "fetchFaves") {
+        let data = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
+        if (data != null) {
+            favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
+            OGfavesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
         }
+
+        // No key in localStorage (first time entering site)
+        else { favesData = []; OGfavesData = [] }
+        makeFavesPicker()
     }
+}
 )
 
 function makeFavesPicker() {
+    $(".levelPickerContainer").empty()
+    if (Object.keys(levelList).length - ADDIT_VALS > 50) {
+        maxAddedDialog()
+        return
+    }
+
     if (favesData.length == 0) {
+        // No search results
+        if ($(".savedFilter").val().length > 0) {
+            $(".levelPickerContainer").append(`
+<div class="noSaves">
+    <img src="./images/searchOpaque.svg">
+    <p class="uploadText">${jsStr["SEARCH_NOLVL"][LANG]}</p>
+</div>
+            `)
+            return
+        }
+
         // No saved levels
         $(".levelPickerContainer").append(`
 <div class="noSaves">
     <img src="./images/savedMobHeader.svg">
-    <p class="uploadText">Nemáš žádné uložené levely!</p>
+    <p class="uploadText">${jsStr["NOSAVEYET"][LANG]}</p>
 </div>
         `)
         return
     }
 
+    let i = 0;
     favesData.forEach(data => {
         // Delete collab text
         if (data[1].includes("(Collab)")) {
-            data[1] = data[1].split(" ").slice(0,-1).join(" ")
+            data[1] = data[1].split(" ").slice(0, -3).join(" ")
+            favesData[i][1] = data[1]
         }
 
         $(".levelPickerContainer").append(`
         <div id="favBubble" class="roleBubble button" style="background-color: ${data[3]};" onclick="addPicked(${favesData.indexOf(data)})">${data[0]} - ${data[1]}
         </div>
         `)
-})}
+        i++
+    })
+}
 
 async function addLevel() {
     var listLenght = Object.keys(levelList).length - ADDIT_VALS;
@@ -549,7 +613,7 @@ async function addLevel() {
         "levelID": null,
         "video": null,
         "color": "",
-        "difficulty": [0,0],
+        "difficulty": [0, 0],
         "background": [1, true, 30, 100] //BG, gradient, alpha, brightness
     };
 
@@ -582,6 +646,7 @@ function loadLevel(pos) {
     // Do not go over 50 levels
     if (pos > 50) return
 
+    $(".previewButton").removeClass("disabled");
     $("#mainContent").append(card(pos))
     refreshCardDetails(pos)
 
@@ -591,7 +656,7 @@ function loadLevel(pos) {
     $("#top" + pos).css("border-color", `rgb(${rgb.join(",")})`);
     $("#lineSplit" + pos).css("background-color", `rgb(${rgb.join(",")})`);
 
-    $("#smtop"+pos).hide()
+    $("#smtop" + pos).hide()
     // Setting card buttons
     $("#colorPicker" + pos).on("change", changeColPicker);
     $(".idbox" + pos).on("change keyup", changeIDbox);
@@ -637,7 +702,7 @@ function updateCardData(prevID, newID) {
     $(".cPickerBut" + prevID).attr("onclick", "openColorPicker(" + newID + ")");
     $(".cPickerBut" + prevID).attr("class", "button cardButton cPickerBut" + newID);
     $(".dPick" + prevID).attr("onclick", "openDiffPicker(" + newID + ")");
-    $(".dPick" + prevID).attr("class", "button cardButton diffContainer dPick"+newID);
+    $(".dPick" + prevID).attr("class", "button cardButton diffContainer dPick" + newID);
 
     if (parseInt(prevID) != parseInt(newID)) {
         levelList[prevID] = levelList[newID + "waiting"];
@@ -759,8 +824,9 @@ function card(index) {
                     <img title="${jsStr['DEL_CARD'][LANG]}" class="removerButton${index} button cardButton"
                         onclick="removeLevel(${index})" src="./images/delete.png">
 
-                    <img title="Barva karty" class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
-                    <div title="Obtížnost levelu" class="button cardButton diffContainer dPick${index}" onclick="openDiffPicker(${index})">
+                    <img title="${jsStr['CARD_COL'][LANG]}" class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
+                    <div title="${jsStr["LEV_DIFF"][LANG]}" class="button cardButton diffContainer dPick${index}" onclick="openDiffPicker(${index})">
+                        <img id="diffBG" src="./images/faces/diffContainer.png">
                         <img class="diffIcon diffMain" src="./images/faces/0.png">
                         <img class="diffIcon diffBack">
                     </div>
@@ -788,7 +854,7 @@ function preview() {
     encodedData = btoa(encodedData.join(","));
     sessionStorage.setItem("previewJson", encodedData);
     window.open("./index.html?preview=1", "_blank")
-    
+
 }
 
 
@@ -796,46 +862,5 @@ var fuckupMessages;
 $(function () {
     $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
 
-    // Keyboard stuff
-
-    $("html").on("keydown", k => {
-        if (Object.keys(levelList).length - ADDIT_VALS > 2) {
-            let currCardShown = parseInt($(".positionEdit:not(:hidden)")[0].id.match(/[0-9]/g));
-            $(".positionEdit:not(:hidden)")[0].focus()
-            if (k.key == "ArrowDown") {
-                displayCard(currCardShown + 1) // Key: W
-                document.getElementById("top" + currCardShown++).scrollIntoView();
-            }
-            else if (k.key == "ArrowUp") {
-                displayCard(currCardShown - 1) // Key: S
-                document.getElementById("top" + currCardShown--).scrollIntoView();
-            }
-            else if (k.key == "ArrowLeft") {
-                if (moveCard("up", currCardShown)) { currCardShown-- } // Key: A
-            }
-            else if (k.key == "ArrowRight") {
-                if (moveCard("down", currCardShown)) { currCardShown++ } // Key: D
-            }
-        }
-
-    })
-
-
-    // Disabling input boxes when editing a list
-    let listID = location.search.slice(1).split(/[=&]/g);
-    if (["edit", "pedit"].includes(listID[0])) {
-        $(".uploadTitle").text(jsStr["EDITING"][LANG]);
-
-        $("#listnm").attr("disabled", "true");
-        $("#creatornm").attr("disabled", "true");
-
-        $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
-        $("#submitbutton").attr("onclick", "updateList()")
-
-        $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
-    }
-
-    $("#bgcolorPicker").on("change", function () {
-        colorizePage()
-    })
+    $(".savedFilter").on("keyup", searchFaves)
 })
