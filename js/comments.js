@@ -512,7 +512,7 @@ function displayComments(data) {
   }
 }
 
-function pageSwitch(num) {
+function commpageSwitch(num) {
   if (commentPage + num < 0) {
     commentPage = 0;
   } else if (commentPage + num > maxCommentPage - 1) {
