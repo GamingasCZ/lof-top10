@@ -750,22 +750,24 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				let lightCol = HEXtoRGB(object[3], -60)
 				let darkCol = HEXtoRGB(object[3], 40)
 				$(custElement).append(`
-				<a style="display: flex; align-items: center" href="./index.html?id=${object[0]}">
-				  <div id="listPreview" class="noMobileResize")"
-					  style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${object[3]}, rgb(${lightCol.join(",")}));
-							 border-color: rgb(${darkCol.join(",")}); margin: 0.85% ${previewType == 5 ? 1 : 7}% 0.85% 7%; flex-grow: 1;">
-					  <div class="boxHeader" style="flex-direction: row !important;">
-						<div>
-						  <p class="uploadText" style="margin: 0;">${object[1]}</p>
-						  <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object[2]} -</p>
+				<div style="display: flex; align-items: center">
+					<a style="display: flex; align-items: center; flex-grow: 1;" href="./index.html?id=${object[0]}">
+						<div id="listPreview" class="noMobileResize")"
+							style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${object[3]}, rgb(${lightCol.join(",")}));
+									border-color: rgb(${darkCol.join(",")}); margin: 0.85% ${previewType == 5 ? 1 : 7}% 0.85% 7%; flex-grow: 1;">
+							<div class="boxHeader" style="flex-direction: row !important;">
+								<div>
+								<p class="uploadText" style="margin: 0;">${object[1]}</p>
+								<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object[2]} -</p>
+								</div>
+								<div>
+								<p class="uploadText" style="margin: 0; font-size: var(--miniFont);">${window.parent.window.chatDate(object[4] / 1000)}</p>
+								</div>
+							</div>
 						</div>
-						<div>
-						  <p class="uploadText" style="margin: 0; font-size: var(--miniFont);">${window.parent.window.chatDate(object[4] / 1000)}</p>
-						</div>
-					  </div>
-				  </div>
-				</a>
-				${previewType == 5 ? '<img src="images/unpinList.png" onclick="unpinFromPreview(' + object[0] + ',this)" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">' : ''}
+					</a>
+					${previewType == 5 ? '<img src="images/unpinList.png" onclick="unpinFromPreview(' + object[0] + ',this)" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">' : ''}
+				</div>
 				`);
 			}
 			else if (previewType == 4) { // Newest lists
