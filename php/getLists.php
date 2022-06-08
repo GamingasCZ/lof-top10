@@ -83,7 +83,7 @@ if (count($_GET) == 1) {
   exit();
 } else {
   // Loading all lists
-  $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0'");
+  $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC");
   parseResult($result->fetch_all(MYSQLI_ASSOC));
 }
 

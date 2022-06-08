@@ -112,22 +112,21 @@ function uploadList() {
             "listData": JSON.stringify(levelList),
             "lName": $("#listnm").val(),
             "lCreator": $("#creatornm").val(),
-            "hidden": listHidden,
         }
+        if (listHidden == "1") postData["hidden"] = listHidden
 
         $.post("./php/sendList.php", postData, function (data) {
             //0 - password, 1 - listID
             // Change depending on your website
-            data = JSON.parse(data)
             let error = data.length != 2
 
             let currWebsite
             let pstr
-            let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
             if (!error) {
                 currWebsite = `${window.location.origin + "/lofttop10"}/?${isNaN(data[1]) ? "pid" : "id"}=${data[1]}`;
-                pstr = `${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${data[0]}</b>`;
+                pstr = `<br>${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${data[0]}</b>`;
             }
+            let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
 
             $(".uploaderDialog").html(`
                 <img style="padding-left: 3%" src=./images/${!error ? "check" : "error"}.png >
@@ -283,10 +282,8 @@ $(function () {
             $.get("./php/getLists.php", data => {
                 if (typeof data != "object") { $(".listContainer").text(jsStr["NO_RES"][LANG]); return; }
                 listViewerDrawer(data, ".communityContainer", 4)
-
-                if (isSearching) search()
+                if (isSearching) $(".communityContainer .doSearch").click()
             });
-
         })
     }
 
@@ -315,14 +312,14 @@ function closeRmScreen() {
 function confirmDelete() {
     closeRmScreen()
     setInterval(function () {
-        let data = location.search.slice(1).split(/[=&]/g);
+        let data = JSON.parse(sessionStorage.getItem("listProps"))
         let postData = {
-            "id": data[1],
-            "pwdEntered": data[3],
-            "isHidden": isHidden ? 1 : 0
+            "id": data[0],
+            "pwdEntered": data[1],
+            "isHidden": data[2] == "id" ? 0 : 1
         }
         murderList();
-        $.post("./php/removeList.php", postData, function (data) {
+        $.post("./php/removeList.php", postData, function () {
             murderList();
         })
     }, 600)

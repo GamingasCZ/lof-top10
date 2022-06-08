@@ -120,7 +120,7 @@ function saveGDBresult(id, data) {
 
 function saveDifficulty(difficulty, featured, epic, listPos) {
     // bad gdbrowser response
-    let stringDiffs = ["NA", "Easy", "Medium", "Hard", "Harder", "Insane", "Easy Demon", "Medium Demon", "Hard Demon", "Insane Demon", "Extreme Demon", "Auto"]
+    let stringDiffs = ["NA", "Easy", "Normal", "Hard", "Harder", "Insane", "Easy Demon", "Medium Demon", "Hard Demon", "Insane Demon", "Extreme Demon", "Auto"]
     if (typeof difficulty == "string") difficulty = stringDiffs.indexOf(difficulty)
     // If not string, I passed it in as an integer (hopefully :P), corresponds to prev. line
 
@@ -653,6 +653,7 @@ function loadLevel(pos) {
     let chosenColor = levelList[pos]["color"];
     let rgb = HEXtoRGB(chosenColor, 40)
 
+    $(".cardContainer" + pos).css("background-color", `rgb(${rgb.join(",")})`);
     $("#top" + pos).css("border-color", `rgb(${rgb.join(",")})`);
     $("#lineSplit" + pos).css("background-color", `rgb(${rgb.join(",")})`);
 

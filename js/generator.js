@@ -592,7 +592,7 @@ function generateList(boards, listData) {
 	if ($(".box")[params.goto - 1] != undefined) $(".box")[params.goto - 1].scrollIntoView()
 }
 
-function pinList(rem = null) {
+function pinList(rem = null, isOnHomepage = false) {
 	let getPinned = getCookie("pinnedLists")
 	let pinnedLists = [null, false].includes(getPinned) ? [] : JSON.parse(decodeURIComponent(getPinned))
 
@@ -616,6 +616,13 @@ function pinList(rem = null) {
 	}
 
 	makeCookie(["pinnedLists", JSON.stringify(pinnedLists)])
+
+	if (isOnHomepage !== false) {
+		isOnHomepage.parent().remove()
+		if ($(".pinnedLists > div").length == 0) {
+			$(".pinnedLists").html(`<div class="uploadText" style="color: #f9e582; margin-left: 5vw;">${jsStr["NOPINNED"][LANG]}</div>`)
+		}
+	}
 }
 
 function fave(th, id, data) {
@@ -766,7 +773,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 							</div>
 						</div>
 					</a>
-					${previewType == 5 ? '<img src="images/unpinList.png" onclick="unpinFromPreview(' + object[0] + ',this)" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">' : ''}
+					${previewType == 5 ? '<img src="images/unpinList.png" onclick="pinList(' + object[0] + ',$(this))" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">' : ''}
 				</div>
 				`);
 			}
@@ -794,6 +801,13 @@ function makeHP() {
 	homeCards(homepageData.pinned, ".pinnedLists", 5)
 	homeCards(homepageData.favPicks, ".savedLists", 3)
 	homeCards(homepageData.newest, ".newestLists", 4)
+}
+
+function clearViewed() {
+	if ($(".recentlyViewed").length == 0) return
+	$(".recentlyViewed").empty()
+	makeCookie(["recentlyViewed", "[]"])
+	$(".recentlyViewed").html(`<div class="uploadText" style="color: #f9e582; margin-left: 5vw;">${jsStr["NOVIEWED"][LANG]}</div>`)
 }
 
 function drawFaves(favesData) {
@@ -940,7 +954,7 @@ $(async function () {
 		$(".searchTools").css("opacity", 1);
 
 		// Password input removal
-		if (!listQueries.some(e => (/id|pid/g).test(e))) {
+		if (!listQueries.some(e => (/id|pid/g).test(e)) && LIST_ID != -11) {
 			$(".password").remove()
 		}
 
