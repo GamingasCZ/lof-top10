@@ -69,9 +69,7 @@ $(function () {
 
   // Disabling comments on private lists
   if (LIST_ID == -10) {
-    $(".lComm").remove()
-    $(".lList").remove()
-    $(".comments").remove()
+    $(".listOptions > div:nth-child(1)").remove()
 
     return null
   }

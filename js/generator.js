@@ -514,7 +514,7 @@ function generateList(boards, listData) {
 		let disableStar = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "disabled" : ""
 		let starTitle = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? jsStr["FAV_REM"][LANG] : jsStr["FAV_ADD"][LANG]
 
-		let star = `<img title="${starTitle}" src="images/star.png" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, [${listData[0]},'${listData[1]}'])">`
+		let star = `<img title="${starTitle}" src="images/star.png" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, ['${listData[0]}','${listData[1]}'])">`
 		$(".boards").append(`
 		<div class="box" style="${cardBG}">
 			<div style="height:0px;">
@@ -607,12 +607,12 @@ function pinList(rem = null, isOnHomepage = false) {
 		$("#pinBut").attr("src", "images/pinList.png")
 		$("#pinBut").attr("title", jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
-		pinnedLists = pinnedLists.reverse().slice(0, 5)
 	}
 	else {
 		$("#pinBut").attr("src", "images/unpinList.png")
 		$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
 		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime()])
+		pinnedLists = pinnedLists.slice(1, 6)
 	}
 
 	makeCookie(["pinnedLists", JSON.stringify(pinnedLists)])
@@ -644,7 +644,7 @@ function fave(th, id, data) {
 		th.removeClass("disabled")
 	}
 	else {
-		// levelName, levelCreator, levelID, cardCol, listID, listID, listPos, timeAdded
+		// levelName, levelCreator, levelID, cardCol, listID, levelName, listPos, timeAdded
 		let favoriteArray = [boards[id]["levelName"], creator, boards[id]["levelID"], boards[id]["color"], data[0], data[1], id, new Date().getTime() / 1000]
 		currData.push(favoriteArray)
 		currIDs.push(boards[id]["levelID"])
@@ -734,6 +734,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 		.forEach((object) => {
 			if ([1, 3].includes(previewType)) { // Favorite level
 				let darkCol = HEXtoRGB(object[3], 40);
+				let priv = object[4].match(/[A-z]/) != null ? "pid" : "id"
 				$(custElement).append(`
 				<div class="noMobileResize" id="listPreview" href="#" style="background: rgb(${HEXtoRGB(
 					object[3]
@@ -742,7 +743,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 						<p class="uploadText" style="margin: 0;">${object[0]} - ${object[1]
 					}</p>
 						<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">
-						<a href="./index.html?id=${object[4]}&goto=${object[6]}">
+						<a href="./index.html?${priv}=${object[4]}&goto=${object[6]}">
 							<u>${object[5]}</u>
 						</a> - ${jsStr["L_LEVID"][LANG]}: ${object[2]}</p>
 					</div>
@@ -756,9 +757,10 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 			else if ([2, 5].includes(previewType)) { // Recently viewed list / Pinned list
 				let lightCol = HEXtoRGB(object[3], -60)
 				let darkCol = HEXtoRGB(object[3], 40)
+				let priv = object[0].toString().match(/[A-z]/) != null ? "pid" : "id"
 				$(custElement).append(`
 				<div style="display: flex; align-items: center">
-					<a style="display: flex; align-items: center; flex-grow: 1;" href="./index.html?id=${object[0]}">
+					<a style="display: flex; align-items: center; flex-grow: 1;" href="./index.html?${priv}=${object[0]}">
 						<div id="listPreview" class="noMobileResize")"
 							style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${object[3]}, rgb(${lightCol.join(",")}));
 									border-color: rgb(${darkCol.join(",")}); margin: 0.85% ${previewType == 5 ? 1 : 7}% 0.85% 7%; flex-grow: 1;">
@@ -773,7 +775,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 							</div>
 						</div>
 					</a>
-					${previewType == 5 ? '<img src="images/unpinList.png" onclick="pinList(' + object[0] + ',$(this))" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">' : ''}
+					${previewType == 5 ? `<img src="images/unpinList.png" onclick="pinList('${object[0]}',$(this))" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">` : ''}
 				</div>
 				`);
 			}
@@ -798,7 +800,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 function makeHP() {
 	let homepageData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
 	homeCards(homepageData.recViewed, ".recentlyViewed", 2)
-	homeCards(homepageData.pinned, ".pinnedLists", 5)
+	homeCards(homepageData.pinned.reverse(), ".pinnedLists", 5, 5)
 	homeCards(homepageData.favPicks, ".savedLists", 3)
 	homeCards(homepageData.newest, ".newestLists", 4)
 }
@@ -824,10 +826,10 @@ $(async function () {
 	// Default 2019 board
 	if (!isInEditor) {
 		if (LIST_ID == -2 || window.location.pathname.match("upload") == -1) {
-			await $.get("../assets/2019.json", json => boards = json)
+			await $.get("./assets/2019.json", json => boards = json)
 		}
 		else if (LIST_ID == -3 || window.location.pathname.match("upload") != -1) {
-			await $.get("../assets/2021.json", json => boards = json)
+			await $.get("./assets/2021.json", json => boards = json)
 		}
 	}
 
@@ -872,7 +874,7 @@ $(async function () {
 				let favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
 
 				if ($("#favoritesContainer > p").length == 0) {
-					await $.get("../parts/listViewer.html", data => {
+					await $.get("./parts/listViewer.html", data => {
 						$("#favoritesContainer").append(translateDoc(data, "listViewer"))
 						$("#favoritesContainer > p").text(jsStr["FAV_LEVELS"][LANG])
 					})
@@ -922,22 +924,12 @@ $(async function () {
 	$(".passInput").val("");
 	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
 
-	let getPinned = getCookie("pinnedLists")
-	if (getPinned !== null & getPinned !== false) {
-		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
-			if (arr[0] == LIST_ID) {
-				$("#pinBut").attr("src", "images/unpinList.png")
-				$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
-			}
-		});
-	}
-
 	// GENERATING HOMEPAGE!
 	if (LIST_ID == -9) {
 		$(".searchTools").remove();
 		$("#crown").remove();
 
-		$.get("../parts/homepage.html", site => {
+		$.get("./parts/homepage.html", site => {
 			$("#homepageContainer").html(translateDoc(site, "homepage"))
 		})
 
@@ -1053,7 +1045,7 @@ $(async function () {
 
 		}
 		else if (listQueries.includes("pid")) {
-			$.get("./php/getLists.php?pid=" + listID, function (data) {
+			await $.get("./php/getLists.php?pid=" + listID, function (data) {
 				if (data == 1) {
 					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
 					$(".searchTools").remove();
@@ -1068,14 +1060,25 @@ $(async function () {
 					$(".titleImage").attr("src", boards["titleImg"]);
 					$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
+					LIST_ID = data["hidden"]
 					LIST_NAME = data["name"]
 					LIST_CREATOR = data["creator"]
 
-					generateList(boards, [encodeURIComponent(data["id"]), data["name"]]);
+					generateList(boards, [encodeURIComponent(data["hidden"]), data["name"]]);
 				}
 			}
 			)
 		}
+	}
+
+	let getPinned = getCookie("pinnedLists")
+	if (getPinned !== null & getPinned !== false) {
+		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
+			if (arr[0] == LIST_ID) {
+				$("#pinBut").attr("src", "images/unpinList.png")
+				$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
+			}
+		});
 	}
 
 	// Hiding header and showing scroll to top button

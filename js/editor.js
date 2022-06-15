@@ -269,7 +269,7 @@ $(function () {
 
     if (Object.keys(params).length == 0 || params.browse != null || params.s != null) {
         $(".browser").show()
-        $.get("../parts/listViewer.html", dt => {
+        $.get("./parts/listViewer.html", dt => {
             $(".communityContainer").append(translateDoc(dt, "listViewer"))
 
             if (params.s != null) {
