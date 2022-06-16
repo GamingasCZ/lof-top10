@@ -612,7 +612,8 @@ function pinList(rem = null, isOnHomepage = false) {
 		$("#pinBut").attr("src", "images/unpinList.png")
 		$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
 		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime()])
-		pinnedLists = pinnedLists.slice(1, 6)
+
+		if (pinnedLists.length > 5) pinnedLists = pinnedLists.slice(1, 6)
 	}
 
 	makeCookie(["pinnedLists", JSON.stringify(pinnedLists)])
@@ -722,9 +723,11 @@ function debugCards() {
 }
 
 // const MAX_ON_PAGE = 4;
-function homeCards(obj, custElement = ".listContainer", previewType = 1, overwriteMax = false, custPagination = 0) {
+function homeCards(obj, custElement = ".listContainer", previewType = 1, overwriteMax = false, custPagination = 0, reverseList = false) {
 	// Do nothing if empty
 	if (obj == null || obj == false) return
+
+	if (reverseList) obj = JSON.parse(JSON.stringify(obj)).reverse()
 
 	$(custElement).text("");
 
@@ -800,7 +803,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 function makeHP() {
 	let homepageData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
 	homeCards(homepageData.recViewed, ".recentlyViewed", 2)
-	homeCards(homepageData.pinned.reverse(), ".pinnedLists", 5, 5)
+	homeCards(homepageData.pinned, ".pinnedLists", 5, 5, 0, true)
 	homeCards(homepageData.favPicks, ".savedLists", 3)
 	homeCards(homepageData.newest, ".newestLists", 4)
 }
