@@ -737,7 +737,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 		.forEach((object) => {
 			if ([1, 3].includes(previewType)) { // Favorite level
 				let darkCol = HEXtoRGB(object[3], 40);
-				let priv = object[4].match(/[A-z]/) != null ? "pid" : "id"
+				let priv = object[4].toString().match(/[A-z]/) != null ? "pid" : "id"
 				$(custElement).append(`
 				<div class="noMobileResize" id="listPreview" href="#" style="background: rgb(${HEXtoRGB(
 					object[3]
