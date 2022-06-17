@@ -57,8 +57,8 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#rolepaste","upload.html","title",["Vložit ze schránky","Paste from clipboard"]],
     [".roleAddButton","upload.html","title",["Přidat roli","Add role"]],
     [".noRolAdded","upload.html",1,[
-        `K přidání role vyber předvolbu, nebo klikni na<img style="width: 2.2%" id="plusSign"src="images/add.png">`,
-        `To add a role, pick a preset, or click on<img style="width: 2.2%" id="plusSign"src="images/add.png">`]],
+        `K přidání role vyber předvolbu, nebo klikni na<img style="width: 2.2%" id="plusSign"src="images/add.webp">`,
+        `To add a role, pick a preset, or click on<img style="width: 2.2%" id="plusSign"src="images/add.webp">`]],
     ["#r_name","upload.html",0,["Jméno","Name"]],
     ["#r_hasPart","upload.html",0,["Má část?","Has part?"]],
     ["#r_color","upload.html",0,["Barva","Color"]],
@@ -70,8 +70,8 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#humpaste","upload.html","title",["Vložit ze schránky","Paste from clipboard"]],
     [".addHumanButton","upload.html","title",["Přidat člověka","Add member"]],
     [".noRoles","upload.html",0,["K\ přidání členů přidej roli.","To add a member, add a role."]],
-    [".addRoles","upload.html",1,[`K přidání člena klikni na<img style="width: 2.2%" id="plusSign" src="images/add.png">`,
-    `To add a member, click on<img style="width: 2.2%" id="plusSign" src="images/add.png">`]],
+    [".addRoles","upload.html",1,[`K přidání člena klikni na<img style="width: 2.2%" id="plusSign" src="images/add.webp">`,
+    `To add a member, click on<img style="width: 2.2%" id="plusSign" src="images/add.webp">`]],
     ["#h_name","upload.html",0,["Jméno","Username"]],
     ["#h_social","upload.html",0,["Sítě","Links"]],
     ["#h_role","upload.html",0,["Role","Role"]],
@@ -84,10 +84,10 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
 
 var jsStr = {
     // images
-    "TIT_IMG": ["./images/title.png","./images/titleEng.png"],
-    "COMM_IMG": ["./images/community.png","./images/communityEng.png"],
-    "YES_IMG": ["./images/yeees.png","./images/yeeesEng.png"],
-    "NO_IMG": ["./images/ne.png","./images/no.png"],
+    "TIT_IMG": ["./images/title.webp","./images/titleEng.webp"],
+    "COMM_IMG": ["./images/community.webp","./images/communityEng.webp"],
+    "YES_IMG": ["./images/yeees.webp","./images/yeeesEng.webp"],
+    "NO_IMG": ["./images/ne.webp","./images/no.webp"],
 
     // editor
     "CZECH": ["Čeština", "Czech"],
@@ -171,10 +171,10 @@ var jsStr = {
     "NEWSKIN_D": ["Odemknul jsi nový skin! Vyzkoušej ho v nastavení :).<br><br>Klikej dál!","You've unlocked a new skin! Apply it in the settings :).<br><br>Keep on clicking!"],
     "UPLOAD_T": ["Obrázky seznamu", "List Header Images"],
     "UPLOAD_D": [`Jestli chceš svůj seznam pořádně vyzdobit, můžeš k němu přidat obrázek, který se u něho zobrazí!<br />
-        <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
+        <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.webp"><br />
         <cr>Nemusíš přidávat žádný obrázek!</cr>`
         , `If you really want to spice up your list, you can add an image, that'll display as the header!<br />
-        <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.png"><br />
+        <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.webp"><br />
         <cr>You don't have to add an image!</cr>`],
     "PRIVATE_T": ["Soukromé seznamy", "Private Lists"],
     "PRIVATE_D": [`Soukromé seznamy se <cg>nezobrazí veřejně</cg>, mají <cr>speciální odkaz</cr> k přístupu a <cb>nejde u nich psát komentáře</cb>.<br><br>
@@ -215,8 +215,8 @@ var jsStr = {
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],
-    "HELP_TEXT": [`<p class="helpText">Kliknutím na <img width=5% id="plusSign" src="images/add.png"> přidáš level!</p>`,
-        `<p class="helpText">Click the <img width=5% id="plusSign" src="images/add.png"> to add a level!</p>`],
+    "HELP_TEXT": [`<p class="helpText">Kliknutím na <img width=5% id="plusSign" src="images/add.webp"> přidáš level!</p>`,
+        `<p class="helpText">Click the <img width=5% id="plusSign" src="images/add.webp"> to add a level!</p>`],
     "L_MOVE_D": ["Přesunout level níž", "Move level up"],
     "L_MOVE_U": ["Přesunout level výš", "Move level down"],
     "L_LEVID": ["ID levelu", "Level ID"],

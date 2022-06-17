@@ -42,7 +42,7 @@
 }
 
 body {
-    background: black url("../images/bg.png");
+    background: black url("../images/bg.webp");
     margin: 0;
 }
 
@@ -154,7 +154,7 @@ span {
 
 .box {
   background-color: #43a045;
-  background-image: url("../images/cardBg.png");
+  background-image: url("../images/cardBg.webp");
   padding: 1vw 3vw 2vw 3vw;
   margin: 2.5vw 7vw 2.5vw 7vw;
   display: flex;
@@ -743,7 +743,7 @@ iframe {
   margin: 0 0 1em;
   min-height: 32vh;
   align-items: flex-end;
-  background: url(../images/introGrad2.png);
+  background: url(../images/introGrad2.webp);
 
 }
 

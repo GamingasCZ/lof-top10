@@ -119,7 +119,7 @@ async function getProfileStats(k, ind) {
 	let container = k.target
 
 	$(container).hide()
-	await $(container).after("<img src='images/loading.png' class='loading'>")
+	await $(container).after("<img src='images/loading.webp' class='loading'>")
 	$(".loading").css("animation-name", "loading")
 
 	let uName = $(k.target.parentElement).siblings()[1].innerText;
@@ -127,13 +127,13 @@ async function getProfileStats(k, ind) {
 	await $.get(DISABLE_GDB + "ttps://gdbrowser.com/api/profile/" + uName, user => {
 		$(".loading").remove();
 
-		$(container).after(`<img onclick="openProfileOnGDB('${user.username}')" style="transform: translateX(0.7vw);" class="stats button" src="images/add.png">`)
+		$(container).after(`<img onclick="openProfileOnGDB('${user.username}')" style="transform: translateX(0.7vw);" class="stats button" src="images/add.webp">`)
 		if (user.cp > 0) {
-			$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/cp.png">${user.cp} </p>`)
+			$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/cp.webp">${user.cp} </p>`)
 		}
-		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/ucoin.png">${user.userCoins}</p>`)
-		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/demons.png">${user.demons} </p>`)
-		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/star.png">${user.stars} </p>`)
+		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/ucoin.webp">${user.userCoins}</p>`)
+		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/demons.webp">${user.demons} </p>`)
+		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/star.webp">${user.stars} </p>`)
 	})
 
 	await k.target.remove()
@@ -191,7 +191,7 @@ function showCollabStats(id) {
 					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin-right: 1vw;"> - ${creators.socials[soc][1]}</p>`
 				else {
 					socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
-									style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
+									style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.webp">`
 				}
 			}
 
@@ -203,7 +203,7 @@ function showCollabStats(id) {
 				${socialTags}
 				<hr class="verticalSplitter">
 				<div class="pStatsContainer">
-				<img style="width: 3vw;margin: 0.4vw;" src="images/gdbrowser.png" class="getProfile button" title="${jsStr["SHOW_PROFILE"][LANG]}">
+				<img style="width: 3vw;margin: 0.4vw;" src="images/gdbrowser.webp" class="getProfile button" title="${jsStr["SHOW_PROFILE"][LANG]}">
 				</div>
 			</td>
 		</tr>`)
@@ -222,7 +222,7 @@ function showCollabStats(id) {
 					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin-right: 1vw;"> - ${creators.socials[soc][1]}</p>`
 				else {
 					socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
-									style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.png">`
+									style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.webp">`
 				}
 			}
 			// Give random icon / or ghost if member doesn't have a name
@@ -238,7 +238,7 @@ function showCollabStats(id) {
 
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
-				<img style="width: 4vw;margin: 0.4vw;" src="images/emoji/${randIcon}.png">
+				<img style="width: 4vw;margin: 0.4vw;" src="images/emoji/${randIcon}.webp">
 				<p class="memberName" style="color: ${creators.color}; margin: 0 1vw 0;">${creators.name}</p>${discordTag}
 				${socialTags}
 			</td>
@@ -296,7 +296,7 @@ function showCollabStats(id) {
 			<div class="graph" style="display: flex; justify-content: space-between; max-width: 91%;">
 				<p style="margin: 0 0 0 6vw;">${roles.name}</p>
 				<div style="display: flex; align-items: center;" class="nameShower">
-					<img class="boxIcon" alt=" " src="images/bytost.png"></img>
+					<img class="boxIcon" alt=" " src="images/bytost.webp"></img>
 					<p style="margin: 0"></p>
 				</div>
 			</div>
@@ -349,7 +349,7 @@ function hoverBar(k) {
 		$(nameShower[0]).attr("src", DISABLE_GDB + "ttps://gdbrowser.com/icon/" + hoverName.text())
 	}
 	else {
-		$(nameShower[0]).attr("src", "images/bytost.png")
+		$(nameShower[0]).attr("src", "images/bytost.webp")
 	}
 
 	$(nameShower[1]).text(hoverName.text())
@@ -463,12 +463,12 @@ function generateList(boards, listData) {
 		// Removing card buttons
 		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = ["", ""]; }
 		else {
-			var ID = [`<img src="./images/gdbrowser.png" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
-			`<img src="./images/copyID.png" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`]
+			var ID = [`<img src="./images/gdbrowser.webp" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
+			`<img src="./images/copyID.webp" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`]
 		}
 
 		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = ``; }
-		else { var video = `<img src="./images/yticon.png" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">`; }
+		else { var video = `<img src="./images/yticon.webp" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">`; }
 
 
 		// Shit fix. Colors break sometimes
@@ -477,7 +477,7 @@ function generateList(boards, listData) {
 		let gradientLighter = HEXtoRGB(boardFix, -60)
 
 		// Glow depending on level position
-		var cardBG = `background-color: ${boardFix}; background-image: url(images/cardBg.png), linear-gradient(39deg, ${boardFix}, rgb(${gradientLighter.join(",")}));`;
+		var cardBG = `background-color: ${boardFix}; background-image: url(images/cardBg.webp), linear-gradient(39deg, ${boardFix}, rgb(${gradientLighter.join(",")}));`;
 		if (i == 1) { cardBG += ";box-shadow: 5px 5px 40px yellow, -5px -5px 40px green, 5px -5px 40px aqua, -5px 5px 40px red;"; }
 		if (i == 2) { cardBG += `;box-shadow: 2px 2px 30px ${boardFix};`; }
 		if (i == 3) { cardBG += `;box-shadow: 2px 2px 20px ${boardFix};`; }
@@ -498,10 +498,10 @@ function generateList(boards, listData) {
 			let data = boards[bIndex]["difficulty"]
 			let glow = "";
 			if (data[1] != 0) {
-				glow = `<img class="${data[1] == 1 ? "listDiffRate" : "listDiffEpicRate"}" src='images/faces/${data[1] == 1 ? "featured" : "epic"}.png'>`
+				glow = `<img class="${data[1] == 1 ? "listDiffRate" : "listDiffEpicRate"}" src='images/faces/${data[1] == 1 ? "featured" : "epic"}.webp'>`
 			}
 
-			diff = `<div class="listDiffContainer"><img class="listDiffFace" src="images/faces/${data[0]}.png">${glow}</div>`
+			diff = `<div class="listDiffContainer"><img class="listDiffFace" src="images/faces/${data[0]}.webp">${glow}</div>`
 		}
 
 
@@ -514,7 +514,7 @@ function generateList(boards, listData) {
 		let disableStar = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "disabled" : ""
 		let starTitle = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? jsStr["FAV_REM"][LANG] : jsStr["FAV_ADD"][LANG]
 
-		let star = `<img title="${starTitle}" src="images/star.png" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, ['${listData[0]}','${listData[1]}'])">`
+		let star = `<img title="${starTitle}" src="images/star.webp" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, ['${listData[0]}','${listData[1]}'])">`
 		$(".boards").append(`
 		<div class="box" style="${cardBG}">
 			<div style="height:0px;">
@@ -604,12 +604,12 @@ function pinList(rem = null, isOnHomepage = false) {
 		if (!indToRemove[1]) indToRemove[0]++
 	});
 	if (indToRemove[1]) {
-		$("#pinBut").attr("src", "images/pinList.png")
+		$("#pinBut").attr("src", "images/pinList.webp")
 		$("#pinBut").attr("title", jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
 	}
 	else {
-		$("#pinBut").attr("src", "images/unpinList.png")
+		$("#pinBut").attr("src", "images/unpinList.webp")
 		$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
 		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime()])
 
@@ -715,7 +715,7 @@ function switchLoFList(site, goto = null) {
 
 function debugCards() {
 	// Returns a randomly generated board
-	let str = { "titleImg": "https://i.cdn.turner.com/v5cache/CARTOON/site/Images/i88/johnnytest_180x180.png", "pageBGcolor": "#53a3aa" };
+	let str = { "titleImg": "", "pageBGcolor": "#53a3aa" };
 	for (let i = 1; i < Math.ceil(Math.random() * 20) + 1; i++) {
 		str[i] = { "levelName": "Debug #" + i, "creator": fakeNames[Math.floor(Math.random() * fakeNames.length)], "levelID": 128, "video": "9ywnLQywz74", "color": randomColor() }
 	}
@@ -752,7 +752,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 					</div>
 					<div style="${previewType == 3 ? 'display: none;' : ''}">
 						<img class="button" onclick="removeFave(${object[2]});"
-						     style="width: 4vw" src="images/delete.png">
+						     style="width: 4vw" src="images/delete.webp">
 					</div>
 				</div>
 				`);
@@ -778,7 +778,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 							</div>
 						</div>
 					</a>
-					${previewType == 5 ? `<img src="images/unpinList.png" onclick="pinList('${object[0]}',$(this))" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">` : ''}
+					${previewType == 5 ? `<img src="images/unpinList.webp" onclick="pinList('${object[0]}',$(this))" class="button" style="width: 4vw; height: fit-content; margin-right: 1.9vw;">` : ''}
 				</div>
 				`);
 			}
@@ -918,7 +918,7 @@ $(async function () {
 
 	if (localStorage.getItem("anims") == null) localStorage.setItem("anims", 1)
 	$("input[name='anim']").attr("checked", localStorage.getItem("anims") == true ? true : false)
-	$("img[for='anim']").attr("src", localStorage.getItem("anims") == true ? "images/check-on.png" : "images/check-off.png")
+	$("img[for='anim']").attr("src", localStorage.getItem("anims") == true ? "images/check-on.webp" : "images/check-off.webp")
 	let animsEnabled = localStorage.getItem("anims") == true
 
 	if (!animsEnabled) $("body").css("scroll-behavior", "unset")
@@ -1015,8 +1015,7 @@ $(async function () {
 				debugPwd = Math.ceil(Math.random() * 9999999999)
 				$(".titles").append(`<p style="color: tomato; margin: 0;">Debug List</p>
 				<hr class="lineSplitGeneral">
-				<p style="font-size: 3vw; margin: 0;">- Dasher123 -</p>
-				<p style="font-size: 3vw;">Pass: ${debugPwd}</p>`);
+				<p style="font-size: 3vw; margin: 0;">- Dasher123 - (Pass: ${debugPwd})</p>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`${jsStr["DEBUG_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 				generateList(boards, [0, "Debug List"])
@@ -1079,7 +1078,7 @@ $(async function () {
 	if (getPinned !== null & getPinned !== false) {
 		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
 			if (arr[0] == LIST_ID) {
-				$("#pinBut").attr("src", "images/unpinList.png")
+				$("#pinBut").attr("src", "images/unpinList.webp")
 				$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
 			}
 		});
@@ -1158,12 +1157,12 @@ const switchAnims = (_curr) => localStorage.setItem("anims", localStorage.getIte
 
 function checkCheckbox(changeVal, runFun = null) {
 	if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
-		$(`img[for="${changeVal}"]`).attr("src", "images/check-off.png")
+		$(`img[for="${changeVal}"]`).attr("src", "images/check-off.webp")
 		$(`input[name="${changeVal}"]`).attr("checked", false)
 		runFun(false)
 	}
 	else {
-		$(`img[for="${changeVal}"]`).attr("src", "images/check-on.png")
+		$(`img[for="${changeVal}"]`).attr("src", "images/check-on.webp")
 		$(`input[name="${changeVal}"]`).attr("checked", true)
 		runFun(true)
 	}

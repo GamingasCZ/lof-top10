@@ -128,7 +128,7 @@ function saveDifficulty(difficulty, featured, epic, listPos) {
         featured = 0; epic = 0;
     }
 
-    $($(".diffMain")[listPos - 1]).attr("src", `images/faces/${difficulty}.png`)
+    $($(".diffMain")[listPos - 1]).attr("src", `images/faces/${difficulty}.webp`)
     $(".faceSelected").removeClass("faceSelected")
     $($(`.diffFace`)[difficulty]).addClass("faceSelected")
 
@@ -145,8 +145,8 @@ function saveDifficulty(difficulty, featured, epic, listPos) {
 
     let rate = 0;
     if (epic != -1) { // featured passed -1 when epic passed the value from levelList
-        if (epic) { $($(".diffBack")[listPos - 1]).attr("src", `images/faces/epic.png`); rate = 2; $($(".diffBack")[listPos - 1]).attr("id", `epicGlow`); }
-        else if (featured) { $($(".diffBack")[listPos - 1]).attr("src", `images/faces/featured.png`); rate = 1; $($(".diffBack")[listPos - 1]).attr("id", `featuredGlow`); }
+        if (epic) { $($(".diffBack")[listPos - 1]).attr("src", `images/faces/epic.webp`); rate = 2; $($(".diffBack")[listPos - 1]).attr("id", `epicGlow`); }
+        else if (featured) { $($(".diffBack")[listPos - 1]).attr("src", `images/faces/featured.webp`); rate = 1; $($(".diffBack")[listPos - 1]).attr("id", `featuredGlow`); }
         else { $($(".diffBack")[listPos - 1]).attr("src", ``); $($(".diffBack")[listPos - 1]).attr("id", `epicGlow`); }
     }
     else rate = featured[1]
@@ -160,7 +160,7 @@ function openDiffPicker(lp) {
     let diff = levelList[lp]["difficulty"]
 
     let difficulties = [];
-    for (i = 0; i < 12; i++) difficulties.push(`<img class="button diffFace" onclick="saveDifficulty(${i}, levelList[${lp}]['difficulty'], -1, ${lp})" src='images/faces/${i}.png'>`)
+    for (i = 0; i < 12; i++) difficulties.push(`<img class="button diffFace" onclick="saveDifficulty(${i}, levelList[${lp}]['difficulty'], -1, ${lp})" src='images/faces/${i}.webp'>`)
     difficulties = difficulties.join("\n")
 
     $('.cardContainer' + lp).append(`
@@ -201,8 +201,8 @@ function openBGPicker(lp) {
                 <label for="inpGrad" class="uploadText">Přechod</label>
             </div>
             <div class="bgSettingsContainer">
-                <img src="images/gauntlet.png" style="width: 3vw;" class="button" onclick="showBGdialog()">
-                <img src="images/preview.png" style="width: 3vw;" class="button">
+                <img src="images/gauntlet.webp" style="width: 3vw;" class="button" onclick="showBGdialog()">
+                <img src="images/preview.webp" style="width: 3vw;" class="button">
             </div>
         </div>
     </div>`)
@@ -249,7 +249,7 @@ function generateFromJSON() {
 
         // Is the list hidden?
         if (data["hidden"] != "0") {
-            $(`img[for="hidden"]`).attr("src", "images/check-on.png")
+            $(`img[for="hidden"]`).attr("src", "images/check-on.webp")
             $(`input[name="hidden"]`).attr("checked", true)
         }
 
@@ -293,8 +293,8 @@ function refreshCardDetails(lp) {
     if (levelList[lp]["difficulty"] != undefined) {
         let rate = ["","featured", "epic"][levelList[lp]["difficulty"][1]]
 
-        $(`.dPick${lp} > .diffMain`).attr("src", `images/faces/${levelList[lp]["difficulty"][0]}.png`) // change face
-        if (rate != "") $(`.dPick${lp} > .diffBack`).attr("src", `images/faces/${rate}.png`) // change rate glow
+        $(`.dPick${lp} > .diffMain`).attr("src", `images/faces/${levelList[lp]["difficulty"][0]}.webp`) // change face
+        if (rate != "") $(`.dPick${lp} > .diffBack`).attr("src", `images/faces/${rate}.webp`) // change rate glow
 
         if (rate == "featured") $(`.dPick${lp} > .diffBack`).attr("id", "featuredGlow") // glow ids
         else $(`.dPick${lp} > .diffBack`).attr("id", "epicGlow")
@@ -779,22 +779,22 @@ function card(index) {
     <div class="positionEdit" id="top${index}">
         <div style="display: flex">
             <div style="display: flex; align-items: center;">
-                <img id="posInputPics" src="./images/star.png">
+                <img id="posInputPics" src="./images/star.webp">
                 <input autocomplete="off" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text" style="transform: translateY(0%);">
 
-                <img id="fillButton" src="./images/getStats.png" onclick="getDetailsFromID(${index})" class="fillID button disabled idDetailGetter${index}">
+                <img id="fillButton" src="./images/getStats.webp" onclick="getDetailsFromID(${index})" class="fillID button disabled idDetailGetter${index}">
             </div>
 
             <div class="positionButtons">
                 <img title="${jsStr['L_MOVE_D'][LANG]}" onclick="moveCard('up',${index})" 
                      class="button upmover${index}" style="transform: rotate(90deg);" id="moveLPosButton"
-                     src="./images/arrow.png">
+                     src="./images/arrow.webp">
 
                 <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" disabled="true" value="${index}">
 
                 <img title="${jsStr['L_MOVE_U'][LANG]}" onclick="moveCard('down',${index})"
                         class="button downmover${index}" style="transform: rotate(-90deg);" id="moveLPosButton"
-                        src="./images/arrow.png">
+                        src="./images/arrow.webp">
             </div>
         </div>
 
@@ -802,33 +802,33 @@ function card(index) {
 
         <div style="display: flex; flex-wrap: wrap;">
             <div style="display: flex; flex-wrap: wrap; width: 100%; align-items: center;">
-                <img id="posInputPics" src="./images/island.png">
+                <img id="posInputPics" src="./images/island.webp">
                 <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr['L_NAME'][LANG]}">
 
                 <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
 
-                <img id="fillButton" onclick="getDetailsFromName(${index})" class="disabled button nameDetailGetter${index}" src="./images/getStats.png">
+                <img id="fillButton" onclick="getDetailsFromName(${index})" class="disabled button nameDetailGetter${index}" src="./images/getStats.webp">
                 
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
                 <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="width: 15vw;display: inline-flex;"><br />
-                <img class="button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
+                <img class="button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.webp" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
                 <div style="display: flex; align-items: center;">
-                    <img id="posInputPics" src="./images/yticon.png">
+                    <img id="posInputPics" src="./images/yticon.webp">
                     <input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr['L_VIDEO'][LANG]}">
                 </div>
                 
                 <div class="cardButtonsContainer">
                     <img title="${jsStr['DEL_CARD'][LANG]}" class="removerButton${index} button cardButton"
-                        onclick="removeLevel(${index})" src="./images/delete.png">
+                        onclick="removeLevel(${index})" src="./images/delete.webp">
 
-                    <img title="${jsStr['CARD_COL'][LANG]}" class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
+                    <img title="${jsStr['CARD_COL'][LANG]}" class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.webp">
                     <div title="${jsStr["LEV_DIFF"][LANG]}" class="button cardButton diffContainer dPick${index}" onclick="openDiffPicker(${index})">
-                        <img id="diffBG" src="./images/faces/diffContainer.png">
-                        <img class="diffIcon diffMain" src="./images/faces/0.png">
+                        <img id="diffBG" src="./images/faces/diffContainer.webp">
+                        <img class="diffIcon diffMain" src="./images/faces/0.webp">
                         <img class="diffIcon diffBack">
                     </div>
                 </div>
@@ -841,7 +841,7 @@ function card(index) {
 </div>
     `;
 }
-// <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.png">
+// <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.webp">
 function preview() {
     if (checkJson(JSON.stringify(levelList)) == false) {
         return null;

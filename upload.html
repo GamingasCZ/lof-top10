@@ -14,7 +14,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Geometry Dash Level Lists">
   <meta name="twitter:description" content="Create and browse lists of GD levels!">
-  <meta name="twitter:image" content="http://gamingas.wz.cz/lofttop10/images/twitImg.png">
+  <meta name="twitter:image" content="http://gamingas.wz.cz/lofttop10/images/twitImg.webp">
 
   <meta name="description" content="Create, share and browse lists of Geometry Dash levels!">
 
@@ -31,14 +31,14 @@
 </head>
 
 <div class="errNotif">
-  <img src="images/sadNotif.png" style="opacity: 0.8; position: absolute; width: 40vw;">
+  <img src="images/sadNotif.webp" style="opacity: 0.8; position: absolute; width: 40vw;">
   <div class="errNotText uploadText errTitle" style="top: 2vw;color: tomato;left: 15.5vw;">Jejda!</div>
   <div class="errNotText uploadText errorBox">Toto je test!</div>
 </div>
 
 <!--
 <div class="uploadBG bgProps">
-  <img src="./images/delete.png" class="button" style="width: 6%; height: max-content; float: right;"
+  <img src="./images/delete.webp" class="button" style="width: 6%; height: max-content; float: right;"
     onclick="hideBGdialog()">
   <div class="bgPropsMain">
     <p class="uploadText" style="margin-bottom: 0;">Průhlednost</p>
@@ -58,15 +58,15 @@
   <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
       <p style="margin: 0 auto;" class="collabTTitle">- Nastavení collabu -</p>
-      <img src="./images/delete.png" class="button" style="width: 6%; height: max-content;" onclick="hideCollabTools()">
+      <img src="./images/delete.webp" class="button" style="width: 6%; height: max-content;" onclick="hideCollabTools()">
     </div>
     <div style="display: flex; width: 100%; padding: 1%; align-items: center">
-      <img class="hostIcon" src="./images/bytost.png" style="margin-right: 1vw;">
+      <img class="hostIcon" src="./images/bytost.webp" style="margin-right: 1vw;">
       <input id="posInputBox" class="verifierRole cardInput" autocomplete="off" type="text"
         placeholder="Role nahrávatele" style="width: 15vw;" onchange="chMainName($(this), 3)" value="Host">:
       <input id="posInputBox" class="verifier cardInput" autocomplete="off" type="text" placeholder="Nahrál"
         style="width: 25vw; margin: 0vw 1vw;" onchange="chMainName($(this), 1)">
-      <img class="button" src="images/getStats.png" onclick="chMainName($(this), 2)">
+      <img class="button" src="images/getStats.webp" onclick="chMainName($(this), 2)">
     </div>
 
     <div class="mobileTabSwitcher" style="display: none;">
@@ -83,15 +83,15 @@
       </div>
       <div class="collabHButtons" style="width: 11vw;">
         <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')"
-          style="width: 3vw;height: fit-content;" src="images/paste.png" title="Vložit ze schránky">
+          style="width: 3vw;height: fit-content;" src="images/paste.webp" title="Vložit ze schránky">
         <img class="button roleAddButton" onclick="addRole()" style="width: 3vw;margin-left: 0.4vw;height: fit-content;"
-          src="images/add.png" title="Přidat roli">
+          src="images/add.webp" title="Přidat roli">
       </div>
     </div>
     <div class="collabBG collabHeader collabDIV roleStuff">
       <table style="display: none;" class="collabTables collabRoles">
         <p class="uploadText noRolAdded">K přidání role vyber předvolbu, nebo klikni na<img id="plusSign"
-            style="width: 2.2%" src="images/add.png"></p>
+            style="width: 2.2%" src="images/add.webp"></p>
       </table>
     </div>
 
@@ -100,63 +100,63 @@
 
       <div style="display: flex; align-items: center; opacity: 0;" class="socSettings">
         <div class="socialPicker">
-          <img src="images/popupArr.png" class="popupArrow">
-          <img src="images/youtube.png" class="socialPickerIcon button" title="YouTube">
-          <img src="images/twitter.png" class="socialPickerIcon button" title="Twitter">
-          <img src="images/twitch.png" class="socialPickerIcon button" title="Twitch">
-          <img src="images/discord.png" class="socialPickerIcon button" title="Discord">
-          <img src="images/cust.png" class="socialPickerIcon button cLink" title="Vlastní odkaz">
+          <img src="images/popupArr.webp" class="popupArrow">
+          <img src="images/youtube.webp" class="socialPickerIcon button" title="YouTube">
+          <img src="images/twitter.webp" class="socialPickerIcon button" title="Twitter">
+          <img src="images/twitch.webp" class="socialPickerIcon button" title="Twitch">
+          <img src="images/discord.webp" class="socialPickerIcon button" title="Discord">
+          <img src="images/cust.webp" class="socialPickerIcon button cLink" title="Vlastní odkaz">
         </div>
 
-        <img src="images/youtube.png" style="width: 3vw;" class="button openSocPicker">
+        <img src="images/youtube.webp" style="width: 3vw;" class="button openSocPicker">
         <input id="collabInp" class="socInp" style="width: 50vw;" placeholder="YouTube kanál">
-        <img src="images/check.png" style="width: 2.5vw;" class="button addSocial" title="Přidat">
-        <img src="images/error.png" style="width: 2.5vw;" class="button rmSocial" title="Zrušit">
+        <img src="images/check.webp" style="width: 2.5vw;" class="button addSocial" title="Přidat">
+        <img src="images/error.webp" style="width: 2.5vw;" class="button rmSocial" title="Zrušit">
       </div>
 
       <div class="collabHButtons" style="width: 11vw;">
         <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)"
-          style="width: 3vw; height: fit-content;" src="images/paste.png" title="Vložit ze schránky">
+          style="width: 3vw; height: fit-content;" src="images/paste.webp" title="Vložit ze schránky">
         <img class="button disabled addHumanButton" onclick="addCollabHuman()"
-          style="width: 3vw;margin-left: 0.2vw;height: fit-content;" src="images/add.png" title="Přidat člověka">
+          style="width: 3vw;margin-left: 0.2vw;height: fit-content;" src="images/add.webp" title="Přidat člověka">
       </div>
     </div>
     <div class="collabBG collabHeader collabDIV memberStuff" style="height: 125%;;">
       <p class="uploadText noRoles">K přidání členů přidej roli.</p>
       <p style="display: none;" class="uploadText addRoles">K přidání člena klikni na<img style="width: 2.2%"
-          id="plusSign" src="images/add.png"></p>
+          id="plusSign" src="images/add.webp"></p>
       <table style="display: none;" class="collabTables collabHumans">
         <tr class="collabTables">
           <th class="collabTables" style="width: 26%;">
-            <img src="images/bytost.png" style="width: 2vw;">
-            <div id="h_name" style="display:inline">Jméno</div><img src="images/help.png"
+            <img src="images/bytost.webp" style="width: 2vw;">
+            <div id="h_name" style="display:inline">Jméno</div><img src="images/help.webp"
               class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 14%;">
-            <img src="images/like.png" style="width: 2vw;">
-            <div id="h_social" style="display:inline">Sítě</div><img src="images/help.png"
+            <img src="images/like.webp" style="width: 2vw;">
+            <div id="h_social" style="display:inline">Sítě</div><img src="images/help.webp"
               class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 25%;">
-            <img src="images/part.png" style="width: 2vw;">
-            <div id="h_role" style="display:inline">Role</div><img src="images/help.png"
+            <img src="images/part.webp" style="width: 2vw;">
+            <div id="h_role" style="display:inline">Role</div><img src="images/help.webp"
               class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 15%;">
-            <img src="images/length.png" style="width: 2vw;">
-            <div id="h_part" style="display:inline">Část</div><img src="images/help.png"
+            <img src="images/length.webp" style="width: 2vw;">
+            <div id="h_part" style="display:inline">Část</div><img src="images/help.webp"
               class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables" style="width: 13%;">
-            <img src="images/colorSelect.png" style="width: 2vw;">
-            <div id="h_color" style="display:inline">Barva</div><img src="images/help.png"
+            <img src="images/colorSelect.webp" style="width: 2vw;">
+            <div id="h_color" style="display:inline">Barva</div><img src="images/help.webp"
               class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
           </th>
           <th class="collabTables"></th>
         </tr>
       </table>
     </div>
-    <img style="display: none;" id="emojiMan" src="images/oho.png">
+    <img style="display: none;" id="emojiMan" src="images/oho.webp">
 
   </div>
 
@@ -166,7 +166,7 @@
 
   <div class="helpBG" style="display: none;"></div>
   <div class="popupHelp uploadText" style="display: none;">
-    <img src="./images/delete.png" class="button" style="width: 4%; float: right;" onclick="closeHelp()">
+    <img src="./images/delete.webp" class="button" style="width: 4%; float: right;" onclick="closeHelp()">
     <p id="helpTitle"></p>
     <div id="helpContent">
     </div>
@@ -175,7 +175,7 @@
   <div style="display: none;" id="centeredPopup" class="uploadText levelPicker">
     <div style="display: flex;">
       <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">Uložené levely</span>
-      <img onclick="hideFavePicker()" src="./images/delete.png" style="width: 3vw;" class="button">
+      <img onclick="hideFavePicker()" src="./images/delete.webp" style="width: 3vw;" class="button">
     </div>
     <input placeholder="        Hledat level..." class="savedFilter searchWithIcon" style="margin-right: 2vw;">
     <div class="levelPickerContainer" style="margin-right: 2vw;"></div>
@@ -189,10 +189,10 @@
       <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="Jméno seznamu"><br />
       <input name="creator" type="text" id="creatornm" class="uploadMainInp" placeholder="Tvůrce"><br />
       <div style="display: flex; justify-content: center; margin-right: 1.7vw;">
-        <img src="images/arrow.png" id="imageArrow" class="button" title="Ukázat náhled obrázku">
+        <img src="images/arrow.webp" id="imageArrow" class="button" title="Ukázat náhled obrázku">
         <input type="text" id="tImgMargin" class="titImgInp uploadMainInp"
           placeholder="Obrázek seznamu">
-        <img src="images/help.png" class="button helpButton" onclick="openHelp('upload')">
+        <img src="images/help.webp" class="button helpButton" onclick="openHelp('upload')">
       </div>
       <div class="imgPreview">
         <img src="" id="imagePrev" class="uploadText" style="width: inherit;">
@@ -214,11 +214,11 @@
         style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
         <p class="headerTitle uploadText">Levely</p>
         <div style="display: flex;">
-          <img src="images/preview.png" title="Náhled seznamu" onclick="preview()"
+          <img src="images/preview.webp" title="Náhled seznamu" onclick="preview()"
             class="button previewButton disabled headerButtons">
-          <img src="images/addfromFaves.png" title="Přidat z uložených" onclick="addFromFaves()"
+          <img src="images/addfromFaves.webp" title="Přidat z uložených" onclick="addFromFaves()"
             class="button addCardButton headerButtons">
-          <img src="images/add.png" title="Přidat level do seznamu" onclick="addLevel()"
+          <img src="images/add.webp" title="Přidat level do seznamu" onclick="addLevel()"
             class="button addCardButton headerButtons">
         </div>
 
@@ -231,9 +231,9 @@
       <div class="settingsBG">
         <div class="setting">
           <input type="checkbox" style="display: none;" name="hidden">
-          <img src="images/check-off.png" onclick='checkCheckbox("hidden")' for="hidden" class="setCheckbox button">
+          <img src="images/check-off.webp" onclick='checkCheckbox("hidden")' for="hidden" class="setCheckbox button">
           <label for="private" class="uploadText setLabel">Soukromý seznam</label>
-          <img src="images/help.png" class="button setHelp" onclick="openHelp('private')">
+          <img src="images/help.webp" class="button setHelp" onclick="openHelp('private')">
         </div>
       </div>
 
@@ -250,10 +250,10 @@
     <!-- Debug Tools -->
     <div class="searchTools uploadText debugTools">
       <span class="debugTitle">Seznamy k vygenerování:</span>
-      <img class="button pageBut" src="images/arrow-left.png" onclick="debugLists(-1)">
+      <img class="button pageBut" src="images/arrow-left.webp" onclick="debugLists(-1)">
       <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="10">
-      <img class="button pageBut" src="images/arrow-right.png" onclick="debugLists(1)">
-      <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugLists(2)">
+      <img class="button pageBut" src="images/arrow-right.webp" onclick="debugLists(1)">
+      <img class="button pageBut" style="width: 3vw;" src="images/preview.webp" onclick="debugLists(2)">
     </div>
 
     <div class="communityContainer"></div>
@@ -268,7 +268,7 @@
   <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
   <span class="uploadText"> | 2021-2022 | </span>
   <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github"
-      src="images/github.png"></a>
+      src="images/github.webp"></a>
   <a onclick="openHelp('license')" class="uploadText gamLink"> Licence</a>
 </footer>
 

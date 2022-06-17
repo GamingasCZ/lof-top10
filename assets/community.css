@@ -121,7 +121,7 @@
     border: none;
     text-align: center;
     width: 100%;
-    background: url("../images/fade.png") repeat-x;
+    background: url("../images/fade.webp") repeat-x;
 }
 
 .collabRoles {
@@ -559,7 +559,7 @@ input:disabled {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    background-image: url("../images/headerBG.png");
+    background-image: url("../images/headerBG.webp");
 }
 
 #plusSign {
@@ -588,7 +588,7 @@ input:disabled {
 #mainContent,
 .collabBG {
     text-align: left;
-    background-image: url("../images/fade.png");
+    background-image: url("../images/fade.webp");
     background-repeat: repeat-x;
     height: 100%;
 }
@@ -762,21 +762,21 @@ input:disabled {
 }
 
 .gdSlider::-moz-range-progress {
-    background: url("../images/sliderBar-uhd.png");
+    background: url("../images/sliderBar-uhd.webp");
     height: 0.4em;
     border-radius: 1vw;
     transform: translate(0.2vw);
 }
 
 .gdSlider::-moz-range-thumb {
-    background: url("../images/sliderthumb-uhd.png");
+    background: url("../images/sliderthumb-uhd.webp");
     background-size: 1em;
     transform: scale(2);
     border: none;
 }
 
 .gdSlider::-moz-range-track {
-    background: url("../images/slidergroove-uhd.png");
+    background: url("../images/slidergroove-uhd.webp");
     background-repeat: no-repeat;
     height: 0.8em;
     background-size: cover;
@@ -794,7 +794,7 @@ input:disabled {
 #inpFeatured:checked,
 #inpGrad:checked {
     -moz-appearance: none;
-    background: url("../images/check-on.png");
+    background: url("../images/check-on.webp");
     background-size: contain;
     background-repeat: no-repeat;
     padding: 1vw;
@@ -806,7 +806,7 @@ input:disabled {
 #inpFeatured,
 #inpGrad {
     -moz-appearance: none;
-    background: url("../images/check-off.png");
+    background: url("../images/check-off.webp");
     background-size: contain;
     background-repeat: no-repeat;
     padding: 1vw;
@@ -963,7 +963,7 @@ input:disabled {
 
 .debugTools {
     justify-content: center !important;
-    background-image: url('../images/debug.png') !important;
+    background-image: url('../images/debug.webp') !important;
     max-width: 45vw !important;
     margin: auto !important;
     margin: auto !important;

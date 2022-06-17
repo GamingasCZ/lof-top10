@@ -68,7 +68,7 @@ function showCollabTools(id) {
         $("#humpaste").addClass("disabled")
     }
 
-    $(".hostIcon").attr("src", "images/bytost.png")
+    $(".hostIcon").attr("src", "images/bytost.webp")
     let creaArray = levelList[id]["creator"];
     if (typeof creaArray == "object") {
         let longer = creaArray[1].length >= creaArray[2].length ? creaArray[1].length : creaArray[2].length
@@ -80,7 +80,7 @@ function showCollabTools(id) {
         refreshRoleList()
 
         if (creaArray[0][1] == 1) { // Is host verified?
-            $(".hostIcon").attr("src", "images/check.png")
+            $(".hostIcon").attr("src", "images/check.webp")
         }
     }
     else {
@@ -238,8 +238,8 @@ function addRole(preset = null, loading = 0) {
     <div class="roleBubble" style="background: ${randomColor()};">
         <input id="roleInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="${jsStr["NAME"][LANG]}" value=${presetName}></input>
         <div class="roleControls">
-            <img class="button noMobileResize" src="images/copy.png" onclick="clipboardTask(1, $(this).parent(), 1)"
-            ><img class="button noMobileResize roleRm" src="images/delete.png" onclick="removeColObject($(this), 1)">
+            <img class="button noMobileResize" src="images/copy.webp" onclick="clipboardTask(1, $(this).parent(), 1)"
+            ><img class="button noMobileResize roleRm" src="images/delete.webp" onclick="removeColObject($(this), 1)">
         </div>
     </div>
     `).appendTo($(".collabRoles"));
@@ -322,8 +322,8 @@ function addCollabHuman(load = 0) {
     }
 
     // Is human verified?
-    let verifySign = "images/bytost.png";
-    if (load != 0) { verifySign = humanInstance.verified ? "images/check.png" : "images/bytost.png" }
+    let verifySign = "images/bytost.webp";
+    if (load != 0) { verifySign = humanInstance.verified ? "images/check.webp" : "images/bytost.webp" }
 
     let rowID = new Date().getTime();
     let humanCode = $(`
@@ -331,10 +331,10 @@ function addCollabHuman(load = 0) {
         <td>
             <img class="button noMobileResize" style="width: 2vw;" src="${verifySign}"
            ><input onchange="chRoleValue($(this), 'name', 2)" id="collabInp" placeholder="${jsStr["NAME"][LANG]}" value="${humanInstance.name}"></input
-           ><img class="button noMobileResize" style="width: 2vw;" src="images/getStats.png" onclick="verifyPerson($(this), 1)">
+           ><img class="button noMobileResize" style="width: 2vw;" src="images/getStats.webp" onclick="verifyPerson($(this), 1)">
         </td>
         <td>
-            <img class="button noMobileResize socAddButton" style="width: 2vw;" src="images/add.png" onclick="addSocMedia($(this))"
+            <img class="button noMobileResize socAddButton" style="width: 2vw;" src="images/add.webp" onclick="addSocMedia($(this))"
        ></td>
         <td>
             <select onchange="chRoleValue($(this), 'role', 2)" class="uploadText roleList"></select>
@@ -349,8 +349,8 @@ function addCollabHuman(load = 0) {
             <input type="color" class="tableCpicker noMobileResize button" style="width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
         </td>
         <td>
-            <img class="button noMobileResize" style="width: 2.5vw;" src="images/copy.png" onclick="clipboardTask(1, $(this), 2)"
-           ><img class="button noMobileResize humRm" style="width: 2.5vw;" src="images/delete.png" onclick="removeColObject($(this), 2)">
+            <img class="button noMobileResize" style="width: 2.5vw;" src="images/copy.webp" onclick="clipboardTask(1, $(this), 2)"
+           ><img class="button noMobileResize humRm" style="width: 2.5vw;" src="images/delete.webp" onclick="removeColObject($(this), 2)">
         </td>
         <input type="hidden" value="${rowID}">
     </tr>
@@ -374,7 +374,7 @@ function addCollabHuman(load = 0) {
         }
 
         humanInstance["socials"].forEach(soc => {
-            let smallBut = $(`<img class="button noMobileResize" style="width: 2vw" src=images/${imgs[soc[0]]}.png>`).appendTo(socialCell)
+            let smallBut = $(`<img class="button noMobileResize" style="width: 2vw" src=images/${imgs[soc[0]]}.webp>`).appendTo(socialCell)
             smallBut.on("click", changeSocial)
             smallBut.on("dblclick", x => { changeSocial(x); removeSocial() });
             // Adds corresponding HTMLelement to array
@@ -409,7 +409,7 @@ function chRoleValue(el, changeValue, type, arr = null) {
     if (changeValue == "name" && type == 2 && levelList[currEditing]["creator"][2][index].verified) {
         // Unverifying person on input change
         levelList[currEditing]["creator"][2][index].verified = false;
-        $(el.siblings()[0]).attr("src", "images/bytost.png");
+        $(el.siblings()[0]).attr("src", "images/bytost.webp");
     }
     if (changeValue == "part") {
         const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
@@ -440,7 +440,7 @@ function chMainName(el, vyb) {
 
     if (vyb == 1) {
         levelList[currEditing]["creator"][0][1] = false;
-        $(el.siblings()[0]).attr("src", "images/bytost.png");
+        $(el.siblings()[0]).attr("src", "images/bytost.webp");
         levelList[currEditing]["creator"][0][0] = $(".verifier").val();
     }
     else if (vyb == 2) {
@@ -653,7 +653,7 @@ function addSocMedia(el) {
         }
 
         if (next != null) {
-            $(".openSocPicker").attr("src", `images/${imgs[next]}.png`)
+            $(".openSocPicker").attr("src", `images/${imgs[next]}.webp`)
             $(".socInp").attr("placeholder", names[next]);
             soc_array = [next, ""]
 
@@ -662,7 +662,7 @@ function addSocMedia(el) {
     else {
         // When no SM has been added yet
         soc_array = [0, ""]
-        $(".openSocPicker").attr("src", `images/${imgs[0]}.png`)
+        $(".openSocPicker").attr("src", `images/${imgs[0]}.webp`)
         $(".socInp").attr("placeholder", names[0]);
     }
 }
@@ -674,7 +674,7 @@ function confirmSocial() {
 
         // Adds a button to table cell
         let tableBit = $(".socAddButton")[soc_selected].parentElement
-        let smallBut = $(`<img class="button noMobileResize" style="width: 2vw" src=images/${imgs[soc_array[0]]}.png>`).appendTo(tableBit)
+        let smallBut = $(`<img class="button noMobileResize" style="width: 2vw" src=images/${imgs[soc_array[0]]}.webp>`).appendTo(tableBit)
         smallBut.on("click", changeSocial)
         smallBut.on("dblclick", x => { changeSocial(x); removeSocial() });
 
@@ -721,7 +721,7 @@ function selectSocialMedia(what) {
     if (!lock_socChange) {
         let selected = Object.values($(".socialPicker").children()).indexOf(what.target) - 1;
 
-        $(".openSocPicker").attr("src", `images/${imgs[selected]}.png`);
+        $(".openSocPicker").attr("src", `images/${imgs[selected]}.webp`);
         $(".socInp").attr("placeholder", names[selected]);
 
         soc_array[0] = selected;
@@ -744,7 +744,7 @@ function changeSocial(but) {
         if (target.isEqualNode(s[2])) {
             soc_changingInd = [i, target];
             lock_socChange = true;
-            $(".openSocPicker").attr("src", `images/${imgs[s[0]]}.png`);
+            $(".openSocPicker").attr("src", `images/${imgs[s[0]]}.webp`);
             $(".openSocPicker").addClass("disabled");
             $(".socInp").val(s[1]);
             $(".socInp").focus()

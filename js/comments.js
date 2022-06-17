@@ -88,7 +88,7 @@ $(function () {
   for (let i = 0; i < EMOJI_AM; i++) {
     let em = i + 1 < 10 ? "0" + (i + 1) : i + 1;
     $(".emojiPanel").append(
-      `<img class="listEmoji" src="./images/emoji/${em}.png" onclick="addEmoji(${i})">`
+      `<img class="listEmoji" src="./images/emoji/${em}.webp" onclick="addEmoji(${i})">`
     );
   }
 
@@ -132,7 +132,7 @@ $(function () {
 
       // this is the worst fix imaginable
       text = text.replace(/<img class="emojis" src=".\/images\/emoji\//g, "&");
-      text = text.replace(/.png">/g, "");
+      text = text.replace(/.webp">/g, "");
 
       // Remove excess tags
       text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "");
@@ -208,7 +208,7 @@ function addEmoji(id) {
   if (actualText.length + emoji.length < 300) {
     midText += `<img class='emojis' src='./images/emoji/${emoji.slice(
       1
-    )}.png'>`;
+    )}.webp'>`;
     $(".comInpArea").html(midText);
 
     actualText += emoji;
@@ -418,7 +418,7 @@ function comBox(cd, dcc, edcc) {
 
     cd["comment"] =
       selStart +
-      `<img class="emojis" src="./images/emoji/${emojiID}.png">` +
+      `<img class="emojis" src="./images/emoji/${emojiID}.webp">` +
       selEnd;
   }
 

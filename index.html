@@ -25,7 +25,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Geometry Dash Level Lists">
   <meta name="twitter:description" content="Create and browse lists of GD levels!">
-  <meta name="twitter:image" content="http://gamingas.wz.cz/lofttop10/images/twitImg.png">
+  <meta name="twitter:image" content="http://gamingas.wz.cz/lofttop10/images/twitImg.webp">
 
   <meta name="description" content="Create, share and browse lists of Geometry Dash levels!">
   <title>GD Seznamy</title>
@@ -33,7 +33,7 @@
 
 <body>
   <div class="overlay">
-    <img src="images/arrow-left.png" class="scrollToTop button" title="Skočit na vrch"
+    <img src="images/arrow-left.webp" class="scrollToTop button" title="Skočit na vrch"
       onclick="document.body.scrollTop = 0">
   </div>
   
@@ -44,7 +44,7 @@
   <!-- Help dialogs -->
   <div class="helpBG" style="display: none;"></div>
   <div class="popupHelp uploadText" style="display: none;">
-    <img src="./images/delete.png" class="button" style="width: 4%; float: right;" onclick="closeHelp()">
+    <img src="./images/delete.webp" class="button" style="width: 4%; float: right;" onclick="closeHelp()">
     <p id="helpTitle"></p>
     <div id="helpContent">
     </div>
@@ -54,7 +54,7 @@
   <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
       <p style="margin: 0 auto;" class="collabTTitle"></p>
-      <img src="./images/delete.png" class="button" style="width: 6%; height: max-content;" onclick="hideCollabStats()">
+      <img src="./images/delete.webp" class="button" style="width: 6%; height: max-content;" onclick="hideCollabStats()">
     </div>
     <div class="collabGraphs" style="min-height: 49%; max-height: 49%; overflow-y: auto;">
 
@@ -69,18 +69,18 @@
 
   <!-- Share dialog -->
   <div class="uploadBG uploadText" id="shareTools" style="position: fixed; display: none;">
-    <img src="./images/delete.png" class="button" style="width: 6%; float: right;" onclick="hideShare()">
+    <img src="./images/delete.webp" class="button" style="width: 6%; float: right;" onclick="hideShare()">
     <p class="uploadText" id="shareText" style="margin-bottom: 0;">Sdílet</p>
     <input class="uploadText settingsBG" id="shareContainer" readonly></input>
     <div style="display: flex;" class="shareSocials">
-      <img src="images/twitter.png" class="button" style="width: 5vw; margin-right: 1vw;">
-      <img src="images/reddit.png" class="button" style="width: 5vw;">
+      <img src="images/twitter.webp" class="button" style="width: 5vw; margin-right: 1vw;">
+      <img src="images/reddit.webp" class="button" style="width: 5vw;">
     </div>
   </div>
 
   <!-- Jump To Dialog-->
   <div class="uploadBG uploadText" id="jumpToTools" style="position: fixed; display: none;">
-    <img src="./images/delete.png" class="button" style="width: 6%; float: right;" onclick="hideJumpTo()">
+    <img src="./images/delete.webp" class="button" style="width: 6%; float: right;" onclick="hideJumpTo()">
     <p class="uploadText" id="jumpToText" style="margin: 0;">Skočit na...</p>
     <div style="display: flex; flex-direction: column;" class="jumpToContainer">
     </div>
@@ -98,17 +98,17 @@
 
     <div class="searchTools listOptions uploadText" style="justify-content: space-between; opacity: 0;">
       <div>
-        <img src="images/list.png" onclick="listList()" style="width: 3.5vw; margin-right: 0.5vw;" class="button lList disabled"
+        <img src="images/list.webp" onclick="listList()" style="width: 3.5vw; margin-right: 0.5vw;" class="button lList disabled"
           title="Seznam levelů">
-        <img src="images/comments.png" onclick="listComments()" style="width: 3.5vw;" class="button lComm"
+        <img src="images/comments.webp" onclick="listComments()" style="width: 3.5vw;" class="button lComm"
           title="Komentáře">
         <div id="commAmount">1</div>
       </div>
 
       <div>
-        <img src="images/jumpBut.png" onclick="showJumpTo()" style="width: 3.5vw;" id="jumpToBut" class="button lJumpTo" title="Skočit na...">
-        <img src="images/shareBut.png" onclick="listShare()" style="width: 3.5vw; margin-left: 0.5vw;" id="shareBut" class="button lShare" title="Sdílet">
-        <img src="images/pinList.png" onclick="pinList()" style="width: 3.5vw; margin-left: 0.5vw;" id="pinBut" class="button lPin" title="Připnout seznam">
+        <img src="images/jumpBut.webp" onclick="showJumpTo()" style="width: 3.5vw;" id="jumpToBut" class="button lJumpTo" title="Skočit na...">
+        <img src="images/shareBut.webp" onclick="listShare()" style="width: 3.5vw; margin-left: 0.5vw;" id="shareBut" class="button lShare" title="Sdílet">
+        <img src="images/pinList.webp" onclick="pinList()" style="width: 3.5vw; margin-left: 0.5vw;" id="pinBut" class="button lPin" title="Připnout seznam">
       </div>
 
       <div class="password">
@@ -121,22 +121,22 @@
     <div class="comments">
       <div class="searchTools uploadText debugTools">
         <span class="debugTitle" style="font-size: 2.6vw;">Přidat komentáře:</span>
-        <img class="button pageBut" src="images/arrow-left.png" onclick="debugComments(-1)">
+        <img class="button pageBut" src="images/arrow-left.webp" onclick="debugComments(-1)">
         <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
-        <img class="button pageBut" src="images/arrow-right.png" onclick="debugComments(1)">
-        <img class="button pageBut" style="width: 3vw;" src="images/preview.png" onclick="debugComments(2)">
+        <img class="button pageBut" src="images/arrow-right.webp" onclick="debugComments(1)">
+        <img class="button pageBut" style="width: 3vw;" src="images/preview.webp" onclick="debugComments(2)">
       </div>
 
       <div class="searchTools uploadText" id="commentTool" style="justify-content: center;">
         <div class="page">
           <span id="pageStr" style="padding-right: 2%;">Strana: </span>
-          <img class="button pageBut" src="images/arrow-left.png" onclick="commpageSwitch(-1)">
+          <img class="button pageBut" src="images/arrow-left.webp" onclick="commpageSwitch(-1)">
           <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
           <span id="maxPage">/1</span>
-          <img class="button pageBut" src="images/arrow-right.png" onclick="commpageSwitch(1)">
+          <img class="button pageBut" src="images/arrow-right.webp" onclick="commpageSwitch(1)">
         </div>
-        <img onclick="$('#commentMaker')[0].scrollIntoView()" src="images/add.png" class="button" style="width: 3vw; margin-right: 1vw;">
-        <img onclick="refreshComments()" src="images/refresh.png" id="refreshBut" class="button" style="width: 3vw;">
+        <img onclick="$('#commentMaker')[0].scrollIntoView()" src="images/add.webp" class="button" style="width: 3vw; margin-right: 1vw;">
+        <img onclick="refreshComments()" src="images/refresh.webp" id="refreshBut" class="button" style="width: 3vw;">
       </div>
 
       <div id="commentList"></div>
@@ -144,9 +144,9 @@
 
       <div class="positionEdit" id="commentMaker">
         <div style="display: flex; align-items: center; padding-left: 1%; margin-bottom: 0.5vw;">
-          <img src="images/bytost.png" id="pIcon" style="height: max-content; width: 2.5vw;">
+          <img src="images/bytost.webp" id="pIcon" style="height: max-content; width: 2.5vw;">
           <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno" maxlength="20">
-          <img src="./images/getStats.png" onclick="getPlayerIcon()" class="button passImg" style="height: max-content;">
+          <img src="./images/getStats.webp" onclick="getPlayerIcon()" class="button passImg" style="height: max-content;">
           <h5 class="uploadText comUserError"></h5>
         </div>
     
@@ -193,7 +193,7 @@
     </div>
 
     <div class="boards">
-      <img src="./images/crown.png" id="crown" style="display: none;">
+      <img src="./images/crown.webp" id="crown" style="display: none;">
     </div>
   </div>
   
@@ -203,7 +203,7 @@
   <a href="http://gamingas.wz.cz" class="uploadText gamLink"> GamingasCZ </a>
   <span class="uploadText"> | 2021-2022 | </span>
   <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github"
-      src="images/github.png"></a>
+      src="images/github.webp"></a>
   <a onclick="openHelp('license')" class="uploadText gamLink"> Licence</a>
 </footer>
 

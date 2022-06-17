@@ -102,7 +102,7 @@ function uploadList() {
     if (isValid) {
         $("#listData").attr("value", JSON.stringify(levelList));
 
-        $("#submitbutton").replaceWith($("<img class='loading' style='animation-name: loading;' src='images/loading.png'>"))
+        $("#submitbutton").replaceWith($("<img class='loading' style='animation-name: loading;' src='images/loading.webp'>"))
 
         // Is the "hidden" checkbox checked?
         if ($("input[name='hidden']").attr("checked") == "checked") { var listHidden = "1" }
@@ -129,14 +129,14 @@ function uploadList() {
             let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
 
             $(".uploaderDialog").html(`
-                <img style="padding-left: 3%" src=./images/${!error ? "check" : "error"}.png >
+                <img style="padding-left: 3%" src=./images/${!error ? "check" : "error"}.webp >
                 <p class="uploadText" style="padding: 0 3% 0 3%">${sendMess}</p>
 
                 <div style="display:flex; flex-direction: column${error ? ';display: none;' : ';'}">
                     <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
                     <div class="uploadText shareContainer">
                         <p class="shareBG uploadText">${currWebsite}</p>
-                        <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
+                        <img class="button shareBut" src="./images/openList.webp" onclick="window.open('${currWebsite}','_blank')">
                     </div>
                 </div >
 
@@ -161,7 +161,7 @@ function updateList() {
             "isNowHidden": isHidden
         }
 
-        $("#submitbutton").html("<img class='loading' src='images/loading.png'>")
+        $("#submitbutton").html("<img class='loading' src='images/loading.webp'>")
         $("#removebutton").remove()
 
         $.post("./php/updateList.php", postData, function (data) {
@@ -169,7 +169,7 @@ function updateList() {
             if (3 == 3) {
                 $(".uploaderDialog").html(`
                 <div style="padding: 3%">
-                    <img src="./images/check.png" style="width:7%;">
+                    <img src="./images/check.webp" style="width:7%;">
                     <p class="uploadText">Seznam aktualizován!</p>
                 </div>
                 `)
@@ -179,7 +179,7 @@ function updateList() {
             else if (data == 4) {
                 $(".uploaderDialog").html(`
                 <div style="padding: 3%">
-                    <img src="./images/help.png" style="width:7%;">
+                    <img src="./images/help.webp" style="width:7%;">
                     <p class="uploadText">Nezměnil jsi nic v seznamu!</p>
                 </div>
                 `)
@@ -188,7 +188,7 @@ function updateList() {
             else {
                 $(".uploaderDialog").html(`
                 <div style="padding: 3%">
-                    <img src="./images/error.png" style="width:7%;">
+                    <img src="./images/error.webp" style="width:7%;">
                     <p class="uploadText">Seznam se nepodařilo aktualizovat!</p>
                 </div>
                 `)
@@ -250,7 +250,7 @@ $(function () {
     // When the image failed to load (sad crying emoji)
     $("#imagePrev").on("error", function () {
         $("#imagePrev").css("width", "10%")
-        $("#imagePrev").attr("src", "./images/error.png")
+        $("#imagePrev").attr("src", "./images/error.webp")
         $("#imgError").text(jsStr["IM_NOTFOUND"][LANG])
     })
     // Change preview image on URL change
@@ -328,8 +328,8 @@ function confirmDelete() {
 function removeList() {
     // Confirm remove
     $(".boom").append(`<div class="uploadText removeScreen">
-    <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.png"><br />
-    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -5.4vw;" src="./images/szn1.png">
+    <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.webp"><br />
+    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -5.4vw;" src="./images/szn1.webp">
     <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">${jsStr["CONF_DEL"][LANG]}</p>
     <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
         <button id="rmbutton" onclick="confirmDelete()" class="button uploadText eventButton">${jsStr["YES"][LANG]}</button>
