@@ -323,7 +323,7 @@ var parts = {
         ["- Načítání -","- Loading -"],
         ["Připnuté", "Pinned"],
         ["- Zatím jsi nepřipnul žádné seznamy! -", "- You haven't pinned any lists yet! -"],
-        ["Naposledy navštívené", "Recently visited"],
+        ["Navštívené", "Visited"],
         ["Promazat", "Clear"],
         ["- Zatím jsi nenavštívil žádné seznamy! -", "- You haven't looked at any lists yet! -"],
         ["Výběr z uložených","Favorites mix"],

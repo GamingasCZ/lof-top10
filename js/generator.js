@@ -817,6 +817,7 @@ function clearViewed() {
 
 function drawFaves(favesData) {
 	// Generate list
+	favesData = favesData == null ? [] : favesData
 	listViewerDrawer(favesData, "#favoritesContainer", 1)
 }
 
