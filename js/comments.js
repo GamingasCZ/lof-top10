@@ -492,7 +492,7 @@ function displayComments(data) {
     $(".noComm").show();
     return null;
   }
-  data.reverse();
+  let comArray = JSON.parse(JSON.stringify(data)).reverse();
 
   // Max page
   maxCommentPage = Math.ceil(data.length / PER_PAGE);
