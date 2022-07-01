@@ -1,0 +1,50 @@
+<div style="display: flex; align-items: center;">
+  <a href="index.html" class="button" style="height: 3vw;"><img src="images/gdl.svg" class="logo"></a>
+</div>
+<div class="menuPicker">
+  <button class="yearButtonImg uploadText" onclick="switchLoFList('upload.html?editor')">
+    <img src="images/editorMobHeader.svg">
+    <h4>%%s</h4>
+  </button>
+  <button class="yearButtonImg uploadText" onclick="switchLoFList('upload.html?browse')">
+    <img src="images/browseMobHeader.svg">
+    <h4>%%s</h4>
+  </button>
+  <button class="yearButtonImg savedBut uploadText" src="" onclick="showFaves()">
+    <img src="images/savedMobHeader.svg"><h4>%%s</h4></button>
+</div>
+<div class="mobilePicker" onchange="switchSite($(this)[0].value)">
+  <div onclick="switchLoFList('upload.html?editor')"><img src="images/editorMobHeader.svg">
+    <h6>%%s</h6>
+  </div>
+  <div onclick="switchLoFList('upload.html?browse')"><img src="images/browseMobHeader.svg">
+    <h6>%%s</h6>
+  </div>
+  <div onclick="showFaves()"><img src="images/savedMobHeader.svg">
+    <h6>%%s</h6>
+  </div>
+</div>
+<div style="justify-content: right; display: flex; align-items: center;">
+  <img class="button" src="images/settings.svg" style="width: 2.5vw; padding-right: 1.5vw;"
+    onclick="$('.settingsMenu').fadeToggle(100)">
+</div>
+<div class="settingsMenu" style="display: none;">
+  <div class="siteSettingsChild">
+    <p class="uploadText langText">%%s</p>
+    <select class="uploadText settingsDropdown">
+      <option id="czech">%%s</option>
+      <option id="english">%%s</option>
+    </select>
+  </div>
+  <!-- <div class="siteSettingsChild">
+      <p class="uploadText skinText">Skin</p>
+      <select class="uploadText settingsDropdown skins">
+      </select>
+    </div> -->
+  <div class="siteSettingsChild">
+    <p class="uploadText anims">%%s</p>
+    <img src="images/check-on.webp" for="anim" class="button" style="width: 3vw;"
+      onclick="checkCheckbox('anim', switchAnims)">
+    <input type="checkbox" style="display: none;" name="anim">
+  </div>
+</div>

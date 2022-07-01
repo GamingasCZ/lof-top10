@@ -34,6 +34,14 @@ $(function () {
         "license": {
             "title": jsStr["LICENSE"][LANG],
             "content": "Načítání..."
+        },
+        "pinnedLists": {
+            "title": jsStr["PINNEDLIST_T"][LANG],
+            "content": jsStr["PINNEDLIST_D"][LANG]
+        },
+        "officialLists": {
+            "title": jsStr["OFFICIALLIST_T"][LANG],
+            "content": jsStr["OFFICIALLIST_D"][LANG]
         }
     }
 })
@@ -42,11 +50,11 @@ function closeHelp() {
     $(".popupHelp").slideUp();
     $(".helpBG").fadeOut();
 }
-async function openHelp(page) {
-    if (page == "license") await $.get("https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/LICENSE", d => {help[page]["content"] = d})
+async function openHelp(yes) {
+    if (yes == "license") await $.get("https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/LICENSE", d => {help[yes]["content"] = d})
 
-    $("#helpTitle").html(help[page]["title"])
-    $("#helpContent").html(help[page]["content"])
+    $("#helpTitle").html(help[yes]["title"])
+    $("#helpContent").html(help[yes]["content"])
 
     $(".popupHelp").slideDown()
     $(".helpBG").fadeIn();

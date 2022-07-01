@@ -1,5 +1,6 @@
 const MAX_GDB_SCROLL = 5
 
+var openedPane = 0
 function getDetailsFromID(id) {
     // Tohle budeš pak muset předělat, až bude všechno fungovat :D
     let givenID = $(".idbox" + id).val();
@@ -111,39 +112,144 @@ function saveGDBresult(id, data) {
     if (typeof levelList[id]["creator"] == "object") { levelList[id]["creator"][0] = [jsonData["author"], 1] } // Collab tools enabled
     else { levelList[id]["creator"] = jsonData["author"]; } // Not enabled
 
+    saveDifficulty(jsonData["difficulty"], jsonData["featured"], jsonData["epic"], id)
+
     $(".idbox" + id).val(jsonData["id"]);
     levelList[id]["levelID"] = jsonData["id"]
 }
 
-function colorizePage() {
-    let selColor = $("#bgcolorPicker").val()
+function saveDifficulty(difficulty, featured, epic, listPos) {
+    // bad gdbrowser response
+    let stringDiffs = ["NA", "Easy", "Normal", "Hard", "Harder", "Insane", "Easy Demon", "Medium Demon", "Hard Demon", "Insane Demon", "Extreme Demon", "Auto"]
+    if (typeof difficulty == "string") difficulty = stringDiffs.indexOf(difficulty)
+    // If not string, I passed it in as an integer (hopefully :P), corresponds to prev. line
 
-    let hue = getHueFromHEX(selColor)
+    if (difficulty == 0) {
+        featured = 0; epic = 0;
+    }
 
-    levelList["pageBGcolor"] = selColor;
+    $($(".diffMain")[listPos - 1]).attr("src", `images/faces/${difficulty}.webp`)
+    $(".faceSelected").removeClass("faceSelected")
+    $($(`.diffFace`)[difficulty]).addClass("faceSelected")
 
-    $("body").css("background-color", selColor)
-    $(".editorHeader").css("background-color", "hsl(" + hue + ",40.7%,54%)")
-    $("#mainContent").css("background-color", "hsl(" + hue + ",40.7%,25%)")
-    $(".uploadBG").css("background-color", "hsl(" + hue + ",11.5%,22.2%)")
-    $("#submitbutton").css("background-color", "hsl(" + hue + ",53.5%,63.7%)")
+    $("#inpEpic").prop("checked", 0)
+    $("#inpFeatured").prop("checked", 0)
+    if (epic != -1) {
+        if (!epic) $("#inpEpic").prop("checked", featured)
+        else if (!featured) $("#inpFeatured").prop("checked", epic)
+    }
+    else {
+        $("#inpEpic").prop("checked", featured[1] == 1)
+        $("#inpFeatured").prop("checked", featured[1] == 2)
+    }
+
+    let rate = 0;
+    if (epic != -1) { // featured passed -1 when epic passed the value from levelList
+        if (epic) { $($(".diffBack")[listPos - 1]).attr("src", `images/faces/epic.webp`); rate = 2; $($(".diffBack")[listPos - 1]).attr("id", `epicGlow`); }
+        else if (featured) { $($(".diffBack")[listPos - 1]).attr("src", `images/faces/featured.webp`); rate = 1; $($(".diffBack")[listPos - 1]).attr("id", `featuredGlow`); }
+        else { $($(".diffBack")[listPos - 1]).attr("src", ``); $($(".diffBack")[listPos - 1]).attr("id", `epicGlow`); }
+    }
+    else rate = featured[1]
+    levelList[listPos]["difficulty"] = [difficulty, rate]
+}
+function openDiffPicker(lp) {
+    $('.cardContainer' + lp).text('')
+    if (openedPane == 2 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
+    openedPane = 2
+
+    let diff = levelList[lp]["difficulty"]
+
+    let difficulties = [];
+    for (i = 0; i < 12; i++) difficulties.push(`<img class="button diffFace" onclick="saveDifficulty(${i}, levelList[${lp}]['difficulty'], -1, ${lp})" src='images/faces/${i}.webp'>`)
+    difficulties = difficulties.join("\n")
+
+    $('.cardContainer' + lp).append(`
+    <div class="difficultyPicker">
+        <div class="diffFaces">${difficulties}</div>
+        <div class="diffOptions">
+            <div>
+                <input onchange="saveDifficulty(levelList[${lp}]['difficulty'][0], 1, 0, ${lp})" id="inpEpic" class="button setCheckbox" type="checkbox"></input>
+                <label for="inpEpic" class="uploadText">Featured</label>
+            </div>
+            <div>
+                <input onchange="saveDifficulty(levelList[${lp}]['difficulty'][0], 0, 1, ${lp})" id="inpFeatured" class="button setCheckbox" type="checkbox"></input>
+                <label for="inpFeatured" class="uploadText">Epic</label>
+            </div>
+        </div>
+    </div>`)
+
+    saveDifficulty(diff[0], diff, -1, lp)
 }
 
-function generateFromJSON(event = null) {
-    let listID = location.search.slice(1).split(/[=&]/g);
-    let listType = "id";
-    if (listID[0] == "pedit") {
-        listType = "pid";
-    }
-    let postReq = { "pwdEntered": listID[3], "retData": "1" };
-    postReq[listType] = listID[1];
+const changeBG = (ind, pos) => { levelList[pos]["background"][0] = ind }
+const changeGrad = (ind, pos) => { levelList[pos]["background"][1] = ind }
+function openBGPicker(lp) {
+    $('.cardContainer' + lp).text('')
+    if (openedPane == 3 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
+    openedPane = 3
+
+    let titles = ["Žádné", "Výchozí", "YouTube náhled", "Šrafování"]
+    let bgs = ["none", "original", "youtube", "stripes"];
+    bgs = bgs.map(i => `<img class='button bgPick' onclick='changeBG(${bgs.indexOf(i)}, ${lp})' title='${titles[bgs.indexOf(i)]}' src='images/bgIcons/${i}.svg'>`).join("\n")
+
+    $('.cardContainer' + lp).append(`
+    <div class="difficultyPicker">
+        <div class="diffFaces">${bgs}</div>
+        <div class="diffOptions">
+            <div>
+                <input onchange='changeGrad($("#inpGrad").prop("checked"), ${lp})' id="inpGrad" class="button setCheckbox" type="checkbox"></input>
+                <label for="inpGrad" class="uploadText">Přechod</label>
+            </div>
+            <div class="bgSettingsContainer">
+                <img src="images/gauntlet.webp" style="width: 3vw;" class="button" onclick="showBGdialog()">
+                <img src="images/preview.webp" style="width: 3vw;" class="button">
+            </div>
+        </div>
+    </div>`)
+
+    $("#inpGrad").prop("checked", levelList[lp]["background"][1])
+}
+
+function hideBGdialog() {
+    $(".bgProps").fadeOut(100)
+    $(".boom").fadeOut(100)
+    $(".gdSlider").off("onclick")
+}
+function showBGdialog() {
+    $(".bgProps").fadeIn(100)
+    $(".boom").css("background-color", "#000000a0")
+    $(".boom").show()
+    $(".boom").animate({ "opacity": 100 }, 200)
+}
+
+function generateFromJSON() {
+    let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
+    let postReq = { "pwdEntered": loadProps[1], "retData": "1" };
+    postReq[loadProps[2]] = loadProps[0];
     $.post("./php/pwdCheckAction.php", postReq, function (data) {
-        if (["1", "2"].includes(data)) {
-            window.location.replace("./upload.html")
+        // Disabling input boxes when editing a list
+        $(".uploadTitle").text(jsStr["EDITING"][LANG]);
+
+        $("#listnm").attr("disabled", "true");
+        $("#creatornm").attr("disabled", "true");
+
+        $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
+        $("#submitbutton").attr("onclick", "updateList()")
+
+        $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
+
+        if (typeof data == "number") {
+            window.location.replace("./upload.html?editor")
         }
+
+        // Debug list
+        if (window.location.port != "") {
+            data = {"creator":"GaminagsCZ","name":"top 2 nejlepší levely","data":"{\"1\":{\"levelName\":\"LIGMO\",\"creator\":[[\"EidamGD\",[6,12,17,true],\"Host\"],[{\"name\":\"Level\",\"HTMLobject\":{},\"id\":1651926617017}],[{\"name\":\"RealSuni\",\"role\":1651926617017,\"part\":[\"0\",\"3\"],\"color\":\"#ffffff\",\"socials\":[[0,\"https://twitch.tv/OnlyTryingYT\"]],\"HTMLobject\":{},\"verified\":[62,12,12,false]}]],\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[1,0]},\"2\":{\"levelName\":\"LIGMO2\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a3ff00\", \"difficulty\":[1,2]},\"3\":{\"levelName\":\"LIGMO3\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a300ff\", \"difficulty\":[3,1]},\"4\":{\"levelName\":\"LIGMO4\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[5,1]},\"5\":{\"levelName\":\"LIGMO5\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[1,1]},\"titleImg\":\"\",\"pageBGcolor\":\"#53a3aa\"}","id":88,"timestamp":"1651860720","hidden":"0"}
+        }
+
         // Is the list hidden?
         if (data["hidden"] != "0") {
-            $(`img[for="hidden"]`).attr("src", "images/check-on.png")
+            $(`img[for="hidden"]`).attr("src", "images/check-on.webp")
             $(`input[name="hidden"]`).attr("checked", true)
         }
 
@@ -156,8 +262,11 @@ function generateFromJSON(event = null) {
 
         levelList = JSON.parse(data["data"]);
         $(".titImgInp").val(levelList["titleImg"])
-        $("#bgcolorPicker").val(levelList["pageBGcolor"])
-        colorizePage()
+
+        $("#bgcolorPicker").css("background", levelList["pageBGcolor"])
+        $("body").css("background-color", levelList["pageBGcolor"])
+        let hue = getHueFromHEX(levelList["pageBGcolor"])
+        $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
 
         for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
             loadLevel(y + 1)
@@ -180,6 +289,16 @@ function refreshCardDetails(lp) {
     $(".idbox" + lp).val(levelList[lp]["levelID"])
     $(".cardLVideo" + lp).val(levelList[lp]["video"])
     $("#top" + lp).css("background-color", levelList[lp]["color"])
+
+    if (levelList[lp]["difficulty"] != undefined) {
+        let rate = ["","featured", "epic"][levelList[lp]["difficulty"][1]]
+
+        $(`.dPick${lp} > .diffMain`).attr("src", `images/faces/${levelList[lp]["difficulty"][0]}.webp`) // change face
+        if (rate != "") $(`.dPick${lp} > .diffBack`).attr("src", `images/faces/${rate}.webp`) // change rate glow
+
+        if (rate == "featured") $(`.dPick${lp} > .diffBack`).attr("id", "featuredGlow") // glow ids
+        else $(`.dPick${lp} > .diffBack`).attr("id", "epicGlow")
+    }
 
     availFill(0, $(".cardLName" + lp), "freedom69", lp)
     availFill(1, $(".cardLCreator" + lp), "freedom69", lp)
@@ -216,6 +335,8 @@ function moveCard(position, currID) {
 
     updateSmPos();
     document.getElementById("top" + listPlacement).scrollIntoView();
+    $(".cardExtrasContainer").text('')
+    $(".cardExtrasContainer").hide()
     return true;
 }
 
@@ -252,6 +373,7 @@ function displayCard(id) {
         $("#top" + id.toString()).css("transform", "scaleY(0.8)");
         $("#top" + id.toString()).show();
         $("#top" + id.toString()).css("transform", "scaleY(1)");
+        $(".cardExtrasContainer").text('')
         $(".cardExtrasContainer").hide()
         updateSmPos()
 
@@ -280,11 +402,11 @@ async function changeColPicker(chosenColor, target, isChangingValue) {
     let hue = await isChangingValue ? getHueFromHEX(levelList[target]["color"]) : chosenColor
 
     $("#top" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`);
-    $("#top" + target).css("border-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
-    $("#lineSplit" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
-    $(".cardContainer" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness-5}%)`);
+    $("#top" + target).css("border-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`);
+    $("#lineSplit" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`);
+    $(".cardContainer" + target).css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`);
 
-    let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness+"%");
+    let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");
     levelList[target]["color"] = inHex;
 }
 
@@ -340,7 +462,127 @@ function changeLevelVideo() {
     levelList[position]["video"] = selection;
 }
 
-function addLevel() {
+function searchFaves(data) {
+    let searchTerms = data.target.value
+    favesData = OGfavesData.filter(x => (x[0].toLowerCase()).includes(searchTerms.toLowerCase()))
+
+    makeFavesPicker()
+}
+
+function addFromFaves() {
+    if (Object.keys(levelList).length - ADDIT_VALS > 50) return
+
+    $(".levelPickerContainer").text("")
+    $(".savedFilter").val("")
+
+    if (favesData != null) { favesData = OGfavesData; makeFavesPicker() }
+    else $("iframe").attr("src", "./packs.html?type=fetchFaves")
+
+    $(".boom").show()
+    $(".boom").css("background-color", "black")
+    $(".boom").css("opacity", "0.7")
+    $(".levelPicker").fadeIn(70)
+}
+function hideFavePicker() {
+    $(".boom").css("background-color", "white")
+    $(".boom").css("opacity", "0")
+    $(".boom").hide()
+    $(".levelPicker").fadeOut(70)
+
+}
+
+function maxAddedDialog() {
+    $(".levelPickerContainer").append(`
+<div class="noSaves">
+    <img src="./images/close.svg">
+    <p class="uploadText">${jsStr["MAX_INLIST"][LANG]}</p>
+</div>
+        `)
+    $(".addCardButton").addClass("disabled")
+    return
+}
+
+function addPicked(ind) {
+    var listLenght = Object.keys(levelList).length - ADDIT_VALS;
+    levelList[listLenght] = {
+        "levelName": favesData[ind][0],
+        "creator": favesData[ind][1],
+        "levelID": favesData[ind][2],
+        "video": null,
+        "color": favesData[ind][3],
+        "difficulty": [0, 0],
+        "background": [1, true, 30, 100] //BG, gradient, alpha, brightness
+    };
+    loadLevel(listLenght)
+    displayCard(listLenght)
+
+    if (listLenght >= 50) {$(".levelPickerContainer").empty(); maxAddedDialog()}
+}
+
+var favesData
+var OGfavesData
+window.addEventListener("message", mess => {
+    let state = mess.data;
+    if (state == "fetchFaves") {
+        let data = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
+        if (data != null) {
+            favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
+            OGfavesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
+        }
+
+        // No key in localStorage (first time entering site)
+        else { favesData = []; OGfavesData = [] }
+        makeFavesPicker()
+    }
+}
+)
+
+function makeFavesPicker() {
+    $(".levelPickerContainer").empty()
+    if (Object.keys(levelList).length - ADDIT_VALS > 50) {
+        maxAddedDialog()
+        return
+    }
+
+    if (favesData.length == 0) {
+        // No search results
+        if ($(".savedFilter").val().length > 0) {
+            $(".levelPickerContainer").append(`
+<div class="noSaves">
+    <img src="./images/searchOpaque.svg">
+    <p class="uploadText">${jsStr["SEARCH_NOLVL"][LANG]}</p>
+</div>
+            `)
+            return
+        }
+
+        // No saved levels
+        $(".levelPickerContainer").append(`
+<div class="noSaves">
+    <img src="./images/savedMobHeader.svg">
+    <p class="uploadText">${jsStr["NOSAVEYET"][LANG]}</p>
+</div>
+        `)
+        return
+    }
+
+    let i = 0;
+    favesData.forEach(data => {
+        // Delete collab text
+        if (data[1].includes("(Collab)")) {
+            data[1] = data[1].split(" ").slice(0, -3).join(" ")
+            favesData[i][1] = data[1]
+        }
+
+        $(".levelPickerContainer").append(`
+        <div id="favBubble" class="roleBubble button" style="background-color: ${data[3]};" onclick="addPicked(${favesData.indexOf(data)})">${data[0]} - ${data[1]}
+        </div>
+        `)
+        i++
+    })
+}
+
+async function addLevel() {
     var listLenght = Object.keys(levelList).length - ADDIT_VALS;
     if (listLenght == 1) {
         // Removing tutorial
@@ -361,7 +603,7 @@ function addLevel() {
     updateSmPos();
 
     // Adds the CARD!
-    $("#mainContent").append(card(listLenght));
+    await $("#mainContent").append(await card(listLenght));
     // Skryje zabalenou kartu právě přidané karty
     $("#smtop" + listLenght).hide();
     // Adds the card to the JSON
@@ -370,7 +612,9 @@ function addLevel() {
         "creator": "",
         "levelID": null,
         "video": null,
-        "color": ""
+        "color": "",
+        "difficulty": [0, 0],
+        "background": [1, true, 30, 100] //BG, gradient, alpha, brightness
     };
 
     $("#top" + listLenght).css("transform", "scaleY(1)");
@@ -399,21 +643,29 @@ function addLevel() {
 }
 
 function loadLevel(pos) {
+    // Do not go over 50 levels
+    if (pos > 50) return
+
+    $(".previewButton").removeClass("disabled");
     $("#mainContent").append(card(pos))
     refreshCardDetails(pos)
 
     let chosenColor = levelList[pos]["color"];
     let rgb = HEXtoRGB(chosenColor, 40)
 
+    $(".cardContainer" + pos).css("background-color", `rgb(${rgb.join(",")})`);
     $("#top" + pos).css("border-color", `rgb(${rgb.join(",")})`);
     $("#lineSplit" + pos).css("background-color", `rgb(${rgb.join(",")})`);
 
+    $("#smtop" + pos).hide()
     // Setting card buttons
     $("#colorPicker" + pos).on("change", changeColPicker);
     $(".idbox" + pos).on("change keyup", changeIDbox);
     $(".cardLName" + pos).on("keyup", changeLevelName);
     $(".cardLCreator" + pos).on("keyup", changeLevelCreator);
     $(".cardLVideo" + pos).on("change", changeLevelVideo);
+
+    $(".helpText").hide()
 }
 
 function updateCardData(prevID, newID) {
@@ -450,6 +702,8 @@ function updateCardData(prevID, newID) {
     $(".cardContainer" + prevID).attr("class", "cardExtrasContainer cardContainer" + newID);
     $(".cPickerBut" + prevID).attr("onclick", "openColorPicker(" + newID + ")");
     $(".cPickerBut" + prevID).attr("class", "button cardButton cPickerBut" + newID);
+    $(".dPick" + prevID).attr("onclick", "openDiffPicker(" + newID + ")");
+    $(".dPick" + prevID).attr("class", "button cardButton diffContainer dPick" + newID);
 
     if (parseInt(prevID) != parseInt(newID)) {
         levelList[prevID] = levelList[newID + "waiting"];
@@ -465,14 +719,15 @@ function updateCardData(prevID, newID) {
 }
 
 function openColorPicker(lp) {
-    $('.cardContainer'+lp).text('')
-    $('.cardContainer'+lp).slideToggle(50)
+    $('.cardContainer' + lp).text('')
+    if (openedPane == 1 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
+    openedPane = 1
 
     let color = makeColorElement(getHueFromHEX(levelList[lp]["color"]), getLightnessFromHEX(levelList[lp]["color"]))
     color.on("input", k => {
         changeColPicker($(k.target).val(), lp, k.target.previousElementSibling.className == "hueChanger")
     })
-    color.appendTo($(".cardContainer"+lp))
+    color.appendTo($(".cardContainer" + lp))
 }
 
 function removeLevel(id) {
@@ -485,8 +740,8 @@ function removeLevel(id) {
 
     for (j = id + 1; j <= Object.keys(levelList).length - ADDIT_VALS; j++) {
         updateCardData(j, j - 1);
-        availFill(0,$(".cardLName" + id), "freedom69", id)
-        availFill(1,$(".cardLCreator" + id), "freedom69", id)
+        availFill(0, $(".cardLName" + id), "freedom69", id)
+        availFill(1, $(".cardLCreator" + id), "freedom69", id)
     }
 
     // Adds the tutorial, when the list is empty
@@ -516,30 +771,30 @@ var levelList = {
     "pageBGcolor": "#020202"
 }
 
-function card(index, rndColor) {
+function card(index) {
     return `
-<div class="card${index}">
+    <div class="card${index}">
     <div onclick="displayCard(${index});" class="smallPosEdit" id="smtop${index}">
     </div>
     <div class="positionEdit" id="top${index}">
         <div style="display: flex">
             <div style="display: flex; align-items: center;">
-                <img id="posInputPics" src="./images/star.png">
-                <input autocomplete="off" placeholder="${jsStr["L_LEVID"][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text" style="transform: translateY(0%);">
+                <img id="posInputPics" src="./images/star.webp">
+                <input autocomplete="off" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text" style="transform: translateY(0%);">
 
-                <img id="fillButton" src="./images/getStats.png" onclick="getDetailsFromID(${index})"class="fillID button disabled idDetailGetter${index}">
+                <img id="fillButton" src="./images/getStats.webp" onclick="getDetailsFromID(${index})" class="fillID button disabled idDetailGetter${index}">
             </div>
 
             <div class="positionButtons">
-                <img title="${jsStr["L_MOVE_D"][LANG]}" onclick="moveCard('up',${index})" 
+                <img title="${jsStr['L_MOVE_D'][LANG]}" onclick="moveCard('up',${index})" 
                      class="button upmover${index}" style="transform: rotate(90deg);" id="moveLPosButton"
-                     src="./images/arrow.png">
+                     src="./images/arrow.webp">
 
                 <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" disabled="true" value="${index}">
 
-                <img title="${jsStr["L_MOVE_U"][LANG]}" onclick="moveCard('down',${index})"
+                <img title="${jsStr['L_MOVE_U'][LANG]}" onclick="moveCard('down',${index})"
                         class="button downmover${index}" style="transform: rotate(-90deg);" id="moveLPosButton"
-                        src="./images/arrow.png">
+                        src="./images/arrow.webp">
             </div>
         </div>
 
@@ -547,136 +802,66 @@ function card(index, rndColor) {
 
         <div style="display: flex; flex-wrap: wrap;">
             <div style="display: flex; flex-wrap: wrap; width: 100%; align-items: center;">
-                <img id="posInputPics" src="./images/island.png">
-                <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr["L_NAME"][LANG]}">
+                <img id="posInputPics" src="./images/island.webp">
+                <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr['L_NAME'][LANG]}">
 
                 <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
 
-                <img id="fillButton" onclick="getDetailsFromName(${index})" class="disabled button nameDetailGetter${index}" src="./images/getStats.png">
+                <img id="fillButton" onclick="getDetailsFromName(${index})" class="disabled button nameDetailGetter${index}" src="./images/getStats.webp">
                 
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
-                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr["L_BUILDER"][LANG]}" style="width: 15vw;display: inline-flex;"><br />
-                <img class="button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.png" onclick="showCollabTools(${index})">
+                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="width: 15vw;display: inline-flex;"><br />
+                <img class="button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.webp" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
                 <div style="display: flex; align-items: center;">
-                    <img id="posInputPics" src="./images/yticon.png">
-                    <input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr["L_VIDEO"][LANG]}">
+                    <img id="posInputPics" src="./images/yticon.webp">
+                    <input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr['L_VIDEO'][LANG]}">
                 </div>
                 
                 <div class="cardButtonsContainer">
-                    <img title="${jsStr["DEL_CARD"][LANG]}" class="removerButton${index} button cardButton"
-                        onclick="removeLevel(${index})" src="./images/delete.png">
+                    <img title="${jsStr['DEL_CARD'][LANG]}" class="removerButton${index} button cardButton"
+                        onclick="removeLevel(${index})" src="./images/delete.webp">
 
-                    <img class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.png">
+                    <img title="${jsStr['CARD_COL'][LANG]}" class="button cardButton cPickerBut${index}" onclick="openColorPicker(${index})" src="./images/colorSelect.webp">
+                    <div title="${jsStr["LEV_DIFF"][LANG]}" class="button cardButton diffContainer dPick${index}" onclick="openDiffPicker(${index})">
+                        <img id="diffBG" src="./images/faces/diffContainer.webp">
+                        <img class="diffIcon diffMain" src="./images/faces/0.webp">
+                        <img class="diffIcon diffBack">
+                    </div>
                 </div>
             </div>
 
-            <div class="cardExtrasContainer cardContainer${index}"></div>
+            <div class="cardExtrasContainer cardContainer${index}">
+            </div>
         </div>
     </div>
 </div>
     `;
 }
-
-var fupPos = 0;
+// <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.webp">
 function preview() {
     if (checkJson(JSON.stringify(levelList)) == false) {
         return null;
     }
 
-    if (Object.keys(levelList).length - ADDIT_VALS > 1) {
-        let data = JSON.stringify(levelList);
-        let encodedData = [];
-        for (i = 0; i < data.length; i++) {
-            encodedData.push(data.charCodeAt(i));
-        }
-        encodedData = btoa(encodedData.join(","));
-        sessionStorage.setItem("previewJson", encodedData);
-        window.open("./index.html?preview=1", "_blank")
+    let data = JSON.stringify(levelList);
+    let encodedData = [];
+    for (i = 0; i < data.length; i++) {
+        encodedData.push(data.charCodeAt(i));
     }
-    else {
-        $(".headerTitle").text(fuckupMessages[fupPos]);
-        fupPos++
-        if (fupPos > fuckupMessages.length) {
-            fupPos = 0;
-        }
-    }
+    encodedData = btoa(encodedData.join(","));
+    sessionStorage.setItem("previewJson", encodedData);
+    window.open("./index.html?preview=1", "_blank")
+
 }
 
 
 var fuckupMessages;
 $(function () {
-    fuckupMessages = [
-        jsStr["FUP1"][LANG], jsStr["FUP2"][LANG], jsStr["FUP3"][LANG], jsStr["FUP4"][LANG],
-        jsStr["FUP5"][LANG], jsStr["FUP6"][LANG], jsStr["FUP7"][LANG], jsStr["FUP8"][LANG],
-        jsStr["FUP9"][LANG], jsStr["FUP10"][LANG], jsStr["FUP11"][LANG], jsStr["FUP12"][LANG],
-        jsStr["FUP13"][LANG], jsStr["FUP14"][LANG], jsStr["FUP15"][LANG], jsStr["FUP16"][LANG], "...",
-        jsStr["FUP17"][LANG], jsStr["FUP18"][LANG], jsStr["FUP19"][LANG], jsStr["FUP20"][LANG],
-        jsStr["FUP21"][LANG], jsStr["FUP22"][LANG], jsStr["FUP23"][LANG], jsStr["FUP24"][LANG],
-        jsStr["FUP25"][LANG], jsStr["FUP26"][LANG], jsStr["FUP27"][LANG], jsStr["FUP28"][LANG],
-        jsStr["FUP29"][LANG], jsStr["FUP30"][LANG], jsStr["FUP31"][LANG], jsStr["FUP32"][LANG], jsStr["FUP33"][LANG]
-    ];
-
     $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
 
-    // Keyboard stuff
-
-    $("html").on("keydown", k => {
-        if (Object.keys(levelList).length - ADDIT_VALS > 2) {
-            let currCardShown = parseInt($(".positionEdit:not(:hidden)")[0].id.match(/[0-9]/g));
-            $(".positionEdit:not(:hidden)")[0].focus()
-            if (k.key == "ArrowDown") {
-                displayCard(currCardShown + 1) // Key: W
-                document.getElementById("top" + currCardShown++).scrollIntoView();
-            }
-            else if (k.key == "ArrowUp") {
-                displayCard(currCardShown - 1) // Key: S
-                document.getElementById("top" + currCardShown--).scrollIntoView();
-            }
-            else if (k.key == "ArrowLeft") {
-                if (moveCard("up", currCardShown)) { currCardShown-- } // Key: A
-            }
-            else if (k.key == "ArrowRight") {
-                if (moveCard("down", currCardShown)) { currCardShown++ } // Key: D
-            }
-        }
-
-    })
-
-
-    // Disabling input boxes when editing a list
-    let listID = location.search.slice(1).split(/[=&]/g);
-    if (["edit", "pedit"].includes(listID[0])) {
-        $(".uploadTitle").text(jsStr["EDITING"][LANG]);
-
-        $("#listnm").attr("disabled", "true");
-        $("#creatornm").attr("disabled", "true");
-
-        $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
-        $("#submitbutton").attr("onclick", "updateList()")
-
-        $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
-    }
-
-    // $(window).on("resize", function () {
-    //     // Editor disable on portrait orientaton
-    //     if ($(window).width() < $(window).height()) {
-    //         $(".headerTitle").text(jsStr["MOBILE_ED"][LANG]);
-    //         $("#mainContent").hide()
-    //         $(".headerButtons").hide()
-    //     }
-    //     else {
-    //         $(".headerTitle").html(jsStr["LEVELS"][LANG]);
-    //         $("#mainContent").show()
-    //         $(".headerButtons").show()
-    //     }
-
-    // })
-
-    $("#bgcolorPicker").on("change", function () {
-        colorizePage()
-    })
+    $(".savedFilter").on("keyup", searchFaves)
 })

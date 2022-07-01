@@ -71,6 +71,8 @@ function getHueFromHEX(color) {
   var maxCol = Math.max(...rgb);
   var minCol = Math.min(...rgb);
 
+  if (maxCol-minCol == 0) return 0
+
   if (rgb.indexOf(maxCol) == 0) {
     var hue = (rgb[1] - rgb[2]) / (maxCol - minCol); // Red
   } else if (rgb.indexOf(maxCol) == 1) {
@@ -125,10 +127,10 @@ function HSLtoHEX(h, s, l) {
 function makeColorElement(startHue, startVal) {
   return $(`
   <div class="colorPicker">
-    <img id="sliderImg" src="images/rgb.png">
+    <img id="sliderImg" src="images/rgb.webp">
     <input type="range" min="0" max="360" value="${startHue}" id="slider">
 
-    <img id="sliderImg" class="hueChanger" src="images/value.png">
+    <img id="sliderImg" class="hueChanger" src="images/value.webp">
     <input type="range" min="1" max="${DEFAULT_LIGHTNESS.slice(0,2)}" value="${startVal}" id="slider">
   </div>
     `);

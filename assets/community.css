@@ -1,8 +1,8 @@
-
 @keyframes inputError {
     from {
         background-color: rgba(243, 70, 70, 0.5);
     }
+
     to {
         background-color: rgba(36, 36, 36, 0.5);
     }
@@ -10,18 +10,16 @@
 
 .helpButton {
     /*position: absolute;*/
-    width: 3vw;
-    height: 3vw;
+    width: 2vw;
+    height: 2vw;
     /*right: 23%;*/
 }
+
 #helpTitle {
     font-size: 2.5vw;
     margin: 1vw;
     text-align: center
 }
-
-.communityTitle { margin: 5vh 0 -2vh 0; }
-.communityTitle { margin: 0; }
 
 .hueChanger {
     box-shadow: rgba(255, 255, 255, 0.35) 0px 0px 0vw 0.2vw;
@@ -31,19 +29,21 @@
     margin-bottom: 0;
     text-align: center;
 }
+
 .helpBG {
-	background-color: #000000a1;
-	/* margin: 100%; */
-	position: fixed;
-	top: 0px;
-	z-index: 4;
-	width: 100%;
-	height: 100%;
+    background-color: #000000a1;
+    /* margin: 100%; */
+    position: fixed;
+    top: 0px;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
     background-image: url("../images/thinkAn.gif");
 }
+
 .popupHelp {
     background-color: rgb(50, 63, 50);
-    border: rgb(24, 24, 24) 10px solid;
+    border: rgb(24, 24, 24) 0.7vw solid;
     border-radius: 10px;
     position: fixed;
     margin: auto;
@@ -52,42 +52,34 @@
     left: 10%;
     padding: 0.8%;
     top: 2%;
-    max-height: 40vw;
+    max-height: 50vh;
     overflow-y: auto;
 }
 
 .uploadBG {
-    background-color: rgb(50, 63, 50);
-    margin: 12vh 10vw 2vw;
-    border: rgb(24, 24, 24) 10px solid;
+    background: var(--greenGradient);
+    margin: 0 10vw 2vw;
+    border: none;
     border-radius: 10px;
+    box-shadow: black 5px 5px 41px
 }
+
 .uploadMainInp {
-    font-size: calc(30% + 2vw) !important;
-    padding: 1vw !important;
+    font-size: var(--normalFont) !important;
+    padding: 0 1vw !important;
 }
+
 .uploadText {
     color: white;
     font-family: "pusab";
-    font-size: calc(60% + 1vw);
+    font-size: var(--normalFont);
     line-height: 150%;
-    text-shadow: rgba(0,0,0,0.5) 0.1vw 0.1vw 0.2vw;
-}
-
-.uploadTitle {
-    font-size: 5vw;
-    margin: auto;
-    display: block;
-    text-shadow: 0.17vw 0.17vw rgb(61, 131, 79),
-    -0.17vw -0.17vw rgb(61, 131, 79),
-    -0.17vw 0.17vw rgb(61, 131, 79),
-     0.17vw -0.17vw rgb(61, 131, 79);
-
+    text-shadow: rgba(0, 0, 0, 0.5) 0.1vw 0.1vw 0.2vw;
 }
 
 .errNotif {
     z-index: 2;
-    transform: translate(30vw,20vh);
+    transform: translate(30vw, 20vh);
     width: 40vw;
     position: absolute;
     pointer-events: none;
@@ -103,11 +95,11 @@
 }
 
 #collabTools {
-	position: fixed;
-	width: 95%;
-	height: 90vh;
-	right: -8%;
-	bottom: 0%;
+    position: fixed;
+    width: 95%;
+    height: 90vh;
+    right: -8%;
+    bottom: 0%;
     z-index: 4;
     display: flex;
     padding: 0;
@@ -129,7 +121,7 @@
     border: none;
     text-align: center;
     width: 100%;
-    background: url("../images/fade.png") repeat-x;
+    background: url("../images/fade.webp") repeat-x;
 }
 
 .collabRoles {
@@ -137,10 +129,12 @@
     flex-wrap: wrap;
     justify-content: center;
     min-height: 100%;
+    align-content: flex-start;
 }
+
 .roleBubble {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     max-height: 3vw;
     padding: 0.1vw 1vw;
@@ -148,10 +142,14 @@
     margin: 1%;
     width: 25vw;
 }
+.roleControls { display: flex; }
+.roleControls > img { width: 2.5vw; height: 2.5vw; }
+
 .roleButtons {
     display: flex;
     max-height: 2.5vw;
 }
+
 #roleInp {
     border: none !important;
     background: none !important;
@@ -161,7 +159,7 @@
     outline: none;
 }
 
-td > * {
+td>* {
     vertical-align: middle;
 }
 
@@ -169,25 +167,26 @@ td > * {
     width: 2vw;
     vertical-align: middle;
 }
+
 .collabTables th div {
     margin: 0vw 0 0 0.5vw;
 }
 
 .collabTables th {
-    background: rgba(0,0,0,0.1) !important;
-    font-size: 2vw;
+    background: rgba(0, 0, 0, 0.1) !important;
+    font-size: var(--bigFont);
 }
 
 tr:nth-child(odd) {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-tr > td:nth-child(2n) {
-	background: rgba(0,0,0,0.2);
+tr>td:nth-child(2n) {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 #collabInp::placeholder {
-    font-size: 1.5vw;
+    font-size: var(--smallFont);
 }
 
 #collabInp {
@@ -195,17 +194,38 @@ tr > td:nth-child(2n) {
     transform: none;
     width: 15vw;
     margin: 0.5%;
-    font-size: 1.5vw;
+    font-size: var(--smallFont);
     background-color: #FFFFFF50;
     border-color: #FFFFFF50;
     -moz-appearance: textfield;
     max-height: 0%;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+    -webkit-appearance: none;
 }
 
+.roleHead,
+.humHead {
+    display: block;
+}
+
+.mobileTabSwitcher {
+    display: flex;
+    justify-content: space-evenly;
+    background: #00000047;
+    margin: 1%;
+    border-radius: 5px;
+}
+
+.mobileTabSwitcher>button {
+    font-size: var(--biggerFont);
+    background: #ffffff91;
+    margin: 1%;
+    min-width: 7em;
+    border-radius: 25px;
+}
 
 .collabHeader {
     max-height: auto;
@@ -217,24 +237,25 @@ input::-webkit-inner-spin-button {
     border-radius: 0.5vw;
     padding: 1%;
     margin: 0;
-    font-size: 1.5vw;
+    font-size: var(--smallFont);
 }
 
-input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .tableCpicker) {
+/*Would it be better to get rid of this lmao?*/
+input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCpicker, .homeSearch) {
     margin-left: auto;
     margin-right: auto;
-    background-color: rgb(36, 36, 36);
-    border:rgb(36, 36, 36) 0.3vw solid;
-    border-radius: 5%;
     padding: 3px 5px;
     color: white;
-    height: 2.8vh;
     font-family: "pusab";
-    font-size: calc(50% + 1vw);
+    font-size: var(--normalFont);
     display: flex;
     justify-content: center;
     width: 20em;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 25px;
 }
+
 
 .inputErr {
     animation-name: inputError;
@@ -243,19 +264,20 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
 
 #imageArrow {
     display: flex;
-    width: 5%;
-    height: 5%;
+    width: 4%;
+    height: 4%;
     align-self: center;
     transform: scaleY(1);
     transition-duration: 0s;
 }
+
 .imgPreview {
-    margin: 0% 22.5% 3%;
     padding: 2%;
-    background-color: rgb(29, 29, 29);
-    border-radius: 0px 0px 10px 10px;
     width: 40vw;
     display: none;
+    margin: 2% 22.5% 3%;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
 }
 
 
@@ -266,13 +288,31 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
 
 #bgcolorPicker {
     display: flex;
-    border: none;
-    width: 10vw;
-    padding: 0.4%;
-    height: 7vh;
+    width: 4vh;
+    height: 4vh;
     margin-left: 2%;
     margin-right: 0;
-    overflow: hidden;
+    border: 0.5vh white solid;
+    background: none;
+    border-radius: 0.5vw;
+    padding: 0;
+    background: #020202;
+}
+
+.pickerContainer>* {
+    position: absolute;
+}
+
+.pickerContainer > img {
+    width: 3.5vh;
+}
+
+.pickerContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 2vw;
 }
 
 .colorLabel {
@@ -300,14 +340,16 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     z-index: 4;
     padding: 0 0vw 3vw 2vw;
 }
+
 #shareContainer {
-    font-size: 2vw;
+    font-size: var(--normalFont);
     margin: 0 2vw 2vw 0vw;
     border: none;
     opacity: 1 !important;
     padding: 1vw;
     width: 80% !important;
 }
+
 #jumpToTools {
     width: 50vw;
     height: calc(37vh + 18vw);
@@ -317,6 +359,7 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     left: 11vw;
     top: 1vw;
 }
+
 .jumpToContainer {
     display: flex;
     flex-direction: row;
@@ -327,12 +370,13 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     overflow-y: auto;
     overflow-x: hidden;
 }
+
 #jumpBubble {
     background: #ff6161;
     width: 90%;
     margin-left: 2.5%;
     justify-content: flex-start;
-    font-size: calc(50% + 1vwh);
+    font-size: var(--normalFont);
     padding: 1%;
 }
 
@@ -340,22 +384,24 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
 .cardInput {
     margin: 15px 30%;
     background-color: rgb(36, 36, 36);
-    border:rgb(36, 36, 36) 5px solid;
+    border: rgb(36, 36, 36) 5px solid;
     border-radius: 5%;
     padding: 3px 5px;
     color: white;
     transform: translateY(-20%);
     width: 25vw;
-    height: 4vh;
     font-family: "pusab";
-    font-size: calc(70% + 0.5vw);
+    font-size: var(--bigFont);
+    max-height: var(--biggerFont);
 }
+
 .cardButtonsContainer {
     display: flex;
     justify-content: flex-end;
     flex-grow: 1;
     align-items: center;
 }
+
 .cardExtrasContainer {
     display: none;
     padding: 1%;
@@ -373,6 +419,7 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     border: none;
     margin-left: -1vw;
 }
+
 #sliderImg {
     width: 100%;
     height: 2vw;
@@ -380,7 +427,7 @@ input:not(.cardButton, .cardInput, .pageIndicator, .searchBar, .setCheckbox, .ta
     pointer-events: none;
 }
 
-input[type=range]{
+input[type=range] {
     -webkit-appearance: none;
 }
 
@@ -412,12 +459,13 @@ input::-webkit-input-placeholder {
     opacity: 0.5;
     color: white;
     font-family: "pusab";
-    font-size: calc(50% + 1vw);
+    font-size: var(--smallFont);
 }
+
 input::-moz-placeholder {
     color: white;
     font-family: "pusab";
-    font-size: calc(50% + 1vw);
+    font-size: var(--smallFont);
 }
 
 input:disabled {
@@ -429,6 +477,15 @@ input:disabled {
     justify-content: center;
     align-items: center;
     margin-bottom: 1.3vw;
+    flex-direction: column;
+}
+
+.bgcolorContainer {
+    width: 90%;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 1vw;
+    box-sizing: border-box;
+    border-radius: 10px;
 }
 
 #submitarea {
@@ -436,14 +493,16 @@ input:disabled {
     justify-content: center;
     align-items: center;
 }
+
 #submitbutton {
-	width: auto;
+    width: auto;
     padding: 0.5% 1%;
     height: auto;
     background-color: rgb(113, 212, 113);
     border: none;
     margin: 0% 2% 1%;
 }
+
 #removebutton {
     width: auto;
     padding: 0.5% 1%;
@@ -456,7 +515,7 @@ input:disabled {
 
 #jsonBox {
     background-color: rgb(36, 36, 36);
-    border:rgb(36, 36, 36) 5px solid;
+    border: rgb(36, 36, 36) 5px solid;
     border-radius: 5%;
     width: 90%;
     height: 100vh;
@@ -477,17 +536,17 @@ input:disabled {
     color: white;
     padding: 0% 2% 0% 2%;
     margin: 1.5% 7%;
-    border: white 7px solid;
+    border: white 0.3vw solid;
     border-radius: 5px;
     display: block;
-}
-
-#listPreview:visited {
-    background-color: rgb(64, 153, 56);
+    background-size: 150vw;
+    background-position-x: right;
+    transition: background-position-x 0.5s;
 }
 
 #listPreview:hover {
-    background-color: tomato;
+    background-position-x: left;
+    cursor: pointer;
 }
 
 .hostIcon {
@@ -495,13 +554,12 @@ input:disabled {
 }
 
 .editorHeader {
-    background-color: rgb(89, 185, 89);
     margin: 0%;
     padding: 0 1%;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    background-image: url("../images/headerBG.png");
+    background-image: url("../images/headerBG.webp");
 }
 
 #plusSign {
@@ -523,16 +581,16 @@ input:disabled {
 }
 
 .helpText {
-    display: inherit;
-    text-align: center;
+    display: flex;
+    align-items: center;
 }
 
-#mainContent, .collabBG {
-    background-color: rgb(44, 99, 44);
+#mainContent,
+.collabBG {
     text-align: left;
-    background-image: url("../images/fade.png");
+    background-image: url("../images/fade.webp");
     background-repeat: repeat-x;
-    height: 20%;
+    height: 100%;
 }
 
 .smallHelp {
@@ -542,7 +600,8 @@ input:disabled {
 }
 
 
-.positionEdit, .smallPosEdit {
+.positionEdit,
+.smallPosEdit {
     margin: 1%;
     background-color: darksalmon;
     border: salmon 5px solid;
@@ -616,17 +675,191 @@ input:disabled {
     text-align: center;
     margin: 0.5%;
     transform: translate(0);
+    font-size: var(--normalFont) !important;
 }
 
 .cardButton {
-	padding-left: 1%;
-	padding-right: 0.5%;
-	width: 4vw;
-	height: 4vw;
+    padding-left: 1%;
+    padding-right: 0.5%;
+    width: 4vw;
+    height: 4vw;
 }
+
 #positionDisplay {
-    font-size: 3.5vw;
+    font-size: var(--xlFont);
     height: 2.8vw;
+}
+
+.diffContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.diffIcon {
+    width: 50%;
+    height: auto;
+    position: absolute;
+}
+
+.diffFace {
+    width: 3vw;
+    padding: 0.5vw 0.5vw;
+    height: fit-content;
+}
+
+.difficultyPicker {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: clip;
+}
+
+.diffFaces {
+    width: 78%;
+    display: flex;
+    gap: 0.5vw;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.faceSelected {
+    background: #0000006e;
+    border-radius: 1vw;
+}
+
+.diffOptions {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.336);
+    border-radius: 1vw;
+    padding: 0 1vw;
+}
+
+.bgPick {
+    background-color: rgba(255, 255, 255, 0.548);
+    border-radius: 1vw;
+}
+
+.bgSettingsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+}
+
+.bgProps {
+    position: absolute;
+    z-index: 5;
+    left: 25%;
+    display: none;
+}
+
+.bgPropsMain {
+    padding: 0 1vw 1vw 1vw;
+}
+
+.gdSlider::-moz-range-progress {
+    background: url("../images/sliderBar-uhd.webp");
+    height: 0.4em;
+    border-radius: 1vw;
+    transform: translate(0.2vw);
+}
+
+.gdSlider::-moz-range-thumb {
+    background: url("../images/sliderthumb-uhd.webp");
+    background-size: 1em;
+    transform: scale(2);
+    border: none;
+}
+
+.gdSlider::-moz-range-track {
+    background: url("../images/slidergroove-uhd.webp");
+    background-repeat: no-repeat;
+    height: 0.8em;
+    background-size: cover;
+    background-position-y: center;
+}
+
+.gdSlider {
+    width: 20vw;
+    border: none;
+    background: none;
+    font-size: var(--bigFont);
+}
+
+#inpEpic:checked,
+#inpFeatured:checked,
+#inpGrad:checked {
+    -moz-appearance: none;
+    background: url("../images/check-on.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 1vw;
+    background-position: center;
+    vertical-align: middle;
+}
+
+#inpEpic,
+#inpFeatured,
+#inpGrad {
+    -moz-appearance: none;
+    background: url("../images/check-off.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 1vw;
+    background-position: center;
+    vertical-align: middle;
+}
+
+#epicGlow {
+    z-index: 1;
+    width: 70%;
+    bottom: 12%;
+    right: 12%;
+}
+
+#featuredGlow {
+    z-index: 1;
+    width: 70%;
+}
+
+#diffBG {
+    width:inherit;
+    z-index: 0;
+}
+.diffMain {
+    z-index: 2;
+}
+
+
+.listDiffContainer {
+    position: relative;
+    width: 4vw;
+    height: 4vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.listDiffFace {
+    width: 100%;
+    height: fit-content;
+    position: absolute;
+    z-index: 2;
+}
+
+.listDiffEpicRate {
+    position: absolute;
+    width: 150%;
+    bottom: -17%;
+}
+.listDiffRate {
+    position: absolute;
+    width: 140%;
+    bottom: -20%;
 }
 
 .cpicker {
@@ -639,26 +872,28 @@ input:disabled {
 }
 
 .shareBG {
-	background-color: #1e1e1e;
-	padding: 1%;
+    background-color: #1e1e1e;
+    padding: 1%;
     border-radius: 10px;
     display: flex;
     margin: 0 1% 0 0;
 }
 
 .shareTitle {
-	margin-left: 3%;
-	color: #1fb1e1;
+    margin-left: 3%;
+    color: #1fb1e1;
     margin: 0 0 0 3%;
 }
+
 .shareContainer {
     display: flex;
     align-items: center;
     margin: 0% 0% 1% 3%;
 }
+
 .shareBut {
-	width: 3vw;
-	height: 3vw;
+    width: 3vw;
+    height: 3vw;
 }
 
 .passText {
@@ -673,41 +908,48 @@ input:disabled {
     filter: invert(100%);
     transition-timing-function: ease-out;
 }
+
 .boom {
-    background-color: white ;
+    background-color: white;
     width: 100%;
     height: 100%;
     position: fixed;
     top: 0;
     opacity: 0;
     display: none;
+    z-index: 4;
 }
+
 .removeImg {
     transition-duration: 0.5s;
     margin-left: 41vw;
 }
+
 #rmbutton {
-    width: 15%;
-    height: 15%;
     margin-left: 2.5%;
     margin-right: 2.5%;
+    font-size: var(--biggerFont);
 }
+
 .settingsBG {
-    background-color: rgb(36, 36, 36);
+    background-color: rgba(255, 255, 255, 0.08);
     margin: 0% 21% 3%;
     padding: 1%;
     border-radius: inherit;
     display: flex;
     flex-direction: column;
 }
+
 .setting {
     display: flex;
     align-items: center;
     margin-top: 1%;
 }
+
 .setLabel {
     margin: 0%;
 }
+
 .setHelp {
     width: 2vw;
     margin-left: 2%;
@@ -721,7 +963,7 @@ input:disabled {
 
 .debugTools {
     justify-content: center !important;
-    background-image: url('../images/debug.png') !important;
+    background-image: url('../images/debug.webp') !important;
     max-width: 45vw !important;
     margin: auto !important;
     margin: auto !important;
@@ -730,7 +972,7 @@ input:disabled {
 }
 
 .searchTools {
-    background-color: #1e1e1e;
+    background-image: var(--greenGradient);
     border-radius: 1vw;
     margin: 1% 2%;
     padding: 0.5%;
@@ -742,11 +984,15 @@ input:disabled {
     /*flex-wrap: wrap;*/
 }
 
-.noRoles, .noRolAdded, .addRoles {
+.noRoles,
+.noRolAdded,
+.addRoles {
     margin-left: 1%;
     color: rgb(173, 230, 185);
 }
-.noRolAdded, .addRoles > img {
+
+.noRolAdded,
+.addRoles>img {
     transform: translateY(0.6vw);
 }
 
@@ -761,6 +1007,7 @@ input:disabled {
     display: flex;
     justify-content: right;
 }
+
 .presetButtonContainer {
     padding: 0.2% 2%;
     display: flex;
@@ -775,7 +1022,7 @@ input:disabled {
 
 .popupArrow {
     position: absolute;
-    top: -1vw; 
+    top: -1vw;
 }
 
 .socialPicker {
@@ -794,6 +1041,7 @@ input:disabled {
     justify-content: center;
     align-items: center;
 }
+
 .search {
     display: flex;
     justify-content: end;
@@ -802,17 +1050,9 @@ input:disabled {
 }
 
 .pageIndicator {
-    width: 10%;
-    padding-left: 0;
-    padding-right: 0;
     text-align: center;
-    min-height: 1.4vw;
-    border: none;
-    background-color: #111;
-    border-radius: 10px;
-    font-size: calc(80% + 1vw);;
-    font-family: "pusab";
-    color: white;
+    width: 7% !important;
+    margin: 0 !important;
 }
 
 .pageBut {
@@ -821,6 +1061,7 @@ input:disabled {
     align-self: center;
     margin: 1%;
 }
+
 #searchBar {
     width: 80%;
 }

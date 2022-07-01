@@ -1,15 +1,15 @@
 const EMOJI_AM = 18;
 function getID() {
-    let paramGetter = new URLSearchParams(window.location.search)
-    let params = Object.fromEntries(paramGetter.entries());
+  let paramGetter = new URLSearchParams(window.location.search)
+  let params = Object.fromEntries(paramGetter.entries());
 
-    if (params["pid"] != null) { return -10} // Disable comments on private lists
-    if (params["id"] != null) { return params["id"] } // Community level
-    // 2019 or 2021 list
-    else if (params["year"] != null) { return params["year"] == 2019 ? -2 : -3 }
-    else { return -2 } // Is 2019 list
+  if (params["preview"] != null) { return -8 } // List preview from editor
+  if (params["pid"] != null) { return -10 } // Disable comments on private lists
+  if (params["random"] != null) { return -11 } // -11 will be replaced with actual ID later
+  if (params["id"] != null) { return params["id"] } // Community level/2019 or 2021 list (-2,-3)
+  else { return -9 } // Is Homepage
 }
-const LIST_ID = getID();
+var LIST_ID = getID();
 
 function listList() {
   // What a shitty function name bruh
@@ -64,13 +64,14 @@ var actualText = "";
 var midText = "";
 var commentColor = "";
 $(function () {
+  // Is on homepage? (do not load)
+  if (LIST_ID == -9) return
+
   // Disabling comments on private lists
   if (LIST_ID == -10) {
-      $(".lComm").remove()
-      $(".lList").remove()
-      $(".comments").remove()
+    $(".listOptions > div:nth-child(1)").remove()
 
-      return null
+    return null
   }
 
   var placeholders = [
@@ -87,7 +88,7 @@ $(function () {
   for (let i = 0; i < EMOJI_AM; i++) {
     let em = i + 1 < 10 ? "0" + (i + 1) : i + 1;
     $(".emojiPanel").append(
-      `<img class="listEmoji" src="./images/emoji/${em}.png" onclick="addEmoji(${i})">`
+      `<img class="listEmoji" src="./images/emoji/${em}.webp" onclick="addEmoji(${i})">`
     );
   }
 
@@ -131,7 +132,7 @@ $(function () {
 
       // this is the worst fix imaginable
       text = text.replace(/<img class="emojis" src=".\/images\/emoji\//g, "&");
-      text = text.replace(/.png">/g, "");
+      text = text.replace(/.webp">/g, "");
 
       // Remove excess tags
       text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "");
@@ -166,20 +167,20 @@ $(function () {
 
   // Page switching
   $("#pageSwitcher").on("change", function () {
-    page = parseInt($(this).val()) - 1;
-    if (page > maxPage - 1) {
-      page = maxPage - 1;
-      $("#pageSwitcher").val(maxPage);
+    commentPage = parseInt($(this).val()) - 1;
+    if (commentPage > maxCommentPage - 1) {
+      commentPage = maxCommentPage - 1;
+      $("#pageSwitcher").val(maxCommentPage);
     }
-    if (page < 1) {
-      page = 0;
+    if (commentPage < 1) {
+      commentPage = 0;
       $("#pageSwitcher").val(1);
     }
     displayComments(deeta);
   });
 
   // Hide debug tools when not running locally
-  if (!window.location.protocol.includes("file")) {
+  if (window.location.port == "") {
     $(".debugTools").remove();
   }
 });
@@ -207,7 +208,7 @@ function addEmoji(id) {
   if (actualText.length + emoji.length < 300) {
     midText += `<img class='emojis' src='./images/emoji/${emoji.slice(
       1
-    )}.png'>`;
+    )}.webp'>`;
     $(".comInpArea").html(midText);
 
     actualText += emoji;
@@ -325,6 +326,8 @@ function sendComment() {
           $(".comInpArea").text("");
           updateCharLimit();
 
+          $("body")[0].scrollTop = 0 // Scroll to top to show comment
+
           // 10 second comment rate limit
           setTimeout(() => {
             $(".sendBut").removeClass("disabled");
@@ -335,8 +338,8 @@ function sendComment() {
           $(".comUserError").show();
           $(".comUserError").text(jsStr["C_ERR"][LANG] + data);
           setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-            }
-        })
+        }
+      })
     }
   }
 }
@@ -350,39 +353,33 @@ function chatDate(stamp) {
   }
 
   if (seconds > 31557600) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 31557600)} ${
-      Math.floor(seconds / 31557600) == 1
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 31557600)} ${Math.floor(seconds / 31557600) == 1
         ? jsStr["YEAR"][LANG]
         : jsStr["YEARS"][LANG]
-    }`;
+      }`;
   } else if (seconds > 2629800) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 2629800)} ${
-      Math.floor(seconds / 2629800) == 1
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 2629800)} ${Math.floor(seconds / 2629800) == 1
         ? jsStr["MONTH"][LANG]
         : jsStr["MONTHS"][LANG]
-    }`;
+      }`;
   } else if (seconds > 86400) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 86400)} ${
-      Math.floor(seconds / 86400) == 1
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 86400)} ${Math.floor(seconds / 86400) == 1
         ? jsStr["DAY"][LANG]
         : jsStr["DAYS"][LANG]
-    }`;
+      }`;
   } else if (seconds > 3600) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 3600)} ${
-      Math.floor(seconds / 3600) == 1
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 3600)} ${Math.floor(seconds / 3600) == 1
         ? jsStr["HOUR"][LANG]
         : jsStr["HOURS"][LANG]
-    }`;
+      }`;
   } else if (seconds > 60) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 60)} ${
-      Math.floor(seconds / 60) == 1
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 60)} ${Math.floor(seconds / 60) == 1
         ? jsStr["MINUTE"][LANG]
         : jsStr["MINUTES"][LANG]
-    }`;
+      }`;
   } else if (seconds >= 10) {
-    return `${jsStr["AGO"][LANG]}${Math.floor(seconds)} ${
-      jsStr["SECONDS"][LANG]
-    }`;
+    return `${jsStr["AGO"][LANG]}${Math.floor(seconds)} ${jsStr["SECONDS"][LANG]
+      }`;
   } else if (seconds < 10) {
     return jsStr["FEWSECS"][LANG];
   }
@@ -401,7 +398,7 @@ function comBox(cd, dcc, edcc) {
 
   // Is user verified?
   if (cd["verified"] == 1) {
-    profPic = `<img class="pIcon " style="padding: 0.5vw;transform: scale(2);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
+    profPic = `<img class="pIcon" style="height: var(--biggerFont);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
     clickable[0] = "clickable";
     clickable[1] = `onclick="profile('${cd["username"]}')`;
     comColor = "#f9f99a";
@@ -421,53 +418,55 @@ function comBox(cd, dcc, edcc) {
 
     cd["comment"] =
       selStart +
-      `<img class="emojis" src="./images/emoji/${emojiID}.png">` +
+      `<img class="emojis" src="./images/emoji/${emojiID}.webp">` +
       selEnd;
   }
 
   return `
     <div style="margin-bottom: 2vw">
     
-        <div class="comBoxThings ${
-          clickable[0]
-        } uploadText" id="comBoxHeader" ${clickable[1]}"
+        <div class="comBoxThings ${clickable[0]
+    } uploadText" id="comBoxHeader" ${clickable[1]}"
             style="margin-bottom: 0 !important;
                     justify-content: flex-start;
                     background-color: ${"rgb(" + dcc.join(",") + ")"};
-                    border: solid ${
-                      "rgb(" + edcc.join(",") + ")"
-                    } 10px; height: 2.3vw;">
+                    border: solid ${"rgb(" + edcc.join(",") + ")"
+    } 4px;">
             ${profPic}
             <h3 style="margin-left: 1%; color: ${comColor};">${cd["username"]}</h3>
             <h3 id="comFont" 
                 style="margin: 0 0 0 auto; cursor: help;"
-                title="${nT.getDay() + 1}.${
-    nT.getMonth() + 1
-  }.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
+                title="${nT.getDay() + 1}.${nT.getMonth() + 1
+    }.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
         </div>
     
-        <div class="comTextArea" id="comFont" style="width: 99%; background-color: ${
-          cd["bgcolor"]
-        };">${cd["comment"]}</div>
+        <div class="comTextArea" id="comFont" style="width: 99%; background-color: ${cd["bgcolor"]
+    };">${cd["comment"]}</div>
     
     </div>
     `;
 }
 
-var page = 0;
-var maxPage = 1;
+var commentPage = 0;
+var maxCommentPage = 1;
 var deeta = "";
 
 function debugComments(am) {
   if (am == 2) {
-    deeta = "";
+    deeta = [];
     for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-      deeta += `${
-        fakeNames[Math.floor(Math.random() * fakeNames.length)]
-      };-!-;This is a comment!;-!-;0;-!-;${randomColor()};-!-;-2;-!-;27;-!-;0;-!-;${Math.floor(
-        (Math.random() * Date.now()) / 1000
-      )}|-!-|`;
+      deeta.push({
+        "username": fakeNames[Math.floor(Math.random() * fakeNames.length)],
+        "comment": "This is a comment!",
+        "comType": "0",
+        "bgcolor": randomColor(),
+        "listID": "-2",
+        "comID": "27",
+        "verified": "1",
+        "timestamp": Math.floor((Math.random() * Date.now()) / 1000)
+      })
     }
+
     displayComments(deeta);
   } else {
     $("#lDebugAm").val(parseInt($("#lDebugAm").val()) + am);
@@ -478,7 +477,13 @@ function debugComments(am) {
 }
 
 function displayComments(data) {
+  // Don't do anything on list previews and random lists that haven't replaced LIST_ID
+  if ([-8, -11].includes(LIST_ID) || typeof data == "string") return
+
   const PER_PAGE = 5;
+
+  if (data != 2) $("#commAmount").text(data.length)
+  else $("#commAmount").text("0")
 
   $("#commentList").html("");
   $(".noComm").hide();
@@ -490,11 +495,11 @@ function displayComments(data) {
   let comArray = JSON.parse(JSON.stringify(data)).reverse();
 
   // Max page
-  maxPage = Math.ceil(comArray.length / PER_PAGE);
-  $("#maxPage").text("/" + maxPage);
+  maxCommentPage = Math.ceil(data.length / PER_PAGE);
+  $("#maxPage").text("/" + maxCommentPage);
 
-  for (x = page * PER_PAGE; x < page * PER_PAGE + PER_PAGE; x++) {
-    let commentData = comArray[x]
+  for (x = commentPage * PER_PAGE; x < commentPage * PER_PAGE + PER_PAGE; x++) {
+    let commentData = data[x]
 
     let darkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
     let evenDarkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
@@ -505,14 +510,14 @@ function displayComments(data) {
   }
 }
 
-function pageSwitch(num) {
-  if (page + num < 0) {
-    page = 0;
-  } else if (page + num > maxPage - 1) {
-    page = maxPage - 1;
+function commpageSwitch(num) {
+  if (commentPage + num < 0) {
+    commentPage = 0;
+  } else if (commentPage + num > maxCommentPage - 1) {
+    commentPage = maxCommentPage - 1;
   } else {
-    page += num;
-    $("#pageSwitcher").val(page + 1);
+    commentPage += num;
+    $("#pageSwitcher").val(commentPage + 1);
     displayComments(deeta);
   }
 }

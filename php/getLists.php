@@ -1,11 +1,11 @@
 <?php
 
 // My first time doing php... don't kill me :D
-
+header("Content-Type: application/json"); // Return as JSON
 require("secrets.php");
 
 $mysqli = new mysqli($hostname, $username, $password, $database);
-header('Content-type: application/json'); // Return as JSON
+
 
 
 if ($mysqli->connect_errno) {
@@ -13,7 +13,8 @@ if ($mysqli->connect_errno) {
   exit();
 }
 
-function parseResult($rows, $singleList=false) {
+function parseResult($rows, $singleList = false)
+{
   $ind = 0;
   if (!$singleList) {
     foreach ($rows as $row) {
@@ -21,13 +22,15 @@ function parseResult($rows, $singleList=false) {
         $row["data"] = base64_decode($row["data"]);
       }
       $row["data"] = json_decode(htmlspecialchars_decode($row["data"]));
-      
-      if ($singleList) { $rows["data"] = $row["data"]; }
-      else { $rows[$ind]["data"] = $row["data"]; }
+
+      if ($singleList) {
+        $rows["data"] = $row["data"];
+      } else {
+        $rows[$ind]["data"] = $row["data"];
+      }
       $ind += 1;
     }
-  }
-  else {
+  } else {
     // Single list
     if (base64_decode($rows["data"], true) == true) {
       $rows["data"] = base64_decode($rows["data"]);
@@ -43,27 +46,44 @@ if (count($_GET) == 1) {
   if (in_array("id", array_keys($_GET))) {
     // Private lists can't be accessed by their id!
     $result = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden` = '0' AND `id` = ?", [$_GET["id"]], "s");
-    if (count($result) == 0) { echo "2"; }
-    else { parseResult($result, true); }
-
+    if (count($result) == 0) {
+      echo "2";
+    } else {
+      parseResult($result, true);
+    }
   } elseif (in_array("pid", array_keys($_GET))) {
     // Private lists
     $result = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden`= ?", [$_GET["pid"]], "s");
 
-    if (count($result) == 0) { echo "2"; } // When the pID is invalid
-    else { parseResult($result, true); }
-  }
-}
+    if (count($result) == 0) {
+      echo "2";
+    } // When the pID is invalid
+    else {
+      parseResult($result, true);
+    }
+  } elseif (in_array("random", array_keys($_GET))) {
+    // Picking a random list
+    $query = $mysqli->query("SELECT `id` FROM `lists` WHERE `hidden`=0");
+    $result = $query->fetch_all(MYSQLI_ASSOC);
+    $ids = array();
 
-elseif (count($_GET) > 1) {
+    for ($i = 0; $i < sizeof($result); $i++) {
+      array_push($ids, $result[$i]["id"]);
+    }
+
+    $getList = $mysqli->query("SELECT * FROM `lists` WHERE `id`=" . $ids[array_rand($ids)]);
+    parseResult($getList->fetch_all(MYSQLI_ASSOC));
+  } elseif (in_array("homepage", array_keys($_GET))) {
+    $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC LIMIT 3 ");
+    parseResult($result->fetch_all(MYSQLI_ASSOC));
+  }
+} elseif (count($_GET) > 1) {
   // multiple parameters don't make sense lol
   echo "3";
   exit();
-}
-
-else {
+} else {
   // Loading all lists
-  $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0'");
+  $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC");
   parseResult($result->fetch_all(MYSQLI_ASSOC));
 }
 

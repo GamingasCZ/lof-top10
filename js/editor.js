@@ -23,7 +23,7 @@ function checkJson(data) {
         if (Object.keys(parsedData).length - ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
 
         if (data.length > 25000) {
-            throw (`Tvůj seznam je moc velký! (${(data.length/25000).toFixed(2)}% nad limitem!). Smaž nějaké levely/collaby z levelů!`)
+            throw (`${jsStr["TOOBIG1"][LANG]} (${(data.length / 25000).toFixed(2)}% ${jsStr["TOOBIG2"][LANG]}).${jsStr["TOOBIG3"][LANG]}`)
         }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
@@ -56,52 +56,92 @@ function checkJson(data) {
 }
 
 var isHidden = $("input[name='hidden']").attr("checked") == "checked";
-var page = 0;
-var maxPage = 0;
 var listNames = [];
-function displayComLists(doita) {
-    $(".customLists").children().remove();
 
-    let data = JSON.parse(JSON.stringify(doita)).reverse();
-    let listAmount = Object.keys(data).length;
+function showBGColorPicker() {
+    if ($(".bgcolorContainer").css("display") == "none") {
+        $(".bgcolorContainer").text("")
+        $(".bgcolorContainer").slideDown(50)
 
-    maxPage = Math.ceil(listAmount / 4);
-    $("#maxPage").text("/" + maxPage);
+        let hue = getHueFromHEX(levelList.pageBGcolor)
+        let val = getLightnessFromHEX(levelList.pageBGcolor) + "%"
+        let val2 = getLightnessFromHEX(levelList.pageBGcolor)
 
-    if (Object.keys(data).length > 0) {
-        data.slice(4 * page, 4 * page + 4).forEach(list => {
-            let listColor = list["data"]["1"].color;
-            let darkCol = HEXtoRGB(listColor, 40);
-            let lightCol = HEXtoRGB(listColor, -60);
+        $(".bgcolorContainer").append(makeColorElement(hue, val2))
 
-            $(".customLists").append(`
-            <a style="text-decoration: none;" href="./index.html?id=${list.id}">
-                <div id="listPreview" class="button noMobileResize" style="background-image: linear-gradient(39deg, ${listColor}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
-                    <div class="uploadText">${list.name}</div>
-                    <div class="uploadText">- ${list.creator} -</div>
-                </div>
-            </a>
-                    `);
-        });
+        $(".bgcolorContainer >> input")[0].addEventListener("input", k => {
+            $("body").css("background-color", HSLtoHEX(k.target.value, "37%", val))
+            hue = k.target.value
+            $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+            $("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
+
+            let hex = HSLtoHEX(hue, "37%", val)
+            levelList.pageBGcolor = hex
+            $("#bgcolorPicker").css("background", hex)
+        })
+        $(".bgcolorContainer >> input")[1].addEventListener("input", k => {
+            let hue = getHueFromHEX(levelList.pageBGcolor)
+            $("body").css("background-color", HSLtoHEX(hue, "37%", (k.target.value * 2) + "%"))
+            $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+            $("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
+            val = (k.target.value * 2) + "%"
+
+            let hex = HSLtoHEX(hue, "37%", val)
+            levelList.pageBGcolor = hex
+            $("#bgcolorPicker").css("background", hex)
+        })
+
     }
-}
-
-function showFaves() {
-    if ($("iframe").css("display") != "none") { $(".searchTools").show(); $(".uploadBG:not(#collabTools)").show(); $(".titles").show(); $(".customLists").show(); $("iframe").hide(); $(".smallUploaderDialog").hide(); return null}
-
-    $(".searchTools").hide();
-    $(".uploadBG:not(#collabTools)").hide();
-    $(".titles").hide();
-    $(".customLists").hide();
-
-    $("iframe").show();
+    else {
+        $(".bgcolorContainer").slideUp(50)
+    }
 }
 
 function uploadList() {
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
         $("#listData").attr("value", JSON.stringify(levelList));
-        $("#levelUpload").submit();
+
+        $("#submitbutton").replaceWith($("<img class='loading' style='animation-name: loading;' src='images/loading.webp'>"))
+
+        // Is the "hidden" checkbox checked?
+        if ($("input[name='hidden']").attr("checked") == "checked") { var listHidden = "1" }
+        else { var listHidden = "0" }
+
+        let postData = {
+            "listData": JSON.stringify(levelList),
+            "lName": $("#listnm").val(),
+            "lCreator": $("#creatornm").val(),
+        }
+        if (listHidden == "1") postData["hidden"] = listHidden
+
+        $.post("./php/sendList.php", postData, function (data) {
+            //0 - password, 1 - listID
+            // Change depending on your website
+            let error = data.length != 2
+
+            let currWebsite
+            let pstr
+            if (!error) {
+                currWebsite = `${window.location.origin + "/lofttop10"}/?${isNaN(data[1]) ? "pid" : "id"}=${data[1]}`;
+                pstr = `<br>${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${data[0]}</b>`;
+            }
+            let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
+
+            $(".uploaderDialog").html(`
+                <img style="padding-left: 3%" src=./images/${!error ? "check" : "error"}.webp >
+                <p class="uploadText" style="padding: 0 3% 0 3%">${sendMess}</p>
+
+                <div style="display:flex; flex-direction: column${error ? ';display: none;' : ';'}">
+                    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
+                    <div class="uploadText shareContainer">
+                        <p class="shareBG uploadText">${currWebsite}</p>
+                        <img class="button shareBut" src="./images/openList.webp" onclick="window.open('${currWebsite}','_blank')">
+                    </div>
+                </div >
+
+            `);
+        })
     }
 }
 function updateList() {
@@ -112,16 +152,47 @@ function updateList() {
         else { var listHidden = "0" }
 
         // will later also update uploadList()
-        let data = location.search.slice(1).split(/[=&]/g);
+        let param = JSON.parse(sessionStorage.getItem("listProps"))
         let postData = {
             "listData": JSON.stringify(levelList),
-            "id": data[1],
-            "pwdEntered": data[3],
+            "id": param[0],
+            "pwdEntered": param[1],
             "hidden": listHidden,
             "isNowHidden": isHidden
         }
+
+        $("#submitbutton").html("<img class='loading' src='images/loading.webp'>")
+        $("#removebutton").remove()
+
         $.post("./php/updateList.php", postData, function (data) {
-            window.location.replace(`http://www.gamingas.wz.cz/lofttop10/upload.html?update=1`);
+            // Update success
+            if (3 == 3) {
+                $(".uploaderDialog").html(`
+                <div style="padding: 3%">
+                    <img src="./images/check.webp" style="width:7%;">
+                    <p class="uploadText">Seznam aktualizován!</p>
+                </div>
+                `)
+            }
+
+            // List is unchanged
+            else if (data == 4) {
+                $(".uploaderDialog").html(`
+                <div style="padding: 3%">
+                    <img src="./images/help.webp" style="width:7%;">
+                    <p class="uploadText">Nezměnil jsi nic v seznamu!</p>
+                </div>
+                `)
+            }
+
+            else {
+                $(".uploaderDialog").html(`
+                <div style="padding: 3%">
+                    <img src="./images/error.webp" style="width:7%;">
+                    <p class="uploadText">Seznam se nepodařilo aktualizovat!</p>
+                </div>
+                `)
+            }
         })
     }
 }
@@ -139,11 +210,10 @@ function debugLists(am) {
     if (am == 2) {
         deeta = [];
         for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-            deeta.push({ "creator": i, "name": `Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]}`, "data": { "1": { "color": randomColor() } }, "id": 45, "timestamp": 10 })
+            deeta.push({"creator": i, "name": `Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]}`, "data": { "1": { "color": randomColor() } }, "id": 45, "timestamp": 10})
         }
-        ogDeeta = deeta;
 
-        displayComLists(deeta);
+        listViewerDrawer(deeta, ".communityContainer", 4)
     }
     else {
         $("#lDebugAm").val(parseInt($("#lDebugAm").val()) + am)
@@ -151,31 +221,13 @@ function debugLists(am) {
             $("#lDebugAm").val("0")
         }
     }
+    $(".debugTools").remove()
 }
 
-var sorting = false;
 $(function () {
-    $("#pageSwitcher").on("change", function () {
-        page = parseInt($(this).val()) - 1;
-        if (page > maxPage) { page = maxPage - 1; $("#pageSwitcher").val(maxPage) }
-        if (page < 1) { page = 0; $("#pageSwitcher").val(1) }
-        displayComLists(deeta);
-    })
-
-    // Sort button action
-    $("#sortBut").on("click", function () {
-        displayComLists(deeta.reverse())
-        if (sorting) {
-            $("#sortBut").css("transform", "scaleY(1)");
-            $("#sortBut").attr("title", jsStr["NEWEST"][LANG])
-        }
-        else {
-            $("#sortBut").css("transform", "scaleY(-1)");
-            $("#sortBut").attr("title", jsStr["OLDEST"][LANG])
-        }
-        sorting = !sorting
-    })
-
+    // Do nothing if in editor
+    $(".pickerContainer").on("click", showBGColorPicker)
+    if (window.location.search.includes("edit")) $(".uploader").show()
 
     // List image preview action
     $("#imageArrow").on("click", function () {
@@ -198,7 +250,7 @@ $(function () {
     // When the image failed to load (sad crying emoji)
     $("#imagePrev").on("error", function () {
         $("#imagePrev").css("width", "10%")
-        $("#imagePrev").attr("src", "./images/error.png")
+        $("#imagePrev").attr("src", "./images/error.webp")
         $("#imgError").text(jsStr["IM_NOTFOUND"][LANG])
     })
     // Change preview image on URL change
@@ -209,80 +261,45 @@ $(function () {
             $("#imagePrev").attr("src", $(".titImgInp").val())
         }
     })
+    // Showing color picker
 
+    let isSearching = false
+    let paramGetter = new URLSearchParams(window.location.search)
+    let params = Object.fromEntries(paramGetter.entries());
 
-    if (location.search != "") {
-        let password = location.search.slice(1).split(/[=&]/g);
+    if (Object.keys(params).length == 0 || params.browse != null || params.s != null) {
+        $(".browser").show()
+        $.get("./parts/listViewer.html", dt => {
+            $(".communityContainer").append(translateDoc(dt, "listViewer"))
 
-        if (["edit", "pedit"].includes(password[0]) & password[2] == "pass") {
-            generateFromJSON()
-            isHidden = $("input[name='hidden']").attr("checked") == "checked";
-        }
-        else if (password[0] == "update") {
+            if (params.s != null) {
+                $(".communityContainer").show()
+                $("#searchBar").val(params.s)
+                isSearching = true
+            }
 
-            $(".uploaderDialog").html(`
-            <img style="padding-left: 3%" src=./images/check.png>
-            <p class="uploadText" style="padding: 0 3% 0 3%">${jsStr["LIST_UPDATED"][LANG]}</p>
-
-            </div>
-            </div>
-            
-            `);
-        }
-        else if (password[0] == "event") {
-            if (password[1] == 1) { checkCheckbox("event"); }
-            else { checkCheckbox("event"); generateFromJSON(boards); }
-            $("#listnm").val("Lepší seznam");
-        }
-        else {
-            // Change depending on your website
-            let currWebsite = `http://gamingas.wz.cz/lofttop10/?${isNaN(password[3]) ? "pid" : "id"}=${password[3]}`;
-
-            var pstr = `${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${password[1]}</b>`;
-
-            $(".uploaderDialog").html(`
-<img style="padding-left: 3%" src=./images/check.png>
-<p class="uploadText" style="padding: 0 3% 0 3%">${jsStr["LIST_SUCC_UPL"][LANG]} ${pstr}</p>
-
-<div style="display:flex; flex-direction: column">
-    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
-    <div class="uploadText shareContainer">
-        <p class="shareBG uploadText">${currWebsite}</p>
-        <img class="button shareBut" src="./images/openList.png" onclick="window.open('${currWebsite}','_blank')">
-    </div>
-    </div>
-</div>
-
-`);
-        }
+            // Generates stuff
+            $.get("./php/getLists.php", data => {
+                if (typeof data != "object") { $(".listContainer").text(jsStr["NO_RES"][LANG]); return; }
+                listViewerDrawer(data, ".communityContainer", 4)
+                if (isSearching) $(".communityContainer .doSearch").click()
+            });
+        })
     }
 
-    $(".smallUploaderDialog").hide();
+    if (params.editing != null) {
+        generateFromJSON()
+        isHidden = $("input[name='hidden']").attr("checked") == "checked";
+    }
 
-    // Generates stuff
-    $.get("./php/getLists.php", function (data) {
-        deeta = data;
-        ogDeeta = data;
-        displayComLists(deeta);
-    });
 
-    if (window.location.protocol.includes("file")) {
+    if (window.location.port != "") {
         $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
         $(".debugTools").show()
     }
     else { $(".debugTools").remove() }
 
 })
-
-function hideUploader() {
-    $(".uploaderDialog").hide();
-    $(".smallUploaderDialog").show();
-}
-function showUploader() {
-    $(".uploaderDialog").show()
-    $(".smallUploaderDialog").hide();
-}
-
 
 function closeRmScreen() {
     $(".removeScreen").fadeOut(100)
@@ -295,14 +312,14 @@ function closeRmScreen() {
 function confirmDelete() {
     closeRmScreen()
     setInterval(function () {
-        let data = location.search.slice(1).split(/[=&]/g);
+        let data = JSON.parse(sessionStorage.getItem("listProps"))
         let postData = {
-            "id": data[1],
-            "pwdEntered": data[3],
-            "isHidden": isHidden ? 1 : 0
+            "id": data[0],
+            "pwdEntered": data[1],
+            "isHidden": data[2] == "id" ? 0 : 1
         }
         murderList();
-        $.post("./php/removeList.php", postData, function (data) {
+        $.post("./php/removeList.php", postData, function () {
             murderList();
         })
     }, 600)
@@ -311,12 +328,12 @@ function confirmDelete() {
 function removeList() {
     // Confirm remove
     $(".boom").append(`<div class="uploadText removeScreen">
-    <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.png"><br />
-    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -3.04em;" src="./images/szn1.png">
+    <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.webp"><br />
+    <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -5.4vw;" src="./images/szn1.webp">
     <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">${jsStr["CONF_DEL"][LANG]}</p>
     <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
-        <img id="rmbutton" onclick="confirmDelete()" class="button" src="${jsStr["YES_IMG"][LANG]}">
-        <img id="rmbutton" onclick="closeRmScreen()" class="button" src="${jsStr["NO_IMG"][LANG]}">
+        <button id="rmbutton" onclick="confirmDelete()" class="button uploadText eventButton">${jsStr["YES"][LANG]}</button>
+        <button id="rmbutton" onclick="closeRmScreen()" class="button uploadText eventButton">${jsStr["NO"][LANG]}</button>
     <div>
     </div>`);
 
@@ -341,49 +358,6 @@ function removeList() {
 function murderList() {
     $(".boom").css("display", "initial");
 
-    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.replace("./upload.html"));
+    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.replace("./upload.html?editor"));
     $("#levelUpload").addClass("killList");
-}
-
-function pageSwitch(num) {
-    if (page + num < 0) {
-        page = 0
-    }
-    else if (page + num > maxPage - 1) {
-        page = maxPage - 1;
-    }
-    else {
-        page += num;
-        $("#pageSwitcher").val(page + 1);
-        displayComLists(deeta);
-    }
-}
-
-function search() {
-    deeta = ogDeeta;
-    let query = $("#searchBar").val();
-    if (query == "") {
-        // Reset stuff
-        page = 0;
-        $("#pageSwitcher").val("1");
-        displayComLists(deeta);
-    }
-    else {
-        let regex = new RegExp(".*(" + query + ").*", "ig"); // Matches all strings that contain "query"
-        let filteredData = deeta.filter(val => JSON.stringify(val).match(regex));
-        if (filteredData.length == 0) {
-            $(".customLists").children().remove()
-            page = 0;
-            $("#pageSwitcher").val("1");
-            $("#maxPage").text("/1")
-            $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
-        }
-        else {
-            page = 0;
-            $("#pageSwitcher").val("1");
-            deeta = filteredData;
-
-            displayComLists(filteredData);
-        }
-    }
 }

@@ -9,6 +9,10 @@
 
 @media only screen and (max-width: 550px) {
 
+.searchButs {
+    transform: none !important;
+}
+
 .comTextArea {
     height: 20vw;
 }
@@ -19,7 +23,7 @@
 
 /* Changes navbar style */
 .mobilePicker {
-    display: block;
+    display: flex;
 }
 .menuPicker {
     display: none;
@@ -54,7 +58,6 @@
     width: 75%;
     left: 0;
 }
-.searchTools:not(#commentTool) { margin-top: 10vw }
 
 #jumpToTools {
     top: 0;
@@ -67,7 +70,6 @@
     padding: 0;
 }
 
-.listInfo { margin-top: 8vh !important; }
 #crown {
     transform: translateY(7.7vw) !important;
     width: 25vw;
@@ -90,21 +92,40 @@
 }
 
 .uploadBG:not(#jumpToTools, #shareTools) {
-    margin: 0vw;
+    margin: 0;
 }
 
-#levelUpload {
-    margin-top: 15% !important;
+.diffContainer {
+    width: 7.5vw !important;
+    height: 7.5vw !important;
 }
-
-.communityTitle { margin: 5vh 0 -5vh 0; }
-.savedTitle { margin: 4vh 0 -3vh 0vw; }
 
 /* Hides help text in searchTool/CommentTool */
 #pageStr, #sortStr { display: none; }
 
-#collabTools > .editorHeader { padding: 0 6vw 0 0; }
 .socInp { width: 40vw !important;}
 .percCollab { width: 3vw !important; height: 2vw !important; padding: 0 !important; }
 .tableCpicker { height: 5vw !important; }
+
+.humHead, .roleHead { display: none; }
+.collabStuff { display: none; }
+.mobileTabSwitcher { display: flex !important; }
+.memberStuff { display: none;}
+
+.collabRoles > .roleBubble {
+    max-height: 5vh;
+    width: 90%;
+}
+
+#collabTools > .editorHeader { padding: 0 6vw 0 0; }
+
+.presetButtonContainer > * {
+    font-size: var(--biggerFont);
+}
+
+.roleControls > img {
+    width: 4vh;
+    height: 4vh;
+}
+
 }
