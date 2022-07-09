@@ -7,6 +7,7 @@ function getID() {
   if (params["pid"] != null) { return -10 } // Disable comments on private lists
   if (params["random"] != null) { return -11 } // -11 will be replaced with actual ID later
   if (params["id"] != null) { return params["id"] } // Community level/2019 or 2021 list (-2,-3)
+  if (params["year"] != null) { return params["year"] == "2021" ? "-3" : "-2" }
   else { return -9 } // Is Homepage
 }
 var LIST_ID = getID();

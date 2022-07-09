@@ -779,8 +779,8 @@ iframe {
 .homepageBigButton > img { width: var(--biggerFont); }
 .homepageBigButton > * { padding: 0 1em; margin: 0.2vw 0 !important; }
 a {text-decoration: none;}
-.IXstyle { background-image: linear-gradient(90deg, #4d7151, #1b8e28); border-color: #0f4615 !important; }
-.XXIstyle { background-image: linear-gradient(90deg, #4d6071, #1b608e); border-color: #0f2b46 !important; }
+.IXstyle { background-image: linear-gradient(39deg, rgb(123,-40,20), #a3003c, rgb(223,60,120)); border-color: rgb(123,-40,20) !important; }
+.XXIstyle { background-image: linear-gradient(39deg, rgb(123,82,-40), #a37a00, rgb(223,182,60)); border-color: rgb(123,82,-40) !important; }
 
 .navPlaceholder {
   width: 90%;

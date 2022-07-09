@@ -998,7 +998,7 @@ $(async function () {
 				refreshComments()
 			})
 		}
-		else if (listQueries.includes("id")) {
+		else if (listQueries.includes("id") || listQueries.includes("year")) {
 			if (["-2", "-3"].includes(LIST_ID)) {
 				let listName = `Top ${LIST_ID == -2 ? 10 : 15} LoF ${LIST_ID == -2 ? 2019 : 2021}`
 
