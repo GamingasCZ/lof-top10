@@ -513,6 +513,7 @@ function generateList(boards, listData) {
 		let currentlyFavedIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
 		let disableStar = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "disabled" : ""
 		let starTitle = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? jsStr["FAV_REM"][LANG] : jsStr["FAV_ADD"][LANG]
+		let diffIndent = diff == "" ? "0" : "2"
 
 		let star = `<img title="${starTitle}" src="images/star.webp" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, ['${listData[0]}','${listData[1]}'])">`
 		$(".boards").append(`
@@ -521,7 +522,7 @@ function generateList(boards, listData) {
 				${favoriteCheck ? star : ""}
 			</div>
 			<div class="boxHeader">
-				<span id="listLevelName">${diff}<p style="margin: 0; margin-left: 2vw;">${boards[bIndex]["levelName"]}</p></span>
+				<span id="listLevelName">${diff}<p style="margin: 0; margin-left: ${diffIndent}vw;">${boards[bIndex]["levelName"]}</p></span>
 				<div class="boxLinksContainer">
 					${video}
 					${ID[0]}
