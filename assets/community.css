@@ -837,8 +837,8 @@ input:disabled {
 
 .listDiffContainer {
     position: relative;
-    width: 4vw;
-    height: 4vw;
+    width: calc(20px + 3vw);
+    height: calc(20px + 3vw);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -846,7 +846,7 @@ input:disabled {
 
 .listDiffFace {
     width: 100%;
-    height: fit-content;
+    height: auto;
     position: absolute;
     z-index: 2;
 }
