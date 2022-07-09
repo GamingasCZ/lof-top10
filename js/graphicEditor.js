@@ -157,6 +157,7 @@ function openDiffPicker(lp) {
     if (openedPane == 2 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
     openedPane = 2
 
+    if (levelList[lp]["difficulty"] == undefined) { levelList[lp]["difficulty"] = [0,0]}
     let diff = levelList[lp]["difficulty"]
 
     let difficulties = [];
@@ -244,7 +245,7 @@ function generateFromJSON() {
 
         // Debug list
         if (window.location.port != "") {
-            data = {"creator":"GaminagsCZ","name":"top 2 nejlepší levely","data":"{\"1\":{\"levelName\":\"LIGMO\",\"creator\":[[\"EidamGD\",[6,12,17,true],\"Host\"],[{\"name\":\"Level\",\"HTMLobject\":{},\"id\":1651926617017}],[{\"name\":\"RealSuni\",\"role\":1651926617017,\"part\":[\"0\",\"3\"],\"color\":\"#ffffff\",\"socials\":[[0,\"https://twitch.tv/OnlyTryingYT\"]],\"HTMLobject\":{},\"verified\":[62,12,12,false]}]],\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[1,0]},\"2\":{\"levelName\":\"LIGMO2\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a3ff00\", \"difficulty\":[1,2]},\"3\":{\"levelName\":\"LIGMO3\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a300ff\", \"difficulty\":[3,1]},\"4\":{\"levelName\":\"LIGMO4\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[5,1]},\"5\":{\"levelName\":\"LIGMO5\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[1,1]},\"titleImg\":\"\",\"pageBGcolor\":\"#53a3aa\"}","id":88,"timestamp":"1651860720","hidden":"0"}
+            data = {"creator":"GaminagsCZ","name":"top 2 nejlepší levely","data":"{\"1\":{\"levelName\":\"LIGMO\",\"creator\":[[\"EidamGD\",[6,12,17,true],\"Host\"],[{\"name\":\"Level\",\"HTMLobject\":{},\"id\":1651926617017}],[{\"name\":\"RealSuni\",\"role\":1651926617017,\"part\":[\"0\",\"3\"],\"color\":\"#ffffff\",\"socials\":[[0,\"https://twitch.tv/OnlyTryingYT\"]],\"HTMLobject\":{},\"verified\":[62,12,12,false]}]],\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[1,0]},\"2\":{\"levelName\":\"LIGMO2\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a3ff00\", \"difficulty\":[1,2]},\"3\":{\"levelName\":\"LIGMO3\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a300ff\", \"difficulty\":[3,1]},\"4\":{\"levelName\":\"LIGMO4\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[5,1]},\"5\":{\"levelName\":\"LIGMO5\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\"},\"titleImg\":\"\",\"pageBGcolor\":\"#53a3aa\"}","id":88,"timestamp":"1651860720","hidden":"0"}
         }
 
         // Is the list hidden?
