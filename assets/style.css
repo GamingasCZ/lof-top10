@@ -744,7 +744,8 @@ iframe {
   min-height: 32vh;
   align-items: flex-end;
   background: url(../images/introGrad2.webp);
-
+  background-repeat: repeat-x;
+  background-size: contain;
 }
 
 #homepageSearch {

@@ -128,4 +128,6 @@
     height: 4vh;
 }
 
+#homepageHeader { background-size: unset; }
+
 }
