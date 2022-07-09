@@ -263,10 +263,13 @@ function generateFromJSON() {
         levelList = JSON.parse(data["data"]);
         $(".titImgInp").val(levelList["titleImg"])
 
-        $("#bgcolorPicker").css("background", levelList["pageBGcolor"])
-        $("body").css("background-color", levelList["pageBGcolor"])
-        let hue = getHueFromHEX(levelList["pageBGcolor"])
-        $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+        // Change page background, if not default
+        if (levelList["pageBGcolor"] != "#020202") {
+            $("#bgcolorPicker").css("background", levelList["pageBGcolor"])
+            $("body").css("background-color", levelList["pageBGcolor"])
+            let hue = getHueFromHEX(levelList["pageBGcolor"])
+            $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)            
+        }
 
         for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
             loadLevel(y + 1)
