@@ -47,6 +47,8 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     [".savePickTit", "upload.html", 0, ["Uložené levely", "Saved levels"]],
     [".savedFilter", "upload.html", "placeholder", ["        Hledat level...", "        Search levels..."]],
 
+    [".roleTab","upload.html",0,["Role","Roles"]],
+    [".humanTab","upload.html",0,["Členové","Members"]],
     [".collabTTitle","upload.html",0,["- Nastavení collabu -","- Collab Settings -"]],
     [".verifierRole","upload.html","placeholder",["Role","Role"]],
     [".verifier","upload.html","placeholder",["Nahrál...","Uploaded by..."]],
