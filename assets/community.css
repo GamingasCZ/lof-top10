@@ -794,6 +794,7 @@ input:disabled {
 #inpFeatured:checked,
 #inpGrad:checked {
     -moz-appearance: none;
+    appearance: none;
     background: url("../images/check-on.webp");
     background-size: contain;
     background-repeat: no-repeat;
@@ -806,6 +807,7 @@ input:disabled {
 #inpFeatured,
 #inpGrad {
     -moz-appearance: none;
+    appearance: none;
     background: url("../images/check-off.webp");
     background-size: contain;
     background-repeat: no-repeat;
