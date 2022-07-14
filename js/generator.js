@@ -430,7 +430,7 @@ function boxCreator(obj, index, bgcolor) {
 		obj[2].forEach(creator => {
 			let icon = "";
 			if (creator.verified) {
-				icon = `<img class="boxIcon" alt=" " style="background: ${creator.color}">`;
+				icon = `<img class="boxIcon" src="images/none.webp" alt=" " style="background: ${creator.color}">`;
 			}
 			if (creator.name == "") { var nm = jsStr["GHOST"][LANG] }
 			else { var nm = creator.name }
