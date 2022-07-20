@@ -34,7 +34,8 @@ else {
 }
 
 // When no changes are made in the list
-if ($listData["data"] == $fuckupData[2]) {
+$isBeingHidden = $_POST["hidden"] == 1 and $_POST["isNowHidden"] == "false" && $_POST["hidden"] == 0 and $_POST["isNowHidden"] == "true";
+if ($listData["data"] == $fuckupData[2] && !$isBeingHidden) {
     echo "4";
     exit();
 }

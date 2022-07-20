@@ -1050,10 +1050,10 @@ $(async function () {
 		}
 		else if (listQueries.includes("pid")) {
 			await $.get("./php/getLists.php?pid=" + listID, function (data) {
-				if (data == 1) {
+				if ([1, 2].includes(data)) {
 					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
-					$(".searchTools").remove();
 					$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
+					$(".searchTools").remove();
 					$("#crown").remove();
 				}
 				else {

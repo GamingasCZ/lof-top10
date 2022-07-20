@@ -125,6 +125,9 @@ var jsStr = {
     "TOOBIG3": ["Smaž nějaké levely/collaby z levelů!", "Remove some levels/collabs from levels"],
     "YES": ["Ano", "Yes"],
     "NO": ["Ne", "No"],
+    "LIST_UPDATED": ["Seznam aktualizován!", "List updated!"],
+    "LIST_UNCHANGED": ["Nezměnil jsi nic v seznamu!", "Your list is unchanged!"],
+    "LIST_UPFAIL": ["Seznam se nepodařilo aktualizovat!", "Failed to update the list!"],
 
     // generator
     "LEV_NOEXIST": ["Level neexistuje!", "Level doesn't exist!"],

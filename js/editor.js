@@ -166,11 +166,11 @@ function updateList() {
 
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
-            if (3 == 3) {
+            if (data == 3) {
                 $(".uploaderDialog").html(`
                 <div style="padding: 3%">
                     <img src="./images/check.webp" style="width:7%;">
-                    <p class="uploadText">Seznam aktualizován!</p>
+                    <p class="uploadText">${jsStr["LIST_UPDATED"][LANG]}</p>
                 </div>
                 `)
             }
@@ -180,7 +180,7 @@ function updateList() {
                 $(".uploaderDialog").html(`
                 <div style="padding: 3%">
                     <img src="./images/help.webp" style="width:7%;">
-                    <p class="uploadText">Nezměnil jsi nic v seznamu!</p>
+                    <p class="uploadText">${jsStr["LIST_UNCHANGED"][LANG]}</p>
                 </div>
                 `)
             }
@@ -189,7 +189,7 @@ function updateList() {
                 $(".uploaderDialog").html(`
                 <div style="padding: 3%">
                     <img src="./images/error.webp" style="width:7%;">
-                    <p class="uploadText">Seznam se nepodařilo aktualizovat!</p>
+                    <p class="uploadText">${jsStr["LIST_UPFAIL"][LANG]}</p>
                 </div>
                 `)
             }
