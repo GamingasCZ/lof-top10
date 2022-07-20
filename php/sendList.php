@@ -46,7 +46,7 @@ $fuckupData = sanitizeInput(array($_POST["lCreator"],$_POST["lName"],$_POST["lis
 $timestamp = $time -> getTimestamp();
 
 // Generate id if list private
-if (isset($_POST["hidden"])) { $hidden = privateIDGenerator($fuckupData["lname"], $fuckupData["lCreator"], $timestamp); }
+if (isset($_POST["hidden"])) { $hidden = privateIDGenerator($fuckupData[1], $fuckupData[0], $timestamp); }
 else { $hidden = "0"; }
 
 // Password for editing

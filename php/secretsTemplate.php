@@ -6,8 +6,8 @@ $password = "";
 $database = "";
 
 function privateIDGenerator($listName, $creator, $timestamp) {
-    // Your code here... :)
-    return 0;
+    $str = $listName . $creator . $timestamp;
+    return substr(sha1($str),0,10);
 }
 
 function passwordGenerator($listName, $creator, $timestamp)
