@@ -836,6 +836,29 @@ input:disabled {
     z-index: 2;
 }
 
+.settingSubbox {
+    display: flex;
+    gap: 0.5vw;
+    background: #0000004d;
+    padding: 0.5vw;
+    border-radius: 10px;
+    margin-left: 3vw;
+    width: max-content;
+    align-items: center;
+}
+
+/* I am in excrutiating pain from this CSS :/*/
+.diffSelBut {
+	width: 3.5vw;
+	background: #0000004d;
+	border: none;
+	padding: 0.4vw;
+	border-radius: 15px;
+}
+
+.diffSelBut img {
+    width: 100%;
+}
 
 .listDiffContainer {
     position: relative;
@@ -862,6 +885,21 @@ input:disabled {
     position: absolute;
     width: 140%;
     bottom: -20%;
+}
+
+.listDiffStar {
+    position: relative;
+    z-index: 2;
+    width: 60%;
+    left: 1.3vw;
+    top: 0.8vw;
+}
+
+.rateContainer {
+    display: flex;
+    gap: 6vh;
+    transform: scale(0.8);
+    align-items: center;
 }
 
 .cpicker {

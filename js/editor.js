@@ -299,6 +299,12 @@ $(function () {
     }
     else { $(".debugTools").remove() }
 
+    $("img[for='diffGuesser']").click(() => {
+        $(".settingSubbox").slideToggle(50);
+        checkCheckbox("diffGuesser");
+        $(".diffSelBut img").removeClass("disabled")
+        levelList.diffGuesser = [$("input[name='diffGuesser']").prop("checked"),true,true]
+    })
 })
 
 function closeRmScreen() {

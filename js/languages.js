@@ -42,6 +42,7 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     [".previewButton", "upload.html", "title", ["Náhled seznamu", "Preview list"]],
     [".setTitle", "upload.html", 0, ["- Nastavení -", "- Settings -"]],
     ["#submitbutton", "upload.html", "value", ["Nahrát", "Upload"]],
+    ["label[for='diffGuesser']", "upload.html", 0, ["Hádání obtížnosti", "Difficulty Guesser"]],
     ["label[for='private']", "upload.html", 0, ["Soukromý seznam", "Private List"]],
     ["label[for='shareCollab']", "upload.html", 0, ["Sdílet collaby", "Share Collabs"]],
     [".savePickTit", "upload.html", 0, ["Uložené levely", "Saved levels"]],
@@ -217,6 +218,9 @@ var jsStr = {
                      `],
     "OFFICIALLIST_T": ["Oficiální seznamy", "Official Lists"],
     "OFFICIALLIST_D": [`Toto jsou seznamy s <cr>nejlepšími levely</cr> z Levelů od Fanoušků!`, `These lists contain the <cr>best levels</cr> from my level request series!`],
+    "DIFFGUESSER_T": ["Hádání obtížností", "Difficulty guesser"],
+    "DIFFGUESSER_D": [`Když je hádání zapnutý, tvůj seznam`, `These lists contain the <cr>best levels</cr> from my level request series!`],
+
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],

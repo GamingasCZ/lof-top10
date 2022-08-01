@@ -772,7 +772,8 @@ function removeLevel(id) {
 
 var levelList = {
     "titleImg": "",
-    "pageBGcolor": "#020202"
+    "pageBGcolor": "#020202",
+    "diffGuesser": [false,true,true]
 }
 
 function card(index) {
@@ -862,6 +863,16 @@ function preview() {
 
 }
 
+function guesserOptions(ind) {
+    levelList.diffGuesser[ind] = !levelList.diffGuesser[ind]
+    $(".diffSelBut img").eq(ind-1).toggleClass("disabled")
+    if (levelList.diffGuesser.filter(x => x == true).length == 1) {
+        $(".diffSelBut img").removeClass("disabled")
+        levelList.diffGuesser = [false, true, true]
+        $(".settingSubbox").slideToggle(50)
+        checkCheckbox("diffGuesser")
+    }
+}
 
 var fuckupMessages;
 $(function () {

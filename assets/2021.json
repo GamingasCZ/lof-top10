@@ -308,5 +308,6 @@
     "difficulty": [8,0]
   },
   "titleImg": "",
-  "pageBGcolor": "#020202"
+  "pageBGcolor": "#020202",
+  "diffGuesser": [false,true,true]
 }

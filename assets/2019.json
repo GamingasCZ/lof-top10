@@ -186,5 +186,6 @@
     "difficulty": [5,0]
   },
   "titleImg": "",
-  "pageBGcolor": "#020202"
+  "pageBGcolor": "#020202",
+  "diffGuesser": [true,true,true]
 }
