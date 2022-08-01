@@ -506,7 +506,10 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 			let data = boards[bIndex]["difficulty"]
 			let glow = "";
 			if (data[1] != 0) {
-				glow = `<img class="${data[1] == 1 ? "listDiffRate" : "listDiffEpicRate"}" src='images/faces/${data[1] == 1 ? "featured" : "epic"}.webp'>`
+				let type
+				if (data[1] == 1) type = ["listDiffStar", "star"]
+				else type = [data[1] == 2 ? "listDiffRate" : "listDiffEpicRate", "faces/"+(data[1] == 2 ? "featured" : "epic")]
+				glow = `<img class="${type[0]}" src='images/${type[1]}.webp'>`
 			}
 
 			diff = `<div class="listDiffContainer"><img class="listDiffFace" src="images/faces/${data[0]}.webp">${glow}</div>`
