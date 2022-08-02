@@ -457,7 +457,7 @@ var LIST_NAME = null
 var LIST_CREATOR = null
 function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	// Todo remove ! from line below and somewhere next in the code or whatever
-	if (boards.diffGuesser != null && boards.diffGuesser[0] && singleLevel == -1) singleLevel = 1
+	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && singleLevel == -1) singleLevel = 1
 
 	let amount = singleLevel == -1 ? Object.keys(boards).length - ADDIT_VALS : singleLevel+1
 	let start = singleLevel == -1 ? 1 : singleLevel
@@ -527,7 +527,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		let diffIndent = diff == "" ? "0" : "2"
 
 		let star = `<img title="${starTitle}" src="images/star.webp" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, ['${listData[0]}','${listData[1]}'])">`
-		if (boards.diffGuesser != null && (!boards.diffGuesser[0] || isResult)) {
+		if (boards.diffGuesser == undefined || (!boards.diffGuesser[0] || isResult)) {
 			$(".boards").append(`
 				<div class="box" style="${cardBG}">
 					<div style="height:0px;">
