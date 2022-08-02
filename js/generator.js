@@ -652,7 +652,18 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	if ($(".box")[params.goto - 1] != undefined) $(".box")[params.goto - 1].scrollIntoView()
 }
 
-var points = 0;
+function shareDiffResult() {
+	text = `${LIST_NAME} od ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${Object.keys(boards).length-ADDIT_VALS-1}\nDokážeš to líp?\ngamingas.wz.cz/lofttop10/?id=${LIST_ID}`
+	window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text), "_blank")
+}
+function replayList() {
+	$(".box").remove()
+	$(".finishDiffList").remove()
+	generateList(boards, [LIST_NAME, LIST_CREATOR], 1, false)
+	points = 0
+	diffGuesses = []
+}
+
 function guessDifficulty(button) {
 	let faceID = button.target.attributes.src.value.match(/\d+/g)
 	$(button.target).parent().hide()
@@ -674,38 +685,16 @@ function guessRating(button) {
 	skipGuess(faceID)
 }
 
-function shareDiffResult() {
-	text = `${LIST_NAME} od ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${Object.keys(boards).length-ADDIT_VALS-1}\nDokážeš to líp?\ngamingas.wz.cz/lofttop10/?id=${LIST_ID}`
-	window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text), "_blank")
-}
 //${window.location.toString()}
+var points = 0;
 let diffGuesses = []
 function skipGuess(face) {
-	if ($(".box").length == Object.keys(boards).length-ADDIT_VALS-1) {
-		let perc = Math.round((points/(Object.keys(boards).length-ADDIT_VALS-1))*100)
-		$(".boards").after(`
-		<div class="uploadText uploadBG finishDiffList">
-			<h1>Dokončil jsi seznam!</h1>
-			<div class="graphContainer">
-				<div class="graphLine diffRes" style="background-color: rgb(108, 240, 108); text-align: center;">${perc}%</div>
-			</div>
-			<h4>Získal jsi ${points} z ${Object.keys(boards).length-ADDIT_VALS-1} bodů!</h4>
-			<div style="display: flex; gap: 5vw;">
-				<button class="button niceButton uploadText"><img src="images/replay.svg" style="width: 4vw;">Hrát znova</button>
-				<button class="button niceButton shareDiff uploadText"><img src="images/share.svg" style="width: 4vw;">Sdílet</button>
-			</div>
-		</div>
-		`)
-		$(".shareDiff").click(shareDiffResult)
-		$(".finishDiffList")[0].scrollIntoView()
-		$(".diffRes").animate({"width":perc+"%"}, "300")
-	}
-
+	
 	$(".skipBut").remove()
 	$(".box:last()").remove()
 	generateList(boards, [LIST_NAME, LIST_CREATOR], $(".box").length+1, true)
 	generateList(boards, [LIST_NAME, LIST_CREATOR], $(".box").length+1, false)
-
+	
 	$(".box").eq($(".box").length-2).append("<div class='diffGuessResult'></div>")
 	if (face == boards[$(".box").length-1]["difficulty"][0]) {
 		$(".diffGuessResult:last()").css("background", "#36fd17 url(../images/check-tp.webp)")
@@ -717,11 +706,34 @@ function skipGuess(face) {
 	}
 	$(".diffGuessResult:last()").css("animation-name", "flash")
 	
-
+	
 	setTimeout(() => {
 		$(".box:last()")[0].scrollIntoView()
 		$(".diffGuessResult:last()").remove()
 	}, 800);
+
+	if ($(".box").length == Object.keys(boards).length-ADDIT_VALS) {
+		let perc = Math.round((points/(Object.keys(boards).length-ADDIT_VALS-1))*100)
+		$(".boards").after(`
+		<div class="uploadText uploadBG finishDiffList">
+			<h1>Dokončil jsi seznam!</h1>
+			<div class="graphContainer">
+				<div class="graphLine diffRes" style="background-color: rgb(108, 240, 108); text-align: center;">${perc}%</div>
+			</div>
+			<h4>Získal jsi ${points} z ${Object.keys(boards).length-ADDIT_VALS-1} bodů!</h4>
+			<div style="display: flex; gap: 5vw;">
+				<button class="button niceButton replayList uploadText"><img src="images/replay.svg" style="width: 4vw;">Hrát znova</button>
+				<button class="button niceButton shareDiff uploadText"><img src="images/share.svg" style="width: 4vw;">Sdílet</button>
+			</div>
+		</div>
+		`)
+		$(".shareDiff").click(shareDiffResult)
+		$(".replayList").click(replayList)
+		$(".finishDiffList")[0].scrollIntoView()
+		$(".diffRes").animate({"width":perc+"%"}, "300")
+
+		if (LIST_ID == -8) $(".shareDiff").remove() // Remove share in list preview
+	}
 }
 
 function pinList(rem = null, isOnHomepage = false) {
@@ -1140,17 +1152,6 @@ $(async function () {
 				LIST_CREATOR = "GamingasCZ"
 
 				generateList(boards, [LIST_ID, listName]);
-			}
-
-			else if (window.location.protocol.includes("file") || window.location.port != "") {
-				boards = debugCards();
-				debugPwd = Math.ceil(Math.random() * 9999999999)
-				$(".titles").append(`<p style="color: tomato; margin: 0;">Debug List</p>
-				<hr class="lineSplitGeneral">
-				<p style="font-size: 3vw; margin: 0;">- Dasher123 - (Pass: ${debugPwd})</p>`);
-				$(".titleImage").attr("src", boards["titleImg"]);
-				$("title").html(`${jsStr["DEBUG_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-				generateList(boards, [0, "Debug List"])
 			}
 
 			else {

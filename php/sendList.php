@@ -41,7 +41,7 @@ if ($len > 25000 || $len < 150) {
 }
 
 // Checking request
-error_reporting(0);
+error_reporting($debugMode ? -1 : 0);
 $fuckupData = sanitizeInput(array($_POST["lCreator"],$_POST["lName"],$_POST["listData"]));
 $timestamp = $time -> getTimestamp();
 
