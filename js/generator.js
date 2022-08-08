@@ -747,13 +747,17 @@ function pinList(rem = null, isOnHomepage = false) {
 		if (arr[0] == rem) indToRemove[1] = true
 		if (!indToRemove[1]) indToRemove[0]++
 	});
+
+	$("#pinBut").empty()
 	if (indToRemove[1]) {
-		$("#pinBut").attr("src", "images/pinList.webp")
+		$("#pinBut").append("<img src='images/pin.svg'>")
+		$("#pinBut").append("Připnout")
 		$("#pinBut").attr("title", jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
 	}
 	else {
-		$("#pinBut").attr("src", "images/unpinList.webp")
+		$("#pinBut").append("<img src='images/unpin.svg'>")
+		$("#pinBut").append("Odepnout")
 		$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
 		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime()])
 
@@ -1074,7 +1078,7 @@ $(async function () {
 
 	// GENERATING HOMEPAGE!
 	if (LIST_ID == -9) {
-		$(".searchTools").remove();
+		$(".listInfo").remove();
 		$("#crown").remove();
 
 		$.get("./parts/homepage.html", site => {
@@ -1125,9 +1129,8 @@ $(async function () {
 			$.get("php/getLists.php?random=1", data => {
 				data = data[0]
 				boards = data["data"];
-				$(".titles").append(`<p style="margin: 0;">${data["name"]}</p>
-				<hr class="lineSplitGeneral">
-				<p style="font-size: 3vw;margin: 0;">- ${data["creator"]} -</p>`);
+				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
+				<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1164,9 +1167,8 @@ $(async function () {
 					}
 					else {
 						boards = data["data"];
-						$(".titles").append(`<p style="margin: 0;">${data["name"]}</p>
-					<hr class="lineSplitGeneral">
-					<p style="font-size: 3vw;margin: 0;">- ${data["creator"]} -</p>`);
+						$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
+						<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
 						$(".titleImage").attr("src", boards["titleImg"]);
 						$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1190,9 +1192,8 @@ $(async function () {
 				}
 				else {
 					boards = data["data"];
-					$(".titles").append(`<p style="margin: 0;">${data["name"]}</p>
-					<hr class="lineSplitGeneral">
-					<p style="font-size: 3vw;margin: 0;">- ${data["creator"]} -</p>`);
+					$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
+					<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
 					$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1205,13 +1206,16 @@ $(async function () {
 			}
 			)
 		}
+		$(".loadPlaceholder").remove()
 	}
 
 	let getPinned = getCookie("pinnedLists")
 	if (getPinned !== null & getPinned !== false) {
 		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
 			if (arr[0] == LIST_ID) {
-				$("#pinBut").attr("src", "images/unpinList.webp")
+				$("#pinBut").empty()
+				$("#pinBut").append("<img src='images/unpin.svg'>")
+				$("#pinBut").append("Odepnout")
 				$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
 			}
 		});
@@ -1247,43 +1251,8 @@ $(async function () {
 });
 
 function checkPassword() {
-	let passEntered = $(".passInput").val();
-
-	// POLISH THIS LATER!!!
-	$(".passInput").attr("disabled", true);
-	$(".passInput").val(jsStr["CHECKING"][LANG]);
-	$(".passInput").css("background-color", "#82fc80")
-
-	$(".passImg").addClass("disabled");
-
-	let postReq = { "pwdEntered": passEntered, "retData": "0" };
-	let isPrivate = window.location.search.includes("pid") ? "pid" : "id"
-	postReq[isPrivate] = LIST_ID;
-
-	$.post("./php/pwdCheckAction.php", postReq, function (data) {
-		// Incorrect pwd
-		if (data != 3) {
-			//testing
-			$(".passInput").css("background-color", "#fc8093")
-			$(".passInput").val(jsStr["INC_PWD"][LANG])
-			setTimeout(() => {
-				$(".passInput").attr("disabled", false);
-				$(".passImg").removeClass("disabled");
-				$(".passInput").val("")
-			}, 1000)
-		}
-		else {
-			sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, passEntered, isPrivate]))
-			window.location.href = `./upload.html?editing`;
-		}
-	})
-
-	if (window.location.port != "") {
-		if (passEntered == debugPwd) {
-			sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, passEntered, isPrivate]))
-			window.location.href = `./upload.html?editing`
-		}
-	}
+	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, window.location.search.includes("pid"), LIST_NAME, LIST_CREATOR]))
+	window.location.href = `./upload.html?editing`;
 }
 
 const switchAnims = (_curr) => localStorage.setItem("anims", localStorage.getItem("anims") == true ? 0 : 1)

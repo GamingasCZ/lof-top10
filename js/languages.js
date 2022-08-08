@@ -36,7 +36,7 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#creatornm", "upload.html", "placeholder", ["Tvůrce", "List Creator"]],
     ["#imageArrow", "upload.html", "title", ["Ukázat náhled obrázku", "Display image preview"]],
     [".titImgInp", "upload.html", "placeholder", ["Obrázek seznamu", "Header Image"]],
-    ["label[for='bgcolor']", "upload.html", 0, ["Barva pozadí:", "Background Color:"]],
+    ["label[for='bgcolor']", "upload.html", 0, ["Pozadí:", "Background:"]],
     [".headerTitle", "upload.html", 0, ["Levely", "Levels"]],
     [".addCardButton", "upload.html", "title", ["Přidat level do seznamu", "Add level to list"]],
     [".previewButton", "upload.html", "title", ["Náhled seznamu", "Preview list"]],
@@ -128,7 +128,7 @@ var jsStr = {
     "NO": ["Ne", "No"],
     "LIST_UPDATED": ["Seznam aktualizován!", "List updated!"],
     "LIST_UNCHANGED": ["Nezměnil jsi nic v seznamu!", "Your list is unchanged!"],
-    "LIST_UPFAIL": ["Seznam se nepodařilo aktualizovat!", "Failed to update the list!"],
+    "LIST_UPFAIL": ["Seznam se nepodařilo aktualizovat! Zkus to znova později.", "Failed to update the list! Try again later."],
 
     // generator
     "LEV_NOEXIST": ["Level neexistuje!", "Level doesn't exist!"],

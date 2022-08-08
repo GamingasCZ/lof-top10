@@ -132,7 +132,49 @@ span {
     color: white;
     text-align: center;
     font-family: pusab;
-    margin: 1vw 0;
+    padding: 1vw 2vw;
+    margin: 0;
+}
+
+.placeholderName {
+  height: 9vh;
+  background: #cececeb3;
+  width: 38vw;
+  border-radius: 0.7vw;
+}
+.placeholderCreator {
+  height: 5vh;
+  width: 17vw;
+  background: #cececeb3;
+  margin-top: 0.5vw;
+  border-radius: 0.7vw;
+}
+
+.listInfo {
+  background: linear-gradient(180deg, #00000082, transparent);
+}
+
+.listHeaderBlue {
+	display: flex;
+	align-items: center;
+	background: linear-gradient(9deg, #141f20, #044a51) !important;
+	border-radius: 1vw;
+	gap: 0.5vw;
+	max-width: fit-content;
+	border: none;
+	min-width: 11vw;
+	cursor: pointer;
+	font-size: var(--miniFont) !important;
+}
+
+.listHeaderBlue img {
+  width: 2vw;
+}
+
+#commButton {
+	background: var(--greenGradient) !important;
+	padding: 1vw;
+	min-width: max-content;
 }
 
 /* just so stuff doesn't break :D*/
@@ -205,6 +247,7 @@ span {
   text-shadow: rgba(0,0,0,0.5) 0.2vw 0.2vw 0.3vw;
   position: relative;
   z-index: 1;
+  box-shadow: 0vw 3vw black;
 }
 
 .boxLinksContainer {
@@ -553,26 +596,26 @@ html, body {
   z-index: 2;
 }
 
+.boards {
+  margin-top: -4vw;
+}
 
 /* List always shows by default */
 .comments { display: none;}
 
 #commAmount {
-  background: #d94242;
-  height: 50%;
-  font-size: 0.5em;
-  padding: 0px 0.3em;
-  border-radius: 20%;
-  margin-left: -1vh;
-  line-height: 2;
-  margin-top: 2.5vh;
-  margin-right: -1vh;
-  z-index: 1;
+	background: #d94242;
+	font-size: var(--miniFont);
+	padding: 0.1vw;
+	border-radius: 20%;
+	margin-left: 1vh;
+	min-width: var(--miniFont);
+	text-align: center;
 }
 
 /* Entire comment box, including user input box */
 #commentMaker {
-  margin: 5vw 5vw 0;
+  margin: 1vw 5vw 0;
   padding: 0.5vw;
 }
 
@@ -580,7 +623,7 @@ html, body {
 .comTextArea {
   background-color: salmon;
   border: none;
-  height: 8vw;
+  max-height: 8vw;
   border-radius: 10px;
   resize: none;
   border-top-left-radius: 0;
@@ -723,10 +766,17 @@ html, body {
 
 #commentTool {
   justify-content: center;
-  width: 45%;
+  width: 40%;
   margin-left: auto;
   margin-right: auto;
 } 
+
+#cToolTop {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  margin: 0 2vw;
+}
 
 .password {
     display: flex;

@@ -232,57 +232,84 @@ function showBGdialog() {
     $(".boom").animate({ "opacity": 100 }, 200)
 }
 
-function generateFromJSON() {
+function checkPassword() {
+    if ($("#lpass").val().length == 0) return
+
+    $("#lpass").attr("disabled", true)
+
     let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
-    let postReq = { "pwdEntered": loadProps[1], "retData": "1" };
-    postReq[loadProps[2]] = loadProps[0];
+    let postReq = {"pwdEntered": $("#lpass").val()};
+
+    // Is list private?
+    postReq[!loadProps[2] ? "id" : "pid"] = loadProps[0];
+    $("#passEditor h3").text("Kontrolování...")
     $.post("./php/pwdCheckAction.php", postReq, function (data) {
-        // Disabling input boxes when editing a list
-        $(".uploadTitle").text(jsStr["EDITING"][LANG]);
+        if (typeof data == "object") generateFromJSON(2, data)
+        else {
+            $("#passEditor h3").text("Zadej heslo seznamu")
+            $("#passEditor").css("animation-name","inputError")
+            setTimeout(() => {
+                $("#lpass").attr("disabled", false)
+                $("#lpass").val()
+                $("#passEditor").css("animation-name","")
+            }, 500);
 
-        $("#listnm").attr("disabled", "true");
-        $("#creatornm").attr("disabled", "true");
-
-        $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
-        $("#submitbutton").attr("onclick", "updateList()")
-
-        $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
-
-        if (typeof data == "number") {
-            window.location.replace("./upload.html?editor")
         }
-
-        // Is the list hidden?
-        if (data["hidden"] != "0") {
-            $(`img[for="hidden"]`).attr("src", "images/check-on.webp")
-            $(`input[name="hidden"]`).attr("checked", true)
-        }
-
-        // Removing tutorial
-        $("#mainContent").text("");
-        $(".previewButton").removeClass("disabled");
-
-        $("#listnm").val(data["name"])
-        $("#creatornm").val(data["creator"])
-
-        levelList = JSON.parse(data["data"]);
-        $(".titImgInp").val(levelList["titleImg"])
-
-        // Change page background, if not default
-        if (levelList["pageBGcolor"] != "#020202") {
-            $("#bgcolorPicker").css("background", levelList["pageBGcolor"])
-            $("body").css("background-color", levelList["pageBGcolor"])
-            let hue = getHueFromHEX(levelList["pageBGcolor"])
-            $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
-        }
-
-        for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
-            loadLevel(y + 1)
-        }
-        updateSmPos()
-        displayCard("1")
-        isHidden = data["hidden"] != "0";
     })
+}
+
+function generateFromJSON(part, boards) {
+    $(".uploadTitle").text(jsStr["EDITING"][LANG]);
+    let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
+
+    // Disabling input boxes when editing a list
+    $("#listnm").attr("disabled", "true");
+    $("#creatornm").attr("disabled", "true");
+    if (part == 1) {
+        $("#listnm").val(loadProps[3]);
+        $("#creatornm").val(loadProps[4]);
+        $(".uploadBG > *:not(#listnm, #creatornm, br)").hide()
+        $("#passEditor").show()
+        return
+    }
+
+    $(".uploadBG > *:not(.imgPreview)").show()
+    $("#passEditor").slideUp(50)
+    $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
+    $("#submitbutton").attr("onclick", "updateList()")
+
+    $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
+
+    // Is the list hidden?
+    if (boards["hidden"] != "0") {
+        $(`img[for="hidden"]`).attr("src", "images/check-on.webp")
+        $(`input[name="hidden"]`).attr("checked", true)
+    }
+
+    // Removing tutorial
+    $("#mainContent").text("");
+    $(".previewButton").removeClass("disabled");
+
+    $("#listnm").val(boards["name"])
+    $("#creatornm").val(boards["creator"])
+
+    levelList = JSON.parse(boards["data"]);
+    $(".titImgInp").val(levelList["titleImg"])
+
+    // Change page background, if not default
+    if (levelList["pageBGcolor"] != "#020202") {
+        $("#bgcolorPicker").css("background", levelList["pageBGcolor"])
+        $("body").css("background-color", levelList["pageBGcolor"])
+        let hue = getHueFromHEX(levelList["pageBGcolor"])
+        $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+    }
+
+    for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
+        loadLevel(y + 1)
+    }
+    updateSmPos()
+    displayCard("1")
+    isHidden = boards["hidden"] != "0";
 }
 
 function refreshCardDetails(lp) {

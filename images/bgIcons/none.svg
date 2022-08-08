@@ -7,7 +7,7 @@
    viewBox="0 0 16.933333 16.933334"
    version="1.1"
    id="svg10038"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    sodipodi:docname="none.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -25,12 +25,12 @@
      inkscape:document-units="mm"
      showgrid="false"
      units="px"
-     inkscape:zoom="3.174838"
-     inkscape:cx="-2.0473485"
-     inkscape:cy="14.803905"
-     inkscape:window-width="1558"
+     inkscape:zoom="2.2449495"
+     inkscape:cx="-81.961755"
+     inkscape:cy="69.489314"
+     inkscape:window-width="1560"
      inkscape:window-height="874"
-     inkscape:window-x="42"
+     inkscape:window-x="40"
      inkscape:window-y="26"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
@@ -45,9 +45,20 @@
      inkscape:snap-smooth-nodes="true"
      inkscape:object-paths="true"
      inkscape:object-nodes="true"
-     inkscape:snap-intersection-paths="true" />
+     inkscape:snap-intersection-paths="true"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
   <defs
      id="defs10035">
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect6138"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Use fill-rule evenodd on &lt;b&gt;fill and stroke&lt;/b&gt; dialog if no flatten result after convert clip to paths." />
     <linearGradient
        id="linearGradient3891">
       <stop
@@ -232,18 +243,45 @@
          d="M 0,2.3590412 C 0,1.0783351 0,-0.20072321 0.84907641,0.02636285 1.6981528,0.25344891 3.3946092,1.9882403 3.3947534,2.6280176 3.3948976,3.2677949 1.6964908,2.8131616 0,2.3590412 Z"
          id="path4483-2-3-1-52" />
     </pattern>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath6134">
+      <circle
+         style="display:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.78315;stroke-linecap:round"
+         id="circle6136"
+         cx="8.4666662"
+         cy="8.4666662"
+         r="5.7940483"
+         d="M 14.260715,8.4666662 A 5.7940483,5.7940483 0 0 1 8.4666662,14.260715 5.7940483,5.7940483 0 0 1 2.6726179,8.4666662 5.7940483,5.7940483 0 0 1 8.4666662,2.6726179 5.7940483,5.7940483 0 0 1 14.260715,8.4666662 Z" />
+      <path
+         id="lpe_path-effect6138"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.78315;stroke-linecap:round"
+         class="powerclip"
+         d="M -3.850893,-3.850893 H 20.784225 V 20.784225 H -3.850893 Z M 14.260715,8.4666662 A 5.7940483,5.7940483 0 0 0 8.4666662,2.6726179 5.7940483,5.7940483 0 0 0 2.6726179,8.4666662 5.7940483,5.7940483 0 0 0 8.4666662,14.260715 5.7940483,5.7940483 0 0 0 14.260715,8.4666662 Z" />
+    </clipPath>
   </defs>
   <g
      inkscape:label="Vrstva 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <path
+       style="fill:#f14a4a;fill-opacity:1;stroke:none;stroke-width:2.40542;stroke-linecap:round"
+       id="path5402"
+       clip-path="url(#clipPath6134)"
+       inkscape:path-effect="#path-effect6138"
+       sodipodi:type="arc"
+       sodipodi:cx="8.4666662"
+       sodipodi:cy="8.4666662"
+       sodipodi:rx="7.3175592"
+       sodipodi:ry="7.3175592"
+       d="M 15.784225,8.4666662 A 7.3175592,7.3175592 0 0 1 8.4666662,15.784225 7.3175592,7.3175592 0 0 1 1.149107,8.4666662 7.3175592,7.3175592 0 0 1 8.4666662,1.149107 7.3175592,7.3175592 0 0 1 15.784225,8.4666662 Z" />
     <rect
-       style="fill:#000000;fill-rule:evenodd;stroke-width:1.058;stroke-linecap:round;stroke-linejoin:round"
-       id="rect12040"
-       width="4.692255"
-       height="1.6277848"
-       x="6.1205392"
-       y="7.6527743"
-       ry="0.14993037" />
+       style="fill:#f14a4a;fill-opacity:1;stroke:none;stroke-width:2.44317;stroke-linecap:round"
+       id="rect6142"
+       width="13.412725"
+       height="1.5527899"
+       x="-6.7063632"
+       y="11.19728"
+       transform="rotate(-45)" />
   </g>
 </svg>

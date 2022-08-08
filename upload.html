@@ -190,10 +190,16 @@
   <div class="uploader" style="display: none;">
     <p class="titles uploadTitle">Nahrávání</p>
     <form id="levelUpload" action="php/sendList.php" method="post" class="uploadBG uploaderDialog">
-      <br />
-      <input name="listData" id="listData" type="hidden" value="">
+      <br>
       <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="Jméno seznamu"><br />
       <input name="creator" type="text" id="creatornm" class="uploadMainInp" placeholder="Tvůrce"><br />
+      <div id="passEditor" class="uploadText" style="display: none;">
+        <h3>Zadej heslo seznamu</h3>
+        <div style="display: flex; gap: 0.5vw; justify-content: center;">
+          <input name="lPass" type="text" id="lpass" class="uploadMainInp searchWithIcon" placeholder="     Heslo"><br />
+          <img id="passSubmit" class="button" src="images/searchOpaque.svg" onclick="checkPassword()">
+        </div>
+      </div>
       <div style="display: flex; justify-content: center; margin-right: 1.7vw;">
         <img src="images/arrow.webp" id="imageArrow" class="button" title="Ukázat náhled obrázku">
         <input type="text" id="tImgMargin" class="titImgInp uploadMainInp" placeholder="Obrázek seznamu">
@@ -206,7 +212,7 @@
       <br />
       <div class="listColPicker">
         <div style="display: flex;">
-          <label align="center" for="bgcolor" class="uploadText colorLabel">Barva pozadí:</label>
+          <label align="center" for="bgcolor" class="uploadText colorLabel">Pozadí:</label>
           <div class="pickerContainer button">
             <img src="./images/edit.svg" style="z-index: 1;">
             <div id="bgcolorPicker"></div>

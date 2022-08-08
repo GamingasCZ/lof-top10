@@ -30,9 +30,9 @@ else {
     //http_response_code(400);
     exit();
 }
-$datacheck = sanitizeInput([$listType[0], $_POST["pwdEntered"], $_POST["retData"]]);
+$datacheck = sanitizeInput([$listType[0], $_POST["pwdEntered"]]);
 
-$datacheck = [$listType[0], $_POST["pwdEntered"], $_POST["retData"]];
+$datacheck = [$listType[0], $_POST["pwdEntered"]];
 if (in_array("", $datacheck)) {
     echo "1";
     exit();
@@ -48,12 +48,7 @@ if ($_POST["pwdEntered"] != $listPwd) {
     exit();
 }
 else {
-    if ($_POST["retData"] == "1") {
-        $listData["data"] = htmlspecialchars_decode($listData["data"]);
-        echo json_encode($listData);
-    }
-    else {
-        echo "3";
-    }
+    $listData["data"] = htmlspecialchars_decode($listData["data"]);
+    echo json_encode($listData);
 }
 ?>

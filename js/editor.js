@@ -90,6 +90,9 @@ function showBGColorPicker() {
             levelList.pageBGcolor = hex
             $("#bgcolorPicker").css("background", hex)
         })
+        $(".colorPicker").append(`<div>
+            <img id="sliderImg" src="./images/bgIcons/none.svg">
+        </div>`)
 
     }
     else {
@@ -156,43 +159,50 @@ function updateList() {
         let postData = {
             "listData": JSON.stringify(levelList),
             "id": param[0],
-            "pwdEntered": param[1],
+            "pwdEntered": $("#lpass").val(),
             "hidden": listHidden,
-            "isNowHidden": isHidden
+            "isNowHidden": param[2]
         }
 
-        $("#submitbutton").html("<img class='loading' src='images/loading.webp'>")
-        $("#removebutton").remove()
+        $("#submitbutton").prepend("<img class='loading' src='images/loading.webp'>")
+        $("#submitbutton").addClass("disabled")
+        $("#removebutton").addClass("disabled")
 
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
-            if (data == 3) {
+            if (typeof data == "object") {
+                let currWebsite = `${window.location.origin + "/lofttop10"}/?${isNaN(data[0]) ? "pid" : "id"}=${data[0]}`;
                 $(".uploaderDialog").html(`
                 <div style="padding: 3%">
                     <img src="./images/check.webp" style="width:7%;">
                     <p class="uploadText">${jsStr["LIST_UPDATED"][LANG]}</p>
                 </div>
+
+                <div style="display:flex; flex-direction: column;">
+                    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
+                    <div class="uploadText shareContainer">
+                        <p class="shareBG uploadText">${currWebsite}</p>
+                        <img class="button shareBut" src="./images/openList.webp" onclick="window.open('${currWebsite}','_blank')">
+                    </div>
+                 </div >
                 `)
+                return
             }
 
             // List is unchanged
             else if (data == 4) {
-                $(".uploaderDialog").html(`
-                <div style="padding: 3%">
-                    <img src="./images/help.webp" style="width:7%;">
-                    <p class="uploadText">${jsStr["LIST_UNCHANGED"][LANG]}</p>
-                </div>
-                `)
+                $(".errNotif").fadeIn(100);
+                $(".errorBox").html(jsStr["LIST_UNCHANGED"][LANG]);
+                setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
             }
 
             else {
-                $(".uploaderDialog").html(`
-                <div style="padding: 3%">
-                    <img src="./images/error.webp" style="width:7%;">
-                    <p class="uploadText">${jsStr["LIST_UPFAIL"][LANG]}</p>
-                </div>
-                `)
+                $(".errNotif").fadeIn(100);
+                $(".errorBox").html(jsStr["LIST_UPFAIL"][LANG]);
+                setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
             }
+            $("#submitbutton").removeClass("disabled")
+            $("#removebutton").removeClass("disabled")
         })
     }
 }
@@ -288,7 +298,8 @@ $(function () {
     }
 
     if (params.editing != null) {
-        generateFromJSON()
+        $("#passEditor").show()
+        generateFromJSON(1)
         isHidden = $("input[name='hidden']").attr("checked") == "checked";
     }
 
@@ -305,6 +316,11 @@ $(function () {
         $(".diffSelBut img").removeClass("disabled")
         levelList.diffGuesser = [$("input[name='diffGuesser']").prop("checked"),true,true]
     })
+
+    // Show alert if creating list
+    window.addEventListener('beforeunload', exit => {
+        if (Object.keys(levelList).length > ADDIT_VALS+1) exit.preventDefault();
+    });
 })
 
 function closeRmScreen() {
@@ -317,18 +333,17 @@ function closeRmScreen() {
 }
 function confirmDelete() {
     closeRmScreen()
-    setInterval(function () {
-        let data = JSON.parse(sessionStorage.getItem("listProps"))
-        let postData = {
-            "id": data[0],
-            "pwdEntered": data[1],
-            "isHidden": data[2] == "id" ? 0 : 1
-        }
+
+    let data = JSON.parse(sessionStorage.getItem("listProps"))
+    let postData = {
+        "id": data[0],
+        "pwdEntered": $("#lpass").val(),
+        "isHidden": !data[2]
+    }
+    murderList();
+    $.post("./php/removeList.php", postData, function () {
         murderList();
-        $.post("./php/removeList.php", postData, function () {
-            murderList();
-        })
-    }, 600)
+    })
 }
 
 function removeList() {

@@ -96,60 +96,38 @@
 
   <div class="listMaster">
 
-    <div class="titles listInfo"></div>
-
-    <img class="titleImage">
-
-    <div class="searchTools listOptions uploadText" style="justify-content: space-between; opacity: 0;">
-      <div>
-        <img src="images/list.webp" onclick="listList()" style="width: 3.5vw; margin-right: 0.5vw;"
-          class="button lList disabled" title="Seznam levelů">
-        <img src="images/comments.webp" onclick="listComments()" style="width: 3.5vw;" class="button lComm"
-          title="Komentáře">
-        <div id="commAmount">1</div>
+    <div class="listInfo">
+      <div class="titles" style="display: flex; justify-content: space-between;text-align: left;">
+        <div class="loadPlaceholder">
+          <div class="placeholderName"></div>
+          <div class="placeholderCreator"></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 50% 50%; gap: 1vw;">
+          <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg">Sdílet</button>
+          <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg">Skočit na</button>
+          <button onclick="pinList()" id="pinBut" class="listHeaderBlue uploadText"><img src="images/pin.svg">Připnout</button>
+          <button onclick="checkPassword()" class="listHeaderBlue uploadText"><img src="images/edit.svg">Upravit</button>
+        </div>
       </div>
-
-      <div>
-        <img src="images/jumpBut.webp" onclick="showJumpTo()" style="width: 3.5vw;" id="jumpToBut"
-          class="button lJumpTo" title="Skočit na...">
-        <img src="images/shareBut.webp" onclick="listShare()" style="width: 3.5vw; margin-left: 0.5vw;" id="shareBut"
-          class="button lShare" title="Sdílet">
-        <img src="images/pinList.webp" onclick="pinList()" style="width: 3.5vw; margin-left: 0.5vw;" id="pinBut"
-          class="button lPin" title="Připnout seznam">
-      </div>
-
-      <div class="password">
-        <input type="text" class="passInput searchWithIcon" placeholder="Heslo"
-          style="margin: 0% 2% 0%; width: 13vw; transform: none;">
-        <img src="./images/searchButton.svg" onclick="checkPassword()" class="button passImg" style="width: 4vw;">
+      <div id="cToolTop">
+        <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img src="images/comment.svg">Komentáře<div id="commAmount"></div></button>
+        <hr class="lineSplitGeneral">
+        <div class="searchTools uploadText" id="commentTool" style="display: none; justify-content: center;">
+          <div class="page">
+            <span id="pageStr" style="padding-right: 2%;font-size: var(--smallFont);max-width: 80%;">Strana: </span>
+            <img class="button pageBut" src="images/arrow-left.webp" onclick="commpageSwitch(-1)">
+            <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
+            <span id="maxPage">/1</span>
+            <img class="button pageBut" src="images/arrow-right.webp" onclick="commpageSwitch(1)">
+          </div>
+          <img onclick="refreshComments()" src="images/refresh.webp" id="refreshBut" class="button" style="width: 3vw;">
+        </div>
       </div>
     </div>
 
+    <img class="titleImage">
+
     <div class="comments">
-      <div class="searchTools uploadText debugTools">
-        <span class="debugTitle" style="font-size: 2.6vw;">Přidat komentáře:</span>
-        <img class="button pageBut" src="images/arrow-left.webp" onclick="debugComments(-1)">
-        <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
-        <img class="button pageBut" src="images/arrow-right.webp" onclick="debugComments(1)">
-        <img class="button pageBut" style="width: 3vw;" src="images/preview.webp" onclick="debugComments(2)">
-      </div>
-
-      <div class="searchTools uploadText" id="commentTool" style="justify-content: center;">
-        <div class="page">
-          <span id="pageStr" style="padding-right: 2%;">Strana: </span>
-          <img class="button pageBut" src="images/arrow-left.webp" onclick="commpageSwitch(-1)">
-          <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-          <span id="maxPage">/1</span>
-          <img class="button pageBut" src="images/arrow-right.webp" onclick="commpageSwitch(1)">
-        </div>
-        <img onclick="$('#commentMaker')[0].scrollIntoView()" src="images/add.webp" class="button"
-          style="width: 3vw; margin-right: 1vw;">
-        <img onclick="refreshComments()" src="images/refresh.webp" id="refreshBut" class="button" style="width: 3vw;">
-      </div>
-
-      <div id="commentList"></div>
-      <p class="uploadText noComm" style="text-align: center;">- Žádné komentáře -</p>
-
       <div class="positionEdit" id="commentMaker">
         <div style="display: flex; align-items: center; padding-left: 1%; margin-bottom: 0.5vw;">
           <img src="images/bytost.webp" id="pIcon" style="height: max-content; width: 2.5vw;">
@@ -166,7 +144,7 @@
           </div>
 
           <div style="display: flex; width: inherit;">
-            <div contenteditable="" class="uploadText comTextArea comInpArea" id="comFont"></div>
+            <div contenteditable="" class="uploadText comTextArea comInpArea" style="height: 8vw;" id="comFont"></div>
           </div>
 
           <div class="uploadText comBoxThings comInpThings" id="comBoxFooter">
@@ -198,6 +176,10 @@
         <div class="emojiPanel"></div>
 
       </div>
+
+      <div id="commentList"></div>
+      <p class="uploadText noComm" style="text-align: center;">- Žádné komentáře -</p>
+
 
     </div>
 

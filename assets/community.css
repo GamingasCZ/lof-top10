@@ -1,10 +1,21 @@
 @keyframes inputError {
-    from {
-        background-color: rgba(243, 70, 70, 0.5);
+    0% {
+        transform: translateX(0);
     }
-
-    to {
-        background-color: rgba(36, 36, 36, 0.5);
+    20% {
+        transform: translateX(-1em);
+    }
+    40% {
+        transform: translateX(1em);
+    }
+    60% {
+        transform: translateX(-1em);
+    }
+    80% {
+        transform: translateX(1em);
+    }
+    100% {
+        transform: translateX(0);
     }
 }
 
@@ -254,6 +265,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
     background-color: rgba(255, 255, 255, 0.08);
     border: none;
     border-radius: 25px;
+    min-width: 2vw;
 }
 
 
@@ -634,7 +646,7 @@ input:disabled {
     height: 4px;
     background-color: salmon;
     border: none;
-    margin: 1% 3%;
+    width: 100%;
 }
 
 .availFill {
@@ -1066,6 +1078,29 @@ input:disabled {
     justify-content: center;
 }
 
+#passEditor {
+    padding: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(.46,.03,.52,.96);
+}
+#lpass {
+    width: 30%;
+    margin: 0;
+}
+#lpass::placeholder {
+    background-image: url(../images/password2.svg);
+}
+
+#passSubmit {
+    background: rgba(0, 0, 0, 0.459);
+    border-radius: 100%;
+    padding: 0.3vw;
+}
+
 .socialPickerIcon {
     display: inline;
     width: 4vw;
@@ -1104,11 +1139,12 @@ input:disabled {
     text-align: center;
     width: 7% !important;
     margin: 0 !important;
+    font-size: var(--miniFont) !important;
 }
 
 .pageBut {
-    width: 5%;
-    height: 5%;
+    width: 2vw;
+    height: 2vw;
     align-self: center;
     margin: 1%;
 }

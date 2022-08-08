@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120"
+   height="120"
+   viewBox="0 0 31.75 31.75"
+   version="1.1"
+   id="svg329"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="comment.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview331"
+     pagecolor="#000000"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.63606902"
+     inkscape:cx="-338.01363"
+     inkscape:cy="53.453318"
+     inkscape:window-width="1560"
+     inkscape:window-height="874"
+     inkscape:window-x="40"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2" />
+  <defs
+     id="defs326" />
+  <g
+     inkscape:label="Vrstva 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g769"
+       transform="matrix(1.6372183,0,0,1.6372183,-8.0973099,-11.775846)">
+      <ellipse
+         style="fill:#ffffff;stroke-width:1.1492;stroke-linecap:round"
+         id="path502"
+         cx="14.642097"
+         cy="16.888918"
+         rx="8.9432774"
+         ry="6.707458" />
+      <path
+         style="fill:#ffffff;stroke-width:1.32292;stroke-linecap:round"
+         d="M 5.6988201,23.596376 C 7.9170098,20.773647 7.9406039,15.675618 9.7518469,19.244641 11.56309,22.813664 5.6988201,23.596376 5.6988201,23.596376 Z"
+         id="path567"
+         sodipodi:nodetypes="csc" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Vrstva 2">
+    <g
+       id="g782"
+       transform="translate(0.02688789,-0.25997925)">
+      <circle
+         style="fill:#1a1a1a;stroke-width:1.3516;stroke-linecap:round"
+         id="path720"
+         cx="15.848112"
+         cy="16.134979"
+         r="1.5534445" />
+      <circle
+         style="fill:#1a1a1a;stroke-width:1.3516;stroke-linecap:round"
+         id="path720-3"
+         cx="21.269121"
+         cy="16.134979"
+         r="1.5534445" />
+      <circle
+         style="fill:#1a1a1a;stroke-width:1.3516;stroke-linecap:round"
+         id="path720-6"
+         cx="10.427103"
+         cy="16.134979"
+         r="1.5534445" />
+    </g>
+  </g>
+</svg>

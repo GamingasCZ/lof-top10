@@ -4,7 +4,7 @@ Return codes:
 0 - Connection error
 1 - Empty request
 2 - Invalid password
-3 - Success!
+[LIST_ID] - Success!!
 4 - No changes made to list
 */
 
@@ -49,12 +49,14 @@ if ($listPass != $fuckupData[1]) {
   exit();
 }
 
+$retListID = [$_POST["id"]];
 // Private list settings
 if ($_POST["hidden"] == 1 and $_POST["isNowHidden"] == "true") {
     doRequest($mysqli, "UPDATE `lists` SET `data` = ? WHERE `hidden` = ?", [$_POST["listData"], $_POST["id"]], "ss");
 }
 elseif ($_POST["hidden"] == 1 and $_POST["isNowHidden"] == "false") {
     $hidden = privateIDGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
+    $retListID[0] = $hidden;
     doRequest($mysqli, "UPDATE `lists` SET `data` = ?, `hidden` = ? WHERE `id` = ?", [$_POST["listData"], $hidden, $_POST["id"]], "sss");
 }
 elseif ($_POST["hidden"] == 0 and $_POST["isNowHidden"] == "false") {
@@ -62,9 +64,10 @@ elseif ($_POST["hidden"] == 0 and $_POST["isNowHidden"] == "false") {
 }
 else {
     doRequest($mysqli, "UPDATE `lists` SET `data` = ?, `hidden`='0' WHERE `hidden` = ?", [$_POST["listData"], $_POST["id"]], "ss");
+    $retListID[0] = $listData["id"];
 }
 
-echo "3";
+echo json_encode($retListID);
 
 $mysqli -> close();
 
