@@ -4,7 +4,7 @@ function getID() {
   let params = Object.fromEntries(paramGetter.entries());
 
   if (params["preview"] != null) { return -8 } // List preview from editor
-  if (params["pid"] != null) { return -10 } // Disable comments on private lists
+  if (params["pid"] != null) { return params["pid"] } // Disable comments on private lists
   if (params["random"] != null) { return -11 } // -11 will be replaced with actual ID later
   if (params["id"] != null) { return params["id"] } // Community level/2019 or 2021 list (-2,-3)
   if (params["year"] != null) { return params["year"] == "2021" ? "-3" : "-2" }
@@ -12,19 +12,15 @@ function getID() {
 }
 var LIST_ID = getID();
 
-function listList() {
-  // What a shitty function name bruh
-  $(".comments").fadeOut(50);
-  $(".boards").fadeIn(100);
-  $(".lComm").removeClass("disabled");
-  $(".lList").addClass("disabled");
-}
-
 function listComments() {
-  $(".boards").fadeOut(50);
-  $(".comments").fadeIn(100);
-  $(".lComm").addClass("disabled");
-  $(".lList").removeClass("disabled");
+  // Finally non-shit
+  if ($(".boards").css("display") == "none") {
+    $(".comments").fadeOut(50);
+    $(".boards").fadeIn(100);
+  } else {
+    $(".boards").fadeOut(50);
+    $(".comments").fadeIn(100);
+  }
 }
 
 function updateCharLimit() {
@@ -67,13 +63,6 @@ var commentColor = "";
 $(function () {
   // Is on homepage? (do not load)
   if (LIST_ID == -9) return
-
-  // Disabling comments on private lists
-  if (LIST_ID == -10) {
-    $(".listOptions > div:nth-child(1)").remove()
-
-    return null
-  }
 
   var placeholders = [
     jsStr["PHOLD1"][LANG],
@@ -321,13 +310,10 @@ function sendComment() {
           refreshComments();
 
           // Resetting comment form
-          $(".pIconInp").val("");
           actualText = "";
           midText = "";
           $(".comInpArea").text("");
           updateCharLimit();
-
-          $("body")[0].scrollTop = 0 // Scroll to top to show comment
 
           // 10 second comment rate limit
           setTimeout(() => {
