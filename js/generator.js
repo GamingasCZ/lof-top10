@@ -1095,19 +1095,13 @@ $(async function () {
 
 		$("#crown").show();
 		$("#crown").css("opacity", 1);
-		$(".searchTools").css("opacity", 1);
-
-		// Password input removal
-		if (!listQueries.some(e => (/id|pid/g).test(e)) && LIST_ID != -11) {
-			$(".password").remove()
-		}
 
 		if (listQueries.includes("preview") & params["preview"] == "1") {
-			$(".searchTools").remove();
+			$(".listInfo").remove();
 			let previewData = sessionStorage.getItem("previewJson")
 			if (previewData == null) {
 				$("#crown").remove()
-				$(".titles").append(jsStr["NO_PREV_DATA"][LANG]);
+				$(".boards").before(`<p class="titles">${jsStr["NO_PREV_DATA"][LANG]}</p>`);
 				return
 			}
 
@@ -1117,7 +1111,6 @@ $(async function () {
 				decodedData += String.fromCharCode(decodeData[i]);
 			}
 			boards = JSON.parse(decodedData);
-			$(".titles").append(jsStr["PREVIEW"][LANG]);
 
 			$(".titleImage").attr("src", boards["titleImg"]);
 			$("title").html(`${jsStr["PREVIEW_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
@@ -1148,7 +1141,6 @@ $(async function () {
 			if (["-2", "-3"].includes(LIST_ID)) {
 				let listName = `Top ${LIST_ID == -2 ? 10 : 15} LoF ${LIST_ID == -2 ? 2019 : 2021}`
 
-				$(".password").remove()
 				$("title").html(`${listName} | ${jsStr["GDLISTS"][LANG]}`)
 
 				LIST_NAME = listName
@@ -1160,9 +1152,9 @@ $(async function () {
 			else {
 				$.get("./php/getLists.php?id=" + listID, function (data) {
 					if ([1, 2].includes(data)) {
-						$(".titles").append(jsStr["L_NOEXIST"][LANG]);
+						$(".boards").before(`<p class="titles">${jsStr["L_NOEXIST"][LANG]}</p>`);
 						$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-						$(".searchTools").remove();
+						$(".listInfo").remove();
 						$("#crown").remove();
 					}
 					else {
@@ -1185,9 +1177,9 @@ $(async function () {
 		else if (listQueries.includes("pid")) {
 			await $.get("./php/getLists.php?pid=" + listID, function (data) {
 				if ([1, 2].includes(data)) {
-					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
+					$(".boards").before(`<p class="titles">${jsStr["L_NOEXIST"][LANG]}</p>`);
 					$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-					$(".searchTools").remove();
+					$(".listInfo").remove();
 					$("#crown").remove();
 				}
 				else {

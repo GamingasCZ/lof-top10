@@ -180,7 +180,6 @@ function openDiffPicker(lp) {
                 <img src="./images/faces/featured.webp" title="Featured" class="button diffOptions">
                 <img src="./images/faces/epic.webp" title="Epic" class="button diffOptions">
             </div>
-            <h5 style="text-orientation: sideways;writing-mode: sideways-rl;margin: 0;">Rating</h5>
         </div>
     </div>`)
     $(".diffOptions img").eq(0).click(() => saveDifficulty(levelList[lp]['difficulty'][0], 0, lp))
@@ -286,15 +285,25 @@ function generateFromJSON(part, boards) {
         $(`input[name="hidden"]`).attr("checked", true)
     }
 
+    
     // Removing tutorial
     $("#mainContent").text("");
     $(".previewButton").removeClass("disabled");
-
+    
     $("#listnm").val(boards["name"])
     $("#creatornm").val(boards["creator"])
-
+    
     levelList = JSON.parse(boards["data"]);
     $(".titImgInp").val(levelList["titleImg"])
+    
+    // Is it a diff guess list?
+    if (levelList["diffGuesser"] != undefined && levelList["diffGuesser"][0]) {
+        $(`img[for="diffGuesser"]`).attr("src", "images/check-on.webp")
+        $(`input[name="diffGuesser"]`).attr("checked", true)
+        $(".settingSubbox").show()
+        if (!levelList["diffGuesser"][1]) $(".settingSubbox img").eq(0).addClass("disabled")
+        if (!levelList["diffGuesser"][2]) $(".settingSubbox img").eq(1).addClass("disabled")
+    }
 
     // Change page background, if not default
     if (levelList["pageBGcolor"] != "#020202") {
