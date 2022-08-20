@@ -38,6 +38,8 @@ It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Lev
 - [ ] Tick off finished levels
 - [ ] Linking your GD account
 - [ ] Card backgrounds
+- [ ] Badges (2P, high obj.)
+- [ ] Using PFP's from Twitter/Youtube
 - [ ] Tournaments
 
 # Assets
