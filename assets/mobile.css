@@ -1,17 +1,11 @@
 @media only screen and (max-width: 600px) {
     .button:not(.noMobileResize) {
-        width: 5
-        
-        vw !important;
+        width: 5vw !important;
         height: auto !important;
     }
     }
 
 @media only screen and (max-width: 550px) {
-
-.searchButs {
-    transform: none !important;
-}
 
 .comTextArea {
     height: 20vw;
@@ -129,5 +123,9 @@
 }
 
 #homepageHeader { background-size: unset; }
+
+.listInfoContainer {
+    flex-direction: column;
+}
 
 }

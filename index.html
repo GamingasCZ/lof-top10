@@ -96,17 +96,17 @@
 
   <div class="listMaster">
 
-    <div class="listInfo">
-      <div class="titles" style="display: flex; justify-content: space-between;text-align: left;">
+    <div class="listInfo" style="display: none;">
+      <div class="titles listInfoContainer" id="listOptionsID">
         <div class="loadPlaceholder">
           <div class="placeholderName"></div>
           <div class="placeholderCreator"></div>
         </div>
-        <div style="display: grid; grid-template-columns: 50% 50%; gap: 1vw;">
+        <div class="listOptionsContainer">
           <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg">Sdílet</button>
           <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg">Skočit na</button>
           <button onclick="pinList()" id="pinBut" class="listHeaderBlue uploadText"><img src="images/pin.svg">Připnout</button>
-          <button onclick="checkPassword()" class="listHeaderBlue uploadText"><img src="images/edit.svg">Upravit</button>
+          <button onclick="checkPassword()" id="editBut" class="listHeaderBlue uploadText"><img src="images/edit.svg">Upravit</button>
         </div>
       </div>
       <div id="cToolTop">

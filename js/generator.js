@@ -1093,6 +1093,7 @@ $(async function () {
 		let listQueries = Object.keys(params)
 		var listID = listQueries.includes("id") ? params["id"] : params["pid"]
 
+		$(".listInfo").show()
 		$("#crown").show();
 		$("#crown").css("opacity", 1);
 
@@ -1141,10 +1142,13 @@ $(async function () {
 			if (["-2", "-3"].includes(LIST_ID)) {
 				let listName = `Top ${LIST_ID == -2 ? 10 : 15} LoF ${LIST_ID == -2 ? 2019 : 2021}`
 
+				$("#editBut").remove()
 				$("title").html(`${listName} | ${jsStr["GDLISTS"][LANG]}`)
-
+				
 				LIST_NAME = listName
 				LIST_CREATOR = "GamingasCZ"
+				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${LIST_NAME}</p>
+				<p style="font-size: var(--normalFont);margin: 0;">${LIST_CREATOR}</p></div>`);
 
 				generateList(boards, [LIST_ID, listName]);
 			}

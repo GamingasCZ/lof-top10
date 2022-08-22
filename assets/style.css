@@ -165,10 +165,24 @@ span {
 	min-width: 11vw;
 	cursor: pointer;
 	font-size: var(--miniFont) !important;
+  max-width: 100%;
 }
 
 .listHeaderBlue img {
-  width: 2vw;
+  width: 4vh;
+  padding-left: 0.4vw;
+}
+
+.listOptionsContainer {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 1vw;
+  padding-right: 1vw;
+}
+#listOptionsID {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
 }
 
 #commButton {
