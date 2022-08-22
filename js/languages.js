@@ -26,10 +26,8 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#pinBut", "index.html", "title", ["Připnout seznam", "Pin List"]],
 
     ["title", "upload.html", 0, ["Komunitní seznamy | GD Seznamy", "Community Lists | GD Lists"]],
-    [".debugTitle", "index.html",0, ["Přidat komentáře:", "Add comments:"]],
     [".pageBy", 0, 0, ["Vytvořil ", "Created by"]],
 
-    [".debugTitle", "upload.html", 0, ["Seznamy k vygenerování:", "Generate lists:"]],
     [".communityTitle", "upload.html", 0, ["Komunitní seznamy", "Community Lists"]],
     [".uploadTitle", "upload.html", 0, ["Nahrávání", "Upload"]],
     ["#listnm", "upload.html", "placeholder", ["Jméno seznamu", "List Name"]],
@@ -161,7 +159,6 @@ var jsStr = {
     "SAVED": ["Uložené", "Saved"],
     "SHOW_PROFILE": ["Zobrazit profil", "Show profile"],
     "NONEXISTENT_L": ["Neexistující seznam", "Nonexistent list"],
-    "DEBUG_L": ["Debug seznam", "Debug List"],
     "PREVIEW_L": ["Náhled seznamu", "List Preview"],
     "CLOSE": ["Zavřít", "Close"],
     "CHECKOUT": ["Mrkni se na můj Geodeš seznam", "Check out my GD list"],

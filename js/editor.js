@@ -207,32 +207,8 @@ function updateList() {
     }
 }
 
-var debug_mode = false;
-
 var deeta = '';
 var ogDeeta = '';
-
-function debugLists(am) {
-    // not translatable, because I don't feel like it :D
-    let adj = ["Big", "Small", "Good", "Bad", "Funny", "Stupid", "Furry", "Christian", "Best", "Gay", "Nice", "Thicc", "OwO", "Cringe", "Big PP", "Life-changing", "Gamingas", "Reddit", "Dramatic", "Hot", "Shit"]
-    let noun = ["Levels", "Collabs", "Megacollabs", "Layouts", "Deco", "Effect Levels", "Grass Levels", "Glow Levels", "2.1 Levels", "Wave Levels", "Virgin Levels", "Extreme Demon Levels", "Viprin Levels",
-        "Main Levels", "List Levels", "Dangerous Levels", "Gauntlet Levels", "Energetic Levels", "Questionable Levels"]
-    if (am == 2) {
-        deeta = [];
-        for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-            deeta.push({"creator": i, "name": `Top ${parseInt(Math.random() * 25)} ${adj[parseInt(Math.random() * adj.length)]} ${noun[parseInt(Math.random() * noun.length)]}`, "data": { "1": { "color": randomColor() } }, "id": 45, "timestamp": 10})
-        }
-
-        listViewerDrawer(deeta, ".communityContainer", 4)
-    }
-    else {
-        $("#lDebugAm").val(parseInt($("#lDebugAm").val()) + am)
-        if ($("#lDebugAm").val() < 0) {
-            $("#lDebugAm").val("0")
-        }
-    }
-    $(".debugTools").remove()
-}
 
 $(function () {
     // Do nothing if in editor
@@ -306,9 +282,7 @@ $(function () {
 
     if (window.location.port != "") {
         $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
-        $(".debugTools").show()
     }
-    else { $(".debugTools").remove() }
 
     $("img[for='diffGuesser']").click(() => {
         $(".settingSubbox").slideToggle(50);

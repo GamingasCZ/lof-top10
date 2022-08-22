@@ -1024,16 +1024,6 @@ input:disabled {
     margin-right: 1%;
 }
 
-.debugTools {
-    justify-content: center !important;
-    background-image: url('../images/debug.webp') !important;
-    max-width: 45vw !important;
-    margin: auto !important;
-    margin: auto !important;
-    margin-top: 1.5% !important;
-    display: none;
-}
-
 .searchTools {
     background-image: var(--greenGradient);
     border-radius: 1vw;
