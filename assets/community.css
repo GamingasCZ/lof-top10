@@ -872,7 +872,6 @@ input:disabled {
 
 /* I am in excrutiating pain from this CSS :/*/
 .diffSelBut {
-	width: 3.5vw;
 	background: #0000004d;
 	border: none;
 	padding: 0.4vw;
@@ -880,7 +879,7 @@ input:disabled {
 }
 
 .diffSelBut img {
-    width: 100%;
+    width: 2.5vw;
 }
 
 .listDiffContainer {

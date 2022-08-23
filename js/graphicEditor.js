@@ -887,10 +887,8 @@ function card(index) {
     `;
 }
 // <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.webp">
-function preview() {
-    if (checkJson(JSON.stringify(levelList)) == false) {
-        return null;
-    }
+function preview(skipCheck = false) {
+    if (!checkJson(JSON.stringify(levelList), true) && !skipCheck) return
 
     let data = JSON.stringify(levelList);
     let encodedData = [];

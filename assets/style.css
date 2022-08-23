@@ -576,6 +576,16 @@ html, body {
   width: 0%;
 }
 
+#linkViewer {
+  margin: 0;
+  width: 94%;
+  font-size: var(--miniFont);
+}
+
+.linkWarn .eventButton {
+  margin: 0 !important;
+}
+
 .gamLink {
   text-decoration: underline;
   color: #58D2FF !important;
@@ -936,10 +946,10 @@ a {text-decoration: none;}
 #categoryBut:active { transform: scale(0.55) translate(-3vw, 1vw); }
 
 /* Text color */
-cy { color: yellow; }
-cr { color: tomato }
-cg { color: lime }
-cb { color: #28DCFC ;}
+cy { color: rgb(243, 243, 93); }
+cr { color: rgb(233, 107, 85) }
+cg { color: rgb(128, 243, 128) }
+cb { color: #5fe7ff ;}
 
 #centeredPopup {
   position: absolute;

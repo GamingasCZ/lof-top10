@@ -1,6 +1,6 @@
 //Holba buenas hyperhackeře :D. Nyní sleduješ můj hrozný kód :).
 
-function checkJson(data) {
+function checkJson(data, isPreview=false) {
     try {
         // Kontrola názvů atd.
         let invalidNames = ["Gamingas", "GamingasCZ"];
@@ -47,6 +47,7 @@ function checkJson(data) {
             $(".errorBox").html(jsStr["NO_JSON"][LANG]);
         }
         else {
+            if (isPreview) error += "<br><br><cy>Tip: Klikni dvakrát k přeskočení kontroly.</cy>"
             $(".errorBox").html(error);
         }
 
@@ -214,6 +215,10 @@ $(function () {
     // Do nothing if in editor
     $(".pickerContainer").on("click", showBGColorPicker)
     if (window.location.search.includes("edit")) $(".uploader").show()
+
+    // List preview
+    $(".previewButton").on("click", () => preview(false))
+    $(".previewButton").on("dblclick", () => preview(true))
 
     // List image preview action
     $("#imageArrow").on("click", function () {
