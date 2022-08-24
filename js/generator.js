@@ -488,15 +488,25 @@ function doDiffGuessing(cardBG, bIndex) {
 		</div>
 	</div>
 	`);
-	for (let j = 0; j < 12; j++) {
-		let diff = $(`<img class="button diffFace" src="images/faces/${j}.webp">`)
-		diff.click(guessDifficulty)
-		diff.appendTo($(".diffFaces:last()"))
+	if (!boards.diffGuesser[1]) {
+		$("#rates").show() // Show rat guesser
+		$(".guessTitle").text("Jaký má level rating?")
+		$(".mainGuesser:first()").remove() // Remove diff guesser
+		$(".cancelGuess").before("<div></div>") // Empty element to keep centering
+		$(".cancelGuess").remove()
+		$(".rateContainer .listDiffFace").attr("src", `images/faces/${boards[bIndex].difficulty[0]}.webp`)
+	}
+	else {
+		for (let j = 0; j < 12; j++) {
+			let diff = $(`<img class="button diffFace" src="images/faces/${j}.webp">`)
+			diff.click(e => guessDifficulty(e, bIndex))
+			diff.appendTo($(".diffFaces:last()"))
+		}
 	}
 
 	$(".cancelGuess").click(cancelDifficulty)
-	$(".listDiffFace").click(guessRating)
-	$(".skipBut").click(skipGuess)
+	$(".listDiffFace").parent().click(guessRating)
+	$(".skipBut").click(() => (skipGuess([-1,-1])))
 }
 
 var LIST_NAME = null
@@ -514,7 +524,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	let amount = singleLevel == -1 ? Object.keys(boards).length - ADDIT_VALS : singleLevel + 1
 	let start = singleLevel == -1 ? 1 : singleLevel
 	for (let i = start; i < amount; i++) {
-		let bIndex = (i).toString();
+		let bIndex = (i).toString()
 		
 		// Empty names
 		if (boards[bIndex]["levelName"] == "") boards[bIndex]["levelName"] = "(Bezejmenný)"
@@ -677,13 +687,16 @@ function replayList() {
 	diffGuesses = []
 }
 
-function guessDifficulty(button) {
-	let faceID = button.target.attributes.src.value.match(/\d+/g)
+function guessDifficulty(button, bIndex) {
 	$(button.target).parent().hide()
-	$(".mainGuesser:last()").show()
-	$(".rateContainer .listDiffFace").attr("src", `images/faces/${faceID}.webp`)
+
+	let faceID = button.target.attributes.src.value.match(/\d+/g)
 	$(".guessTitle").text("Jaký má level rating?")
-	if (faceID == boards[$(".box").length]["difficulty"][0]) points += 1
+	$(".rateContainer .listDiffFace").attr("src", `images/faces/${faceID}.webp`)
+	$(".mainGuesser:last()").show()
+
+	if (!boards.diffGuesser[2]) skipGuess([faceID, boards[bIndex].difficulty[1]])
+	if (faceID == 0) skipGuess([faceID, 0])
 }
 
 function cancelDifficulty() {
@@ -693,24 +706,44 @@ function cancelDifficulty() {
 }
 
 function guessRating(button) {
-	let faceID = button.target.attributes.src.value.match(/\d+/g)
+	let faceID = $(button.currentTarget).children().eq(0).attr("src").match(/\d+/g)
+	let rateID = Object.values($(".rateContainer .listDiffFace")).indexOf($(button.currentTarget).children()[0])
 
-	skipGuess(faceID)
+	skipGuess([faceID[0], rateID]) // [diff, rating]
 }
 
 //${window.location.toString()}
 var points = 0;
 let diffGuesses = []
-function skipGuess(face) {
+function skipGuess(face) { // face = [diff, rating]
 	$(".skipBut").remove()
 	$(".box:last()").remove()
-	generateList(boards, [LIST_NAME, LIST_CREATOR], $(".box").length + 1, true)
-	generateList(boards, [LIST_NAME, LIST_CREATOR], $(".box").length + 1, false)
 
-	$(".box").eq($(".box").length - 2).append("<div class='diffGuessResult'></div>")
-	if (face == boards[$(".box").length - 1]["difficulty"][0]) {
+	let isLastLevel = $(".box").length + 1 == Object.keys(boards).length - ADDIT_VALS - 1
+	generateList(boards, [LIST_NAME, LIST_CREATOR], $(".box").length + 1, true)
+	if (!isLastLevel) generateList(boards, [LIST_NAME, LIST_CREATOR], $(".box").length + 1, false)
+
+	$(".box").eq($(".box").length - 2 + isLastLevel).append("<div class='diffGuessResult'></div>")
+
+	let levelDiffProp = boards[$(".box").length - 1 + isLastLevel]["difficulty"]
+	let gradientFlash = flipColors => `linear-gradient(${flipColors ? "-" : ""}169deg, #36fd17 45%,#fd1a1a 55%,#fd1a1a)`
+	let enabledAll = boards.diffGuesser[1] && boards.diffGuesser[2]
+
+	// fuk code :D - both correct
+	if (face[0] == levelDiffProp[0] && face[1] == levelDiffProp[1]) {
 		$(".diffGuessResult:last()").css("background", "#36fd17 url(../images/check-tp.webp)")
 		diffGuesses.push("🟩")
+		points += enabledAll ? 2 : 1
+	}
+	else if (enabledAll && (face[0] == levelDiffProp[0] || face[1] == levelDiffProp[1])) {
+		$(".diffGuessResult:last()").css("background", `${gradientFlash(face[0] != levelDiffProp[0])}`)
+		diffGuesses.push("🟨")
+		$(".diffGuessResult:last()").append('<img src="images/check-tp.webp" style="">')
+		if (face[0] == levelDiffProp[0]) $(".diffGuessResult:last()").append('<img src="images/wrong-tp.webp" style="">')
+		else $(".diffGuessResult:last()").prepend
+		('<img src="images/wrong-tp.webp" style="">')
+
+		points += 1
 	}
 	else {
 		$(".diffGuessResult:last()").css("background", "#fd1a1a url(../images/wrong-tp.webp)")
@@ -724,18 +757,21 @@ function skipGuess(face) {
 		$(".diffGuessResult:last()").remove()
 	}, 800);
 
-	if ($(".box").length == Object.keys(boards).length - ADDIT_VALS) {
-		let perc = Math.round((points / (Object.keys(boards).length - ADDIT_VALS - 1)) * 100)
+	if (isLastLevel) {
+		let double = (boards.diffGuesser[1] && boards.diffGuesser[2]) ? 2 : 1
+		let maxPoints = (Object.keys(boards).length - ADDIT_VALS - 1) * double
+		let perc = Math.round((points / (Object.keys(boards).length - ADDIT_VALS - 1)) * 100 / double) 
+
 		$(".boards").after(`
 		<div class="uploadText uploadBG finishDiffList">
 			<h1>Dokončil jsi seznam!</h1>
 			<div class="graphContainer">
 				<div class="graphLine diffRes" style="background-color: rgb(108, 240, 108); text-align: center;">${perc}%</div>
 			</div>
-			<h4>Získal jsi ${points} z ${Object.keys(boards).length - ADDIT_VALS - 1} bodů!</h4>
+			<h4>Získal jsi ${points} z ${maxPoints} bodů!</h4>
 			<div style="display: flex; gap: 5vw;">
 				<button class="button niceButton replayList uploadText"><img src="images/replay.svg" style="width: 4vw;">Hrát znova</button>
-				<button class="button niceButton shareDiff uploadText"><img src="images/share.svg" style="width: 4vw;">Sdílet</button>
+				<button class="button niceButton shareDiff uploadText"><img src="images/share.svg" style="width: 4vw;">Sdílet na Twitteru</button>
 			</div>
 		</div>
 		`)
@@ -979,7 +1015,6 @@ function drawFaves(favesData) {
 
 var listData = "";
 const repeatBG = [false, true, false]
-const unlockSkinsReq = [0, 10, 100, 250, 500, 1000, 2000, 3000, 5000, 7500, 10000];
 var boards
 $(async function () {
 	// Default 2019 board
