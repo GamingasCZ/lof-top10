@@ -505,7 +505,7 @@ function displayComments(data) {
     let evenDarkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
 
     $("#commentList").append(
-      comBox(commentData, darkerComColor, evenDarkerComColor)
+      comBox(JSON.parse(JSON.stringify(commentData)), darkerComColor, evenDarkerComColor)
     );
 
   }
