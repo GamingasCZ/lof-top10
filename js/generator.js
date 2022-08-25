@@ -490,7 +490,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	// Todo remove ! from line below and somewhere next in the code or whatever
 	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && singleLevel == -1) singleLevel = 1
 
-	let amount = singleLevel == -1 ? Object.keys(boards).length - ADDIT_VALS : singleLevel + 1
+	let amount = singleLevel == -1 ? Object.keys(boards).length - ADDIT_VALS +1 : singleLevel + 1
 	let start = singleLevel == -1 ? 1 : singleLevel
 	for (let i = start; i < amount; i++) {
 		let bIndex = (i).toString()
