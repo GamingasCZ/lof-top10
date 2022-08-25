@@ -646,7 +646,10 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 }
 
 function shareDiffResult() {
-	text = `${LIST_NAME} ${jsStr["BY"][LANG]} ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${Object.keys(boards).length - ADDIT_VALS - 1}\n${jsStr["SCORBET"][LANG]}\ngamingas.wz.cz/lofttop10/?id=${LIST_ID}`
+	let double = (boards.diffGuesser[1] && boards.diffGuesser[2]) ? 2 : 1
+	let maxPoints = (Object.keys(boards).length - ADDIT_VALS - 1) * double
+
+	text = `${LIST_NAME} ${jsStr["BY"][LANG]} ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${maxPoints}\n${jsStr["SCORBET"][LANG]}\ngamingas.wz.cz/lofttop10/?id=${LIST_ID}`
 	window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank")
 }
 function replayList() {
