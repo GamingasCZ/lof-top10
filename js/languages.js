@@ -1,8 +1,7 @@
 var LANG = 0;
 const LANG_AM = 2;
-var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"]],
-    [".colMembers", "index.html", 0, ["Členové", "Members"]],
-    [".lComm", "index.html", "title", ["Komentáře", "Comments"]],
+var strings = [[".colMembers", "index.html", 0, ["Členové", "Members"]],
+    ["#commButtonText", "index.html", 0, ["Komentáře", "Comments"]],
     ["h3:nth-child(1)", "index.html", 0, ["Komentář", "Comment"]],
     [".pIconInp", "index.html", "placeholder", ["Jméno", "Username"]],
     [".comFooterButton:nth-child(1)", "index.html", "title", ["Barva komentáře", "Comment Color"]],
@@ -20,10 +19,11 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     [".noComm", "index.html", 0, ["- Žádné komentáře -", "- No Comments -"]],
     [".passInput", "index.html", "placeholder", ["        Heslo", "        Password"]],
     ["#jumpToText", "index.html", 0, ["Skočit na...", "Jump to..."]],
-    ["#jumpToBut", "index.html", "title", ["Skočit na...", "Jump to..."]],
+    ["#jumpToBut", "index.html", 0, ["Skočit na", "Jump to"]],
     ["#shareText", "index.html", 0, ["Sdílet", "Share"]],
-    ["#shareBut", "index.html", "title", ["Sdílet", "Share"]],
-    ["#pinBut", "index.html", "title", ["Připnout seznam", "Pin List"]],
+    ["#shareBut", "index.html", 0, ["Sdílet", "Share"]],
+    ["#pinBut", "index.html", 0, ["Připnout", "Pin"]],
+    ["#editBut", "index.html", 0, ["Upravit", "Edit"]],
 
     ["title", "upload.html", 0, ["Komunitní seznamy | GD Seznamy", "Community Lists | GD Lists"]],
     [".pageBy", 0, 0, ["Vytvořil ", "Created by"]],
@@ -34,7 +34,7 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#creatornm", "upload.html", "placeholder", ["Tvůrce", "List Creator"]],
     ["#imageArrow", "upload.html", "title", ["Ukázat náhled obrázku", "Display image preview"]],
     [".titImgInp", "upload.html", "placeholder", ["Obrázek seznamu", "Header Image"]],
-    ["label[for='bgcolor']", "upload.html", 0, ["Pozadí:", "Background:"]],
+    ["label[for='bgcolor']", "upload.html", 0, ["Barva pozadí:", "Background Color:"]],
     [".headerTitle", "upload.html", 0, ["Levely", "Levels"]],
     [".addCardButton", "upload.html", "title", ["Přidat level do seznamu", "Add level to list"]],
     [".previewButton", "upload.html", "title", ["Náhled seznamu", "Preview list"]],
@@ -45,6 +45,9 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["label[for='shareCollab']", "upload.html", 0, ["Sdílet collaby", "Share Collabs"]],
     [".savePickTit", "upload.html", 0, ["Uložené levely", "Saved levels"]],
     [".savedFilter", "upload.html", "placeholder", ["        Hledat level...", "        Search levels..."]],
+    [".listPassType", "upload.html", 0, ["Zadej heslo seznamu", "Enter the list's password"]],
+    ["#lpass", "upload.html", "placeholder", ["     Heslo", "     Password"]],
+
 
     [".roleTab","upload.html",0,["Role","Roles"]],
     [".humanTab","upload.html",0,["Členové","Members"]],
@@ -79,6 +82,9 @@ var strings = [[".lList", "index.html", "title", ["Seznam levelů", "Level List"
     ["#h_part","upload.html",0,["Část","Part"]],
     ["#h_color","upload.html",0,["Barva","Color"]],
     [".errTitle","upload.html",0,["Jejda!","Oh no!"]],
+    [".guessText","upload.html",0,["Hádat: ","Guess: "]],
+    [".diffSelBut:first()","upload.html","title",["Obtížnosti","Difficulties"]],
+    [".diffSelBut:last()","upload.html","title",["Rating","Ratings"]],
 
     ["title","packs.html",0,["Uložené levely | GD Seznamy", "Saved Levels | GD Lists"]]
 ]
@@ -127,6 +133,7 @@ var jsStr = {
     "LIST_UPDATED": ["Seznam aktualizován!", "List updated!"],
     "LIST_UNCHANGED": ["Nezměnil jsi nic v seznamu!", "Your list is unchanged!"],
     "LIST_UPFAIL": ["Seznam se nepodařilo aktualizovat! Zkus to znova později.", "Failed to update the list! Try again later."],
+    "DBLCLKTIP": ["Klikni dvakrát k přeskočení kontroly","Double-click to skip check"],
 
     // generator
     "LEV_NOEXIST": ["Level neexistuje!", "Level doesn't exist!"],
@@ -162,11 +169,24 @@ var jsStr = {
     "PREVIEW_L": ["Náhled seznamu", "List Preview"],
     "CLOSE": ["Zavřít", "Close"],
     "CHECKOUT": ["Mrkni se na můj Geodeš seznam", "Check out my GD list"],
-    "PIN_LIST": ["Připnout seznam", "Pin List"],
-    "UNPIN_LIST": ["Odepnout seznam", "Unpin List"],
+    "PIN_LIST": ["Připnout", "Pin"],
+    "UNPIN_LIST": ["Odepnout", "Unpin"],
     "NO_PREV_DATA": ["Není z čeho udělat náhled!", "There's no data to make a preview from!"],
     "NOPINNED": ["- Zatím jsi nepřipnul žádné seznamy! -", "- You haven't pinned any lists yet! -"],
     "NOVIEWED": ["- Zatím jsi nenavštívil žádné seznamy! -", "- You haven't looked at any lists yet! -"],
+    "SKIP": ["Přeskočit", "Skip"],
+    "LEVDIFF_Q": ["Jakou má level obtížnost?", "What's the level's difficulty?"],
+    "LEVRATE_Q": ["Jaký má level rating?", "What's the level's rating?"],
+    "BACK": ["Zpět", "Back"],
+    "EMPLIST": ["Seznam je prázdný, přidej do něho level!", "The list is empty, add levels into it!"],
+    "BY": ["od", "by"],
+    "SCORBET": ["Dokážeš to líp?", "Can you score better?"],
+    "LIST_FIN": ["Dokončil jsi seznam!", "You finished the list!"],
+    "YOU_GOT": ["Získal jsi", "You got"],
+    "OUTTA": ["z", "out of"],
+    "POINTS": ["bodů", "points"],
+    "PLAY_AGAIN": ["Hrát znova", "Play Again"],
+    "TWIT_SHARE": ["Sdílet na Twitteru", "Share on Twitter"],
 
     // helpDialogs
     "LICENSE": ["Licence","License"],
@@ -216,7 +236,8 @@ var jsStr = {
     "OFFICIALLIST_T": ["Oficiální seznamy", "Official Lists"],
     "OFFICIALLIST_D": [`Toto jsou seznamy s <cr>nejlepšími levely</cr> z Levelů od Fanoušků!`, `These lists contain the <cr>best levels</cr> from my level request series!`],
     "DIFFGUESSER_T": ["Hádání obtížností", "Difficulty guesser"],
-    "DIFFGUESSER_D": [`Když je hádání zapnutý, tvůj seznam`, `These lists contain the <cr>best levels</cr> from my level request series!`],
+    "DIFFGUESSER_D": [`Když je hádání zapnuté a někdo přejde na tvůj seznam, uvidí jen <cb>první level</cb>. Levely se <cg>postupně odemykají</cg> dalším hádáním.`,
+                      `When guessing is enabled and someone visits your list, they'll only see the <cb>first level</cb>. The rest of levels get unlocked <cg>as you guess them</cg>.`],
 
 
     // graphicEditor
@@ -241,6 +262,9 @@ var jsStr = {
     "NOSAVEYET": ["Nemáš žádné uložené levely!", "You don't have any levels saved!"],
     "CARD_COL": ["Barva karty", "Card color"],
     "LEV_DIFF": ["Obtížnost levelu", "Level difficulty"],
+    "NORATE": ["Bez ratu", "Unrated"],
+    "CHECKING": ["Kontrolování...", "Checking..."],
+    "TYPEPASS": ["Zadej heslo seznamu", "Enter the list's password"],
 
     // comments
     "PHOLD1": ["Tvůj seznam je...",
@@ -273,6 +297,9 @@ var jsStr = {
     "SECONDS": ["sekundami", "seconds ago"],
     "FEWSECS": ["před pár sekundami", "a few seconds ago"],
     "AGO": ["před ", ""],
+    "REDIRECT": ["Chystáš se přejít na...","You're about to be redirected to..."],
+    "TRUST": ["Navštěvej jen weby, kterým věříš!","Only visit sites you trust!"],
+    "CONTINUE": ["Pokračovat","Continue"],
 
     // Collab tools
     "GHOST": ["Duch Dashera", "Dasher Ghost"],

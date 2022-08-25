@@ -29,15 +29,7 @@
 }
 
 /* Buttons in comment box */
-.comFooterButton {
-    transform: scale(0.7);
-    margin: 0% -2vw;
-}
-
-/* Page switcher in comments */
-#commentTool {
-    width: 80%
-}
+.comFooterButton { width: 5vw; }
 
 .settingsMenu {
     right: 7vw;

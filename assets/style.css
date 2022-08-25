@@ -189,6 +189,12 @@ span {
 	background: var(--greenGradient) !important;
 	padding: 1vw;
 	min-width: max-content;
+  transition: box-shadow 0.2s;
+}
+
+.guessBadge {
+  vertical-align: sub;
+  width: 2vw;
 }
 
 /* just so stuff doesn't break :D*/
@@ -670,12 +676,15 @@ html, body {
   color: white;
 }
 
+.sendBut {
+  margin-left: 2vw !important;
+}
+
 /* Header and footer of the comment text area */
 .comBoxThings {
   display: flex;
   margin: 0;
   align-items: center;
-  background-color: crimson;
   justify-content: space-between;
   width: inherit;
   /*i despise css.*/
@@ -688,10 +697,11 @@ html, body {
   border-top-right-radius: 15px;
 }
 #comBoxFooter {
-  margin-top: -2.2vw !important;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   justify-content: right !important;
+  gap: 1vw;
+  margin-right: 5vw;
 }
 
 /* Text placement in the cbox footer and header */
@@ -715,13 +725,11 @@ html, body {
 /* Hypermodern buttons in cbox footer */
 .comFooterButton {
   background: none;
-  border: white solid 0.2vw;
-  color: white;
-  border-radius: 10px;
   cursor: pointer;
-  margin: -0.4% -1% -0.4% -1%;
-  transform: scale(0.6);
   height: min-content;
+  border-radius: 0% 0% 100% 100%;
+  width: 2.9%;
+  padding: 0.3vw;
 }
 
 #verticalLine {
@@ -794,7 +802,7 @@ html, body {
 
 #commentTool {
   justify-content: center;
-  width: 40%;
+  width: 45%;
   margin-left: auto;
   margin-right: auto;
 } 

@@ -175,7 +175,7 @@ function openDiffPicker(lp) {
         <div class="diffFaces">${difficulties}</div>
         <div style="display: flex;margin-right:0.5vw;align-items: center;">
             <div class="diffOptions">
-                <img src="./images/error.webp" title="Bez ratu" class="button diffOptions">
+                <img src="./images/error.webp" title="${jsStr["NORATE"][LANG]}" class="button diffOptions">
                 <img src="./images/star.webp" title="Star rate" class="button diffOptions">
                 <img src="./images/faces/featured.webp" title="Featured" class="button diffOptions">
                 <img src="./images/faces/epic.webp" title="Epic" class="button diffOptions">
@@ -232,23 +232,27 @@ function showBGdialog() {
 }
 
 function checkPassword() {
+    if (Object.values($("#passSubmit")[0].classList).includes("disabled")) return
+
     if ($("#lpass").val().length == 0) return
 
     $("#lpass").attr("disabled", true)
+    $("#passSubmit").addClass("disabled")
 
     let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
     let postReq = {"pwdEntered": $("#lpass").val()};
 
     // Is list private?
     postReq[!loadProps[2] ? "id" : "pid"] = loadProps[0];
-    $("#passEditor h3").text("Kontrolování...")
+    $("#passEditor h3").text(jsStr["CHECKING"][LANG])
     $.post("./php/pwdCheckAction.php", postReq, function (data) {
         if (typeof data == "object") generateFromJSON(2, data)
         else {
-            $("#passEditor h3").text("Zadej heslo seznamu")
+            $("#passEditor h3").text(jsStr["TYPEPASS"][LANG])
             $("#passEditor").css("animation-name","inputError")
             setTimeout(() => {
                 $("#lpass").attr("disabled", false)
+                $("#passSubmit").removeClass("disabled")
                 $("#lpass").val()
                 $("#passEditor").css("animation-name","")
             }, 500);

@@ -2,16 +2,7 @@ const ADDIT_VALS = 2;
 const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
 const isInEditor = window.location.pathname.includes("upload");
 
-// These are not real people :<'
-const fakeNames = ["Voiprin", "Sarprong", "ZentricSigma", "Darwing", "ExpoD", "J0hnram", "Jayuff", "AligaThePeter", "Divpan", "Acidity", "Doorami", "DanZBro", "FunnyBone"]
-
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
-
-function onIDCopyClick(pos, index) {
-	$("#cpopup" + index).text("ID: " + pos);
-	$("#cpopup" + index).fadeTo(100, 1);
-}
-
 function onYTClick(link) { window.open("https://www.youtube.com/watch?v=" + link, "_blank") };
 
 function listShare() {
@@ -85,31 +76,6 @@ function hideJumpTo() {
 	$("#jumpToTools").fadeOut(100);
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
-}
-
-function switchSite(val) {
-	switch (val) {
-		case "2019":
-			switchLoFList('index.html?id=-2');
-			break;
-		case "2021":
-			switchLoFList('index.html?id=-3');
-			break;
-		case jsStr["COMMUNITY"][LANG]:
-			window.location.assign('upload.html');
-			break;
-		case jsStr["SAVED"][LANG]:
-			if ($("iframe").css("display") == "none") showFaves();
-			$(".mobilePicker").append(`<option id='closePick'>${jsStr["CLOSE"][LANG]}</option>`)
-			break;
-		case jsStr["CLOSE"][LANG]:
-			$("#closePick").remove()
-			showFaves()
-		default:
-			break;
-	}
-	if (window.location.href.includes("2021")) $($(".mobilePicker").children()[1]).attr("selected", true)
-	if (window.location.href.includes("editor")) $($(".mobilePicker").children()[2]).attr("selected", true)
 }
 
 const openSocLink = link => { window.open(link) }
@@ -459,14 +425,14 @@ function doDiffGuessing(cardBG, bIndex) {
 		<div class="boxHeader">
 			<span id="listLevelName"><p style="margin: 0">${boards[bIndex]["levelName"]}</p></span>
 			<div class="boxLinksContainer">
-				<img src="images/skip.webp" title="Přeskočit" style="width: 5vw" class="button skipBut">
+				<img src="images/skip.webp" title="${jsStr["SKIP"][LANG]}" style="width: 5vw" class="button skipBut">
 			</div>
 		</div>
 		${boxCreator(boards[bIndex]["creator"], bIndex, true)}
-		<h3 class="guessTitle" style="text-align: center; margin-bottom: 0.5vh;">Jakou má level obtížnost?</h2>
+		<h3 class="guessTitle" style="text-align: center; margin-bottom: 0.5vh;">${jsStr["LEVDIFF_Q"][LANG]}</h2>
 		<div class="diffFaces mainGuesser" style="flex-wrap:wrap"></div>
 		<div class="mainGuesser" id="rates" style="display:none;">
-			<img class="button diffFace cancelGuess" title="Zpět" src="images/arrow-left.webp">
+			<img class="button diffFace cancelGuess" title="${jsStr["BACK"][LANG]}" src="images/arrow-left.webp">
 			<div class="rateContainer">
 				<div class="listDiffContainer button" style="display: inline-flex">
 					<img class="listDiffFace" src="images/faces/1.webp">
@@ -506,7 +472,7 @@ function doDiffGuessing(cardBG, bIndex) {
 
 	$(".cancelGuess").click(cancelDifficulty)
 	$(".listDiffFace").parent().click(guessRating)
-	$(".skipBut").click(() => (skipGuess([-1,-1])))
+	$(".skipBut").click(() => (skipGuess([-1, -1])))
 }
 
 var LIST_NAME = null
@@ -514,9 +480,12 @@ var LIST_CREATOR = null
 function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	// Empty list (useful in previews)
 	if (Object.keys(boards).length - ADDIT_VALS == 1) {
-		$(".boards").append("<h2 class='titles' style='margin-top: 4vw'>Seznam je prázdný, přidej do něho level!</h2>")
+		$(".boards").append("<h2 class='titles' style='margin-top: 4vw'>" + jsStr["EMPLIST"][LANG] + "</h2>")
 		return false
 	}
+
+	// If going to favorites, disable guess list
+	if (window.location.search.includes("goto") && boards.diffGuesser[0]) boards.diffGuesser = [0,0,0]
 
 	// Todo remove ! from line below and somewhere next in the code or whatever
 	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && singleLevel == -1) singleLevel = 1
@@ -525,11 +494,11 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	let start = singleLevel == -1 ? 1 : singleLevel
 	for (let i = start; i < amount; i++) {
 		let bIndex = (i).toString()
-		
+
 		// Empty names
-		if (boards[bIndex]["levelName"] == "") boards[bIndex]["levelName"] = "(Bezejmenný)"
-		if (boards[bIndex]["creator"] == "") boards[bIndex]["creator"] = "(Bezejmenný)"
-		
+		if (boards[bIndex]["levelName"] == "") boards[bIndex]["levelName"] = jsStr["UNNAMED"][LANG]
+		if (boards[bIndex]["creator"] == "") boards[bIndex]["creator"] = jsStr["UNNAMED"][LANG]
+
 		// Setting title image
 		$(".titleImage").attr("src", boards["titleImg"]);
 
@@ -665,7 +634,8 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		if (val[0] == LIST_ID) isInRecents = true
 	})
 	if (!isInRecents && LIST_NAME != null) {
-		parsed.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime()])
+		let isGuess = boards.diffGuesser != undefined ? boards.diffGuesser[0] : 0
+		parsed.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime(), isGuess])
 		parsed = parsed.reverse().slice(0, 3)
 
 		makeCookie(["recentlyViewed", JSON.stringify(parsed)])
@@ -676,13 +646,13 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 }
 
 function shareDiffResult() {
-	text = `${LIST_NAME} od ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${Object.keys(boards).length - ADDIT_VALS - 1}\nDokážeš to líp?\ngamingas.wz.cz/lofttop10/?id=${LIST_ID}`
+	text = `${LIST_NAME} ${jsStr["BY"][LANG]} ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${Object.keys(boards).length - ADDIT_VALS - 1}\n${jsStr["SCORBET"][LANG]}\ngamingas.wz.cz/lofttop10/?id=${LIST_ID}`
 	window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank")
 }
 function replayList() {
 	$(".box").remove()
 	$(".finishDiffList").remove()
-	generateList(boards, [LIST_NAME, LIST_CREATOR], 1, false)
+	generateList(boards, [LIST_ID, LIST_CREATOR], 1, false)
 	points = 0
 	diffGuesses = []
 }
@@ -691,7 +661,7 @@ function guessDifficulty(button, bIndex) {
 	$(button.target).parent().hide()
 
 	let faceID = button.target.attributes.src.value.match(/\d+/g)
-	$(".guessTitle").text("Jaký má level rating?")
+	$(".guessTitle").text(jsStr["LEVRATE_Q"][LANG])
 	$(".rateContainer .listDiffFace").attr("src", `images/faces/${faceID}.webp`)
 	$(".mainGuesser:last()").show()
 
@@ -702,7 +672,7 @@ function guessDifficulty(button, bIndex) {
 function cancelDifficulty() {
 	$(".mainGuesser:last()").hide()
 	$(".mainGuesser:first()").show()
-	$(".guessTitle").text("Jakou má level obtížnost?")
+	$(".guessTitle").text(jsStr["LEVDIFF_Q"][LANG])
 }
 
 function guessRating(button) {
@@ -720,8 +690,8 @@ function skipGuess(face) { // face = [diff, rating]
 	$(".box:last()").remove()
 
 	let isLastLevel = $(".box").length + 1 == Object.keys(boards).length - ADDIT_VALS - 1
-	generateList(boards, [LIST_NAME, LIST_CREATOR], $(".box").length + 1, true)
-	if (!isLastLevel) generateList(boards, [LIST_NAME, LIST_CREATOR], $(".box").length + 1, false)
+	generateList(boards, [LIST_ID, LIST_CREATOR], $(".box").length + 1, true)
+	if (!isLastLevel) generateList(boards, [LIST_ID, LIST_CREATOR], $(".box").length + 1, false)
 
 	$(".box").eq($(".box").length - 2 + isLastLevel).append("<div class='diffGuessResult'></div>")
 
@@ -741,7 +711,7 @@ function skipGuess(face) { // face = [diff, rating]
 		$(".diffGuessResult:last()").append('<img src="images/check-tp.webp" style="">')
 		if (face[0] == levelDiffProp[0]) $(".diffGuessResult:last()").append('<img src="images/wrong-tp.webp" style="">')
 		else $(".diffGuessResult:last()").prepend
-		('<img src="images/wrong-tp.webp" style="">')
+			('<img src="images/wrong-tp.webp" style="">')
 
 		points += 1
 	}
@@ -757,21 +727,23 @@ function skipGuess(face) { // face = [diff, rating]
 		$(".diffGuessResult:last()").remove()
 	}, 800);
 
+	$(".favoriteStar").hide() // Hide fave stars till list finished
 	if (isLastLevel) {
+		$(".favoriteStar").show()
 		let double = (boards.diffGuesser[1] && boards.diffGuesser[2]) ? 2 : 1
 		let maxPoints = (Object.keys(boards).length - ADDIT_VALS - 1) * double
-		let perc = Math.round((points / (Object.keys(boards).length - ADDIT_VALS - 1)) * 100 / double) 
+		let perc = Math.round((points / (Object.keys(boards).length - ADDIT_VALS - 1)) * 100 / double)
 
 		$(".boards").after(`
 		<div class="uploadText uploadBG finishDiffList">
-			<h1>Dokončil jsi seznam!</h1>
+			<h1>${jsStr["LIST_FIN"][LANG]}</h1>
 			<div class="graphContainer">
 				<div class="graphLine diffRes" style="background-color: rgb(108, 240, 108); text-align: center;">${perc}%</div>
 			</div>
-			<h4>Získal jsi ${points} z ${maxPoints} bodů!</h4>
+			<h4>${jsStr["YOU_GOT"][LANG]} ${points} ${jsStr["OUTTA"][LANG]} ${maxPoints} ${jsStr["POINTS"][LANG]}!</h4>
 			<div style="display: flex; gap: 5vw;">
-				<button class="button niceButton replayList uploadText"><img src="images/replay.svg" style="width: 4vw;">Hrát znova</button>
-				<button class="button niceButton shareDiff uploadText"><img src="images/share.svg" style="width: 4vw;">Sdílet na Twitteru</button>
+				<button class="button niceButton replayList uploadText"><img src="images/replay.svg" style="width: 4vw;">${jsStr["PLAY_AGAIN"][LANG]}</button>
+				<button class="button niceButton shareDiff uploadText"><img src="images/share.svg" style="width: 4vw;">${jsStr["TWIT_SHARE"][LANG]}</button>
 			</div>
 		</div>
 		`)
@@ -796,18 +768,18 @@ function pinList(rem = null, isOnHomepage = false) {
 		if (!indToRemove[1]) indToRemove[0]++
 	});
 
-	$("#pinBut").empty()
+	$(".pin").empty()
 	if (indToRemove[1]) {
-		$("#pinBut").append("<img src='images/pin.svg'>")
-		$("#pinBut").append("Připnout")
-		$("#pinBut").attr("title", jsStr["PIN_LIST"][LANG])
+		$(".pin").append("<img src='images/pin.svg'>")
+		$(".pin").append(jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
 	}
 	else {
-		$("#pinBut").append("<img src='images/unpin.svg'>")
-		$("#pinBut").append("Odepnout")
-		$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
-		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime()])
+		$(".pin").append("<img src='images/unpin.svg'>")
+		$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+		// [listID, listName, listCreator, listColor, currTime, isGuess]
+		let isGuess = boards.diffGuesser != undefined ? boards.diffGuesser[0] : 0
+		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime(), isGuess])
 
 		if (pinnedLists.length > 5) pinnedLists = pinnedLists.slice(1, 6)
 	}
@@ -948,6 +920,11 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				let lightCol = HEXtoRGB(object[3], -60)
 				let darkCol = HEXtoRGB(object[3], 40)
 				let priv = object[0].toString().match(/[A-z]/) != null ? "pid" : "id"
+
+				let dGuesserBadge = ""
+				if (object[5] != undefined) {
+					dGuesserBadge = object[5] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
+				}
 				$(custElement).append(`
 				<div style="display: flex; align-items: center">
 					<a style="display: flex; align-items: center; flex-grow: 1;" href="./index.html?${priv}=${object[0]}">
@@ -956,7 +933,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 									border-color: rgb(${darkCol.join(",")}); margin: 0.85% ${previewType == 5 ? 1 : 7}% 0.85% 7%; flex-grow: 1;">
 							<div class="boxHeader" style="flex-direction: row !important;">
 								<div>
-								<p class="uploadText" style="margin: 0;">${object[1]}</p>
+								<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object[1]}</p>
 								<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object[2]} -</p>
 								</div>
 								<div>
@@ -972,7 +949,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 			else if (previewType == 4) { // Newest lists
 				let dGuesserBadge = "";
 				if (object.data.diffGuesser != undefined) {
-					dGuesserBadge = object.data.diffGuesser[0] ? "<img src='images/diffGuessSign.svg' style='vertical-align:sub;'>" : ""
+					dGuesserBadge = object.data.diffGuesser[0] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
 				}
 
 				let level1col = object["data"][1].color
@@ -1253,10 +1230,10 @@ $(async function () {
 	if (getPinned !== null & getPinned !== false) {
 		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
 			if (arr[0] == LIST_ID) {
-				$("#pinBut").empty()
-				$("#pinBut").append("<img src='images/unpin.svg'>")
-				$("#pinBut").append("Odepnout")
-				$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
+				$(".pin").empty()
+				$(".pin").append("<img src='images/unpin.svg'>")
+				$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+				$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
 			}
 		});
 	}
@@ -1293,21 +1270,6 @@ $(async function () {
 function checkPassword() {
 	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, window.location.search.includes("pid"), LIST_NAME, LIST_CREATOR]))
 	window.location.href = `./upload.html?editing`;
-}
-
-const switchAnims = (_curr) => localStorage.setItem("anims", localStorage.getItem("anims") == true ? 0 : 1)
-
-function checkCheckbox(changeVal, runFun = null) {
-	if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
-		$(`img[for="${changeVal}"]`).attr("src", "images/check-off.webp")
-		$(`input[name="${changeVal}"]`).attr("checked", false)
-		if (runFun != null) runFun(changeVal, false)
-	}
-	else {
-		$(`img[for="${changeVal}"]`).attr("src", "images/check-on.webp")
-		$(`input[name="${changeVal}"]`).attr("checked", true)
-		if (runFun != null) runFun(changeVal, true)
-	}
 }
 
 let page = {} // [page, maxPage]

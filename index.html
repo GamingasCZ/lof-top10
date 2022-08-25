@@ -103,25 +103,15 @@
           <div class="placeholderCreator"></div>
         </div>
         <div class="listOptionsContainer">
-          <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg">Sdílet</button>
-          <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg">Skočit na</button>
-          <button onclick="pinList()" id="pinBut" class="listHeaderBlue uploadText"><img src="images/pin.svg">Připnout</button>
-          <button onclick="checkPassword()" id="editBut" class="listHeaderBlue uploadText"><img src="images/edit.svg">Upravit</button>
+          <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg"><div id="shareBut">Sdílet</div></button>
+          <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg"><div id="jumpToBut">Skočit na</div></button>
+          <button onclick="pinList()" class="listHeaderBlue uploadText pin"><img src="images/pin.svg"><div id="pinBut">Připnout</div></button>
+          <button onclick="checkPassword()" class="listHeaderBlue uploadText"><img src="images/edit.svg"><div id="editBut">Upravit</div></button>
         </div>
       </div>
       <div id="cToolTop">
-        <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img src="images/comment.svg">Komentáře<div id="commAmount"></div></button>
+        <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img src="images/comment.svg"><div id="commButtonText">Komentáře</div><div id="commAmount"></div></button>
         <hr class="lineSplitGeneral">
-        <div class="searchTools uploadText" id="commentTool" style="display: none; justify-content: center;">
-          <div class="page">
-            <span id="pageStr" style="padding-right: 2%;font-size: var(--smallFont);max-width: 80%;">Strana: </span>
-            <img class="button pageBut" src="images/arrow-left.webp" onclick="commpageSwitch(-1)">
-            <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-            <span id="maxPage">/1</span>
-            <img class="button pageBut" src="images/arrow-right.webp" onclick="commpageSwitch(1)">
-          </div>
-          <img onclick="refreshComments()" src="images/refresh.webp" id="refreshBut" class="button" style="width: 3vw;">
-        </div>
       </div>
     </div>
 
@@ -146,38 +136,30 @@
           <div style="display: flex; width: inherit;">
             <div contenteditable="" class="uploadText comTextArea comInpArea" style="height: 8vw;" id="comFont"></div>
           </div>
-
-          <div class="uploadText comBoxThings comInpThings" id="comBoxFooter">
-
-            <button class="comFooterButton" title="Barva komentáře" onclick="displayPanel(2)">
-              <svg width="90" height="40">
-                <image xlink:href="./images/color.svg" width="90" height="40" />
-              </svg>
-              <!-- <input type="color" class="cpicker cardButton" id="comCPicker"> -->
-            </button>
-
-            <button class="comFooterButton" title="Emotikony" onclick="displayPanel(1)">
-              <svg width="90" height="40">
-                <image xlink:href="./images/emoji.svg" width="90" height="40" />
-              </svg>
-            </button>
-
-            <hr id="verticalLine">
-
-            <button class="comFooterButton sendBut" title="Odeslat komentář" onclick="sendComment()">
-              <svg width="90" height="40">
-                <image xlink:href="./images/send.svg" width="90" height="40" />
-              </svg>
-            </button>
-
-          </div>
         </div>
 
         <div class="emojiPanel"></div>
 
       </div>
+      <div class="uploadText comBoxThings" id="comBoxFooter">
+        <img class="comFooterButton comInpThings" src="images/emoji.svg" title="Emotikony" onclick="displayPanel(1)">
+        <img class="comFooterButton comInpThings" src="images/color.svg" title="Barva komentáře" onclick="displayPanel(2)">
+        <img class="comFooterButton sendBut" src="images/send.svg" title="Odeslat komentář" onclick="sendComment()">
+      </div>
 
-      <div id="commentList"></div>
+      <div class="searchTools uploadText" id="commentTool" style="display: none; justify-content: center;">
+        <div class="page">
+          <span id="pageStr" style="padding-right: 2%;font-size: var(--smallFont);max-width: 80%;">Strana: </span>
+          <img class="button pageBut" src="images/arrow-left.webp" onclick="commpageSwitch(-1)">
+          <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
+          <span id="maxPage">/1</span>
+          <img class="button pageBut" src="images/arrow-right.webp" onclick="commpageSwitch(1)">
+        </div>
+        <img onclick="refreshComments()" src="images/refresh.webp" id="refreshBut" class="button" style="width: 3vw;">
+      </div>
+
+      <div id="commentList">
+      </div>
       <p class="uploadText noComm" style="text-align: center;">- Žádné komentáře -</p>
 
 

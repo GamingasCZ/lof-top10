@@ -909,12 +909,11 @@ input:disabled {
 .listDiffEpicRate {
     position: absolute;
     width: 150%;
-    bottom: -17%;
+    transform: translateY(-0.8vh);
 }
 .listDiffRate {
     position: absolute;
     width: 140%;
-    bottom: -20%;
 }
 
 .listDiffStar {
@@ -922,7 +921,7 @@ input:disabled {
     z-index: 2;
     width: 60%;
     left: calc(1.7vw + 1.4vh);
-    top: calc(1.3vw + 1.5vh);
+    top: calc(3.3vw + -1.6vh);
 }
 
 .rateContainer {
@@ -1141,7 +1140,7 @@ input:disabled {
 
 .pageBut {
     width: 2vw;
-    height: 2vw;
+    height: max-content;
     align-self: center;
     margin: 1%;
 }

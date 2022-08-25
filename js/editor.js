@@ -47,7 +47,7 @@ function checkJson(data, isPreview=false) {
             $(".errorBox").html(jsStr["NO_JSON"][LANG]);
         }
         else {
-            if (isPreview) error += "<br><br><cy>Tip: Klikni dvakrát k přeskočení kontroly.</cy>"
+            if (isPreview) error += "<br><br><cy>Tip: "+jsStr["DBLCLKTIP"][LANG]+".</cy>"
             $(".errorBox").html(error);
         }
 
@@ -91,9 +91,6 @@ function showBGColorPicker() {
             levelList.pageBGcolor = hex
             $("#bgcolorPicker").css("background", hex)
         })
-        $(".colorPicker").append(`<div>
-            <img id="sliderImg" src="./images/bgIcons/none.svg">
-        </div>`)
 
     }
     else {
@@ -360,4 +357,17 @@ function murderList() {
 
     $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.replace("./upload.html?editor"));
     $("#levelUpload").addClass("killList");
+}
+
+function checkCheckbox(changeVal, runFun = null) {
+	if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
+		$(`img[for="${changeVal}"]`).attr("src", "images/check-off.webp")
+		$(`input[name="${changeVal}"]`).attr("checked", false)
+		if (runFun != null) runFun(changeVal, false)
+	}
+	else {
+		$(`img[for="${changeVal}"]`).attr("src", "images/check-on.webp")
+		$(`input[name="${changeVal}"]`).attr("checked", true)
+		if (runFun != null) runFun(changeVal, true)
+	}
 }

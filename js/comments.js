@@ -16,11 +16,13 @@ function listComments() {
   // Finally non-shit
   if ($(".boards").css("display") == "none") {
     $(".comments").fadeOut(50);
+    $("#commButton").attr("style","")
     $(".boards").fadeIn(100);
     $("#commentTool").fadeOut(50)
   } else {
     $(".boards").fadeOut(50);
     $(".comments").fadeIn(100);
+    $("#commButton").css("box-shadow","#39c4a95e 0px 0px 28px")
     $("#commentTool").fadeIn(50)
   }
 }
@@ -121,14 +123,14 @@ $(function () {
       text = text.replace(/<\/div>/g, ""); // Remove div tag end
       let keepImgs = text;
       keepImgs = keepImgs.replace(/<br>/g, "");
-      
+
       // this is the worst fix imaginable
       text = text.replace(/<img class="emojis" src=".\/images\/emoji\//g, "&");
       text = text.replace(/.webp">/g, "");
-      
+
       // Remove excess tags
       text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "");
-      
+
       // Remove excess newline
       if (text.startsWith("\n")) {
         text = text.slice(1);
@@ -143,7 +145,10 @@ $(function () {
   });
 
   // Pick a random comment color
-  commentColor = randomColor();
+  commentColor = randomColor(0,1);
+  let invCol = [255 - commentColor[0], commentColor[1], commentColor[2]]
+  commentColor = HSLtoHEX(...commentColor)
+
   let boxColor = HEXtoRGB(commentColor, 30);
   let darkerBoxColor = HEXtoRGB(commentColor, 50);
 
@@ -154,6 +159,7 @@ $(function () {
     "background-color",
     "rgb(" + darkerBoxColor.join(",") + ")"
   );
+  $(".sendBut").css("background-color", "hsl(" + invCol.join(",") + ")");
   $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")");
   $("#verticalLine").css("border-color", commentColor);
   $(".cpicker").val(commentColor);
@@ -253,6 +259,11 @@ function displayPanel(what) {
           `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
         );
 
+        $(".sendBut").css(
+          "background-color",
+          `hsl(${255-hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
+        );
+
         let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");
         commentColor = inHex;
       });
@@ -339,28 +350,28 @@ function chatDate(stamp) {
 
   if (seconds > 31557600) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 31557600)} ${Math.floor(seconds / 31557600) == 1
-        ? jsStr["YEAR"][LANG]
-        : jsStr["YEARS"][LANG]
+      ? jsStr["YEAR"][LANG]
+      : jsStr["YEARS"][LANG]
       }`;
   } else if (seconds > 2629800) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 2629800)} ${Math.floor(seconds / 2629800) == 1
-        ? jsStr["MONTH"][LANG]
-        : jsStr["MONTHS"][LANG]
+      ? jsStr["MONTH"][LANG]
+      : jsStr["MONTHS"][LANG]
       }`;
   } else if (seconds > 86400) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 86400)} ${Math.floor(seconds / 86400) == 1
-        ? jsStr["DAY"][LANG]
-        : jsStr["DAYS"][LANG]
+      ? jsStr["DAY"][LANG]
+      : jsStr["DAYS"][LANG]
       }`;
   } else if (seconds > 3600) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 3600)} ${Math.floor(seconds / 3600) == 1
-        ? jsStr["HOUR"][LANG]
-        : jsStr["HOURS"][LANG]
+      ? jsStr["HOUR"][LANG]
+      : jsStr["HOURS"][LANG]
       }`;
   } else if (seconds > 60) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 60)} ${Math.floor(seconds / 60) == 1
-        ? jsStr["MINUTE"][LANG]
-        : jsStr["MINUTES"][LANG]
+      ? jsStr["MINUTE"][LANG]
+      : jsStr["MINUTES"][LANG]
       }`;
   } else if (seconds >= 10) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds)} ${jsStr["SECONDS"][LANG]
@@ -389,16 +400,9 @@ function comBox(cd, dcc, edcc) {
     comColor = "#f9f99a";
   }
 
-  // Making links clickable :)
-  let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g
-  let links = cd["comment"].match(urlRegex)
-  if (links != null) {
-    cd["comment"] = cd["comment"].replaceAll(/(http|https):\/\//g, "")
-
-    
-    // OwO, adding emojis
-    while (cd["comment"].match(/&\d+/g) != null) {
-      let sel = cd["comment"].indexOf(cd["comment"].match(/&\d+/));
+  // OwO, adding emojis
+  while (cd["comment"].match(/&\d+/g) != null) {
+    let sel = cd["comment"].indexOf(cd["comment"].match(/&\d+/));
     let selStart = cd["comment"].slice(0, sel);
     let emojiID = cd["comment"].slice(sel + 1, sel + 3);
     if (emojiID > EMOJI_AM) {
@@ -409,29 +413,36 @@ function comBox(cd, dcc, edcc) {
     let selEnd = cd["comment"].slice(sel + 3);
 
     cd["comment"] =
-    selStart +
-    `<img class="emojis" src="./images/emoji/${emojiID}.webp">` +
-    selEnd;
+      selStart +
+      `<img class="emojis" src="./images/emoji/${emojiID}.webp">` +
+      selEnd;
   }
   
-  links.forEach(link => {
-    if (!cd["comment"].includes(`<a href="https://www.${link}" class="gamLink">${link}</a>`)) {
-      // i mean... http sites won't work, but who cares lmao
-      cd["comment"] = cd["comment"].replaceAll(link, `<a href="https://${link}" class="gamLink">${link}</a>`)
-    }
-  });
+  // Making links clickable :)
+  let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g
+  let links = cd["comment"].match(urlRegex)
+  if (links != null) {
+    cd["comment"] = cd["comment"].replaceAll(/(http|https):\/\//g, "")
+    
+    links.forEach(link => {
+      if (!cd["comment"].includes(`<a href="https://www.${link}" class="gamLink">${link}</a>`)
+          && link.match(/\d+.webp/) == null) { // emoji check, so they don't get treated as link, hope it doesn't break stuff
+        // i mean... http sites won't work, but who cares lmao
+        cd["comment"] = cd["comment"].replaceAll(link, `<a href="https://${link}" class="gamLink">${link}</a>`)
+      }
+    });
   }
-
+  
   return `
-  <div style="margin-bottom: 2vw">
+  <div style="margin-bottom: 2vw; box-shadow: #000000b3 0px 0px 32px;">
   
   <div class="comBoxThings ${clickable[0]
-  } uploadText" id="comBoxHeader" ${clickable[1]}"
+    } uploadText" id="comBoxHeader" ${clickable[1]}"
   style="margin-bottom: 0 !important;
   justify-content: flex-start;
   background-color: ${"rgb(" + dcc.join(",") + ")"};
   border: solid ${"rgb(" + edcc.join(",") + ")"
-} 4px;">
+    } 4px;">
 ${profPic}
             <h3 style="margin-left: 1%; color: ${comColor};">${cd["username"]}</h3>
             <h3 id="comFont" 
@@ -454,25 +465,25 @@ var deeta = "";
 function redirectWarn(el) {
   el.preventDefault()
   $("#popupBG").show()
-  $("#popupBG").css("opacity",1)
+  $("#popupBG").css("opacity", 1)
   $("#popupBG").fadeIn(100)
 
   // lmao reusing the share dialog
   $("body").append(`
   <div class="uploadBG uploadText linkWarn" id="shareTools" style="position: fixed; display: block;">
-    <p class="uploadText" id="shareText" style="margin-bottom: 0;">Chystáš se přejít na...</p>
+    <p class="uploadText" id="shareText" style="margin-bottom: 0;">${jsStr["REDIRECT"][LANG]}</p>
     <input class="uploadText settingsBG" id="linkViewer" readonly value="${el.target.innerText}"></input>
-    <p class="uploadText" id="shareText" style="margin-bottom: 0;"><cg>Navštěvej jen weby, kterým věříš!</cg><br>Pokračovat?</p>
+    <p class="uploadText" id="shareText" style="margin-bottom: 0;"><cg>${jsStr["TRUST"][LANG]}</cg><br>${jsStr["CONTINUE"][LANG]}?</p>
     <div>
-      <button class="uploadText button eventButton" id="linkYes">Ano</button>
-      <button class="uploadText button eventButton" id="linkNo">Ne</button>
+      <button class="uploadText button eventButton" id="linkYes">${jsStr["YES"][LANG]}</button>
+      <button class="uploadText button eventButton" id="linkNo">${jsStr["NO"][LANG]}</button>
     </div>
   </div>
   `)
 
-  let clPopup = () => {$("#popupBG").fadeOut(100, () => $("#popupBG").css("opacity", 0)); $(".linkWarn").remove()}
+  let clPopup = () => { $("#popupBG").fadeOut(100, () => $("#popupBG").css("opacity", 0)); $(".linkWarn").remove() }
 
-  $("#linkYes").click(() => {window.open("https://"+el.target.innerText, "_blank"); clPopup()})
+  $("#linkYes").click(() => { window.open("https://" + el.target.innerText, "_blank"); clPopup() })
   $("#linkNo").click(clPopup)
 }
 

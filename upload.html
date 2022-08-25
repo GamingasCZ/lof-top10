@@ -189,12 +189,12 @@
 
   <div class="uploader" style="display: none;">
     <p class="titles uploadTitle">Nahrávání</p>
-    <form id="levelUpload" action="php/sendList.php" method="post" class="uploadBG uploaderDialog">
+    <form id="levelUpload" class="uploadBG uploaderDialog">
       <br>
       <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="Jméno seznamu"><br />
       <input name="creator" type="text" id="creatornm" class="uploadMainInp" placeholder="Tvůrce"><br />
       <div id="passEditor" class="uploadText" style="display: none;">
-        <h3>Zadej heslo seznamu</h3>
+        <h3 class="listPassType">Zadej heslo seznamu</h3>
         <div style="display: flex; gap: 0.5vw; justify-content: center;">
           <input name="lPass" type="text" id="lpass" class="uploadMainInp searchWithIcon" placeholder="     Heslo"><br />
           <img id="passSubmit" class="button" src="images/searchOpaque.svg" onclick="checkPassword()">
@@ -254,7 +254,7 @@
           <img src="images/help.webp" class="button setHelp" onclick="openHelp('diffGuesser')">
         </div>
         <div class="settingSubbox" style="display: none;">
-          <div class="uploadText">Hádat: </div>
+          <div class="uploadText guessText">Hádat: </div>
           <button title="Obtížnosti" type="button" onclick="guesserOptions(1)" class="diffSelBut"><img src="images/faces/4.webp" class="button"></button>
           <button title="Rating" type="button" onclick="guesserOptions(2)" class="diffSelBut"><img src="images/faces/epic.webp" class="button"></button>
         </div>
