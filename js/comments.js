@@ -4,7 +4,7 @@ function getID() {
   let params = Object.fromEntries(paramGetter.entries());
 
   if (params["preview"] != null) { return -8 } // List preview from editor
-  if (params["pid"] != null) { return -10 } // Disable comments on private lists
+  if (params["pid"] != null) { return params["pid"] } // Disable comments on private lists
   if (params["random"] != null) { return -11 } // -11 will be replaced with actual ID later
   if (params["id"] != null) { return params["id"] } // Community level/2019 or 2021 list (-2,-3)
   if (params["year"] != null) { return params["year"] == "2021" ? "-3" : "-2" }
@@ -12,19 +12,19 @@ function getID() {
 }
 var LIST_ID = getID();
 
-function listList() {
-  // What a shitty function name bruh
-  $(".comments").fadeOut(50);
-  $(".boards").fadeIn(100);
-  $(".lComm").removeClass("disabled");
-  $(".lList").addClass("disabled");
-}
-
 function listComments() {
-  $(".boards").fadeOut(50);
-  $(".comments").fadeIn(100);
-  $(".lComm").addClass("disabled");
-  $(".lList").removeClass("disabled");
+  // Finally non-shit
+  if ($(".boards").css("display") == "none") {
+    $(".comments").fadeOut(50);
+    $("#commButton").attr("style","")
+    $(".boards").fadeIn(100);
+    $("#commentTool").fadeOut(50)
+  } else {
+    $(".boards").fadeOut(50);
+    $(".comments").fadeIn(100);
+    $("#commButton").css("box-shadow","#39c4a95e 0px 0px 28px")
+    $("#commentTool").fadeIn(50)
+  }
 }
 
 function updateCharLimit() {
@@ -67,13 +67,6 @@ var commentColor = "";
 $(function () {
   // Is on homepage? (do not load)
   if (LIST_ID == -9) return
-
-  // Disabling comments on private lists
-  if (LIST_ID == -10) {
-    $(".listOptions > div:nth-child(1)").remove()
-
-    return null
-  }
 
   var placeholders = [
     jsStr["PHOLD1"][LANG],
@@ -146,12 +139,16 @@ $(function () {
 
       actualText = text;
       midText = keepImgs;
+
       updateCharLimit();
     }
   });
 
   // Pick a random comment color
-  commentColor = randomColor();
+  commentColor = randomColor(0,1);
+  let invCol = [255 - commentColor[0], commentColor[1], commentColor[2]]
+  commentColor = HSLtoHEX(...commentColor)
+
   let boxColor = HEXtoRGB(commentColor, 30);
   let darkerBoxColor = HEXtoRGB(commentColor, 50);
 
@@ -162,6 +159,7 @@ $(function () {
     "background-color",
     "rgb(" + darkerBoxColor.join(",") + ")"
   );
+  $(".sendBut").css("background-color", "hsl(" + invCol.join(",") + ")");
   $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")");
   $("#verticalLine").css("border-color", commentColor);
   $(".cpicker").val(commentColor);
@@ -179,11 +177,6 @@ $(function () {
     }
     displayComments(deeta);
   });
-
-  // Hide debug tools when not running locally
-  if (window.location.port == "") {
-    $(".debugTools").remove();
-  }
 });
 
 function getPlayerIcon() {
@@ -266,6 +259,11 @@ function displayPanel(what) {
           `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
         );
 
+        $(".sendBut").css(
+          "background-color",
+          `hsl(${255-hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
+        );
+
         let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");
         commentColor = inHex;
       });
@@ -321,13 +319,10 @@ function sendComment() {
           refreshComments();
 
           // Resetting comment form
-          $(".pIconInp").val("");
           actualText = "";
           midText = "";
           $(".comInpArea").text("");
           updateCharLimit();
-
-          $("body")[0].scrollTop = 0 // Scroll to top to show comment
 
           // 10 second comment rate limit
           setTimeout(() => {
@@ -355,28 +350,28 @@ function chatDate(stamp) {
 
   if (seconds > 31557600) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 31557600)} ${Math.floor(seconds / 31557600) == 1
-        ? jsStr["YEAR"][LANG]
-        : jsStr["YEARS"][LANG]
+      ? jsStr["YEAR"][LANG]
+      : jsStr["YEARS"][LANG]
       }`;
   } else if (seconds > 2629800) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 2629800)} ${Math.floor(seconds / 2629800) == 1
-        ? jsStr["MONTH"][LANG]
-        : jsStr["MONTHS"][LANG]
+      ? jsStr["MONTH"][LANG]
+      : jsStr["MONTHS"][LANG]
       }`;
   } else if (seconds > 86400) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 86400)} ${Math.floor(seconds / 86400) == 1
-        ? jsStr["DAY"][LANG]
-        : jsStr["DAYS"][LANG]
+      ? jsStr["DAY"][LANG]
+      : jsStr["DAYS"][LANG]
       }`;
   } else if (seconds > 3600) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 3600)} ${Math.floor(seconds / 3600) == 1
-        ? jsStr["HOUR"][LANG]
-        : jsStr["HOURS"][LANG]
+      ? jsStr["HOUR"][LANG]
+      : jsStr["HOURS"][LANG]
       }`;
   } else if (seconds > 60) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds / 60)} ${Math.floor(seconds / 60) == 1
-        ? jsStr["MINUTE"][LANG]
-        : jsStr["MINUTES"][LANG]
+      ? jsStr["MINUTE"][LANG]
+      : jsStr["MINUTES"][LANG]
       }`;
   } else if (seconds >= 10) {
     return `${jsStr["AGO"][LANG]}${Math.floor(seconds)} ${jsStr["SECONDS"][LANG]
@@ -422,18 +417,33 @@ function comBox(cd, dcc, edcc) {
       `<img class="emojis" src="./images/emoji/${emojiID}.webp">` +
       selEnd;
   }
-
-  return `
-    <div style="margin-bottom: 2vw">
+  
+  // Making links clickable :)
+  let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g
+  let links = cd["comment"].match(urlRegex)
+  if (links != null) {
+    cd["comment"] = cd["comment"].replaceAll(/(http|https):\/\//g, "")
     
-        <div class="comBoxThings ${clickable[0]
+    links.forEach(link => {
+      if (!cd["comment"].includes(`<a href="https://www.${link}" class="gamLink">${link}</a>`)
+          && link.match(/\d+.webp/) == null) { // emoji check, so they don't get treated as link, hope it doesn't break stuff
+        // i mean... http sites won't work, but who cares lmao
+        cd["comment"] = cd["comment"].replaceAll(link, `<a href="https://${link}" class="gamLink">${link}</a>`)
+      }
+    });
+  }
+  
+  return `
+  <div style="margin-bottom: 2vw; box-shadow: #000000b3 0px 0px 32px;">
+  
+  <div class="comBoxThings ${clickable[0]
     } uploadText" id="comBoxHeader" ${clickable[1]}"
-            style="margin-bottom: 0 !important;
-                    justify-content: flex-start;
-                    background-color: ${"rgb(" + dcc.join(",") + ")"};
-                    border: solid ${"rgb(" + edcc.join(",") + ")"
+  style="margin-bottom: 0 !important;
+  justify-content: flex-start;
+  background-color: ${"rgb(" + dcc.join(",") + ")"};
+  border: solid ${"rgb(" + edcc.join(",") + ")"
     } 4px;">
-            ${profPic}
+${profPic}
             <h3 style="margin-left: 1%; color: ${comColor};">${cd["username"]}</h3>
             <h3 id="comFont" 
                 style="margin: 0 0 0 auto; cursor: help;"
@@ -452,29 +462,29 @@ var commentPage = 0;
 var maxCommentPage = 1;
 var deeta = "";
 
-function debugComments(am) {
-  if (am == 2) {
-    deeta = [];
-    for (let i = 0; i < parseInt($("#lDebugAm").val()); i++) {
-      deeta.push({
-        "username": fakeNames[Math.floor(Math.random() * fakeNames.length)],
-        "comment": "This is a comment!",
-        "comType": "0",
-        "bgcolor": randomColor(),
-        "listID": "-2",
-        "comID": "27",
-        "verified": "1",
-        "timestamp": Math.floor((Math.random() * Date.now()) / 1000)
-      })
-    }
+function redirectWarn(el) {
+  el.preventDefault()
+  $("#popupBG").show()
+  $("#popupBG").css("opacity", 1)
+  $("#popupBG").fadeIn(100)
 
-    displayComments(deeta);
-  } else {
-    $("#lDebugAm").val(parseInt($("#lDebugAm").val()) + am);
-    if ($("#lDebugAm").val() < 0) {
-      $("#lDebugAm").val("0");
-    }
-  }
+  // lmao reusing the share dialog
+  $("body").append(`
+  <div class="uploadBG uploadText linkWarn" id="shareTools" style="position: fixed; display: block;">
+    <p class="uploadText" id="shareText" style="margin-bottom: 0;">${jsStr["REDIRECT"][LANG]}</p>
+    <input class="uploadText settingsBG" id="linkViewer" readonly value="${el.target.innerText}"></input>
+    <p class="uploadText" id="shareText" style="margin-bottom: 0;"><cg>${jsStr["TRUST"][LANG]}</cg><br>${jsStr["CONTINUE"][LANG]}?</p>
+    <div>
+      <button class="uploadText button eventButton" id="linkYes">${jsStr["YES"][LANG]}</button>
+      <button class="uploadText button eventButton" id="linkNo">${jsStr["NO"][LANG]}</button>
+    </div>
+  </div>
+  `)
+
+  let clPopup = () => { $("#popupBG").fadeOut(100, () => $("#popupBG").css("opacity", 0)); $(".linkWarn").remove() }
+
+  $("#linkYes").click(() => { window.open("https://" + el.target.innerText, "_blank"); clPopup() })
+  $("#linkNo").click(clPopup)
 }
 
 function displayComments(data) {
@@ -506,9 +516,11 @@ function displayComments(data) {
     let evenDarkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
 
     $("#commentList").append(
-      comBox(commentData, darkerComColor, evenDarkerComColor)
+      comBox(JSON.parse(JSON.stringify(commentData)), darkerComColor, evenDarkerComColor)
     );
+
   }
+  $(".comTextArea .gamLink").click(el => redirectWarn(el))
 }
 
 function commpageSwitch(num) {

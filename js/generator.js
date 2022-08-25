@@ -1,17 +1,8 @@
-const ADDIT_VALS = 1;
+const ADDIT_VALS = 2;
 const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
 const isInEditor = window.location.pathname.includes("upload");
 
-// These are not real people :<'
-const fakeNames = ["Voiprin", "Sarprong", "ZentricSigma", "Darwing", "ExpoD", "J0hnram", "Jayuff", "AligaThePeter", "Divpan", "Acidity", "Doorami", "DanZBro", "FunnyBone"]
-
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
-
-function onIDCopyClick(pos, index) {
-	$("#cpopup" + index).text("ID: " + pos);
-	$("#cpopup" + index).fadeTo(100, 1);
-}
-
 function onYTClick(link) { window.open("https://www.youtube.com/watch?v=" + link, "_blank") };
 
 function listShare() {
@@ -85,31 +76,6 @@ function hideJumpTo() {
 	$("#jumpToTools").fadeOut(100);
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
-}
-
-function switchSite(val) {
-	switch (val) {
-		case "2019":
-			switchLoFList('index.html?id=-2');
-			break;
-		case "2021":
-			switchLoFList('index.html?id=-3');
-			break;
-		case jsStr["COMMUNITY"][LANG]:
-			window.location.assign('upload.html');
-			break;
-		case jsStr["SAVED"][LANG]:
-			if ($("iframe").css("display") == "none") showFaves();
-			$(".mobilePicker").append(`<option id='closePick'>${jsStr["CLOSE"][LANG]}</option>`)
-			break;
-		case jsStr["CLOSE"][LANG]:
-			$("#closePick").remove()
-			showFaves()
-		default:
-			break;
-	}
-	if (window.location.href.includes("2021")) $($(".mobilePicker").children()[1]).attr("selected", true)
-	if (window.location.href.includes("editor")) $($(".mobilePicker").children()[2]).attr("selected", true)
 }
 
 const openSocLink = link => { window.open(link) }
@@ -420,9 +386,12 @@ function unhoverName(k) {
 	$(`.graphLine:not(.graphLine[for="${forWhat}"])`).css("opacity", 1)
 }
 
-function boxCreator(obj, index, bgcolor) {
-	if (typeof obj != "object") {
-		return `<p class="uploadText" id="listLevelSub" style="margin: 0;">${obj}</p>`
+function boxCreator(obj, index, forceName) {
+	if (typeof obj != "object" || forceName) {
+		let nm
+		if (typeof obj == "object") nm = obj[0][0]
+		else nm = obj
+		return `<p class="uploadText" id="listLevelSub" style="margin: 0;">${nm}</p>`
 	}
 	else {
 		let names = [];
@@ -450,12 +419,85 @@ function boxCreator(obj, index, bgcolor) {
 	}
 }
 
+function doDiffGuessing(cardBG, bIndex) {
+	$(".boards").append(`
+	<div class="box" style="${cardBG}">
+		<div class="boxHeader">
+			<span id="listLevelName"><p style="margin: 0">${boards[bIndex]["levelName"]}</p></span>
+			<div class="boxLinksContainer">
+				<img src="images/skip.webp" title="${jsStr["SKIP"][LANG]}" style="width: 5vw" class="button skipBut">
+			</div>
+		</div>
+		${boxCreator(boards[bIndex]["creator"], bIndex, true)}
+		<h3 class="guessTitle" style="text-align: center; margin-bottom: 0.5vh;">${jsStr["LEVDIFF_Q"][LANG]}</h2>
+		<div class="diffFaces mainGuesser" style="flex-wrap:wrap"></div>
+		<div class="mainGuesser" id="rates" style="display:none;">
+			<img class="button diffFace cancelGuess" title="${jsStr["BACK"][LANG]}" src="images/arrow-left.webp">
+			<div class="rateContainer">
+				<div class="listDiffContainer button" style="display: inline-flex">
+					<img class="listDiffFace" src="images/faces/1.webp">
+				</div>
+				<div class="listDiffContainer button" style="display: inline-flex">
+					<img class="listDiffFace" src="images/faces/1.webp">
+					<img class="listDiffStar" src="images/star.webp">
+				</div>
+				<div class="listDiffContainer button" style="display: inline-flex">
+					<img class="listDiffFace" src="images/faces/1.webp">
+					<img class="listDiffRate" src="images/faces/featured.webp">
+				</div>
+				<div class="listDiffContainer button" style="display: inline-flex">
+					<img class="listDiffFace" src="images/faces/1.webp">
+					<img class="listDiffEpicRate" src="images/faces/epic.webp">
+				</div>
+			</div>
+			<div style="width: 5%"></div>
+		</div>
+	</div>
+	`);
+	if (!boards.diffGuesser[1]) {
+		$("#rates").show() // Show rat guesser
+		$(".guessTitle").text("Jaký má level rating?")
+		$(".mainGuesser:first()").remove() // Remove diff guesser
+		$(".cancelGuess").before("<div></div>") // Empty element to keep centering
+		$(".cancelGuess").remove()
+		$(".rateContainer .listDiffFace").attr("src", `images/faces/${boards[bIndex].difficulty[0]}.webp`)
+	}
+	else {
+		for (let j = 0; j < 12; j++) {
+			let diff = $(`<img class="button diffFace" src="images/faces/${j}.webp">`)
+			diff.click(e => guessDifficulty(e, bIndex))
+			diff.appendTo($(".diffFaces:last()"))
+		}
+	}
+
+	$(".cancelGuess").click(cancelDifficulty)
+	$(".listDiffFace").parent().click(guessRating)
+	$(".skipBut").click(() => (skipGuess([-1, -1])))
+}
+
 var LIST_NAME = null
 var LIST_CREATOR = null
-function generateList(boards, listData) {
-	for (let i = 1; i < Object.keys(boards).length - ADDIT_VALS; i++) {
+function generateList(boards, listData, singleLevel = -1, isResult = false) {
+	// Empty list (useful in previews)
+	if (Object.keys(boards).length - ADDIT_VALS == 1) {
+		$(".boards").append("<h2 class='titles' style='margin-top: 4vw'>" + jsStr["EMPLIST"][LANG] + "</h2>")
+		return false
+	}
 
-		let bIndex = (i).toString();
+	// If going to favorites, disable guess list
+	if (window.location.search.includes("goto") && boards.diffGuesser[0]) boards.diffGuesser = [0,0,0]
+
+	// Todo remove ! from line below and somewhere next in the code or whatever
+	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && singleLevel == -1) singleLevel = 1
+
+	let amount = singleLevel == -1 ? Object.keys(boards).length - ADDIT_VALS : singleLevel + 1
+	let start = singleLevel == -1 ? 1 : singleLevel
+	for (let i = start; i < amount; i++) {
+		let bIndex = (i).toString()
+
+		// Empty names
+		if (boards[bIndex]["levelName"] == "") boards[bIndex]["levelName"] = jsStr["UNNAMED"][LANG]
+		if (boards[bIndex]["creator"] == "") boards[bIndex]["creator"] = jsStr["UNNAMED"][LANG]
 
 		// Setting title image
 		$(".titleImage").attr("src", boards["titleImg"]);
@@ -498,7 +540,10 @@ function generateList(boards, listData) {
 			let data = boards[bIndex]["difficulty"]
 			let glow = "";
 			if (data[1] != 0) {
-				glow = `<img class="${data[1] == 1 ? "listDiffRate" : "listDiffEpicRate"}" src='images/faces/${data[1] == 1 ? "featured" : "epic"}.webp'>`
+				let type
+				if (data[1] == 1) type = ["listDiffStar", "star"]
+				else type = [data[1] == 2 ? "listDiffRate" : "listDiffEpicRate", "faces/" + (data[1] == 2 ? "featured" : "epic")]
+				glow = `<img class="${type[0]}" src='images/${type[1]}.webp'>`
 			}
 
 			diff = `<div class="listDiffContainer"><img class="listDiffFace" src="images/faces/${data[0]}.webp">${glow}</div>`
@@ -507,32 +552,37 @@ function generateList(boards, listData) {
 
 		let hasID = ["", null].includes(boards[bIndex]["levelID"])
 		let preview = window.location.search.includes("preview")
-		let isDebugList = window.location.protocol.includes("file") & window.location.search.includes("id")
 
-		let favoriteCheck = isDebugList ? false : (preview ? false : (hasID ? false : true))
+		let favoriteCheck = preview ? false : (hasID ? false : true)
 		let currentlyFavedIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
 		let disableStar = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "disabled" : ""
 		let starTitle = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? jsStr["FAV_REM"][LANG] : jsStr["FAV_ADD"][LANG]
 		let diffIndent = diff == "" ? "0" : "2"
 
 		let star = `<img title="${starTitle}" src="images/star.webp" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, ['${listData[0]}','${listData[1]}'])">`
-		$(".boards").append(`
-		<div class="box" style="${cardBG}">
-			<div style="height:0px;">
-				${favoriteCheck ? star : ""}
-			</div>
-			<div class="boxHeader">
-				<span id="listLevelName">${diff}<p style="margin: 0; margin-left: ${diffIndent}vw;">${boards[bIndex]["levelName"]}</p></span>
-				<div class="boxLinksContainer">
-					${video}
-					${ID[0]}
-					${ID[1]}
+		if (boards.diffGuesser == undefined || (!boards.diffGuesser[0] || isResult)) {
+			$(".boards").append(`
+				<div class="box" style="${cardBG}">
+					<div style="height:0px;">
+						${favoriteCheck ? star : ""}
+					</div>
+					<div class="boxHeader">
+						<span id="listLevelName">${diff}<p style="margin: 0; margin-left: ${diffIndent}vw;">${boards[bIndex]["levelName"]}</p></span>
+						<div class="boxLinksContainer">
+							${video}
+							${ID[0]}
+							${ID[1]}
+						</div>
+					</div>
+	
+					${boxCreator(boards[bIndex]["creator"], bIndex, false)}
 				</div>
-			</div>
+				`);
+		}
+		else {
+			doDiffGuessing(cardBG, bIndex)
+		}
 
-			${boxCreator(boards[bIndex]["creator"], bIndex, boards[bIndex]["color"])}
-		</div>
-	`);
 		// Only display icons on hover
 		if (typeof boards[bIndex]["creator"] == "object") {
 			$($(".box")[$(".box").length - 1]).on("mouseover", (k) => {
@@ -584,13 +634,126 @@ function generateList(boards, listData) {
 		if (val[0] == LIST_ID) isInRecents = true
 	})
 	if (!isInRecents && LIST_NAME != null) {
-		parsed.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime()])
+		let isGuess = boards.diffGuesser != undefined ? boards.diffGuesser[0] : 0
+		parsed.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime(), isGuess])
 		parsed = parsed.reverse().slice(0, 3)
 
 		makeCookie(["recentlyViewed", JSON.stringify(parsed)])
 	}
 
 	if ($(".box")[params.goto - 1] != undefined) $(".box")[params.goto - 1].scrollIntoView()
+	return true
+}
+
+function shareDiffResult() {
+	text = `${LIST_NAME} ${jsStr["BY"][LANG]} ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${Object.keys(boards).length - ADDIT_VALS - 1}\n${jsStr["SCORBET"][LANG]}\ngamingas.wz.cz/lofttop10/?id=${LIST_ID}`
+	window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank")
+}
+function replayList() {
+	$(".box").remove()
+	$(".finishDiffList").remove()
+	generateList(boards, [LIST_ID, LIST_CREATOR], 1, false)
+	points = 0
+	diffGuesses = []
+}
+
+function guessDifficulty(button, bIndex) {
+	$(button.target).parent().hide()
+
+	let faceID = button.target.attributes.src.value.match(/\d+/g)
+	$(".guessTitle").text(jsStr["LEVRATE_Q"][LANG])
+	$(".rateContainer .listDiffFace").attr("src", `images/faces/${faceID}.webp`)
+	$(".mainGuesser:last()").show()
+
+	if (!boards.diffGuesser[2]) skipGuess([faceID, boards[bIndex].difficulty[1]])
+	if (faceID == 0) skipGuess([faceID, 0])
+}
+
+function cancelDifficulty() {
+	$(".mainGuesser:last()").hide()
+	$(".mainGuesser:first()").show()
+	$(".guessTitle").text(jsStr["LEVDIFF_Q"][LANG])
+}
+
+function guessRating(button) {
+	let faceID = $(button.currentTarget).children().eq(0).attr("src").match(/\d+/g)
+	let rateID = Object.values($(".rateContainer .listDiffFace")).indexOf($(button.currentTarget).children()[0])
+
+	skipGuess([faceID[0], rateID]) // [diff, rating]
+}
+
+//${window.location.toString()}
+var points = 0;
+let diffGuesses = []
+function skipGuess(face) { // face = [diff, rating]
+	$(".skipBut").remove()
+	$(".box:last()").remove()
+
+	let isLastLevel = $(".box").length + 1 == Object.keys(boards).length - ADDIT_VALS - 1
+	generateList(boards, [LIST_ID, LIST_CREATOR], $(".box").length + 1, true)
+	if (!isLastLevel) generateList(boards, [LIST_ID, LIST_CREATOR], $(".box").length + 1, false)
+
+	$(".box").eq($(".box").length - 2 + isLastLevel).append("<div class='diffGuessResult'></div>")
+
+	let levelDiffProp = boards[$(".box").length - 1 + isLastLevel]["difficulty"]
+	let gradientFlash = flipColors => `linear-gradient(${flipColors ? "-" : ""}169deg, #36fd17 45%,#fd1a1a 55%,#fd1a1a)`
+	let enabledAll = boards.diffGuesser[1] && boards.diffGuesser[2]
+
+	// fuk code :D - both correct
+	if (face[0] == levelDiffProp[0] && face[1] == levelDiffProp[1]) {
+		$(".diffGuessResult:last()").css("background", "#36fd17 url(../images/check-tp.webp)")
+		diffGuesses.push("🟩")
+		points += enabledAll ? 2 : 1
+	}
+	else if (enabledAll && (face[0] == levelDiffProp[0] || face[1] == levelDiffProp[1])) {
+		$(".diffGuessResult:last()").css("background", `${gradientFlash(face[0] != levelDiffProp[0])}`)
+		diffGuesses.push("🟨")
+		$(".diffGuessResult:last()").append('<img src="images/check-tp.webp" style="">')
+		if (face[0] == levelDiffProp[0]) $(".diffGuessResult:last()").append('<img src="images/wrong-tp.webp" style="">')
+		else $(".diffGuessResult:last()").prepend
+			('<img src="images/wrong-tp.webp" style="">')
+
+		points += 1
+	}
+	else {
+		$(".diffGuessResult:last()").css("background", "#fd1a1a url(../images/wrong-tp.webp)")
+		diffGuesses.push("🟥")
+	}
+	$(".diffGuessResult:last()").css("animation-name", "flash")
+
+
+	setTimeout(() => {
+		$(".box:last()")[0].scrollIntoView()
+		$(".diffGuessResult:last()").remove()
+	}, 800);
+
+	$(".favoriteStar").hide() // Hide fave stars till list finished
+	if (isLastLevel) {
+		$(".favoriteStar").show()
+		let double = (boards.diffGuesser[1] && boards.diffGuesser[2]) ? 2 : 1
+		let maxPoints = (Object.keys(boards).length - ADDIT_VALS - 1) * double
+		let perc = Math.round((points / (Object.keys(boards).length - ADDIT_VALS - 1)) * 100 / double)
+
+		$(".boards").after(`
+		<div class="uploadText uploadBG finishDiffList">
+			<h1>${jsStr["LIST_FIN"][LANG]}</h1>
+			<div class="graphContainer">
+				<div class="graphLine diffRes" style="background-color: rgb(108, 240, 108); text-align: center;">${perc}%</div>
+			</div>
+			<h4>${jsStr["YOU_GOT"][LANG]} ${points} ${jsStr["OUTTA"][LANG]} ${maxPoints} ${jsStr["POINTS"][LANG]}!</h4>
+			<div style="display: flex; gap: 5vw;">
+				<button class="button niceButton replayList uploadText"><img src="images/replay.svg" style="width: 4vw;">${jsStr["PLAY_AGAIN"][LANG]}</button>
+				<button class="button niceButton shareDiff uploadText"><img src="images/share.svg" style="width: 4vw;">${jsStr["TWIT_SHARE"][LANG]}</button>
+			</div>
+		</div>
+		`)
+		$(".shareDiff").click(shareDiffResult)
+		$(".replayList").click(replayList)
+		$(".finishDiffList")[0].scrollIntoView()
+		$(".diffRes").animate({ "width": perc + "%" }, "300")
+
+		if (LIST_ID == -8) $(".shareDiff").remove() // Remove share in list preview
+	}
 }
 
 function pinList(rem = null, isOnHomepage = false) {
@@ -604,15 +767,19 @@ function pinList(rem = null, isOnHomepage = false) {
 		if (arr[0] == rem) indToRemove[1] = true
 		if (!indToRemove[1]) indToRemove[0]++
 	});
+
+	$(".pin").empty()
 	if (indToRemove[1]) {
-		$("#pinBut").attr("src", "images/pinList.webp")
-		$("#pinBut").attr("title", jsStr["PIN_LIST"][LANG])
+		$(".pin").append("<img src='images/pin.svg'>")
+		$(".pin").append(jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
 	}
 	else {
-		$("#pinBut").attr("src", "images/unpinList.webp")
-		$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
-		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime()])
+		$(".pin").append("<img src='images/unpin.svg'>")
+		$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+		// [listID, listName, listCreator, listColor, currTime, isGuess]
+		let isGuess = boards.diffGuesser != undefined ? boards.diffGuesser[0] : 0
+		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime(), isGuess])
 
 		if (pinnedLists.length > 5) pinnedLists = pinnedLists.slice(1, 6)
 	}
@@ -714,15 +881,6 @@ function switchLoFList(site, goto = null) {
 	else window.location.assign(goto == null ? site : site + `&goto=${goto}`)
 }
 
-function debugCards() {
-	// Returns a randomly generated board
-	let str = { "titleImg": "", "pageBGcolor": "#53a3aa" };
-	for (let i = 1; i < Math.ceil(Math.random() * 20) + 1; i++) {
-		str[i] = { "levelName": "Debug #" + i, "creator": fakeNames[Math.floor(Math.random() * fakeNames.length)], "levelID": 128, "video": "9ywnLQywz74", "color": randomColor() }
-	}
-	return str
-}
-
 // const MAX_ON_PAGE = 4;
 function homeCards(obj, custElement = ".listContainer", previewType = 1, overwriteMax = false, custPagination = 0, reverseList = false) {
 	// Do nothing if empty
@@ -740,28 +898,33 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				let darkCol = HEXtoRGB(object[3], 40);
 				let priv = object[4].toString().match(/[A-z]/) != null ? "pid" : "id"
 				$(custElement).append(`
-				<div class="noMobileResize" id="listPreview" href="#" style="background: rgb(${HEXtoRGB(
+			<div class="noMobileResize" id="listPreview" href="#" style="background: rgb(${HEXtoRGB(
 					object[3]
 				)}); display:flex; border-color: rgb(${darkCol.join(",")});">
-					<div style="width: 100%">
-						<p class="uploadText" style="margin: 0;">${object[0]} - ${object[1]
+				<div style="width: 100%">
+				<p class="uploadText" style="margin: 0;">${object[0]} - ${object[1]
 					}</p>
-						<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">
+				<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">
 						<a href="./index.html?${priv}=${object[4]}&goto=${object[6]}">
 							<u>${object[5]}</u>
 						</a> - ${jsStr["L_LEVID"][LANG]}: ${object[2]}</p>
 					</div>
 					<div style="${previewType == 3 ? 'display: none;' : ''}">
-						<img class="button" onclick="removeFave(${object[2]});"
-						     style="width: 4vw" src="images/delete.webp">
+					<img class="button" onclick="removeFave(${object[2]});"
+					style="width: 4vw" src="images/delete.webp">
 					</div>
-				</div>
-				`);
+					</div>
+					`);
 			}
 			else if ([2, 5].includes(previewType)) { // Recently viewed list / Pinned list
 				let lightCol = HEXtoRGB(object[3], -60)
 				let darkCol = HEXtoRGB(object[3], 40)
 				let priv = object[0].toString().match(/[A-z]/) != null ? "pid" : "id"
+
+				let dGuesserBadge = ""
+				if (object[5] != undefined) {
+					dGuesserBadge = object[5] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
+				}
 				$(custElement).append(`
 				<div style="display: flex; align-items: center">
 					<a style="display: flex; align-items: center; flex-grow: 1;" href="./index.html?${priv}=${object[0]}">
@@ -770,7 +933,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 									border-color: rgb(${darkCol.join(",")}); margin: 0.85% ${previewType == 5 ? 1 : 7}% 0.85% 7%; flex-grow: 1;">
 							<div class="boxHeader" style="flex-direction: row !important;">
 								<div>
-								<p class="uploadText" style="margin: 0;">${object[1]}</p>
+								<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object[1]}</p>
 								<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object[2]} -</p>
 								</div>
 								<div>
@@ -784,6 +947,11 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				`);
 			}
 			else if (previewType == 4) { // Newest lists
+				let dGuesserBadge = "";
+				if (object.data.diffGuesser != undefined) {
+					dGuesserBadge = object.data.diffGuesser[0] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
+				}
+
 				let level1col = object["data"][1].color
 				let lightCol = HEXtoRGB(level1col, -60)
 				let darkCol = HEXtoRGB(level1col, 40)
@@ -791,7 +959,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				<a id="listPreview" class="noMobileResize" href="./index.html?id=${object["id"]}"
 					 style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${level1col}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
 					<div style="width: 100%">
-						<p class="uploadText" style="margin: 0;">${object["name"]}</p>
+						<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object["name"]}</p>
 						<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object["creator"]} -</p>
 					</div>
 				</div>
@@ -823,9 +991,7 @@ function drawFaves(favesData) {
 }
 
 var listData = "";
-var debugPwd = 0;
 const repeatBG = [false, true, false]
-const unlockSkinsReq = [0, 10, 100, 250, 500, 1000, 2000, 3000, 5000, 7500, 10000];
 var boards
 $(async function () {
 	// Default 2019 board
@@ -931,7 +1097,7 @@ $(async function () {
 
 	// GENERATING HOMEPAGE!
 	if (LIST_ID == -9) {
-		$(".searchTools").remove();
+		$(".listInfo").remove();
 		$("#crown").remove();
 
 		$.get("./parts/homepage.html", site => {
@@ -946,21 +1112,16 @@ $(async function () {
 		let listQueries = Object.keys(params)
 		var listID = listQueries.includes("id") ? params["id"] : params["pid"]
 
+		$(".listInfo").show()
 		$("#crown").show();
 		$("#crown").css("opacity", 1);
-		$(".searchTools").css("opacity", 1);
-
-		// Password input removal
-		if (!listQueries.some(e => (/id|pid/g).test(e)) && LIST_ID != -11) {
-			$(".password").remove()
-		}
 
 		if (listQueries.includes("preview") & params["preview"] == "1") {
-			$(".searchTools").remove();
+			$(".listInfo").remove();
 			let previewData = sessionStorage.getItem("previewJson")
 			if (previewData == null) {
 				$("#crown").remove()
-				$(".titles").append(jsStr["NO_PREV_DATA"][LANG]);
+				$(".boards").before(`<p class="titles">${jsStr["NO_PREV_DATA"][LANG]}</p>`);
 				return
 			}
 
@@ -970,21 +1131,21 @@ $(async function () {
 				decodedData += String.fromCharCode(decodeData[i]);
 			}
 			boards = JSON.parse(decodedData);
-			$(".titles").append(jsStr["PREVIEW"][LANG]);
 
 			$(".titleImage").attr("src", boards["titleImg"]);
 			$("title").html(`${jsStr["PREVIEW_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 			LIST_NAME = null
 			LIST_CREATOR = "person"
-			generateList(boards, [LIST_ID, LIST_NAME]);
+			if (generateList(boards, [LIST_ID, LIST_NAME])) {
+				$("#crown").before(`<h2 class="titles" style="margin-top: 4vw">(${jsStr["PREVIEW_L"][LANG]})</h2>`);
+			}
 		}
 		else if (listQueries.includes("random")) {
 			$.get("php/getLists.php?random=1", data => {
 				data = data[0]
 				boards = data["data"];
-				$(".titles").append(`<p style="margin: 0;">${data["name"]}</p>
-				<hr class="lineSplitGeneral">
-				<p style="font-size: 3vw;margin: 0;">- ${data["creator"]} -</p>`);
+				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
+				<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1002,39 +1163,29 @@ $(async function () {
 			if (["-2", "-3"].includes(LIST_ID)) {
 				let listName = `Top ${LIST_ID == -2 ? 10 : 15} LoF ${LIST_ID == -2 ? 2019 : 2021}`
 
-				$(".password").remove()
+				$("#editBut").remove()
 				$("title").html(`${listName} | ${jsStr["GDLISTS"][LANG]}`)
 
 				LIST_NAME = listName
 				LIST_CREATOR = "GamingasCZ"
+				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${LIST_NAME}</p>
+				<p style="font-size: var(--normalFont);margin: 0;">${LIST_CREATOR}</p></div>`);
 
 				generateList(boards, [LIST_ID, listName]);
-			}
-
-			else if (window.location.protocol.includes("file") || window.location.port != "") {
-				boards = debugCards();
-				debugPwd = Math.ceil(Math.random() * 9999999999)
-				$(".titles").append(`<p style="color: tomato; margin: 0;">Debug List</p>
-				<hr class="lineSplitGeneral">
-				<p style="font-size: 3vw; margin: 0;">- Dasher123 - (Pass: ${debugPwd})</p>`);
-				$(".titleImage").attr("src", boards["titleImg"]);
-				$("title").html(`${jsStr["DEBUG_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-				generateList(boards, [0, "Debug List"])
 			}
 
 			else {
 				$.get("./php/getLists.php?id=" + listID, function (data) {
 					if ([1, 2].includes(data)) {
-						$(".titles").append(jsStr["L_NOEXIST"][LANG]);
+						$(".boards").before(`<p class="titles">${jsStr["L_NOEXIST"][LANG]}</p>`);
 						$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-						$(".searchTools").remove();
+						$(".listInfo").remove();
 						$("#crown").remove();
 					}
 					else {
 						boards = data["data"];
-						$(".titles").append(`<p style="margin: 0;">${data["name"]}</p>
-					<hr class="lineSplitGeneral">
-					<p style="font-size: 3vw;margin: 0;">- ${data["creator"]} -</p>`);
+						$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
+						<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
 						$(".titleImage").attr("src", boards["titleImg"]);
 						$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1051,16 +1202,15 @@ $(async function () {
 		else if (listQueries.includes("pid")) {
 			await $.get("./php/getLists.php?pid=" + listID, function (data) {
 				if ([1, 2].includes(data)) {
-					$(".titles").append(jsStr["L_NOEXIST"][LANG]);
+					$(".boards").before(`<p class="titles">${jsStr["L_NOEXIST"][LANG]}</p>`);
 					$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-					$(".searchTools").remove();
+					$(".listInfo").remove();
 					$("#crown").remove();
 				}
 				else {
 					boards = data["data"];
-					$(".titles").append(`<p style="margin: 0;">${data["name"]}</p>
-					<hr class="lineSplitGeneral">
-					<p style="font-size: 3vw;margin: 0;">- ${data["creator"]} -</p>`);
+					$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
+					<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
 					$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1073,14 +1223,17 @@ $(async function () {
 			}
 			)
 		}
+		$(".loadPlaceholder").remove()
 	}
 
 	let getPinned = getCookie("pinnedLists")
 	if (getPinned !== null & getPinned !== false) {
 		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
 			if (arr[0] == LIST_ID) {
-				$("#pinBut").attr("src", "images/unpinList.webp")
-				$("#pinBut").attr("title", jsStr["UNPIN_LIST"][LANG])
+				$(".pin").empty()
+				$(".pin").append("<img src='images/unpin.svg'>")
+				$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+				$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
 			}
 		});
 	}
@@ -1115,58 +1268,8 @@ $(async function () {
 });
 
 function checkPassword() {
-	let passEntered = $(".passInput").val();
-
-	// POLISH THIS LATER!!!
-	$(".passInput").attr("disabled", true);
-	$(".passInput").val(jsStr["CHECKING"][LANG]);
-	$(".passInput").css("background-color", "#82fc80")
-
-	$(".passImg").addClass("disabled");
-
-	let postReq = { "pwdEntered": passEntered, "retData": "0" };
-	let isPrivate = window.location.search.includes("pid") ? "pid" : "id"
-	postReq[isPrivate] = LIST_ID;
-
-	$.post("./php/pwdCheckAction.php", postReq, function (data) {
-		// Incorrect pwd
-		if (data != 3) {
-			//testing
-			$(".passInput").css("background-color", "#fc8093")
-			$(".passInput").val(jsStr["INC_PWD"][LANG])
-			setTimeout(() => {
-				$(".passInput").attr("disabled", false);
-				$(".passImg").removeClass("disabled");
-				$(".passInput").val("")
-			}, 1000)
-		}
-		else {
-			sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, passEntered, isPrivate]))
-			window.location.href = `./upload.html?editing`;
-		}
-	})
-
-	if (window.location.port != "") {
-		if (passEntered == debugPwd) {
-			sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, passEntered, isPrivate]))
-			window.location.href = `./upload.html?editing`
-		}
-	}
-}
-
-const switchAnims = (_curr) => localStorage.setItem("anims", localStorage.getItem("anims") == true ? 0 : 1)
-
-function checkCheckbox(changeVal, runFun = null) {
-	if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
-		$(`img[for="${changeVal}"]`).attr("src", "images/check-off.webp")
-		$(`input[name="${changeVal}"]`).attr("checked", false)
-		runFun(false)
-	}
-	else {
-		$(`img[for="${changeVal}"]`).attr("src", "images/check-on.webp")
-		$(`input[name="${changeVal}"]`).attr("checked", true)
-		runFun(true)
-	}
+	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, window.location.search.includes("pid"), LIST_NAME, LIST_CREATOR]))
+	window.location.href = `./upload.html?editing`;
 }
 
 let page = {} // [page, maxPage]

@@ -1,0 +1,19 @@
+<svg width="120" height="120" version="1.1" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <clipPath id="clipPath402">
+   <circle cx="60" cy="60" r="34.956" d="M 94.955627,60 A 34.955627,34.955627 0 0 1 60,94.955627 34.955627,34.955627 0 0 1 25.044373,60 34.955627,34.955627 0 0 1 60,25.044373 34.955627,34.955627 0 0 1 94.955627,60 Z" display="none" fill="#f00" stroke="#040000" stroke-linecap="round" stroke-linejoin="round" style="paint-order:stroke markers fill"/>
+   <path class="powerclip" d="m10.146 10.146h99.707v99.707h-99.707zm84.809 49.854a34.956 34.956 0 0 0-34.956-34.956 34.956 34.956 0 0 0-34.956 34.956 34.956 34.956 0 0 0 34.956 34.956 34.956 34.956 0 0 0 34.956-34.956z" fill="#f00" stroke="#040000" stroke-linecap="round" stroke-linejoin="round" style="paint-order:stroke markers fill"/>
+  </clipPath>
+  <clipPath id="clipPath415">
+   <path d="m16.591 48.707a44.854 44.854 0 0 1 36.607-33.042l6.802 44.335z" display="none" fill="#f00" stroke="#040000" stroke-linecap="round" stroke-linejoin="round" style="paint-order:stroke markers fill"/>
+   <path class="powerclip" d="m10.146 10.146h99.707v99.707h-99.707zm6.4449 38.561 43.409 11.293-6.802-44.335a44.854 44.854 0 0 0-36.607 33.042z" fill="#f00" stroke="#040000" stroke-linecap="round" stroke-linejoin="round" style="paint-order:stroke markers fill"/>
+  </clipPath>
+ </defs>
+ <g transform="translate(6.2177)" stroke-width="0">
+  <g clip-path="url(#clipPath415)">
+   <path d="m104.35 60a44.354 44.354 0 0 1-44.354 44.354 44.354 44.354 0 0 1-44.354-44.354 44.354 44.354 0 0 1 44.354-44.354 44.354 44.354 0 0 1 44.354 44.354z" clip-path="url(#clipPath402)" fill="#fff" stroke-width="0" style="paint-order:stroke markers fill"/>
+  </g>
+  <path transform="matrix(1.603 .41911 -.25294 .96748 -55.648 -22.234)" d="m70.379 50.32c-0.13017 0.22546-25.903 0.22546-26.033-1e-6 -0.13017-0.22546 12.756-22.546 13.017-22.546 0.26033 0 13.147 22.32 13.017 22.546z" fill="#fff" style="paint-order:stroke markers fill"/>
+  <ellipse cx="54.149" cy="20.789" rx="5.1801" ry="4.7155" fill="#fff" style="paint-order:stroke markers fill"/>
+ </g>
+</svg>

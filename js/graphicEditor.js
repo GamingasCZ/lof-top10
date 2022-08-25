@@ -112,74 +112,82 @@ function saveGDBresult(id, data) {
     if (typeof levelList[id]["creator"] == "object") { levelList[id]["creator"][0] = [jsonData["author"], 1] } // Collab tools enabled
     else { levelList[id]["creator"] = jsonData["author"]; } // Not enabled
 
-    saveDifficulty(jsonData["difficulty"], jsonData["featured"], jsonData["epic"], id)
+    saveDifficulty(jsonData["difficulty"], jsonData["cp"], id)
 
     $(".idbox" + id).val(jsonData["id"]);
     levelList[id]["levelID"] = jsonData["id"]
 }
 
-function saveDifficulty(difficulty, featured, epic, listPos) {
+function saveDifficulty(difficulty, cp, listPos) {
+    // cp (gdbrowser cp): -1: keep old rate, 0: norate, 1: star rate, 2: featured, 3: epic
+
     // bad gdbrowser response
     let stringDiffs = ["NA", "Easy", "Normal", "Hard", "Harder", "Insane", "Easy Demon", "Medium Demon", "Hard Demon", "Insane Demon", "Extreme Demon", "Auto"]
     if (typeof difficulty == "string") difficulty = stringDiffs.indexOf(difficulty)
     // If not string, I passed it in as an integer (hopefully :P), corresponds to prev. line
 
-    if (difficulty == 0) {
-        featured = 0; epic = 0;
-    }
+    if (difficulty == 0) cp = 0
 
     $($(".diffMain")[listPos - 1]).attr("src", `images/faces/${difficulty}.webp`)
     $(".faceSelected").removeClass("faceSelected")
     $($(`.diffFace`)[difficulty]).addClass("faceSelected")
 
-    $("#inpEpic").prop("checked", 0)
-    $("#inpFeatured").prop("checked", 0)
-    if (epic != -1) {
-        if (!epic) $("#inpEpic").prop("checked", featured)
-        else if (!featured) $("#inpFeatured").prop("checked", epic)
-    }
-    else {
-        $("#inpEpic").prop("checked", featured[1] == 1)
-        $("#inpFeatured").prop("checked", featured[1] == 2)
+    if (cp == -1) cp = levelList[listPos]["difficulty"][1]
+    $(".diffOptions img").addClass("disabled")
+    $(".diffOptions img").eq(cp).removeClass("disabled")
+
+    if (cp != -1) {
+        switch (cp) {
+            case 0:
+                $($(".diffBack")[listPos - 1]).attr("src", ``); break;
+            case 1:
+                $($(".diffBack")[listPos - 1]).attr("src", `images/star.webp`);
+                $($(".diffBack")[listPos - 1]).attr("id", `starRate`); break;
+            case 2:
+                $($(".diffBack")[listPos - 1]).attr("src", `images/faces/featured.webp`);
+                $($(".diffBack")[listPos - 1]).attr("id", `featuredGlow`); break;
+            case 3:
+                $($(".diffBack")[listPos - 1]).attr("src", `images/faces/epic.webp`);
+                $($(".diffBack")[listPos - 1]).attr("id", `epicGlow`); break;
+            default:
+                break;
+        }
     }
 
-    let rate = 0;
-    if (epic != -1) { // featured passed -1 when epic passed the value from levelList
-        if (epic) { $($(".diffBack")[listPos - 1]).attr("src", `images/faces/epic.webp`); rate = 2; $($(".diffBack")[listPos - 1]).attr("id", `epicGlow`); }
-        else if (featured) { $($(".diffBack")[listPos - 1]).attr("src", `images/faces/featured.webp`); rate = 1; $($(".diffBack")[listPos - 1]).attr("id", `featuredGlow`); }
-        else { $($(".diffBack")[listPos - 1]).attr("src", ``); $($(".diffBack")[listPos - 1]).attr("id", `epicGlow`); }
-    }
-    else rate = featured[1]
-    levelList[listPos]["difficulty"] = [difficulty, rate]
+    levelList[listPos]["difficulty"] = [difficulty, cp]
 }
 function openDiffPicker(lp) {
     $('.cardContainer' + lp).text('')
     if (openedPane == 2 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
     openedPane = 2
 
-    if (levelList[lp]["difficulty"] == undefined) { levelList[lp]["difficulty"] = [0,0]}
+    if (levelList[lp]["difficulty"] == undefined) { levelList[lp]["difficulty"] = [0, 0] }
     let diff = levelList[lp]["difficulty"]
 
     let difficulties = [];
-    for (i = 0; i < 12; i++) difficulties.push(`<img class="button diffFace" onclick="saveDifficulty(${i}, levelList[${lp}]['difficulty'], -1, ${lp})" src='images/faces/${i}.webp'>`)
+    for (i = 0; i < 12; i++) difficulties.push(`<img class="button diffFace" onclick="saveDifficulty(${i}, -1, ${lp})" src='images/faces/${i}.webp'>`)
     difficulties = difficulties.join("\n")
 
+    $('.diffOptions').empty()
+    // TODO: text orientation causes options to overflow
     $('.cardContainer' + lp).append(`
     <div class="difficultyPicker">
         <div class="diffFaces">${difficulties}</div>
-        <div class="diffOptions">
-            <div>
-                <input onchange="saveDifficulty(levelList[${lp}]['difficulty'][0], 1, 0, ${lp})" id="inpEpic" class="button setCheckbox" type="checkbox"></input>
-                <label for="inpEpic" class="uploadText">Featured</label>
-            </div>
-            <div>
-                <input onchange="saveDifficulty(levelList[${lp}]['difficulty'][0], 0, 1, ${lp})" id="inpFeatured" class="button setCheckbox" type="checkbox"></input>
-                <label for="inpFeatured" class="uploadText">Epic</label>
+        <div style="display: flex;margin-right:0.5vw;align-items: center;">
+            <div class="diffOptions">
+                <img src="./images/error.webp" title="${jsStr["NORATE"][LANG]}" class="button diffOptions">
+                <img src="./images/star.webp" title="Star rate" class="button diffOptions">
+                <img src="./images/faces/featured.webp" title="Featured" class="button diffOptions">
+                <img src="./images/faces/epic.webp" title="Epic" class="button diffOptions">
             </div>
         </div>
     </div>`)
+    $(".diffOptions img").eq(0).click(() => saveDifficulty(levelList[lp]['difficulty'][0], 0, lp))
+    $(".diffOptions img").eq(1).click(() => saveDifficulty(levelList[lp]['difficulty'][0], 1, lp))
+    $(".diffOptions img").eq(2).click(() => saveDifficulty(levelList[lp]['difficulty'][0], 2, lp))
+    $(".diffOptions img").eq(3).click(() => saveDifficulty(levelList[lp]['difficulty'][0], 3, lp))
 
-    saveDifficulty(diff[0], diff, -1, lp)
+    saveDifficulty(diff[0], diff[1], lp)
 }
 
 const changeBG = (ind, pos) => { levelList[pos]["background"][0] = ind }
@@ -223,62 +231,98 @@ function showBGdialog() {
     $(".boom").animate({ "opacity": 100 }, 200)
 }
 
-function generateFromJSON() {
+function checkPassword() {
+    if (Object.values($("#passSubmit")[0].classList).includes("disabled")) return
+
+    if ($("#lpass").val().length == 0) return
+
+    $("#lpass").attr("disabled", true)
+    $("#passSubmit").addClass("disabled")
+
     let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
-    let postReq = { "pwdEntered": loadProps[1], "retData": "1" };
-    postReq[loadProps[2]] = loadProps[0];
+    let postReq = {"pwdEntered": $("#lpass").val()};
+
+    // Is list private?
+    postReq[!loadProps[2] ? "id" : "pid"] = loadProps[0];
+    $("#passEditor h3").text(jsStr["CHECKING"][LANG])
     $.post("./php/pwdCheckAction.php", postReq, function (data) {
-        // Disabling input boxes when editing a list
-        $(".uploadTitle").text(jsStr["EDITING"][LANG]);
+        if (typeof data == "object") generateFromJSON(2, data)
+        else {
+            $("#passEditor h3").text(jsStr["TYPEPASS"][LANG])
+            $("#passEditor").css("animation-name","inputError")
+            setTimeout(() => {
+                $("#lpass").attr("disabled", false)
+                $("#passSubmit").removeClass("disabled")
+                $("#lpass").val()
+                $("#passEditor").css("animation-name","")
+            }, 500);
 
-        $("#listnm").attr("disabled", "true");
-        $("#creatornm").attr("disabled", "true");
-
-        $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
-        $("#submitbutton").attr("onclick", "updateList()")
-
-        $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
-
-        if (typeof data == "number") {
-            window.location.replace("./upload.html?editor")
         }
-
-        // Debug list
-        if (window.location.port != "") {
-            data = {"creator":"GaminagsCZ","name":"top 2 nejlepší levely","data":"{\"1\":{\"levelName\":\"LIGMO\",\"creator\":[[\"EidamGD\",[6,12,17,true],\"Host\"],[{\"name\":\"Level\",\"HTMLobject\":{},\"id\":1651926617017}],[{\"name\":\"RealSuni\",\"role\":1651926617017,\"part\":[\"0\",\"3\"],\"color\":\"#ffffff\",\"socials\":[[0,\"https://twitch.tv/OnlyTryingYT\"]],\"HTMLobject\":{},\"verified\":[62,12,12,false]}]],\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[1,0]},\"2\":{\"levelName\":\"LIGMO2\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a3ff00\", \"difficulty\":[1,2]},\"3\":{\"levelName\":\"LIGMO3\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a300ff\", \"difficulty\":[3,1]},\"4\":{\"levelName\":\"LIGMO4\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\", \"difficulty\":[5,1]},\"5\":{\"levelName\":\"LIGMO5\",\"creator\":\"EidamGD\",\"levelID\":\"72443133\",\"video\":\"bvoUo521APE\",\"color\":\"#a30000\"},\"titleImg\":\"\",\"pageBGcolor\":\"#53a3aa\"}","id":88,"timestamp":"1651860720","hidden":"0"}
-        }
-
-        // Is the list hidden?
-        if (data["hidden"] != "0") {
-            $(`img[for="hidden"]`).attr("src", "images/check-on.webp")
-            $(`input[name="hidden"]`).attr("checked", true)
-        }
-
-        // Removing tutorial
-        $("#mainContent").text("");
-        $(".previewButton").removeClass("disabled");
-
-        $("#listnm").val(data["name"])
-        $("#creatornm").val(data["creator"])
-
-        levelList = JSON.parse(data["data"]);
-        $(".titImgInp").val(levelList["titleImg"])
-
-        // Change page background, if not default
-        if (levelList["pageBGcolor"] != "#020202") {
-            $("#bgcolorPicker").css("background", levelList["pageBGcolor"])
-            $("body").css("background-color", levelList["pageBGcolor"])
-            let hue = getHueFromHEX(levelList["pageBGcolor"])
-            $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)            
-        }
-
-        for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
-            loadLevel(y + 1)
-        }
-        updateSmPos()
-        displayCard("1")
-        isHidden = data["hidden"] != "0";
     })
+}
+
+function generateFromJSON(part, boards) {
+    $(".uploadTitle").text(jsStr["EDITING"][LANG]);
+    let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
+
+    // Disabling input boxes when editing a list
+    $("#listnm").attr("disabled", "true");
+    $("#creatornm").attr("disabled", "true");
+    if (part == 1) {
+        $("#listnm").val(loadProps[3]);
+        $("#creatornm").val(loadProps[4]);
+        $(".uploadBG > *:not(#listnm, #creatornm, br)").hide()
+        $("#passEditor").show()
+        return
+    }
+
+    $(".uploadBG > *:not(.imgPreview)").show()
+    $("#passEditor").slideUp(50)
+    $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
+    $("#submitbutton").attr("onclick", "updateList()")
+
+    $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
+
+    // Is the list hidden?
+    if (boards["hidden"] != "0") {
+        $(`img[for="hidden"]`).attr("src", "images/check-on.webp")
+        $(`input[name="hidden"]`).attr("checked", true)
+    }
+
+    
+    // Removing tutorial
+    $("#mainContent").text("");
+    $(".previewButton").removeClass("disabled");
+    
+    $("#listnm").val(boards["name"])
+    $("#creatornm").val(boards["creator"])
+    
+    levelList = JSON.parse(boards["data"]);
+    $(".titImgInp").val(levelList["titleImg"])
+    
+    // Is it a diff guess list?
+    if (levelList["diffGuesser"] != undefined && levelList["diffGuesser"][0]) {
+        $(`img[for="diffGuesser"]`).attr("src", "images/check-on.webp")
+        $(`input[name="diffGuesser"]`).attr("checked", true)
+        $(".settingSubbox").show()
+        if (!levelList["diffGuesser"][1]) $(".settingSubbox img").eq(0).addClass("disabled")
+        if (!levelList["diffGuesser"][2]) $(".settingSubbox img").eq(1).addClass("disabled")
+    }
+
+    // Change page background, if not default
+    if (levelList["pageBGcolor"] != "#020202") {
+        $("#bgcolorPicker").css("background", levelList["pageBGcolor"])
+        $("body").css("background-color", levelList["pageBGcolor"])
+        let hue = getHueFromHEX(levelList["pageBGcolor"])
+        $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+    }
+
+    for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
+        loadLevel(y + 1)
+    }
+    updateSmPos()
+    displayCard("1")
+    isHidden = boards["hidden"] != "0";
 }
 
 function refreshCardDetails(lp) {
@@ -295,7 +339,7 @@ function refreshCardDetails(lp) {
     $("#top" + lp).css("background-color", levelList[lp]["color"])
 
     if (levelList[lp]["difficulty"] != undefined) {
-        let rate = ["","featured", "epic"][levelList[lp]["difficulty"][1]]
+        let rate = ["", "featured", "epic"][levelList[lp]["difficulty"][1]]
 
         $(`.dPick${lp} > .diffMain`).attr("src", `images/faces/${levelList[lp]["difficulty"][0]}.webp`) // change face
         if (rate != "") $(`.dPick${lp} > .diffBack`).attr("src", `images/faces/${rate}.webp`) // change rate glow
@@ -520,7 +564,7 @@ function addPicked(ind) {
     loadLevel(listLenght)
     displayCard(listLenght)
 
-    if (listLenght >= 50) {$(".levelPickerContainer").empty(); maxAddedDialog()}
+    if (listLenght >= 50) { $(".levelPickerContainer").empty(); maxAddedDialog() }
 }
 
 var favesData
@@ -772,7 +816,8 @@ function removeLevel(id) {
 
 var levelList = {
     "titleImg": "",
-    "pageBGcolor": "#020202"
+    "pageBGcolor": "#020202",
+    "diffGuesser": [false, true, true]
 }
 
 function card(index) {
@@ -846,10 +891,8 @@ function card(index) {
     `;
 }
 // <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.webp">
-function preview() {
-    if (checkJson(JSON.stringify(levelList)) == false) {
-        return null;
-    }
+function preview(skipCheck = false) {
+    if (!checkJson(JSON.stringify(levelList), true) && !skipCheck) return
 
     let data = JSON.stringify(levelList);
     let encodedData = [];
@@ -862,6 +905,16 @@ function preview() {
 
 }
 
+function guesserOptions(ind) {
+    levelList.diffGuesser[ind] = !levelList.diffGuesser[ind]
+    $(".diffSelBut img").eq(ind - 1).toggleClass("disabled")
+    if (levelList.diffGuesser.filter(x => x == true).length == 1) {
+        $(".diffSelBut img").removeClass("disabled")
+        levelList.diffGuesser = [false, true, true]
+        $(".settingSubbox").slideToggle(50)
+        checkCheckbox("diffGuesser")
+    }
+}
 
 var fuckupMessages;
 $(function () {

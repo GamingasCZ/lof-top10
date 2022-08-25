@@ -1,10 +1,21 @@
 @keyframes inputError {
-    from {
-        background-color: rgba(243, 70, 70, 0.5);
+    0% {
+        transform: translateX(0);
     }
-
-    to {
-        background-color: rgba(36, 36, 36, 0.5);
+    20% {
+        transform: translateX(-1em);
+    }
+    40% {
+        transform: translateX(1em);
+    }
+    60% {
+        transform: translateX(-1em);
+    }
+    80% {
+        transform: translateX(1em);
+    }
+    100% {
+        transform: translateX(0);
     }
 }
 
@@ -254,6 +265,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
     background-color: rgba(255, 255, 255, 0.08);
     border: none;
     border-radius: 25px;
+    min-width: 2vw;
 }
 
 
@@ -634,7 +646,7 @@ input:disabled {
     height: 4px;
     background-color: salmon;
     border: none;
-    margin: 1% 3%;
+    width: 100%;
 }
 
 .availFill {
@@ -731,13 +743,17 @@ input:disabled {
     border-radius: 1vw;
 }
 
-.diffOptions {
-    display: flex;
-    flex-direction: column;
+.diffOptions img {
+    width: 2vw;
+}
+  .diffOptions {
+    display: grid;
+    grid-template-columns: 50% 50%;
     background-color: rgba(0, 0, 0, 0.336);
     border-radius: 1vw;
-    padding: 0 1vw;
-}
+    padding: 0.5vw;
+    grid-gap: 0.3vw;
+  }
 
 .bgPick {
     background-color: rgba(255, 255, 255, 0.548);
@@ -828,6 +844,13 @@ input:disabled {
     width: 70%;
 }
 
+#starRate {
+	z-index: 2;
+	width: 45%;
+    left: calc(1.7vw + 1.4vh);
+    top: calc(1.3vw + 1.5vh);
+}
+
 #diffBG {
     width:inherit;
     z-index: 0;
@@ -836,6 +859,28 @@ input:disabled {
     z-index: 2;
 }
 
+.settingSubbox {
+    display: flex;
+    gap: 0.5vw;
+    background: #0000004d;
+    padding: 0.5vw;
+    border-radius: 10px;
+    margin-left: 3vw;
+    width: max-content;
+    align-items: center;
+}
+
+/* I am in excrutiating pain from this CSS :/*/
+.diffSelBut {
+	background: #0000004d;
+	border: none;
+	padding: 0.4vw;
+	border-radius: 15px;
+}
+
+.diffSelBut img {
+    width: 2.5vw;
+}
 
 .listDiffContainer {
     position: relative;
@@ -851,17 +896,39 @@ input:disabled {
     height: auto;
     position: absolute;
     z-index: 2;
+    transform-origin: center;
 }
+
+/* These bastards don't fit in the containers >:( */
+.listDiffFace[src$="6.webp"], .diffIcon[src$="6.webp"] { transform: scale(1.09) } /*Easy Demon */
+.listDiffFace[src$="7.webp"], .diffIcon[src$="7.webp"] { transform: scale(1.1) } /*Medium Demon */
+.listDiffFace[src$="8.webp"], .diffIcon[src$="8.webp"] { transform: scale(1.12) translateY(-0.13vw) } /*Hard Demon */
+.listDiffFace[src$="9.webp"], .diffIcon[src$="9.webp"] { transform: scale(1.2) translateY(-0.13vw) } /*Insane Demon */
+.listDiffFace[src$="10.webp"], .diffIcon[src$="10.webp"] { transform: scale(1.3) translateY(-0.18vw) } /*Extreme Demon */
 
 .listDiffEpicRate {
     position: absolute;
     width: 150%;
-    bottom: -17%;
+    transform: translateY(-0.8vh);
 }
 .listDiffRate {
     position: absolute;
     width: 140%;
-    bottom: -20%;
+}
+
+.listDiffStar {
+    position: absolute;
+    z-index: 2;
+    width: 60%;
+    left: calc(1.7vw + 1.4vh);
+    top: calc(3.3vw + -1.6vh);
+}
+
+.rateContainer {
+    display: flex;
+    gap: 6vh;
+    transform: scale(0.8);
+    align-items: center;
 }
 
 .cpicker {
@@ -963,16 +1030,6 @@ input:disabled {
     margin-right: 1%;
 }
 
-.debugTools {
-    justify-content: center !important;
-    background-image: url('../images/debug.webp') !important;
-    max-width: 45vw !important;
-    margin: auto !important;
-    margin: auto !important;
-    margin-top: 1.5% !important;
-    display: none;
-}
-
 .searchTools {
     background-image: var(--greenGradient);
     border-radius: 1vw;
@@ -1017,6 +1074,29 @@ input:disabled {
     justify-content: center;
 }
 
+#passEditor {
+    padding: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(.46,.03,.52,.96);
+}
+#lpass {
+    width: 30%;
+    margin: 0;
+}
+#lpass::placeholder {
+    background-image: url(../images/password2.svg);
+}
+
+#passSubmit {
+    background: rgba(0, 0, 0, 0.459);
+    border-radius: 100%;
+    padding: 0.3vw;
+}
+
 .socialPickerIcon {
     display: inline;
     width: 4vw;
@@ -1055,11 +1135,12 @@ input:disabled {
     text-align: center;
     width: 7% !important;
     margin: 0 !important;
+    font-size: var(--miniFont) !important;
 }
 
 .pageBut {
-    width: 5%;
-    height: 5%;
+    width: 2vw;
+    height: max-content;
     align-self: center;
     margin: 1%;
 }

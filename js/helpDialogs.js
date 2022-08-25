@@ -42,6 +42,10 @@ $(function () {
         "officialLists": {
             "title": jsStr["OFFICIALLIST_T"][LANG],
             "content": jsStr["OFFICIALLIST_D"][LANG]
+        },
+        "diffGuesser": {
+            "title": jsStr["DIFFGUESSER_T"][LANG],
+            "content": jsStr["DIFFGUESSER_D"][LANG]
         }
     }
 })

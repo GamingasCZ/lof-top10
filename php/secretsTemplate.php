@@ -4,6 +4,7 @@ $hostname = "";
 $username = "";
 $password = "";
 $database = "";
+$debugMode = true;
 
 function privateIDGenerator($listName, $creator, $timestamp) {
     $str = $listName . $creator . $timestamp;
@@ -19,7 +20,7 @@ function passwordGenerator($listName, $creator, $timestamp)
 // Not secret :)
 function sanitizeInput($inputArray)
 {
-    error_reporting(0);
+    error_reporting($debugMode ? -1 : 0);
 
     $i = 0;
     foreach ($inputArray as $post) {
@@ -31,7 +32,7 @@ function sanitizeInput($inputArray)
         $i += 1;
     }
 
-    error_reporting(1);
+    error_reporting($debugMode ? -1 : 1);
 
     return $inputArray;
 }

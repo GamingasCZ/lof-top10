@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120"
+   height="120"
+   version="1.1"
+   viewBox="0 0 31.75 31.75"
+   id="svg14"
+   sodipodi:docname="jumpto.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs18" />
+  <sodipodi:namedview
+     id="namedview16"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="5.95"
+     inkscape:cx="38.403361"
+     inkscape:cy="60"
+     inkscape:window-width="1560"
+     inkscape:window-height="874"
+     inkscape:window-x="40"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg14" />
+  <g
+     id="g8"
+     style="stroke-linecap:round;fill:#ffffff">
+    <rect
+       x="3.3956001"
+       y="4.7515998"
+       width="24.959"
+       height="6.2136002"
+       rx="1"
+       fill="#ffe5e5"
+       stroke-width="1.7208"
+       id="rect2"
+       style="fill:#ffffff" />
+    <rect
+       x="10.521"
+       y="12.989"
+       width="17.833"
+       height="6.2136002"
+       rx="1"
+       fill="#e5ffe5"
+       stroke-width="1.4545"
+       id="rect4"
+       style="fill:#ffffff" />
+    <rect
+       x="3.3956001"
+       y="21.173"
+       width="24.959"
+       height="6.2136002"
+       rx="1"
+       fill="#e6e6ff"
+       stroke-width="1.7208"
+       id="rect6"
+       style="fill:#ffffff" />
+  </g>
+  <path
+     d="m 3.39556,12.988714 5.1099,2.9502 -5.1099,2.9502 v -2.9502 z"
+     fill="#ffffff"
+     stroke-width="1.3229"
+     id="path10"
+     style="stroke-linecap:round" />
+</svg>

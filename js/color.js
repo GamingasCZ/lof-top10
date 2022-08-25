@@ -46,12 +46,13 @@ function RGBtoHEX(rgbArray) {
   return "#" + hex.join("");
 }
 
-function randomColor(darken = false) {
+function randomColor(darken = false, getHSL=false) {
   // Returns an array with HSL values: [255, 128, 59]
   let hsl = [];
   hsl.push(parseInt(Math.random() * 360));
   hsl.push(DEFAULT_SATURATION);
   hsl.push(darken ? DEFAULT_DARK : DEFAULT_LIGHTNESS);
+  if (getHSL) return hsl
   return HSLtoHEX(...hsl);
 }
 

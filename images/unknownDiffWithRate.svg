@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="unknownDiffWithRate.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="16"
+     inkscape:cx="6.5"
+     inkscape:cy="7.625"
+     inkscape:window-width="1560"
+     inkscape:window-height="874"
+     inkscape:window-x="40"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Vrstva 2">
+    <g
+       id="g1236"
+       style="fill:#28251b;fill-opacity:1;stroke:#28251b;stroke-opacity:1;stroke-linecap:butt">
+      <g
+         id="g1227"
+         style="fill:#28251b;fill-opacity:1;stroke:#28251b;stroke-opacity:1;stroke-linecap:butt">
+        <path
+           style="fill:#28251b;stroke:#28251b;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+           d="m 9.3018282,21.516925 c 0,0 -4.6367519,-5.095457 -3.8525791,-6.012745 l 1.0082205,0.487211 c 0,0 -2.1412903,-6.7466475 -0.4023866,-8.4632639 l 1.743366,1.4562691 c 0,0 1.5954405,-0.2070188 3.021568,-0.8878744 1.444138,-0.6894543 2.719635,-1.853501 2.791928,-1.9586739 0.143684,-0.2090337 2.408699,-2.1234183 1.954315,-3.1875014"
+           id="path1072"
+           sodipodi:nodetypes="cccccssc" />
+        <path
+           style="fill:#28251b;stroke:#28251b;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+           d="m 22.75121,21.516956 c 0,0 4.636753,-5.095457 3.85258,-6.012745 l -1.008221,0.487211 c 0,0 2.141291,-6.7466471 0.402387,-8.4632635 L 24.25459,8.9844276 c 0,0 -1.595441,-0.2070188 -3.021569,-0.8878744 C 19.788883,7.4070989 18.513386,6.2430522 18.441093,6.1378793 18.297409,5.9288456 16.032394,4.014461 16.486778,2.9503779"
+           id="path1072-3"
+           sodipodi:nodetypes="cccccssc" />
+        <path
+           style="fill:#28251b;stroke:#28251b;stroke-width:1.0276px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+           d="m 8.931519,21.35341 14.202763,3.1e-5"
+           id="path1214" />
+      </g>
+      <path
+         style="fill:#28251b;stroke:#28251b;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;stroke-dasharray:none"
+         d="M 15.56626,2.9503465 8.931519,21.35341 22.75121,21.516956 17.137443,4.7385354 15.56626,2.9503465"
+         id="path1229" />
+    </g>
+  </g>
+  <g
+     inkscape:label="Vrstva 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <circle
+       style="fill:#000000;fill-rule:evenodd;stroke-width:1.49507;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke markers fill"
+       id="path234"
+       cx="16"
+       cy="16"
+       r="9.2144079" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Vrstva 3">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.0537px;line-height:1.25;font-family:Pusab;-inkscape-font-specification:Pusab;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.326343"
+       x="11.920361"
+       y="20.092566"
+       id="text1622"><tspan
+         sodipodi:role="line"
+         id="tspan1620"
+         x="11.920361"
+         y="20.092566"
+         style="stroke-width:0.326343">?</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120"
+   height="120"
+   viewBox="0 0 31.75 31.75"
+   version="1.1"
+   id="svg1202"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="share.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1204"
+     pagecolor="#000000"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.2740325"
+     inkscape:cx="-67.94098"
+     inkscape:cy="49.691461"
+     inkscape:window-width="1560"
+     inkscape:window-height="874"
+     inkscape:window-x="40"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:lockguides="true" />
+  <defs
+     id="defs1199">
+    <linearGradient
+       id="linearGradient1585"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop1583" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1585"
+       id="linearGradient1587"
+       x1="10.417845"
+       y1="2.2539939"
+       x2="27.295785"
+       y2="2.2539939"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0.2750925,-0.79464172)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1585"
+       id="linearGradient2281"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0.2750925,-0.79464172)"
+       x1="10.417845"
+       y1="2.2539939"
+       x2="27.295785"
+       y2="2.2539939" />
+  </defs>
+  <g
+     inkscape:label="Vrstva 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g2215">
+      <circle
+         style="fill:#ffffff;stroke:#040000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke markers fill"
+         id="path1323"
+         cx="8.6913881"
+         cy="7.4465246"
+         r="3.9338989" />
+      <circle
+         style="fill:#ffffff;stroke:#040000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke markers fill"
+         id="path1323-3-6"
+         cx="23.058613"
+         cy="15.900266"
+         r="3.9338989" />
+      <rect
+         style="fill:url(#linearGradient1587);fill-opacity:1;stroke:#040000;stroke-width:6e-08;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke markers fill"
+         id="rect1451"
+         width="17.057341"
+         height="2.1536512"
+         x="10.513535"
+         y="0.57681441"
+         ry="0.24316341"
+         transform="rotate(30)" />
+    </g>
+    <g
+       id="g2215-6"
+       transform="matrix(1,0,0,-1,0,31.800531)">
+      <circle
+         style="fill:#ffffff;stroke:#040000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke markers fill"
+         id="path1323-7"
+         cx="8.6913881"
+         cy="7.4465246"
+         r="3.9338989" />
+      <circle
+         style="fill:#ffffff;stroke:#040000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke markers fill"
+         id="path1323-3-6-5"
+         cx="23.058613"
+         cy="15.900266"
+         r="3.9338989" />
+      <rect
+         style="fill:url(#linearGradient2281);fill-opacity:1;stroke:#040000;stroke-width:6e-08;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke markers fill"
+         id="rect1451-3"
+         width="17.057341"
+         height="2.1536512"
+         x="10.513535"
+         y="0.57681441"
+         ry="0.24316341"
+         transform="rotate(30)" />
+    </g>
+  </g>
+</svg>

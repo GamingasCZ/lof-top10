@@ -7,7 +7,7 @@
    viewBox="0 0 16 16"
    version="1.1"
    id="svg5"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04, custom)"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    sodipodi:docname="pin.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -28,14 +28,16 @@
      inkscape:object-paths="true"
      inkscape:snap-bbox="true"
      inkscape:zoom="6.349676"
-     inkscape:cx="51.104969"
+     inkscape:cx="18.583625"
      inkscape:cy="45.356645"
-     inkscape:window-width="1558"
+     inkscape:window-width="1560"
      inkscape:window-height="874"
-     inkscape:window-x="42"
+     inkscape:window-x="40"
      inkscape:window-y="26"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer1"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#000000" />
   <defs
      id="defs2" />
   <g
@@ -45,7 +47,7 @@
     <g
        id="g1139"
        style="stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(1.0933763,1.0933763,-1.0933763,1.0933763,6.5716914,-8.0434044)">
+       transform="matrix(0.91711088,0.91711088,-0.91711088,0.91711088,6.801952,-5.4570144)">
       <rect
          style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="rect846"
@@ -79,7 +81,7 @@
     </g>
     <g
        id="g1793"
-       transform="matrix(0.41799662,0.42335905,-0.97770776,0.99025067,12.006396,-2.9069659)"
+       transform="matrix(0.35061053,0.35510848,-0.8200895,0.83061034,11.360517,-1.1486316)"
        style="stroke:none;stroke-width:1.91461;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
       <path
          style="fill:#ffffff;stroke:none;stroke-width:1.91461;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"

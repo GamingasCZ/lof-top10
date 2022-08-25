@@ -63,7 +63,8 @@
   <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
       <p style="margin: 0 auto;" class="collabTTitle">- Nastavení collabu -</p>
-      <img src="./images/delete.webp" class="button" style="width: 6%; height: max-content;" onclick="hideCollabTools()">
+      <img src="./images/delete.webp" class="button" style="width: 6%; height: max-content;"
+        onclick="hideCollabTools()">
     </div>
     <div style="display: flex; width: 100%; padding: 1%; align-items: center">
       <img class="hostIcon" src="./images/bytost.webp" style="margin-right: 1vw;">
@@ -178,7 +179,8 @@
 
   <div style="display: none;" id="centeredPopup" class="uploadText levelPicker">
     <div style="display: flex;">
-      <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">Uložené levely</span>
+      <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">Uložené
+        levely</span>
       <img onclick="hideFavePicker()" src="./images/delete.webp" style="width: 3vw;" class="button">
     </div>
     <input placeholder="        Hledat level..." class="savedFilter searchWithIcon" style="margin-right: 2vw;">
@@ -187,15 +189,20 @@
 
   <div class="uploader" style="display: none;">
     <p class="titles uploadTitle">Nahrávání</p>
-    <form id="levelUpload" action="php/sendList.php" method="post" class="uploadBG uploaderDialog">
-      <br />
-      <input name="listData" id="listData" type="hidden" value="">
+    <form id="levelUpload" class="uploadBG uploaderDialog">
+      <br>
       <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="Jméno seznamu"><br />
       <input name="creator" type="text" id="creatornm" class="uploadMainInp" placeholder="Tvůrce"><br />
+      <div id="passEditor" class="uploadText" style="display: none;">
+        <h3 class="listPassType">Zadej heslo seznamu</h3>
+        <div style="display: flex; gap: 0.5vw; justify-content: center;">
+          <input name="lPass" type="text" id="lpass" class="uploadMainInp searchWithIcon" placeholder="     Heslo"><br />
+          <img id="passSubmit" class="button" src="images/searchOpaque.svg" onclick="checkPassword()">
+        </div>
+      </div>
       <div style="display: flex; justify-content: center; margin-right: 1.7vw;">
         <img src="images/arrow.webp" id="imageArrow" class="button" title="Ukázat náhled obrázku">
-        <input type="text" id="tImgMargin" class="titImgInp uploadMainInp"
-          placeholder="Obrázek seznamu">
+        <input type="text" id="tImgMargin" class="titImgInp uploadMainInp" placeholder="Obrázek seznamu">
         <img src="images/help.webp" class="button helpButton" onclick="openHelp('upload')">
       </div>
       <div class="imgPreview">
@@ -205,7 +212,7 @@
       <br />
       <div class="listColPicker">
         <div style="display: flex;">
-          <label align="center" for="bgcolor" class="uploadText colorLabel">Barva pozadí:</label>
+          <label align="center" for="bgcolor" class="uploadText colorLabel">Pozadí:</label>
           <div class="pickerContainer button">
             <img src="./images/edit.svg" style="z-index: 1;">
             <div id="bgcolorPicker"></div>
@@ -218,7 +225,7 @@
         style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
         <p class="headerTitle uploadText">Levely</p>
         <div style="display: flex;">
-          <img src="images/preview.webp" title="Náhled seznamu" onclick="preview()"
+          <img src="images/preview.webp" title="Náhled seznamu"
             class="button previewButton disabled headerButtons">
           <img src="images/addfromFaves.webp" title="Přidat z uložených" onclick="addFromFaves()"
             class="button addCardButton headerButtons">
@@ -239,6 +246,18 @@
           <label for="private" class="uploadText setLabel">Soukromý seznam</label>
           <img src="images/help.webp" class="button setHelp" onclick="openHelp('private')">
         </div>
+        <div class="setting diffSetting">
+          <input type="checkbox" style="display: none;" name="diffGuesser">
+          <img src="images/check-off.webp" for="diffGuesser"
+            class="setCheckbox button">
+          <label for="diffGuesser" class="uploadText setLabel">Hádání obtížnosti</label>
+          <img src="images/help.webp" class="button setHelp" onclick="openHelp('diffGuesser')">
+        </div>
+        <div class="settingSubbox" style="display: none;">
+          <div class="uploadText guessText">Hádat: </div>
+          <button title="Obtížnosti" type="button" onclick="guesserOptions(1)" class="diffSelBut"><img src="images/faces/4.webp" class="button"></button>
+          <button title="Rating" type="button" onclick="guesserOptions(2)" class="diffSelBut"><img src="images/faces/epic.webp" class="button"></button>
+        </div>
       </div>
 
       <div id="submitarea">
@@ -250,16 +269,6 @@
 
   <div class="browser" style="display: none;">
     <p class="titles communityTitle">Komunitní seznamy</p>
-
-    <!-- Debug Tools -->
-    <div class="searchTools uploadText debugTools">
-      <span class="debugTitle">Seznamy k vygenerování:</span>
-      <img class="button pageBut" src="images/arrow-left.webp" onclick="debugLists(-1)">
-      <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="10">
-      <img class="button pageBut" src="images/arrow-right.webp" onclick="debugLists(1)">
-      <img class="button pageBut" style="width: 3vw;" src="images/preview.webp" onclick="debugLists(2)">
-    </div>
-
     <div class="communityContainer"></div>
   </div>
 

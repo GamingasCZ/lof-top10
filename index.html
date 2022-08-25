@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="./assets/style.css">
   <link rel="stylesheet" href="./assets/community.css">
   <link rel="stylesheet" href="./assets/mobile.css">
-  
+
   <link rel="icon" href="./images/gdl.svg">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
@@ -37,8 +37,10 @@
     <img src="images/arrow-left.webp" class="scrollToTop button" title="Skočit na vrch"
       onclick="document.body.scrollTop = 0">
   </div>
-  
-  <nav><div class="navPlaceholder"></div></nav>
+
+  <nav>
+    <div class="navPlaceholder"></div>
+  </nav>
 
   <div class="boom" id="popupBG"></div>
 
@@ -55,7 +57,8 @@
   <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
       <p style="margin: 0 auto;" class="collabTTitle"></p>
-      <img src="./images/delete.webp" class="button" style="width: 6%; height: max-content;" onclick="hideCollabStats()">
+      <img src="./images/delete.webp" class="button" style="width: 6%; height: max-content;"
+        onclick="hideCollabStats()">
     </div>
     <div class="collabGraphs" style="min-height: 49%; max-height: 49%; overflow-y: auto;">
 
@@ -93,111 +96,79 @@
 
   <div class="listMaster">
 
-    <div class="titles listInfo"></div>
-
-    <img class="titleImage">
-
-    <div class="searchTools listOptions uploadText" style="justify-content: space-between; opacity: 0;">
-      <div>
-        <img src="images/list.webp" onclick="listList()" style="width: 3.5vw; margin-right: 0.5vw;" class="button lList disabled"
-          title="Seznam levelů">
-        <img src="images/comments.webp" onclick="listComments()" style="width: 3.5vw;" class="button lComm"
-          title="Komentáře">
-        <div id="commAmount">1</div>
+    <div class="listInfo" style="display: none;">
+      <div class="titles listInfoContainer" id="listOptionsID">
+        <div class="loadPlaceholder">
+          <div class="placeholderName"></div>
+          <div class="placeholderCreator"></div>
+        </div>
+        <div class="listOptionsContainer">
+          <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg"><div id="shareBut">Sdílet</div></button>
+          <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg"><div id="jumpToBut">Skočit na</div></button>
+          <button onclick="pinList()" class="listHeaderBlue uploadText pin"><img src="images/pin.svg"><div id="pinBut">Připnout</div></button>
+          <button onclick="checkPassword()" class="listHeaderBlue uploadText"><img src="images/edit.svg"><div id="editBut">Upravit</div></button>
+        </div>
       </div>
-
-      <div>
-        <img src="images/jumpBut.webp" onclick="showJumpTo()" style="width: 3.5vw;" id="jumpToBut" class="button lJumpTo" title="Skočit na...">
-        <img src="images/shareBut.webp" onclick="listShare()" style="width: 3.5vw; margin-left: 0.5vw;" id="shareBut" class="button lShare" title="Sdílet">
-        <img src="images/pinList.webp" onclick="pinList()" style="width: 3.5vw; margin-left: 0.5vw;" id="pinBut" class="button lPin" title="Připnout seznam">
-      </div>
-
-      <div class="password">
-        <input type="text" class="passInput searchWithIcon" placeholder="Heslo"
-          style="margin: 0% 2% 0%; width: 13vw; transform: none;">
-        <img src="./images/searchButton.svg" onclick="checkPassword()" class="button passImg" style="width: 4vw;">
+      <div id="cToolTop">
+        <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img src="images/comment.svg"><div id="commButtonText">Komentáře</div><div id="commAmount"></div></button>
+        <hr class="lineSplitGeneral">
       </div>
     </div>
 
+    <img class="titleImage">
+
     <div class="comments">
-      <div class="searchTools uploadText debugTools">
-        <span class="debugTitle" style="font-size: 2.6vw;">Přidat komentáře:</span>
-        <img class="button pageBut" src="images/arrow-left.webp" onclick="debugComments(-1)">
-        <input autocomplete="off" style="width: 8vw;" class="pageIndicator" id="lDebugAm" value="1">
-        <img class="button pageBut" src="images/arrow-right.webp" onclick="debugComments(1)">
-        <img class="button pageBut" style="width: 3vw;" src="images/preview.webp" onclick="debugComments(2)">
-      </div>
-
-      <div class="searchTools uploadText" id="commentTool" style="justify-content: center;">
-        <div class="page">
-          <span id="pageStr" style="padding-right: 2%;">Strana: </span>
-          <img class="button pageBut" src="images/arrow-left.webp" onclick="commpageSwitch(-1)">
-          <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-          <span id="maxPage">/1</span>
-          <img class="button pageBut" src="images/arrow-right.webp" onclick="commpageSwitch(1)">
-        </div>
-        <img onclick="$('#commentMaker')[0].scrollIntoView()" src="images/add.webp" class="button" style="width: 3vw; margin-right: 1vw;">
-        <img onclick="refreshComments()" src="images/refresh.webp" id="refreshBut" class="button" style="width: 3vw;">
-      </div>
-
-      <div id="commentList"></div>
-      <p class="uploadText noComm" style="text-align: center;">- Žádné komentáře -</p>
-
       <div class="positionEdit" id="commentMaker">
         <div style="display: flex; align-items: center; padding-left: 1%; margin-bottom: 0.5vw;">
           <img src="images/bytost.webp" id="pIcon" style="height: max-content; width: 2.5vw;">
           <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno" maxlength="20">
-          <img src="./images/getStats.webp" onclick="getPlayerIcon()" class="button passImg" style="height: max-content;">
+          <img src="./images/getStats.webp" onclick="getPlayerIcon()" class="button passImg"
+            style="height: max-content;">
           <h5 class="uploadText comUserError"></h5>
         </div>
-    
+
         <div class="comBox">
           <div class="uploadText comBoxThings comInpThings" id="comBoxHeader">
             <h3>Komentář</h3>
             <h3 id="charLimit">0/300</h3>
           </div>
-    
+
           <div style="display: flex; width: inherit;">
-            <div contenteditable="" class="uploadText comTextArea comInpArea" id="comFont"></div>
-          </div>
-    
-          <div class="uploadText comBoxThings comInpThings" id="comBoxFooter">
-    
-            <button class="comFooterButton" title="Barva komentáře" onclick="displayPanel(2)">
-              <svg width="90" height="40">
-                <image xlink:href="./images/color.svg" width="90" height="40" />
-              </svg>
-              <!-- <input type="color" class="cpicker cardButton" id="comCPicker"> -->
-            </button>
-    
-            <button class="comFooterButton" title="Emotikony" onclick="displayPanel(1)">
-              <svg width="90" height="40">
-                <image xlink:href="./images/emoji.svg" width="90" height="40" />
-              </svg>
-            </button>
-    
-            <hr id="verticalLine">
-    
-            <button class="comFooterButton sendBut" title="Odeslat komentář" onclick="sendComment()">
-              <svg width="90" height="40">
-                <image xlink:href="./images/send.svg" width="90" height="40" />
-              </svg>
-            </button>
-    
+            <div contenteditable="" class="uploadText comTextArea comInpArea" style="height: 8vw;" id="comFont"></div>
           </div>
         </div>
-    
+
         <div class="emojiPanel"></div>
-    
+
       </div>
+      <div class="uploadText comBoxThings" id="comBoxFooter">
+        <img class="comFooterButton comInpThings" src="images/emoji.svg" title="Emotikony" onclick="displayPanel(1)">
+        <img class="comFooterButton comInpThings" src="images/color.svg" title="Barva komentáře" onclick="displayPanel(2)">
+        <img class="comFooterButton sendBut" src="images/send.svg" title="Odeslat komentář" onclick="sendComment()">
+      </div>
+
+      <div class="searchTools uploadText" id="commentTool" style="display: none; justify-content: center;">
+        <div class="page">
+          <span id="pageStr" style="padding-right: 2%;font-size: var(--smallFont);max-width: 80%;">Strana: </span>
+          <img class="button pageBut" src="images/arrow-left.webp" onclick="commpageSwitch(-1)">
+          <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
+          <span id="maxPage">/1</span>
+          <img class="button pageBut" src="images/arrow-right.webp" onclick="commpageSwitch(1)">
+        </div>
+        <img onclick="refreshComments()" src="images/refresh.webp" id="refreshBut" class="button" style="width: 3vw;">
+      </div>
+
+      <div id="commentList">
+      </div>
+      <p class="uploadText noComm" style="text-align: center;">- Žádné komentáře -</p>
+
 
     </div>
 
     <div class="boards">
       <img src="./images/crown.webp" id="crown" style="display: none;">
     </div>
-  </div>
-  
+
 </body>
 <footer style="display: flex;justify-content: center;align-items: center; transform: scale(0.5) translateY(4vw);">
   <p class="uploadText pageBy">Vytvořil </p>
