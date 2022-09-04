@@ -1,17 +1,17 @@
 <form id="homepageHeader" class="inlineFlex" method="get" action="./upload.html">
     <input placeholder="%%s" id="homepageSearch" class="homeSearch" name="s" required></input>
     <button type="submit" class="button">
-        <img style="width: var(--xlFont); height: fit-content;" src="images/searchButton.svg">
+        <img style="width: 4em;margin-bottom: -0.2em;" src="images/searchButton.svg">
     </button>
 </form>
 <div class="inlineFlex searchButs">
-    <a href="./upload.html?editor">
+    <a href="#editor">
         <button class="homepageBigButton button noMobileResize"><img src="images/plus.svg">
             <h2 class="uploadText">%%s</h2>
         </button>
     </a>
     
-    <a href="./index.html?random">
+    <a href="#random">
         <button class="homepageBigButton button noMobileResize"><img src="images/dice.svg">
             <h2 class="uploadText">%%s</h2>
         </button>
@@ -20,7 +20,7 @@
 </div>
 <ul style="padding: 0 1vw;">
     <li class="homepageTitles">%%s
-        <a href="./upload.html?browse">
+        <a href="#browse">
             <button class="homepageBigButton button noMobileResize" id="categoryBut">
                 <img src="images/more.svg">
                 <div class="uploadText">%%s</div>
@@ -32,7 +32,7 @@
     </div>
 
     <li class="homepageTitles">%%s
-        <img src="images/help.webp" id="homepageHelp" class="helpButton button"
+        <img src="images/help.svg" id="homepageHelp" class="helpButton button"
             onclick="openHelp('pinnedLists')">
     </li>
     <div class="pinnedLists">
@@ -60,18 +60,18 @@
     </div>
 
     <li class="homepageTitles">%%s
-        <img src="images/help.webp" id="homepageHelp" class="helpButton button"
+        <img src="images/help.svg" id="homepageHelp" class="helpButton button"
             onclick="openHelp('officialLists')">
     </li>
 
-    <a href="./index.html?year=2019">
+    <a href="#y2019">
         <div class="IXstyle noMobileResize" id="listPreview">
             <div class="uploadText">%%s</div>
             <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
         </div>
     </a>
 
-    <a href="./index.html?year=2021">
+    <a href="#y2021">
         <div class="XXIstyle noMobileResize" id="listPreview">
             <div class="uploadText">%%s</div>
             <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>

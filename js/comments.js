@@ -1,13 +1,12 @@
 const EMOJI_AM = 18;
 function getID() {
-  let paramGetter = new URLSearchParams(window.location.search)
-  let params = Object.fromEntries(paramGetter.entries());
+  let hash = window.location.hash.slice(1)
 
-  if (params["preview"] != null) { return -8 } // List preview from editor
-  if (params["pid"] != null) { return params["pid"] } // Disable comments on private lists
-  if (params["random"] != null) { return -11 } // -11 will be replaced with actual ID later
-  if (params["id"] != null) { return params["id"] } // Community level/2019 or 2021 list (-2,-3)
-  if (params["year"] != null) { return params["year"] == "2021" ? "-3" : "-2" }
+  if (hash != null) { return -8 } // List preview from editor
+  if (hash["pid"] != null) { return hash["pid"] } // Disable comments on private lists
+  if (hash["random"] != null) { return -11 } // -11 will be replaced with actual ID later
+  if (hash["id"] != null) { return hash["id"] } // Community level/2019 or 2021 list (-2,-3)
+  if (hash["year"] != null) { return hash["year"] == "2021" ? "-3" : "-2" }
   else { return -9 } // Is Homepage
 }
 var LIST_ID = getID();
@@ -64,7 +63,7 @@ function updateCharLimit() {
 var actualText = "";
 var midText = "";
 var commentColor = "";
-$(function () {
+function setupComments() {
   // Is on homepage? (do not load)
   if (LIST_ID == -9) return
 
@@ -177,7 +176,7 @@ $(function () {
     }
     displayComments(deeta);
   });
-});
+};
 
 function getPlayerIcon() {
   let player = $(".pIconInp").val();

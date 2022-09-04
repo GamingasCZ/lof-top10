@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="minigame.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="5.6568543"
+     inkscape:cx="6.0104076"
+     inkscape:cy="-30.582368"
+     inkscape:window-width="1560"
+     inkscape:window-height="874"
+     inkscape:window-x="40"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="powermask"
+       id="path-effect8602"
+       is_visible="true"
+       lpeversion="1"
+       uri="#mask-powermask-path-effect8602"
+       invert="false"
+       hide_mask="false"
+       background="true"
+       background_color="#ffffffff" />
+    <inkscape:path-effect
+       effect="powermask"
+       id="path-effect8455"
+       is_visible="true"
+       lpeversion="1"
+       uri="#mask-powermask-path-effect8455"
+       invert="false"
+       hide_mask="false"
+       background="true"
+       background_color="#ffffffff" />
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect3971"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Use fill-rule evenodd on &lt;b&gt;fill and stroke&lt;/b&gt; dialog if no flatten result after convert clip to paths." />
+    <inkscape:path-effect
+       effect="powermask"
+       id="path-effect2178"
+       is_visible="true"
+       lpeversion="1"
+       uri="#mask-powermask-path-effect2178"
+       invert="false"
+       hide_mask="false"
+       background="true"
+       background_color="#ffffffff" />
+    <inkscape:path-effect
+       effect="powermask"
+       id="path-effect2157"
+       is_visible="true"
+       lpeversion="1"
+       uri="#mask-powermask-path-effect2157"
+       invert="false"
+       hide_mask="false"
+       background="true"
+       background_color="#ffffffff" />
+    <inkscape:path-effect
+       effect="powermask"
+       id="path-effect2130"
+       is_visible="true"
+       lpeversion="1"
+       uri="#mask-powermask-path-effect2130"
+       invert="false"
+       hide_mask="false"
+       background="true"
+       background_color="#ffffffff" />
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect1229"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Use fill-rule evenodd on &lt;b&gt;fill and stroke&lt;/b&gt; dialog if no flatten result after convert clip to paths." />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect1405"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1219">
+      <g
+         id="g1227"
+         style="display:block">
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:18.5154;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1221"
+           width="2.9801893"
+           height="3.0530891"
+           x="7.6381598"
+           y="12.185005" />
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:18.5154;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1223"
+           width="2.9801893"
+           height="3.0530891"
+           x="12.770882"
+           y="12.185005" />
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:30.5492;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1225"
+           width="8.1129112"
+           height="3.0530891"
+           x="7.6381598"
+           y="16.283831" />
+      </g>
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1219-3">
+      <g
+         id="g1227-5"
+         style="display:none">
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:18.5154;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1221-6"
+           width="2.9801893"
+           height="3.0530891"
+           x="7.6381598"
+           y="12.185005"
+           d="m 7.6381598,12.185005 h 2.9801892 v 3.053089 H 7.6381598 Z" />
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:18.5154;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1223-2"
+           width="2.9801893"
+           height="3.0530891"
+           x="12.770882"
+           y="12.185005"
+           d="m 12.770882,12.185005 h 2.980189 v 3.053089 h -2.980189 z" />
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:30.5492;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1225-9"
+           width="8.1129112"
+           height="3.0530891"
+           x="7.6381598"
+           y="16.283831"
+           d="M 7.6381598,16.283831 H 15.751071 V 19.33692 H 7.6381598 Z" />
+      </g>
+      <path
+         id="lpe_path-effect1229-1"
+         class="powerclip"
+         d="M 0.97999477,4.430975 H 22.594233 V 26.045213 H 0.97999477 Z m 6.65816503,7.75403 v 3.053089 h 2.9801892 v -3.053089 z m 5.1327222,0 v 3.053089 h 2.980189 v -3.053089 z m -5.1327222,4.098826 v 3.053089 h 8.1129112 v -3.053089 z" />
+    </clipPath>
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect1229-2"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Use fill-rule evenodd on &lt;b&gt;fill and stroke&lt;/b&gt; dialog if no flatten result after convert clip to paths." />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect1229-2">
+      <g
+         id="g1395"
+         style="display:block">
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:18.5154;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1389"
+           width="2.9801893"
+           height="3.0530891"
+           x="7.6381598"
+           y="12.185005" />
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:18.5154;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1391"
+           width="2.9801893"
+           height="3.0530891"
+           x="12.770882"
+           y="12.185005" />
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:30.5492;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1393"
+           width="8.1129112"
+           height="3.0530891"
+           x="7.6381598"
+           y="16.283831" />
+      </g>
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1219-36">
+      <g
+         id="g1227-0"
+         style="display:none">
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:18.5154;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1221-62"
+           width="2.9801893"
+           height="3.0530891"
+           x="7.6381598"
+           y="12.185005"
+           d="m 7.6381598,12.185005 h 2.9801892 v 3.053089 H 7.6381598 Z" />
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:18.5154;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1223-6"
+           width="2.9801893"
+           height="3.0530891"
+           x="12.770882"
+           y="12.185005"
+           d="m 12.770882,12.185005 h 2.980189 v 3.053089 h -2.980189 z" />
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:30.5492;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1225-1"
+           width="8.1129112"
+           height="3.0530891"
+           x="7.6381598"
+           y="16.283831"
+           d="M 7.6381598,16.283831 H 15.751071 V 19.33692 H 7.6381598 Z" />
+      </g>
+      <path
+         id="lpe_path-effect1229"
+         class="powerclip"
+         d="M 0.97999477,4.430975 H 22.594233 V 26.045213 H 0.97999477 Z m 6.65816503,7.75403 v 3.053089 h 2.9801892 v -3.053089 z m 5.1327222,0 v 3.053089 h 2.980189 v -3.053089 z m -5.1327222,4.098826 v 3.053089 h 8.1129112 v -3.053089 z" />
+    </clipPath>
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect1229-8"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Use fill-rule evenodd on &lt;b&gt;fill and stroke&lt;/b&gt; dialog if no flatten result after convert clip to paths." />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect1229-8">
+      <g
+         id="g1501"
+         style="display:block">
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:18.5154;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1495"
+           width="2.9801893"
+           height="3.0530891"
+           x="7.6381598"
+           y="12.185005" />
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:18.5154;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1497"
+           width="2.9801893"
+           height="3.0530891"
+           x="12.770882"
+           y="12.185005" />
+        <rect
+           style="fill:#000000;stroke:none;stroke-width:30.5492;stroke-linecap:round;stroke-linejoin:round"
+           id="rect1499"
+           width="8.1129112"
+           height="3.0530891"
+           x="7.6381598"
+           y="16.283831" />
+      </g>
+    </clipPath>
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask-powermask-path-effect2130" />
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask-powermask-path-effect2157" />
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask-powermask-path-effect2178" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3967">
+      <path
+         style="display:block;fill:#ff0000;stroke:none;stroke-width:2.83614;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 8.9620984,12.457839 19.5264396,10.116256 1.730594,0.03641 c 0,0 -1.58709,-16.8008541 -1.880856,-17.0597658 C 28.044511,5.2918235 11.149223,0.04444566 11.149223,0.04444566 L 5.0772038,4.0795304 Z"
+         id="path3969" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3977">
+      <path
+         style="fill:#ff0000;stroke:none;stroke-width:2.83614;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="M 9.0067611,12.426253 28.533201,22.54251 30.263795,22.57892 28.634406,6.949359 15.096824,-0.33787635 5.9183273,0.97696901 9.0067611,12.426253"
+         id="path3979" />
+    </clipPath>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient925-9"
+       id="linearGradient927-4"
+       x1="0"
+       y1="16"
+       x2="32"
+       y2="16"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-10.143595,5.8564057)" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient925-9">
+      <stop
+         style="stop-color:#227a2b;stop-opacity:1;"
+         offset="0"
+         id="stop921-0" />
+      <stop
+         style="stop-color:#384af0;stop-opacity:1;"
+         offset="1"
+         id="stop923-9" />
+    </linearGradient>
+    <filter
+       id="mask-powermask-path-effect8445_inverse"
+       inkscape:label="filtermask-powermask-path-effect8445"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect8445_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect8445_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+    <filter
+       id="mask-powermask-path-effect8540_inverse"
+       inkscape:label="filtermask-powermask-path-effect8540"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect8540_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect8540_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+    <filter
+       id="mask-powermask-path-effect8550_inverse"
+       inkscape:label="filtermask-powermask-path-effect8550"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect8550_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect8550_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+    <filter
+       id="mask-powermask-path-effect8568_inverse"
+       inkscape:label="filtermask-powermask-path-effect8568"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect8568_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect8568_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+    <filter
+       id="mask-powermask-path-effect8590_inverse"
+       inkscape:label="filtermask-powermask-path-effect8590"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect8590_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect8590_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask-powermask-path-effect8602">
+      <g
+         id="g8600"
+         style="fill:none">
+        <rect
+           style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.355;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           id="rect8598"
+           width="20.539701"
+           height="9.7121286"
+           x="5.7301493"
+           y="5.5074687"
+           rx="5.3667665" />
+      </g>
+    </mask>
+  </defs>
+  <g
+     inkscape:label="Vrstva 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:url(#linearGradient927-4);fill-opacity:1;stroke-width:10.519;stroke-linecap:round"
+       id="path234-1"
+       cx="5.8564067"
+       cy="21.856407"
+       r="16"
+       transform="rotate(-30)" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.50426;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect8717"
+       width="8.3507452"
+       height="8.3507452"
+       x="11.824628"
+       y="11.824628"
+       rx="0.52323866" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.855;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 16,8.9272231 V 2.8284271 L 13.192815,5.6356117 M 18.740039,5.6674755 16,2.8284271"
+       id="path8719"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.855;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 16.033574,23.072778 v 6.098796 l -2.807185,-2.807185 m 5.547224,-0.03186 -2.740039,2.839049"
+       id="path8719-1"
+       sodipodi:nodetypes="ccccc" />
+    <g
+       id="g8824"
+       transform="rotate(-90,15.983215,16)">
+      <path
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.855;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 16,8.9272231 v -6.098796 l -2.807185,2.807185 m 5.547224,0.03186 L 16,2.8284231"
+         id="path8719-5"
+         sodipodi:nodetypes="ccccc" />
+      <path
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.855;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="m 16.033576,23.072776 v 6.098796 l -2.807185,-2.807185 m 5.547224,-0.03186 -2.740039,2.839049"
+         id="path8719-1-9"
+         sodipodi:nodetypes="ccccc" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Vrstva 2" />
+</svg>

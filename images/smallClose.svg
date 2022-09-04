@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16mm"
+   height="16mm"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="smallClose.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#000000"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2"
+     inkscape:cx="-104.5"
+     inkscape:cy="65.999999"
+     inkscape:window-width="1560"
+     inkscape:window-height="874"
+     inkscape:window-x="40"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#000000" />
+  <defs
+     id="defs2" />
+  <g
+     id="g290"
+     transform="matrix(0.68038159,0,0,0.68038159,2.5579951,2.559477)"
+     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1;stroke-width:0.99943915;stroke-dasharray:none;paint-order:stroke markers fill">
+    <rect
+       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.99943915;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1;stroke-opacity:1;stroke-dasharray:none;paint-order:stroke markers fill"
+       id="rect864"
+       width="18.778713"
+       height="4.6946783"
+       x="-9.3794985"
+       y="8.9742842"
+       ry="0.9884032"
+       rx="1.120044"
+       transform="rotate(-45)" />
+    <rect
+       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.99943915;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1;stroke-opacity:1;stroke-dasharray:none;paint-order:stroke markers fill"
+       id="rect864-3"
+       width="18.778713"
+       height="4.6946783"
+       x="1.9322665"
+       y="-2.3440607"
+       ry="0.92913151"
+       transform="rotate(45)"
+       rx="0.99399644" />
+  </g>
+</svg>

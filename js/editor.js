@@ -208,7 +208,7 @@ function updateList() {
 var deeta = '';
 var ogDeeta = '';
 
-$(function () {
+function makeEditor(update) {
     // Do nothing if in editor
     $(".pickerContainer").on("click", showBGColorPicker)
     if (window.location.search.includes("edit")) $(".uploader").show()
@@ -250,40 +250,10 @@ $(function () {
         }
     })
     // Showing color picker
-
-    let isSearching = false
-    let paramGetter = new URLSearchParams(window.location.search)
-    let params = Object.fromEntries(paramGetter.entries());
-
-    if (Object.keys(params).length == 0 || params.browse != null || params.s != null) {
-        $(".browser").show()
-        $.get("./parts/listViewer.html", dt => {
-            $(".communityContainer").append(translateDoc(dt, "listViewer"))
-
-            if (params.s != null) {
-                $(".communityContainer").show()
-                $("#searchBar").val(params.s)
-                isSearching = true
-            }
-
-            // Generates stuff
-            $.get("./php/getLists.php", data => {
-                if (typeof data != "object") { $(".listContainer").text(jsStr["NO_RES"][LANG]); return; }
-                listViewerDrawer(data, ".communityContainer", 4)
-                if (isSearching) $(".communityContainer .doSearch").click()
-            });
-        })
-    }
-
-    if (params.editing != null) {
+    if (update) {
         $("#passEditor").show()
         generateFromJSON(1)
         isHidden = $("input[name='hidden']").attr("checked") == "checked";
-    }
-
-
-    if (window.location.port != "") {
-        $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
     }
 
     $("img[for='diffGuesser']").click(() => {
@@ -297,7 +267,27 @@ $(function () {
     window.addEventListener('beforeunload', exit => {
         if (Object.keys(levelList).length > ADDIT_VALS+1) exit.preventDefault();
     });
-})
+
+    $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
+    $(".savedFilter").on("keyup", searchFaves)
+}
+
+function makeBrowser(search) {
+    let isSearching = false
+    $.get("./parts/listBrowser.html", dt => {
+        if (search != "") {
+            $("#searchBar").val(params.s)
+            isSearching = true
+        }
+
+        // Generates stuff
+        $.get("./php/getLists.php", data => {
+            if (typeof data != "object") { $(".listContainer").text(jsStr["NO_RES"][LANG]); return; }
+            listViewerDrawer(data, "#app", 4)
+            if (isSearching) $("#app .doSearch").click()
+        });
+    })
+}
 
 function closeRmScreen() {
     $(".removeScreen").fadeOut(100)
@@ -360,13 +350,13 @@ function murderList() {
 }
 
 function checkCheckbox(changeVal, runFun = null) {
-	if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
-		$(`img[for="${changeVal}"]`).attr("src", "images/check-off.webp")
+	if ($(`img[for="${changeVal}"]`).attr("src").match("On") != null) {
+		$(`img[for="${changeVal}"]`).attr("src", "images/modernCheck.svg")
 		$(`input[name="${changeVal}"]`).attr("checked", false)
 		if (runFun != null) runFun(changeVal, false)
 	}
 	else {
-		$(`img[for="${changeVal}"]`).attr("src", "images/check-on.webp")
+		$(`img[for="${changeVal}"]`).attr("src", "images/modernCheckOn.svg")
 		$(`input[name="${changeVal}"]`).attr("checked", true)
 		if (runFun != null) runFun(changeVal, true)
 	}

@@ -252,6 +252,7 @@ var jsStr = {
     "L_VIDEO": ["Video", "Video"],
     "DEL_CARD": ["Smazat kartu", "Delete card"],
     "CARD_COL": ["Barva karty", "Card color"],
+    "TAGSTIT": ["Štítky", "Tags"],
     "EDITING": ["Upravování", "Editing"],
     "L_UPDATE": ["Aktualizovat", "Update"],
     "LEVELS": ["Levely", "Levels"],
@@ -265,6 +266,8 @@ var jsStr = {
     "NORATE": ["Bez ratu", "Unrated"],
     "CHECKING": ["Kontrolování...", "Checking..."],
     "TYPEPASS": ["Zadej heslo seznamu", "Enter the list's password"],
+    "TAGS": [["Pomalý","Rychlý","Hodně objektů","2P","Hacknutý","Layout","Dekorace","1.9","Šílený","Unratelý","Nemožný","Shitpost","Minihra","List Demon","Jam","Challenge","Ztracený","","","",""],
+             ["Slow", "Fast", "High Object Count","2P","Hacked","Layout","Decorated","1.9","Mindboggling","Unrated","Impossible","Shitpost","Minigame","List Demon","Jam","Challenge","Lost"]],
 
     // comments
     "PHOLD1": ["Tvůj seznam je...",
@@ -367,9 +370,10 @@ var parts = {
         ["Top 15 Levelů od Fanoušků 2021","Top 15 Request Levels 2021"]
     ],
     "listViewer": [
-        ["Řazení:", "Sorting:"],
-        ["Strana:", "Page:"],
-        ["        Hledání", "        Search"]
+        ["        Hledání", "        Search"],
+    ],
+    "editor": [
+        
     ]
 }
 

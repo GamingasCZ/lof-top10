@@ -485,12 +485,12 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	}
 
 	// If going to favorites, disable guess list
-	if (window.location.search.includes("goto") && boards.diffGuesser[0]) boards.diffGuesser = [0,0,0]
+	if (window.location.search.includes("goto") && boards.diffGuesser[0]) boards.diffGuesser = [0, 0, 0]
 
 	// Todo remove ! from line below and somewhere next in the code or whatever
 	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && singleLevel == -1) singleLevel = 1
 
-	let amount = singleLevel == -1 ? Object.keys(boards).length - ADDIT_VALS +1 : singleLevel + 1
+	let amount = singleLevel == -1 ? Object.keys(boards).length - ADDIT_VALS : singleLevel + 1
 	let start = singleLevel == -1 ? 1 : singleLevel
 	for (let i = start; i < amount; i++) {
 		let bIndex = (i).toString()
@@ -549,6 +549,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 			diff = `<div class="listDiffContainer"><img class="listDiffFace" src="images/faces/${data[0]}.webp">${glow}</div>`
 		}
 
+		if (boards[bIndex]["tags"] == undefined) boards[bIndex]["tags"] = [] // Old list - no tags
 
 		let hasID = ["", null].includes(boards[bIndex]["levelID"])
 		let preview = window.location.search.includes("preview")
@@ -562,7 +563,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		let star = `<img title="${starTitle}" src="images/star.webp" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, ['${listData[0]}','${listData[1]}'])">`
 		if (boards.diffGuesser == undefined || (!boards.diffGuesser[0] || isResult)) {
 			$(".boards").append(`
-				<div class="box" style="${cardBG}">
+				<div class="box" style="${cardBG}" id="${i == 1 ? "toplevel" : ""}">
 					<div style="height:0px;">
 						${favoriteCheck ? star : ""}
 					</div>
@@ -576,12 +577,20 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 					</div>
 	
 					${boxCreator(boards[bIndex]["creator"], bIndex, false)}
+					<div class="${boards[bIndex]["tags"].length ? "listTagContainer" : ""}"></div>
 				</div>
 				`);
 		}
 		else {
 			doDiffGuessing(cardBG, bIndex)
 		}
+
+		// Generate tags
+		let gradients = ["#7a5722", "#7a2222", "#7a2222", "#7a2222", "#227a2b", "#7a2222", "#227a28", "#7a7422", "#000000", "#7a2222", "#226e7a", "#7a2222", "#22737a", "#227a28", "#7a2274", "#7a2222", "#7a5322"]
+		boards[bIndex]["tags"].forEach(tag => {
+			let tagName = tag[1] == -1 ? jsStr["TAGS"][LANG][tag[0]] : tag[1]
+			$(".listTagContainer").append(`<div style="background: ${gradients[tag[0]]};" class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)
+		});
 
 		// Only display icons on hover
 		if (typeof boards[bIndex]["creator"] == "object") {
@@ -856,32 +865,17 @@ function removeFave(remID) {
 	}
 }
 
-let viewingFaves = false
-async function showFaves() {
-	$("iframe").attr("src", "packs.html?type=favorites")
-}
+function switchLoFList(hash, goto = null) {
 
-function switchLoFList(site, goto = null) {
-	if (window.location.href.includes(site)) {
-		// Going back from faves in upload.html
-		if (window.location.pathname.includes("upload")) {
-			if ($("#favoritesContainer").css("display") != "none") showFaves()
-			return
-		}
-
-		// Returning from favorites page doesn't need reloading
-		$(".boards").fadeIn(50);
-		$(".listOptions").fadeIn(50);
-		$(".comments").fadeOut(50);
-		$(".titles").fadeIn(50);
-
-		showFaves()
-
+	window.location.hash = hash
+	/*
+	if (window.location.hash == hash) {
 		// HOW DOES THIS WORK??!! You shouldn't have to subtract 4
 		if (goto != null) $(".box")[goto - 4].scrollIntoView();
 
 	}
-	else window.location.assign(goto == null ? site : site + `&goto=${goto}`)
+	else window.location.assign(goto == null ? hash : hash + `&goto=${goto}`)
+	*/
 }
 
 // const MAX_ON_PAGE = 4;
@@ -908,7 +902,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				<p class="uploadText" style="margin: 0;">${object[0]} - ${object[1]
 					}</p>
 				<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">
-						<a href="./index.html?${priv}=${object[4]}&goto=${object[6]}">
+						<a href="#${object[4]}!${object[6]}">
 							<u>${object[5]}</u>
 						</a> - ${jsStr["L_LEVID"][LANG]}: ${object[2]}</p>
 					</div>
@@ -930,7 +924,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				}
 				$(custElement).append(`
 				<div style="display: flex; align-items: center">
-					<a style="display: flex; align-items: center; flex-grow: 1;" href="./index.html?${priv}=${object[0]}">
+					<a style="display: flex; align-items: center; flex-grow: 1;" href="#${object[0]}">
 						<div id="listPreview" class="noMobileResize")"
 							style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${object[3]}, rgb(${lightCol.join(",")}));
 									border-color: rgb(${darkCol.join(",")}); margin: 0.85% ${previewType == 5 ? 1 : 7}% 0.85% 7%; flex-grow: 1;">
@@ -959,7 +953,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				let lightCol = HEXtoRGB(level1col, -60)
 				let darkCol = HEXtoRGB(level1col, 40)
 				$(custElement).append(`
-				<a id="listPreview" class="noMobileResize" href="./index.html?id=${object["id"]}"
+				<a id="listPreview" class="noMobileResize" href="#${object["id"]}"
 					 style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${level1col}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
 					<div style="width: 100%">
 						<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object["name"]}</p>
@@ -996,6 +990,65 @@ function drawFaves(favesData) {
 var listData = "";
 const repeatBG = [false, true, false]
 var boards
+
+var rot = 1
+async function loadSite() {
+	let hash = window.location.hash.slice(1)
+	$(".logo").css("transform", `rotate(360deg)`)
+	let spinning = setInterval(() => {rot += 1; $(".logo").css("transform", `rotate(${rot*360}deg)`)}, 1000)
+	$("#app").empty()
+	$("body").css("background-color","var(--siteBackground)")
+	if ($(":root").css("--greenGradient") != $(":root").css("--defaultGradient")) {
+		$("nav").css("animation-name","fadeBlack")
+		setTimeout(() => $(":root").css("--greenGradient","var(--defaultGradient)"), 125);
+		setTimeout(() => $("nav").css("animation-name","none"), 250);
+	}
+
+	if (hash == "") {
+		await $.get("./parts/homepage.html", site => {
+			$("#app").html(translateDoc(site, "homepage"))
+		})
+		$("iframe").attr("src", "packs.html?type=homepage")
+	}
+
+	switch (true) {
+		case /(editor|update)/.test(hash):
+			await $.get("./parts/editor.html", site => {
+				$("#app").html(site)
+				makeEditor(hash != "editor")
+			})
+			break;
+
+		case /saved/.test(hash):
+			$("iframe").attr("src", "packs.html?type=favorites")
+			break;
+
+		case /browse/.test(hash):
+			await $.get("./parts/listBrowser.html", site => {
+				$("#app").html(translateDoc(site, "listViewer"))
+				makeBrowser("")
+			})
+			break;
+
+		default:
+			if (hash == "") break;
+			await $.get("../parts/listViewer.html", data => {
+				$("#app").html(data)
+				let listObject;
+				if (hash.match(/[A-z]/) == null) listObject = {"type": "id", "id": hash.match(/\d+/)}
+				else if (hash.match(/y\d+/)) listObject = {"type": "year", "id": hash == "y2019" ? -2 : -3}
+				else if (hash == "random") listObject = {"type": "random"}
+				else listObject = {"type": "pid", "id": hash}
+
+				lists(listObject)
+				setupComments()
+			})
+			break;
+	}
+	clearInterval(spinning)
+	rot = 1
+}
+
 $(async function () {
 	// Default 2019 board
 	if (!isInEditor) {
@@ -1009,201 +1062,128 @@ $(async function () {
 
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
 
-	window.addEventListener("message", async state => {
-		if (state.data == "homepage" && !isInEditor) makeHP()
-		else if (state.data == "favorites") {
-			if (viewingFaves) {
-				$(".mobilePicker > div").eq(2).css("filter", "none")
-				$(".mobilePicker > div > h6").eq(2).text(jsStr["SAVED"][LANG])
-				$(".mobilePicker > div > img").eq(2).attr("src", "images/savedMobHeader.svg")
+	window.addEventListener("hashchange", () => loadSite())
+	loadSite()
+})
 
-				$($(".menuPicker > button > img")[2]).attr("src", "images/savedMobHeader.svg")
-				$($(".menuPicker > button > h4")[2]).text(jsStr["SAVED"][LANG])
-				$("button.yearButtonImg:nth-child(3) > *").css("filter", "none")
-
-				$("body > *:not(nav,footer)").hide();
-
-				if (!isInEditor) {
-					if (LIST_ID == -9) $("#homepageContainer").show()
-
-					$(".listMaster").show()
-				}
-				else {
-					if (window.location.search.includes("editor")) $(".uploader").show()
-					else $(".browser").show()
-				}
-				viewingFaves = false
-			}
-			else {
-				$(".mobilePicker > div").eq(2).css("filter", "var(--redHighlight)")
-				$(".mobilePicker > div > h6").eq(2).text(jsStr["CLOSE"][LANG])
-				$(".mobilePicker > div > img").eq(2).attr("src", "images/close.svg")
-
-				$($(".menuPicker > button > img")[2]).attr("src", "images/close.svg")
-				$($(".menuPicker > button > h4")[2]).text(jsStr["CLOSE"][LANG])
-				$("button.yearButtonImg:nth-child(3) > *").css("filter", "var(--redHighlight)")
-
-				$("body > *:not(nav,footer)").hide();
-				$("#favoritesContainer").show();
-				let favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
-
-				if ($("#favoritesContainer > p").length == 0) {
-					await $.get("./parts/listViewer.html", data => {
-						$("#favoritesContainer").append(translateDoc(data, "listViewer"))
-						$("#favoritesContainer > p").text(jsStr["FAV_LEVELS"][LANG])
-					})
-				}
-				drawFaves(favesData)
-
-				viewingFaves = true
-			}
-		}
-		else if (state.data == "refreshList") {
-			let favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
-			drawFaves(favesData)
-		}
-		else if (state.data[0] == "removed") {
-			originalListData["#favoritesContainer"] = state.data[1]
-
-			drawFaves(currentListData["#favoritesContainer"])
-		}
-	})
-
-	$.get("./parts/navbar.html", navbar => {
-		$("nav").html(translateDoc(navbar, "navbar"))
-
-		// Setting mobile picker in navbar to curr site name
-		if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
-		if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
-
-		$($(".settingsDropdown > option")[LANG]).attr("selected", true)
-
-		$(".settingsDropdown").on("change", () => {
-			let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
-			makeCookie(["lang", switchLang])
-			window.location.reload();
-		})
-
-	})
-
-	if (localStorage.getItem("anims") == null) localStorage.setItem("anims", 1)
-	$("input[name='anim']").attr("checked", localStorage.getItem("anims") == true ? true : false)
-	$("img[for='anim']").attr("src", localStorage.getItem("anims") == true ? "images/check-on.webp" : "images/check-off.webp")
-	let animsEnabled = localStorage.getItem("anims") == true
-
-	if (!animsEnabled) $("body").css("scroll-behavior", "unset")
-
-	if (isInEditor) return
-
-	$(".passInput").val("");
-	$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
-
-	// GENERATING HOMEPAGE!
-	if (LIST_ID == -9) {
-		$(".listInfo").remove();
-		$("#crown").remove();
-
-		$.get("./parts/homepage.html", site => {
-			$("#homepageContainer").html(translateDoc(site, "homepage"))
-		})
-
-		$("iframe").attr("src", "packs.html?type=homepage")
+window.addEventListener("message", async state => {
+	if (state.data == "homepage" && !isInEditor) makeHP()
+	else if (state.data == "favorites") {
+		favesResponse()
 	}
-	else {
-		let paramGetter = new URLSearchParams(window.location.search)
-		let params = Object.fromEntries(paramGetter.entries());
-		let listQueries = Object.keys(params)
-		var listID = listQueries.includes("id") ? params["id"] : params["pid"]
+	else if (state.data == "refreshList") {
+		let favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
+		drawFaves(favesData)
+	}
+	else if (state.data[0] == "removed") {
+		originalListData["#favoritesContainer"] = state.data[1]
 
-		$(".listInfo").show()
-		$("#crown").show();
-		$("#crown").css("opacity", 1);
+		drawFaves(currentListData["#favoritesContainer"])
+	}
+})
 
-		if (listQueries.includes("preview") & params["preview"] == "1") {
-			$(".listInfo").remove();
-			let previewData = sessionStorage.getItem("previewJson")
-			if (previewData == null) {
-				$("#crown").remove()
-				$(".boards").before(`<p class="titles">${jsStr["NO_PREV_DATA"][LANG]}</p>`);
-				return
-			}
+$.get("./parts/navbar.html", navbar => {
+	$("nav").html(translateDoc(navbar, "navbar"))
 
-			let decodeData = atob(previewData).split(",");
-			let decodedData = "";
-			for (i = 0; i < decodeData.length; i++) {
-				decodedData += String.fromCharCode(decodeData[i]);
-			}
-			boards = JSON.parse(decodedData);
+	// Setting mobile picker in navbar to curr site name
+	if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
+	if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
 
+	$($(".settingsDropdown > option")[LANG]).attr("selected", true)
+
+	$(".settingsDropdown").on("change", () => {
+		let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
+		makeCookie(["lang", switchLang])
+		window.location.reload();
+	})
+
+})
+
+$(".passInput").val("");
+$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
+
+async function favesResponse() {
+	let favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
+
+	if ($("#favoritesContainer > p").length == 0) {
+		await $.get("./parts/listBrowser.html", data => {
+			$("#favoritesContainer").append(translateDoc(data, "listViewer"))
+			$("#favoritesContainer > p").text(jsStr["FAV_LEVELS"][LANG])
+		})
+	}
+	drawFaves(favesData)
+}
+
+async function lists(list) {
+	let paramGetter = new URLSearchParams(window.location.search)
+	let params = Object.fromEntries(paramGetter.entries());
+	let listQueries = Object.keys(params)
+	var listID = listQueries.includes("id") ? params["id"] : params["pid"]
+
+	$(".listInfo").show()
+	$("#crown").show();
+	$("#crown").css("opacity", 1);
+
+	if (list.type == "preview") {
+		$(".listInfo").remove();
+		let previewData = sessionStorage.getItem("previewJson")
+		if (previewData == null) {
+			$("#crown").remove()
+			$(".boards").before(`<p class="titles">${jsStr["NO_PREV_DATA"][LANG]}</p>`);
+			return
+		}
+
+		let decodeData = atob(previewData).split(",");
+		let decodedData = "";
+		for (i = 0; i < decodeData.length; i++) {
+			decodedData += String.fromCharCode(decodeData[i]);
+		}
+		boards = JSON.parse(decodedData);
+
+		$(".titleImage").attr("src", boards["titleImg"]);
+		$("title").html(`${jsStr["PREVIEW_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
+		LIST_NAME = null
+		LIST_CREATOR = "person"
+		if (generateList(boards, [LIST_ID, LIST_NAME])) {
+			$("#crown").before(`<h2 class="titles" style="margin-top: 4vw">(${jsStr["PREVIEW_L"][LANG]})</h2>`);
+		}
+	}
+	else if (list.type == "random") {
+		$.get("php/getLists.php?random=1", data => {
+			data = data[0]
+			boards = data["data"];
+			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
+			<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
 			$(".titleImage").attr("src", boards["titleImg"]);
-			$("title").html(`${jsStr["PREVIEW_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-			LIST_NAME = null
-			LIST_CREATOR = "person"
-			if (generateList(boards, [LIST_ID, LIST_NAME])) {
-				$("#crown").before(`<h2 class="titles" style="margin-top: 4vw">(${jsStr["PREVIEW_L"][LANG]})</h2>`);
-			}
+			$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+
+			LIST_ID = parseInt(data["id"])
+
+			LIST_NAME = data["name"]
+			LIST_CREATOR = data["creator"]
+
+			generateList(boards, [encodeURIComponent(data["id"]), data["name"]]);
+
+			refreshComments()
+		})
+	}
+	else if (list.type == "id" || list.type == "year") {
+		if ([-2, -3].includes(list.id)) {
+			let listName = `Top ${list.id == -2 ? 10 : 15} LoF ${list.id == -2 ? 2019 : 2021}`
+
+			$("#editBut").remove()
+			$("title").html(`${listName} | ${jsStr["GDLISTS"][LANG]}`)
+
+			LIST_NAME = listName
+			LIST_CREATOR = "GamingasCZ"
+			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${LIST_NAME}</p>
+			<p style="font-size: var(--normalFont);margin: 0;">${LIST_CREATOR}</p></div>`);
+
+			generateList(boards, [list.id, listName]);
 		}
-		else if (listQueries.includes("random")) {
-			$.get("php/getLists.php?random=1", data => {
-				data = data[0]
-				boards = data["data"];
-				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-				<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
-				$(".titleImage").attr("src", boards["titleImg"]);
-				$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
-				LIST_ID = parseInt(data["id"])
-
-				LIST_NAME = data["name"]
-				LIST_CREATOR = data["creator"]
-
-				generateList(boards, [encodeURIComponent(data["id"]), data["name"]]);
-
-				refreshComments()
-			})
-		}
-		else if (listQueries.includes("id") || listQueries.includes("year")) {
-			if (["-2", "-3"].includes(LIST_ID)) {
-				let listName = `Top ${LIST_ID == -2 ? 10 : 15} LoF ${LIST_ID == -2 ? 2019 : 2021}`
-
-				$("#editBut").remove()
-				$("title").html(`${listName} | ${jsStr["GDLISTS"][LANG]}`)
-
-				LIST_NAME = listName
-				LIST_CREATOR = "GamingasCZ"
-				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${LIST_NAME}</p>
-				<p style="font-size: var(--normalFont);margin: 0;">${LIST_CREATOR}</p></div>`);
-
-				generateList(boards, [LIST_ID, listName]);
-			}
-
-			else {
-				$.get("./php/getLists.php?id=" + listID, function (data) {
-					if ([1, 2].includes(data)) {
-						$(".boards").before(`<p class="titles">${jsStr["L_NOEXIST"][LANG]}</p>`);
-						$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-						$(".listInfo").remove();
-						$("#crown").remove();
-					}
-					else {
-						boards = data["data"];
-						$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-						<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
-						$(".titleImage").attr("src", boards["titleImg"]);
-						$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
-
-						LIST_NAME = data["name"]
-						LIST_CREATOR = data["creator"]
-
-						generateList(boards, [encodeURIComponent(data["id"]), data["name"]]);
-					}
-				}
-				)
-			}
-
-		}
-		else if (listQueries.includes("pid")) {
-			await $.get("./php/getLists.php?pid=" + listID, function (data) {
+		else {
+			$.get("./php/getLists.php?id=" + list.id, function (data) {
 				if ([1, 2].includes(data)) {
 					$(".boards").before(`<p class="titles">${jsStr["L_NOEXIST"][LANG]}</p>`);
 					$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
@@ -1217,62 +1197,81 @@ $(async function () {
 					$(".titleImage").attr("src", boards["titleImg"]);
 					$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
-					LIST_ID = data["hidden"]
 					LIST_NAME = data["name"]
 					LIST_CREATOR = data["creator"]
 
-					generateList(boards, [encodeURIComponent(data["hidden"]), data["name"]]);
+					generateList(boards, [encodeURIComponent(data["id"]), data["name"]]);
 				}
 			}
 			)
 		}
-		$(".loadPlaceholder").remove()
-	}
 
-	let getPinned = getCookie("pinnedLists")
-	if (getPinned !== null & getPinned !== false) {
-		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
-			if (arr[0] == LIST_ID) {
-				$(".pin").empty()
-				$(".pin").append("<img src='images/unpin.svg'>")
-				$(".pin").append(jsStr["UNPIN_LIST"][LANG])
-				$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
+	}
+	else if (list.type == "pid") {
+		await $.get("./php/getLists.php?pid=" + list.id, function (data) {
+			if ([1, 2].includes(data)) {
+				$(".boards").before(`<p class="titles">${jsStr["L_NOEXIST"][LANG]}</p>`);
+				$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
+				$(".listInfo").remove();
+				$("#crown").remove();
 			}
-		});
+			else {
+				boards = data["data"];
+				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
+				<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
+				$(".titleImage").attr("src", boards["titleImg"]);
+				$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+
+				LIST_ID = data["hidden"]
+				LIST_NAME = data["name"]
+				LIST_CREATOR = data["creator"]
+
+				generateList(boards, [encodeURIComponent(data["hidden"]), data["name"]]);
+			}
+		}
+		)
 	}
+	$(".loadPlaceholder").remove()
+}
 
-	// Hiding header and showing scroll to top button
-	$("body").on("scroll", () => {
-		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
-		else $(".scrollToTop").css("opacity", 0)
-	})
+let getPinned = getCookie("pinnedLists")
+if (getPinned !== null & getPinned !== false) {
+	JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
+		if (arr[0] == LIST_ID) {
+			$(".pin").empty()
+			$(".pin").append("<img src='images/unpin.svg'>")
+			$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+			$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
+		}
+	});
+}
 
-	$(".searchTools").css("opacity", 1)
-	$("footer").css("opacity", 1)
+// Hiding header and showing scroll to top button
+$("body").on("scroll", () => {
+	if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
+	else $(".scrollToTop").css("opacity", 0)
+})
 
-	// Box appear animation
-	if (animsEnabled) {
-		$(".box").css("transform", "translateX(-100vw)");
-		$(".box").css("transition", "transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1)");
+// Box appear animation
+$(".box").css("transform", "translateX(-100vw)");
+$(".box").css("transition", "transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1)");
 
-		$("#crown").css("transition", "transform 1s ease-out, opacity 1.2s ease-out");
-		$("#crown").css("opacity", 1);
+$("#crown").css("transition", "transform 1s ease-out, opacity 1.2s ease-out");
+$("#crown").css("opacity", 1);
 
 
-		let index = 0
-		let boxAppear = setInterval(() => {
-			if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
-			if ($(".box")[index] != undefined) $(".box")[index].style.transform = "none"
-			index++
-		}, 100);
-	}
+let index = 0
+let boxAppear = setInterval(() => {
+	if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
+	if ($(".box")[index] != undefined) $(".box")[index].style.transform = "none"
+	index++
+}, 100);
 
-	$("#crown").css("transform", "translateY(5.7vw)")
-});
+$("#crown").css("transform", "translateY(5.7vw)")
 
 function checkPassword() {
 	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, window.location.search.includes("pid"), LIST_NAME, LIST_CREATOR]))
-	window.location.href = `./upload.html?editing`;
+	window.location.hash = `#update`;
 }
 
 let page = {} // [page, maxPage]
@@ -1396,4 +1395,6 @@ function listViewerDrawer(data, parent, cardType) {
 		// Object is empty
 		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}
+
+	// Draw pages
 }

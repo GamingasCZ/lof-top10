@@ -7,6 +7,10 @@
 
 @media only screen and (max-width: 550px) {
 
+:root {
+    --fontMultiplier: 0.8;
+}
+
 .comTextArea {
     height: 20vw;
 }
@@ -23,7 +27,7 @@
     display: none;
 }
 
-.button:not(.noMobileResize), .logo {
+.button:not(.noMobileResize) {
     width: 8vw !important;
     height: auto !important;
 }
@@ -46,14 +50,8 @@
 }
 
 #jumpToTools {
-    top: 0;
     height: 100%;
     width: 100%;
-    margin: 0;
-    border: none;
-    border-radius: 0;
-    left: 0;
-    padding: 0;
 }
 
 #crown {

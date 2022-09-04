@@ -45,22 +45,37 @@
   }
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg)}
+  to { transform: rotate(360deg)}
+}
+
+@keyframes fadeBlack {
+  0% {transform: translateY(0px)}
+  50% {transform: translateY(-4em)}
+  100% {transform: translateY(0px)}
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
 
 :root {
-  --smallFont: clamp(0.5rem, 1.4vw, 1.8rem);
-  --miniFont: clamp(0.5rem, 1.4vw, 1.8rem);
-  --normalFont: clamp(0.7rem, 1.6vw, 2rem);
-  --bigFont: calc(80% + 1vw);
-  --biggerFont: clamp(1.2rem, 2.5vw, 2.8rem);
-  --xlFont: clamp(2rem, 3.5vw, 5rem);
+  --smallFont: calc(1em * var(--fontMultiplier));
+  --miniFont: calc(0.8em * var(--fontMultiplier));
+  --normalFont: calc(1.2em * var(--fontMultiplier));
+  --bigFont: calc(1.6em * var(--fontMultiplier));
+  --biggerFont: calc(1.8em * var(--fontMultiplier));
+  --xlFont: calc(2em * var(--fontMultiplier));
   --lightHighlight: invert(0.4) sepia(1) saturate(1.5) hue-rotate(90deg);
   --redHighlight: invert(0.4) sepia(1) saturate(4) hue-rotate(300deg);
   --greenGradient: linear-gradient(9deg, #142019, #045124);
+  --defaultGradient: linear-gradient(9deg, #533125, #470451);
+  --fontMultiplier: 1;
+  --siteBackground: #140815;
 }
 
 body {
-    background: black url("../images/bg.webp");
+    background-color: var(--siteBackground);
+    transition: background-color 0.25s;
     margin: 0;
 }
 
@@ -79,28 +94,15 @@ body {
 }
 
 .logo {
-  width: 3vw;
-  height: auto;
-  padding-left: 1vw;
-  /* transform: scale(1) translateY(0.1vw);
-  transition-duration: 0.2s; */
-  transform-origin: center;
-  -ms-interpolation-mode: bicubic;
+  width: 2.5em;
+  transition: transform 1s;
 }
 
 .menuPicker {
   display: flex;
   align-items: center;
-  gap: 2vw;
+  gap: 2em;
 }
-
-/* .logo:hover {
-  transform: scale(1.05) translateY(0.1vw);
-}
-.logo:active {
-  animation-name: logoPoint;
-  animation-duration: 0.2s;
-} */
 
 @keyframes logoPoint {
   0% {
@@ -162,14 +164,14 @@ span {
 	gap: 0.5vw;
 	max-width: fit-content;
 	border: none;
-	min-width: 11vw;
+	min-width: 7em;
 	cursor: pointer;
 	font-size: var(--miniFont) !important;
   max-width: 100%;
 }
 
 .listHeaderBlue img {
-  width: 4vh;
+  width: var(--smallFont);
   padding-left: 0.4vw;
 }
 
@@ -261,7 +263,7 @@ span {
   background-color: #43a045;
   background-image: url("../images/cardBg.webp");
   padding: 1vw 3vw 2vw 3vw;
-  margin: 2.5vw 7vw 2.5vw 7vw;
+  margin: 2.5vw auto 2.5vw auto;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
@@ -270,6 +272,22 @@ span {
   text-shadow: rgba(0,0,0,0.5) 0.2vw 0.2vw 0.3vw;
   position: relative;
   z-index: 1;
+  max-width: clamp(73em, 75%, 80em);
+}
+
+/* Crown */
+#toplevel::before {
+  content: "";
+  background: url(../images/crown.webp);
+  background-repeat: repeat;
+  background-size: auto;
+  width: 100%;
+  height: 218px;
+  position: absolute;
+  top: -87px;
+  left: 43%;
+  background-size: 12em;
+  background-repeat: no-repeat;
 }
 
 .boxLinksContainer {
@@ -310,7 +328,7 @@ u {
 .settingsMenu {
   position: absolute;
   float: right;
-  background: #222;
+  background: var(--greenGradient);
   right: 1vw;
   top: 4vw;
   padding: 0.5vw;
@@ -325,7 +343,7 @@ u {
   position: relative;
   bottom: 0.6vw;
   left: 3%;
-  width: 4vw;
+  width: 3em;
   float: right;
 }
 
@@ -356,9 +374,9 @@ u {
 }
 
 .boxLink {
-  width: 6vw;
-  height: 6vw;
-  margin-right: 1vw;
+  width: 5em;
+  height: 5em;
+  margin-right: 1em;
 }
 
 .collabParent {
@@ -507,13 +525,13 @@ u {
 .yearButtonImg {
   border: none;
   margin: 0 !important;
-  background: #131313;
+  background: #13131387;
   font-size: var(--bigFont) !important;
   cursor: pointer;
-  padding: 0.3vw 2vw;
-  border-radius: 0.7vw;
+  padding: 0.2em 1em;
+  border-radius: 10em;
   display: flex;
-  gap: 1vw;
+  gap: 0.5em;
   align-items: center;
 }
 
@@ -523,7 +541,7 @@ u {
 }
 
 .yearButtonImg > img {
-  width: var(--normalFont);
+  width: var(--smallFont);
 }
 
 .verticalSplitter {
@@ -619,18 +637,8 @@ html, body {
   display: block;
 }
 
-#crown {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  opacity: 0;
-  width: 15vw;
-  position: relative;
-  z-index: 2;
-}
-
 .boards {
-  margin-top: -4vw;
+  margin-top: 6em;
 }
 
 /* List always shows by default */
@@ -825,9 +833,7 @@ html, body {
 
 nav {
   background-image: var(--greenGradient);
-  animation-iteration-count: infinite;
-  animation-duration: 2s;
-  animation-timing-function: linear;
+  animation-duration: 0.25s;
   position: sticky;
   width: 100vw;
   z-index: 3;
@@ -842,7 +848,6 @@ nav {
 .mobilePicker {
   text-align: center;
   font-family: pusab;
-  font-size: var(--xlFont);
   color: white;
   display: none;
   flex-direction: row;
@@ -850,16 +855,13 @@ nav {
   gap: 30%;
 }
 
-.mobilePicker > div {
-  min-width: 1em;
-}
-
 .mobilePicker > div > h6 {
-  margin: -0.8em 0 0;
+  margin: 0;
   font-size: var(--miniFont);
 }
 .mobilePicker > div > img, object {
-  width: 0.8em;
+  width: 1.6em;
+  padding-top: 0.2em;
 }
 
 footer {
@@ -874,10 +876,10 @@ iframe {
 }
 
 .eventButton {
-  background-color: #2d6ea6 !important;
-  padding: 0% 1%;
-  margin-left: 1%;
-  border-radius: 10%;
+	background-color: #00000070 !important;
+	padding: 0% 1vw;
+	margin-left: 1%;
+	border-radius: 100vw;
 }
 
 .mobileButton:not(.noMobileResize) {
@@ -888,7 +890,7 @@ iframe {
 .inlineFlex {
   display: flex;
   justify-content: center;
-  gap: 1vw;
+  gap: 0.5em;
   align-items: center;
 }
 
@@ -898,17 +900,19 @@ iframe {
   align-items: flex-end;
   background: url(../images/introGrad2.webp);
   background-repeat: repeat-x;
-  background-size: contain;
+  background-size: cover;
+  background-position-y: top;
 }
 
 #homepageSearch {
   background: url("../images/search.svg") 1vw, linear-gradient(35deg, #10180e, #15291e);
   border: rgb(27, 63, 31) solid 5px;
-  padding: 1%;
+  padding: 0.3em;
   font-size: var(--bigFont);
   color: white;
   border-radius: 1vw;
-  max-height: 3vh;
+  /*! max-height: 3em; */
+  max-width: 61%;
 }
 
 .homepageTitles {
