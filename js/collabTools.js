@@ -758,7 +758,7 @@ function changeSocial(but) {
     });
 }
 
-$(function () {
+function setupCollabTools() {
     HOST_ROLE = "Host"
     presets = [[jsStr["DECO"][LANG], 1], [jsStr["LAYOUT"][LANG], 1], [jsStr["TESTER"][LANG], 0]];
     presetNames = [jsStr["DECO"][LANG], jsStr["LAYOUT"][LANG], jsStr["TESTER"][LANG]]
@@ -789,4 +789,4 @@ $(function () {
         $(".memberStuff").eq(1).css("display", "initial");
         $(".roleStuff").hide()
     })
-})
+}

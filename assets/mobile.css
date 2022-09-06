@@ -11,10 +11,6 @@
     --fontMultiplier: 0.8;
 }
 
-.comTextArea {
-    height: 20vw;
-}
-
 .boxHeader {
     flex-direction: column;
 }
@@ -41,22 +37,13 @@
     transform: scale(1.5);
 }
 
-#shareContainer {
-    font-size: 4vw;
-}
 #shareTools {
     width: 75%;
-    left: 0;
 }
 
 #jumpToTools {
     height: 100%;
     width: 100%;
-}
-
-#crown {
-    transform: translateY(7.7vw) !important;
-    width: 25vw;
 }
 
 #collabTools {
@@ -117,5 +104,8 @@
 .listInfoContainer {
     flex-direction: column;
 }
+
+.collabTables th div { display: none !important; }
+.collabTables th:nth-child(1) { display: none !important; }
 
 }

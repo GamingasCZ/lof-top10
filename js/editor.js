@@ -207,8 +207,15 @@ function updateList() {
 
 var deeta = '';
 var ogDeeta = '';
+const DEFAULT_LEVELLIST = {
+    "titleImg": "",
+    "pageBGcolor": "#020202",
+    "diffGuesser": [false, true, true]
+}
 
 function makeEditor(update) {
+    levelList = DEFAULT_LEVELLIST
+
     // Do nothing if in editor
     $(".pickerContainer").on("click", showBGColorPicker)
     if (window.location.search.includes("edit")) $(".uploader").show()

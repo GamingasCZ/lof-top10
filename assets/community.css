@@ -553,11 +553,24 @@ input:disabled {
     height: 40%;
 }
 
+.backToEditor {
+    float: left;
+    width: 3em;
+    margin: 1em;
+}
+
+.listErrors {
+    opacity: 0.1;
+    width: 22em;
+    margin: auto;
+    display: block;
+}
+
 #listPreview {
     background-color: rgb(36, 36, 36);
     color: white;
     padding: 0 1em;
-    margin: 1.5% 6em;
+    margin: 1.5% 0;
     border: white 0.3em solid;
     border-radius: 5px;
     display: block;
@@ -593,7 +606,7 @@ input:disabled {
 .headerButtons {
     width: 4em;
     height: 4em;
-    margin-right: 1em;
+    margin-right: 0.5em;
 }
 
 .headerText {
@@ -724,7 +737,7 @@ input:disabled {
 }
 
 .diffFace {
-    width: 3em;
+    width: 2.5em;
     padding: 0.5em 0.5em;
     height: fit-content;
 }
@@ -741,7 +754,7 @@ input:disabled {
 .diffFaces {
     width: 78%;
     display: flex;
-    gap: 0.5vw;
+    /*! gap: 0em; */
     align-items: center;
     overflow-x: auto;
     overflow-y: hidden;
@@ -845,7 +858,7 @@ input:disabled {
     z-index: 1;
     width: 70%;
     bottom: 12%;
-    right: 12%;
+    right: 14%;
 }
 
 #featuredGlow {
@@ -911,9 +924,9 @@ input:disabled {
 /* These bastards don't fit in the containers >:( */
 .listDiffFace[src$="6.webp"], .diffIcon[src$="6.webp"] { transform: scale(1.09) } /*Easy Demon */
 .listDiffFace[src$="7.webp"], .diffIcon[src$="7.webp"] { transform: scale(1.1) } /*Medium Demon */
-.listDiffFace[src$="8.webp"], .diffIcon[src$="8.webp"] { transform: scale(1.12) translateY(-0.13vw) } /*Hard Demon */
-.listDiffFace[src$="9.webp"], .diffIcon[src$="9.webp"] { transform: scale(1.2) translateY(-0.13vw) } /*Insane Demon */
-.listDiffFace[src$="10.webp"], .diffIcon[src$="10.webp"] { transform: scale(1.3) translateY(-0.18vw) } /*Extreme Demon */
+.listDiffFace[src$="8.webp"], .diffIcon[src$="8.webp"] { transform: scale(1.12) translateY(-0.03em); } /*Hard Demon */
+.listDiffFace[src$="9.webp"], .diffIcon[src$="9.webp"] { transform: scale(1.2) translateY(-0.03em); } /*Insane Demon */
+.listDiffFace[src$="10.webp"], .diffIcon[src$="10.webp"] { transform: scale(1.2) translateY(-0.08em); } /*Extreme Demon */
 
 .listDiffEpicRate {
     position: absolute;

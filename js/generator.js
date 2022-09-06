@@ -480,7 +480,7 @@ var LIST_CREATOR = null
 function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	// Empty list (useful in previews)
 	if (Object.keys(boards).length - ADDIT_VALS == 1) {
-		$(".boards").append("<h2 class='titles' style='margin-top: 4vw'>" + jsStr["EMPLIST"][LANG] + "</h2>")
+		$(".boards").append("<h2 class='titles' style='margin-top: 4vw'><img src='images/listEmpty.svg' class='listErrors'>" + jsStr["EMPLIST"][LANG] + "</h2>")
 		return false
 	}
 
@@ -520,7 +520,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 
 		// Glow depending on level position
 		var cardBG = `background-color: ${boardFix}; background-image: url(images/cardBg.webp), linear-gradient(39deg, ${boardFix}, rgb(${gradientLighter.join(",")}));`;
-		if (i == 1) { cardBG += ";box-shadow: 5px 5px 40px yellow, -5px -5px 40px green, 5px -5px 40px aqua, -5px 5px 40px red;"; }
+		if (i == 1) { cardBG += `;box-shadow: 2px 2px 60px ${boardFix};`; }
 		if (i == 2) { cardBG += `;box-shadow: 2px 2px 30px ${boardFix};`; }
 		if (i == 3) { cardBG += `;box-shadow: 2px 2px 20px ${boardFix};`; }
 
@@ -558,7 +558,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		let currentlyFavedIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
 		let disableStar = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "disabled" : ""
 		let starTitle = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? jsStr["FAV_REM"][LANG] : jsStr["FAV_ADD"][LANG]
-		let diffIndent = diff == "" ? "0" : "2"
+		let diffIndent = diff == "" ? "0" : "1"
 
 		let star = `<img title="${starTitle}" src="images/star.webp" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, ['${listData[0]}','${listData[1]}'])">`
 		if (boards.diffGuesser == undefined || (!boards.diffGuesser[0] || isResult)) {
@@ -568,7 +568,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 						${favoriteCheck ? star : ""}
 					</div>
 					<div class="boxHeader">
-						<span id="listLevelName">${diff}<p style="margin: 0; margin-left: ${diffIndent}vw;">${boards[bIndex]["levelName"]}</p></span>
+						<span id="listLevelName">${diff}<p style="margin: 0; margin-left: ${diffIndent}em;">${boards[bIndex]["levelName"]}</p></span>
 						<div class="boxLinksContainer">
 							${video}
 							${ID[0]}
@@ -623,8 +623,6 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	// Removing stuff if list is empty
 	if ($(".box").length == 0 & location.pathname.match(/(upload)/g) == null) {
 		$(".titles").append(jsStr["LLOAD_FAIL"][LANG]);
-		$(".password").remove();
-		$("#crown").remove();
 	}
 
 	// When clicking a level in saved, scroll to card
@@ -649,6 +647,17 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 
 		makeCookie(["recentlyViewed", JSON.stringify(parsed)])
 	}
+
+	// Box appear animation
+	$(".box").css("transform", "translateX(-100vw)");
+	$(".box").css("transition", "transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1)");
+	
+	let index = 0
+	let boxAppear = setInterval(() => {
+		if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
+		if ($(".box")[index] != undefined) $(".box")[index].style.transform = "none"
+		index++
+	}, 100);
 
 	if ($(".box")[params.goto - 1] != undefined) $(".box")[params.goto - 1].scrollIntoView()
 	return true
@@ -1014,8 +1023,9 @@ async function loadSite() {
 	switch (true) {
 		case /(editor|update)/.test(hash):
 			await $.get("./parts/editor.html", site => {
-				$("#app").html(site)
+				$("#app").html(translateDoc(site, "editor"))
 				makeEditor(hash != "editor")
+				setupCollabTools()
 			})
 			break;
 
@@ -1025,7 +1035,7 @@ async function loadSite() {
 
 		case /browse/.test(hash):
 			await $.get("./parts/listBrowser.html", site => {
-				$("#app").html(translateDoc(site, "listViewer"))
+				$("#app").html(translateDoc(site, "listBrowser"))
 				makeBrowser("")
 			})
 			break;
@@ -1033,7 +1043,7 @@ async function loadSite() {
 		default:
 			if (hash == "") break;
 			await $.get("../parts/listViewer.html", data => {
-				$("#app").html(data)
+				$("#app").html(translateDoc(data, "listViewer"))
 				let listObject;
 				if (hash.match(/[A-z]/) == null) listObject = {"type": "id", "id": hash.match(/\d+/)}
 				else if (hash.match(/y\d+/)) listObject = {"type": "year", "id": hash == "y2019" ? -2 : -3}
@@ -1115,11 +1125,6 @@ async function favesResponse() {
 }
 
 async function lists(list) {
-	let paramGetter = new URLSearchParams(window.location.search)
-	let params = Object.fromEntries(paramGetter.entries());
-	let listQueries = Object.keys(params)
-	var listID = listQueries.includes("id") ? params["id"] : params["pid"]
-
 	$(".listInfo").show()
 	$("#crown").show();
 	$("#crown").css("opacity", 1);
@@ -1185,10 +1190,9 @@ async function lists(list) {
 		else {
 			$.get("./php/getLists.php?id=" + list.id, function (data) {
 				if ([1, 2].includes(data)) {
-					$(".boards").before(`<p class="titles">${jsStr["L_NOEXIST"][LANG]}</p>`);
+					$(".boards").append("<h2 class='titles'><img src='images/listError.svg' class='listErrors'>" + jsStr["EMPLIST"][LANG] + "</h2>")
 					$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 					$(".listInfo").remove();
-					$("#crown").remove();
 				}
 				else {
 					boards = data["data"];
@@ -1210,7 +1214,7 @@ async function lists(list) {
 	else if (list.type == "pid") {
 		await $.get("./php/getLists.php?pid=" + list.id, function (data) {
 			if ([1, 2].includes(data)) {
-				$(".boards").before(`<p class="titles">${jsStr["L_NOEXIST"][LANG]}</p>`);
+				$(".boards").append("<h2 class='titles'><img src='images/listError.svg' class='listErrors'>" + jsStr["EMPLIST"][LANG] + "</h2>")
 				$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 				$(".listInfo").remove();
 				$("#crown").remove();
@@ -1232,42 +1236,25 @@ async function lists(list) {
 		)
 	}
 	$(".loadPlaceholder").remove()
+	
+	let getPinned = getCookie("pinnedLists")
+	if (getPinned !== null & getPinned !== false) {
+		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
+			if (arr[0] == LIST_ID) {
+				$(".pin").empty()
+				$(".pin").append("<img src='images/unpin.svg'>")
+				$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+				$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
+			}
+		});
+	}
+	
+	// Hiding header and showing scroll to top button
+	$("body").on("scroll", () => {
+		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
+		else $(".scrollToTop").css("opacity", 0)
+	})
 }
-
-let getPinned = getCookie("pinnedLists")
-if (getPinned !== null & getPinned !== false) {
-	JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
-		if (arr[0] == LIST_ID) {
-			$(".pin").empty()
-			$(".pin").append("<img src='images/unpin.svg'>")
-			$(".pin").append(jsStr["UNPIN_LIST"][LANG])
-			$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
-		}
-	});
-}
-
-// Hiding header and showing scroll to top button
-$("body").on("scroll", () => {
-	if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
-	else $(".scrollToTop").css("opacity", 0)
-})
-
-// Box appear animation
-$(".box").css("transform", "translateX(-100vw)");
-$(".box").css("transition", "transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1)");
-
-$("#crown").css("transition", "transform 1s ease-out, opacity 1.2s ease-out");
-$("#crown").css("opacity", 1);
-
-
-let index = 0
-let boxAppear = setInterval(() => {
-	if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
-	if ($(".box")[index] != undefined) $(".box")[index].style.transform = "none"
-	index++
-}, 100);
-
-$("#crown").css("transform", "translateY(5.7vw)")
 
 function checkPassword() {
 	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, window.location.search.includes("pid"), LIST_NAME, LIST_CREATOR]))

@@ -4,14 +4,14 @@
 
 <div class="errNotif">
     <img src="images/sadNotif.webp" style="opacity: 0.8; position: absolute; width: 40vw;">
-    <div class="errNotText uploadText errTitle" style="top: 2vw;color: tomato;left: 15.5vw;">Jejda!</div>
+    <div class="errNotText uploadText errTitle" style="top: 2vw;color: tomato;left: 15.5vw;">%%s</div>
     <div class="errNotText uploadText errorBox">Toto je test!</div>
 </div>
 
 <div id="jumpToTools" class="uploadBG uploadText tagTop" style="display: none;">
     <div style="text-align: center; width: 100%;">
         <img src="./images/smallClose.svg" class="button tagClose" style="width: 1.5em; float: right;">
-        <p style="margin: 0;">Štítky</p>
+        <p style="margin: 0;">%%s</p>
     </div>
     <div class="tagContainer"></div>
 </div>
@@ -19,47 +19,47 @@
 <!-- Collab tools -->
 <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
-        <p style="margin: 0 auto;" class="collabTTitle">- Nastavení collabu -</p>
+        <p style="margin: 0 auto;" class="collabTTitle">%%s</p>
         <img src="./images/delete.webp" class="button" style="width: 6%; height: max-content;"
             onclick="hideCollabTools()">
     </div>
     <div style="display: flex; width: 100%; padding: 1%; align-items: center">
         <img class="hostIcon" src="./images/bytost.webp" style="margin-right: 1vw;">
         <input id="posInputBox" class="verifierRole cardInput" autocomplete="off" type="text"
-            placeholder="Role nahrávatele" style="width: 15vw;" onchange="chMainName($(this), 3)" value="Host">:
-        <input id="posInputBox" class="verifier cardInput" autocomplete="off" type="text" placeholder="Nahrál"
+            placeholder="%%s" style="width: 15vw;" onchange="chMainName($(this), 3)" value="%%s">:
+        <input id="posInputBox" class="verifier cardInput" autocomplete="off" type="text" placeholder="%%s"
             style="width: 25vw; margin: 0vw 1vw;" onchange="chMainName($(this), 1)">
         <img class="button" src="images/getStats.webp" onclick="chMainName($(this), 2)">
     </div>
 
     <div class="mobileTabSwitcher" style="display: none;">
-        <button class="button roleTab">Role</button>
-        <button class="button humanTab">Členové</button>
+        <button class="button roleTab">%%s</button>
+        <button class="button humanTab">%%s</button>
     </div>
 
     <div class="editorHeader collabHeader uploadText collabBar roleStuff">
-        <div class="uploadText button roleHead" onclick="rollThing(0)">Role</div>
+        <div class="uploadText button roleHead" onclick="rollThing(0)">%%s</div>
         <div class="presetButtonContainer">
-            <button class="button uploadText eventButton noMobileResize" onclick="addRole(0)">Dekorace</button>
-            <button class="button uploadText eventButton noMobileResize" onclick="addRole(1)">Layout</button>
-            <button class="button uploadText eventButton noMobileResize" onclick="addRole(2)">Tester</button>
+            <button class="button uploadText eventButton noMobileResize" onclick="addRole(0)">%%s</button>
+            <button class="button uploadText eventButton noMobileResize" onclick="addRole(1)">%%s</button>
+            <button class="button uploadText eventButton noMobileResize" onclick="addRole(2)">%%s</button>
         </div>
         <div class="collabHButtons" style="width: 11vw;">
             <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')"
-                style="width: 3vw;height: fit-content;" src="images/paste.webp" title="Vložit ze schránky">
+                style="width: 3vw;height: fit-content;" src="images/paste.webp" title="%%s">
             <img class="button roleAddButton" onclick="addRole()"
-                style="width: 3vw;margin-left: 0.4vw;height: fit-content;" src="images/add.webp" title="Přidat roli">
+                style="width: 3vw;margin-left: 0.4vw;height: fit-content;" src="images/add.webp" title="%%s">
         </div>
     </div>
     <div class="collabBG collabHeader collabDIV roleStuff">
         <table style="display: none;" class="collabTables collabRoles">
-            <p class="uploadText noRolAdded">K přidání role vyber předvolbu, nebo klikni na<img id="plusSign"
+            <p class="uploadText noRolAdded">%%s<img id="plusSign"
                     style="width: 2.2%" src="images/add.webp"></p>
         </table>
     </div>
 
     <div class="editorHeader collabHeader uploadText collabBar memberStuff">
-        <div class="uploadText button humHead" onclick="rollThing(1)">Členové</div>
+        <div class="uploadText button humHead" onclick="rollThing(1)">%%s</div>
 
         <div style="display: flex; align-items: center; opacity: 0;" class="socSettings">
             <div class="socialPicker">
@@ -68,51 +68,51 @@
                 <img src="images/twitter.webp" class="socialPickerIcon button" title="Twitter">
                 <img src="images/twitch.webp" class="socialPickerIcon button" title="Twitch">
                 <img src="images/discord.webp" class="socialPickerIcon button" title="Discord">
-                <img src="images/cust.webp" class="socialPickerIcon button cLink" title="Vlastní odkaz">
+                <img src="images/cust.webp" class="socialPickerIcon button cLink" title="%%s">
             </div>
 
             <img src="images/youtube.webp" style="width: 3vw;" class="button openSocPicker">
-            <input id="collabInp" class="socInp" style="width: 50vw;" placeholder="YouTube kanál">
-            <img src="images/check.webp" style="width: 2.5vw;" class="button addSocial" title="Přidat">
-            <img src="images/error.webp" style="width: 2.5vw;" class="button rmSocial" title="Zrušit">
+            <input id="collabInp" class="socInp" style="width: 50vw;" placeholder="%%s">
+            <img src="images/check.webp" style="width: 2.5vw;" class="button addSocial" title="%%s">
+            <img src="images/error.webp" style="width: 2.5vw;" class="button rmSocial" title="%%s">
         </div>
 
         <div class="collabHButtons" style="width: 11vw;">
             <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)"
-                style="width: 3vw; height: fit-content;" src="images/paste.webp" title="Vložit ze schránky">
+                style="width: 3vw; height: fit-content;" src="images/paste.webp" title="%%s">
             <img class="button disabled addHumanButton" onclick="addCollabHuman()"
-                style="width: 3vw;margin-left: 0.2vw;height: fit-content;" src="images/add.webp" title="Přidat člověka">
+                style="width: 3vw;margin-left: 0.2vw;height: fit-content;" src="images/add.webp" title="%%s">
         </div>
     </div>
     <div class="collabBG collabHeader collabDIV memberStuff" style="height: 125%;;">
-        <p class="uploadText noRoles">K přidání členů přidej roli.</p>
-        <p style="display: none;" class="uploadText addRoles">K přidání člena klikni na<img style="width: 2.2%"
+        <p class="uploadText noRoles">%%s</p>
+        <p style="display: none;" class="uploadText addRoles">%%s<img style="width: 2.2%"
                 id="plusSign" src="images/add.webp"></p>
         <table style="display: none;" class="collabTables collabHumans">
             <tr class="collabTables">
                 <th class="collabTables" style="width: 26%;">
                     <img src="images/bytost.webp" style="width: 2vw;">
-                    <div id="h_name" style="display:inline">Jméno</div><img src="images/help.svg"
+                    <div id="h_name" style="display:inline">%%s</div><img src="images/help.svg"
                         class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
                 </th>
                 <th class="collabTables" style="width: 14%;">
                     <img src="images/like.webp" style="width: 2vw;">
-                    <div id="h_social" style="display:inline">Sítě</div><img src="images/help.svg"
+                    <div id="h_social" style="display:inline">%%s</div><img src="images/help.svg"
                         class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
                 </th>
                 <th class="collabTables" style="width: 25%;">
                     <img src="images/part.webp" style="width: 2vw;">
-                    <div id="h_role" style="display:inline">Role</div><img src="images/help.svg"
+                    <div id="h_role" style="display:inline">%%s</div><img src="images/help.svg"
                         class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
                 </th>
                 <th class="collabTables" style="width: 15%;">
                     <img src="images/length.webp" style="width: 2vw;">
-                    <div id="h_part" style="display:inline">Část</div><img src="images/help.svg"
+                    <div id="h_part" style="display:inline">%%s</div><img src="images/help.svg"
                         class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
                 </th>
                 <th class="collabTables" style="width: 13%;">
                     <img src="images/colorSelect.webp" style="width: 2vw;">
-                    <div id="h_color" style="display:inline">Barva</div><img src="images/help.svg"
+                    <div id="h_color" style="display:inline">%%s</div><img src="images/help.svg"
                         class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
                 </th>
                 <th class="collabTables"></th>
@@ -124,31 +124,30 @@
 
 <div style="display: none;" id="centeredPopup" class="uploadText levelPicker">
     <div style="display: flex;">
-        <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">Uložené
-            levely</span>
+        <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">%%s</span>
         <img onclick="hideFavePicker()" src="./images/smallClose.svg" style="width: 3vw;" class="button">
     </div>
-    <input placeholder="        Hledat level..." class="savedFilter searchWithIcon" style="margin-right: 2vw;">
+    <input placeholder="%%s" class="savedFilter searchWithIcon" style="margin-right: 2vw;">
     <div class="levelPickerContainer" style="margin-right: 2vw;"></div>
 </div>
 
 <div class="uploader">
-    <p class="titles uploadTitle">Nahrávání</p>
+    <p class="titles uploadTitle">%%s</p>
     <form id="levelUpload" class="uploadBG uploaderDialog">
         <br>
-        <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="Jméno seznamu"><br />
-        <input name="creator" type="text" id="creatornm" class="uploadMainInp" placeholder="Tvůrce"><br />
+        <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="%%s"><br />
+        <input name="creator" type="text" id="creatornm" class="uploadMainInp" placeholder="%%s"><br />
         <div id="passEditor" class="uploadText" style="display: none;">
-            <h3 class="listPassType">Zadej heslo seznamu</h3>
+            <h3 class="listPassType">%%s</h3>
             <div style="display: flex; gap: 0.5vw; justify-content: center;">
                 <input name="lPass" type="text" id="lpass" class="uploadMainInp searchWithIcon"
-                    placeholder="     Heslo"><br />
+                    placeholder="%%s"><br />
                 <img id="passSubmit" class="button" src="images/searchOpaque.svg" onclick="checkPassword()">
             </div>
         </div>
         <div style="display: flex; justify-content: center; margin-right: 1.7vw;">
-            <img src="images/arrow.webp" id="imageArrow" class="button" title="Ukázat náhled obrázku">
-            <input type="text" id="tImgMargin" class="titImgInp uploadMainInp" placeholder="Obrázek seznamu">
+            <img src="images/arrow.webp" id="imageArrow" class="button" title="%%s">
+            <input type="text" id="tImgMargin" class="titImgInp uploadMainInp" placeholder="%%s">
             <img src="images/help.svg" class="button helpButton" onclick="openHelp('upload')">
         </div>
         <div class="imgPreview">
@@ -158,7 +157,7 @@
         <br />
         <div class="listColPicker">
             <div style="display: flex;">
-                <label align="center" for="bgcolor" class="uploadText colorLabel">Pozadí:</label>
+                <label align="center" for="bgcolor" class="uploadText colorLabel">%%s</label>
                 <div class="pickerContainer button">
                     <img src="./images/color.svg" style="z-index: 1;">
                     <div id="bgcolorPicker"></div>
@@ -169,13 +168,13 @@
 
         <div class="editorHeader"
             style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-            <p class="headerTitle uploadText">Levely</p>
+            <p class="headerTitle uploadText">%%s</p>
             <div style="display: flex;">
-                <img src="images/preview.webp" title="Náhled seznamu"
+                <img src="images/preview.webp" title="%%s"
                     class="button previewButton disabled headerButtons">
-                <img src="images/addfromFaves.webp" title="Přidat z uložených" onclick="addFromFaves()"
+                <img src="images/addfromFaves.webp" title="%%s" onclick="addFromFaves()"
                     class="button addCardButton headerButtons">
-                <img src="images/add.webp" title="Přidat level do seznamu" onclick="addLevel()"
+                <img src="images/add.webp" title="%%s" onclick="addLevel()"
                     class="button addCardButton headerButtons">
             </div>
 
@@ -184,32 +183,32 @@
         <div class="editorHeader uploadText" id="mainContent">
         </div>
 
-        <p class="uploadText setTitle"> Nastavení -</p>
+        <p class="uploadText setTitle">%%s</p>
         <div class="settingsBG">
             <div class="setting">
                 <input type="checkbox" style="display: none;" name="hidden">
                 <img src="images/modernCheck.svg" onclick='checkCheckbox("hidden")' for="hidden"
                     class="setCheckbox button">
-                <label for="private" class="uploadText setLabel">Soukromý seznam</label>
+                <label for="private" class="uploadText setLabel">%%s</label>
                 <img src="images/help.svg" class="button setHelp" onclick="openHelp('private')">
             </div>
             <div class="setting diffSetting">
                 <input type="checkbox" style="display: none;" name="diffGuesser">
                 <img src="images/modernCheck.svg" for="diffGuesser" class="setCheckbox button">
-                <label for="diffGuesser" class="uploadText setLabel">Hádání obtížnosti</label>
+                <label for="diffGuesser" class="uploadText setLabel">%%s</label>
                 <img src="images/help.svg" class="button setHelp" onclick="openHelp('diffGuesser')">
             </div>
             <div class="settingSubbox" style="display: none;">
-                <div class="uploadText guessText">Hádat: </div>
-                <button title="Obtížnosti" type="button" onclick="guesserOptions(1)" class="diffSelBut"><img
+                <div class="uploadText guessText">%%s</div>
+                <button title="%%s" type="button" onclick="guesserOptions(1)" class="diffSelBut"><img
                         src="images/faces/4.webp" class="button"></button>
-                <button title="Rating" type="button" onclick="guesserOptions(2)" class="diffSelBut"><img
+                <button title="%%s" type="button" onclick="guesserOptions(2)" class="diffSelBut"><img
                         src="images/faces/epic.webp" class="button"></button>
             </div>
         </div>
 
         <div id="submitarea">
-            <input onclick="uploadList()" type="button" class="button noMobileResize" id="submitbutton" value="Nahrát">
+            <input onclick="uploadList()" type="button" class="button noMobileResize" id="submitbutton" value="%%s">
         </div>
 
     </form>

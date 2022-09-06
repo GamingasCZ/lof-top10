@@ -262,8 +262,8 @@ span {
 .box {
   background-color: #43a045;
   background-image: url("../images/cardBg.webp");
-  padding: 1vw 3vw 2vw 3vw;
-  margin: 2.5vw auto 2.5vw auto;
+  padding: 1em 3em 2em 3em;
+  margin: 2.5em auto 2.5em auto;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
@@ -341,8 +341,8 @@ u {
 
 .favoriteStar {
   position: relative;
-  bottom: 0.6vw;
-  left: 3%;
+  bottom: 0.6em;
+  left: 2em;
   width: 3em;
   float: right;
 }

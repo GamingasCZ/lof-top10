@@ -239,7 +239,7 @@ function checkPassword() {
     $("#passSubmit").addClass("disabled")
 
     let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
-    let postReq = {"pwdEntered": $("#lpass").val()};
+    let postReq = { "pwdEntered": $("#lpass").val() };
 
     // Is list private?
     postReq[!loadProps[2] ? "id" : "pid"] = loadProps[0];
@@ -248,12 +248,12 @@ function checkPassword() {
         if (typeof data == "object") generateFromJSON(2, data)
         else {
             $("#passEditor h3").text(jsStr["TYPEPASS"][LANG])
-            $("#passEditor").css("animation-name","inputError")
+            $("#passEditor").css("animation-name", "inputError")
             setTimeout(() => {
                 $("#lpass").attr("disabled", false)
                 $("#passSubmit").removeClass("disabled")
                 $("#lpass").val()
-                $("#passEditor").css("animation-name","")
+                $("#passEditor").css("animation-name", "")
             }, 500);
 
         }
@@ -288,17 +288,17 @@ function generateFromJSON(part, boards) {
         $(`input[name="hidden"]`).attr("checked", true)
     }
 
-    
+
     // Removing tutorial
     $("#mainContent").text("");
     $(".previewButton").removeClass("disabled");
-    
+
     $("#listnm").val(boards["name"])
     $("#creatornm").val(boards["creator"])
-    
+
     levelList = JSON.parse(boards["data"]);
     $(".titImgInp").val(levelList["titleImg"])
-    
+
     // Is it a diff guess list?
     if (levelList["diffGuesser"] != undefined && levelList["diffGuesser"][0]) {
         $(`img[for="diffGuesser"]`).attr("src", "images/modernCheck.svg")
@@ -783,7 +783,7 @@ function openColorPicker(lp) {
 
 function tagPopup(lp) {
     showBGdialog()
-    
+
     $(".badgeBox").removeClass("tagInUse")
     levelList[lp]["tags"].forEach(tag => {
         $(".badgeBox").eq(tag[0]).addClass("tagInUse")
@@ -801,8 +801,8 @@ function tagPopup(lp) {
             </div>
             `)
         }
-        $(".tagClose").click(() => {hideBGdialog(); $(".tagTop").fadeOut(50)})
-        $(".badgeBox").click(e => {clickTag(e, lp)})
+        $(".tagClose").click(() => { hideBGdialog(); $(".tagTop").fadeOut(50) })
+        $(".badgeBox").click(e => { clickTag(e, lp) })
     }
 
 }
@@ -853,9 +853,9 @@ function clickTag(e, lp) {
         if (currIndex > 0) {
             let prevValue = levelList[lp]["tags"][currIndex]
             levelList[lp]["tags"].splice(currIndex, 1) // Delete current value
-            levelList[lp]["tags"].splice(currIndex-1, 0, prevValue) // Insert it again
-            
-            $(".tagEditBox").eq(currIndex).insertBefore($(".tagEditBox").eq(currIndex-1))
+            levelList[lp]["tags"].splice(currIndex - 1, 0, prevValue) // Insert it again
+
+            $(".tagEditBox").eq(currIndex).insertBefore($(".tagEditBox").eq(currIndex - 1))
         }
     })
 
@@ -865,15 +865,15 @@ function clickTag(e, lp) {
         if (currIndex < $(".tagEditBox").length) {
             let prevValue = levelList[lp]["tags"][currIndex]
             levelList[lp]["tags"].splice(currIndex, 1) // Delete current value
-            levelList[lp]["tags"].splice(currIndex+1, 0, prevValue) // Insert it again
+            levelList[lp]["tags"].splice(currIndex + 1, 0, prevValue) // Insert it again
 
-            $(".tagEditBox").eq(currIndex).insertAfter($(".tagEditBox").eq(currIndex+1))
+            $(".tagEditBox").eq(currIndex).insertAfter($(".tagEditBox").eq(currIndex + 1))
         }
     })
 
     $(".tagInput:last()").on("change", e => {
         let index = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parents().eq(1)[0])
-        
+
         if (e.target.value.length == 0) {
             levelList[lp]["tags"][index][1] = -1
             e.target.value = jsStr["TAGS"][LANG][badgeIndex]
@@ -936,12 +936,6 @@ function removeLevel(id) {
             $(".card" + id.toString())[k].remove()
         }
     }
-}
-
-var levelList = {
-    "titleImg": "",
-    "pageBGcolor": "#020202",
-    "diffGuesser": [false, true, true]
 }
 
 function card(index) {
@@ -1016,18 +1010,30 @@ function card(index) {
     `;
 }
 // <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.webp">
-function preview(skipCheck = false) {
+async function preview(skipCheck = false) {
     if (!checkJson(JSON.stringify(levelList), true) && !skipCheck) return
+    $("#levelUpload").fadeOut(100)
 
-    let data = JSON.stringify(levelList);
-    let encodedData = [];
-    for (i = 0; i < data.length; i++) {
-        encodedData.push(data.charCodeAt(i));
+    $(".uploadTitle").text(jsStr["PREVIEW_L"][LANG])
+    $(".uploader").prepend(`<img src="images/arrow-left.webp" class="button backToEditor">`)
+    $(".backToEditor").click(editorBack)
+
+    if ($(".preview").length == 0) {
+        await $.get("../parts/listViewer.html", data => {
+            $("#app").append("<div class='preview'>"+data+"</div>")
+        })
     }
-    encodedData = btoa(encodedData.join(","));
-    sessionStorage.setItem("previewJson", encodedData);
-    window.open("./index.html?preview=1", "_blank")
+    else {  $(".preview").fadeIn(100) }
 
+    generateList(levelList, [$("#listnm").val(), $("#creatornm").val()])
+}
+
+function editorBack() {
+    $(".uploadTitle").text(jsStr["UPLOAD"][LANG])
+    $(".preview").fadeOut(100)
+    $(".backToEditor").remove()
+    $(".boards").empty()
+    $("#levelUpload").fadeIn(100)
 }
 
 function guesserOptions(ind) {

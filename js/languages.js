@@ -1,93 +1,5 @@
 var LANG = 0;
 const LANG_AM = 2;
-var strings = [[".colMembers", "index.html", 0, ["Členové", "Members"]],
-    ["#commButtonText", "index.html", 0, ["Komentáře", "Comments"]],
-    ["h3:nth-child(1)", "index.html", 0, ["Komentář", "Comment"]],
-    [".pIconInp", "index.html", "placeholder", ["Jméno", "Username"]],
-    [".comFooterButton:nth-child(1)", "index.html", "title", ["Barva komentáře", "Comment Color"]],
-    [".comFooterButton:nth-child(2)", "index.html", "title", ["Emotikony", "Emoji"]],
-    [".sendBut", "index.html", "title", ["Odeslat komentář", "Send Comment"]],
-    [".comTitles", "index.html", 0, ["Komentáře", "Comments"]],
-    ["#pageStr", 0, 0, ["Strana: ", "Page: "]],
-    [".commBut", 0, 0, ["Komunitní", "Community"]],
-    [".savedBut", 0, 0, ["Uložené", "Saved"]],
-    [".langText", 0, 0, ["Jazyk", "Language"]],
-    ["#czech", 0, 0, ["Čeština", "Czech"]],
-    ["#english", 0, 0, ["Angličtina", "English"]],
-    ["#skinText", 0, 0, ["Vzhled", "Skin"]],
-    [".anims", 0, 0, ["Animace", "Animations"]],
-    [".noComm", "index.html", 0, ["- Žádné komentáře -", "- No Comments -"]],
-    [".passInput", "index.html", "placeholder", ["        Heslo", "        Password"]],
-    ["#jumpToText", "index.html", 0, ["Skočit na...", "Jump to..."]],
-    ["#jumpToBut", "index.html", 0, ["Skočit na", "Jump to"]],
-    ["#shareText", "index.html", 0, ["Sdílet", "Share"]],
-    ["#shareBut", "index.html", 0, ["Sdílet", "Share"]],
-    ["#pinBut", "index.html", 0, ["Připnout", "Pin"]],
-    ["#editBut", "index.html", 0, ["Upravit", "Edit"]],
-
-    ["title", "upload.html", 0, ["Komunitní seznamy | GD Seznamy", "Community Lists | GD Lists"]],
-    [".pageBy", 0, 0, ["Vytvořil ", "Created by"]],
-
-    [".communityTitle", "upload.html", 0, ["Komunitní seznamy", "Community Lists"]],
-    [".uploadTitle", "upload.html", 0, ["Nahrávání", "Upload"]],
-    ["#listnm", "upload.html", "placeholder", ["Jméno seznamu", "List Name"]],
-    ["#creatornm", "upload.html", "placeholder", ["Tvůrce", "List Creator"]],
-    ["#imageArrow", "upload.html", "title", ["Ukázat náhled obrázku", "Display image preview"]],
-    [".titImgInp", "upload.html", "placeholder", ["Obrázek seznamu", "Header Image"]],
-    ["label[for='bgcolor']", "upload.html", 0, ["Barva pozadí:", "Background Color:"]],
-    [".headerTitle", "upload.html", 0, ["Levely", "Levels"]],
-    [".addCardButton", "upload.html", "title", ["Přidat level do seznamu", "Add level to list"]],
-    [".previewButton", "upload.html", "title", ["Náhled seznamu", "Preview list"]],
-    [".setTitle", "upload.html", 0, ["- Nastavení -", "- Settings -"]],
-    ["#submitbutton", "upload.html", "value", ["Nahrát", "Upload"]],
-    ["label[for='diffGuesser']", "upload.html", 0, ["Hádání obtížnosti", "Difficulty Guesser"]],
-    ["label[for='private']", "upload.html", 0, ["Soukromý seznam", "Private List"]],
-    ["label[for='shareCollab']", "upload.html", 0, ["Sdílet collaby", "Share Collabs"]],
-    [".savePickTit", "upload.html", 0, ["Uložené levely", "Saved levels"]],
-    [".savedFilter", "upload.html", "placeholder", ["        Hledat level...", "        Search levels..."]],
-    [".listPassType", "upload.html", 0, ["Zadej heslo seznamu", "Enter the list's password"]],
-    ["#lpass", "upload.html", "placeholder", ["     Heslo", "     Password"]],
-
-
-    [".roleTab","upload.html",0,["Role","Roles"]],
-    [".humanTab","upload.html",0,["Členové","Members"]],
-    [".collabTTitle","upload.html",0,["- Nastavení collabu -","- Collab Settings -"]],
-    [".verifierRole","upload.html","placeholder",["Role","Role"]],
-    [".verifier","upload.html","placeholder",["Nahrál...","Uploaded by..."]],
-    [".roleHead","upload.html",0,["Role","Roles"]],
-    [".presetButtonContainer > button:nth-child(1)","upload.html",0,["Dekorace","Decoration"]],
-    [".presetButtonContainer > button:nth-child(2)","upload.html",0,["Layout","Layout"]],
-    [".presetButtonContainer > button:nth-child(3)","upload.html",0,["Tester","Tester"]],
-    ["#rolepaste","upload.html","title",["Vložit ze schránky","Paste from clipboard"]],
-    [".roleAddButton","upload.html","title",["Přidat roli","Add role"]],
-    [".noRolAdded","upload.html",1,[
-        `K přidání role vyber předvolbu, nebo klikni na<img style="width: 2.2%" id="plusSign"src="images/add.webp">`,
-        `To add a role, pick a preset, or click on<img style="width: 2.2%" id="plusSign"src="images/add.webp">`]],
-    ["#r_name","upload.html",0,["Jméno","Name"]],
-    ["#r_hasPart","upload.html",0,["Má část?","Has part?"]],
-    ["#r_color","upload.html",0,["Barva","Color"]],
-    [".humHead","upload.html",0,["Členové","Members"]],
-    [".cLink","upload.html","title",["Vlastní odkaz","Custom Link"]],
-    ["#collabInp","upload.html","placeholder",["YouTube kanál","YouTube Channel"]],
-    [".addSocial","upload.html","title",["Přidat","Add"]],
-    [".rmSocial","upload.html","title",["Zrušit","Cancel"]],
-    ["#humpaste","upload.html","title",["Vložit ze schránky","Paste from clipboard"]],
-    [".addHumanButton","upload.html","title",["Přidat člověka","Add member"]],
-    [".noRoles","upload.html",0,["K\ přidání členů přidej roli.","To add a member, add a role."]],
-    [".addRoles","upload.html",1,[`K přidání člena klikni na<img style="width: 2.2%" id="plusSign" src="images/add.webp">`,
-    `To add a member, click on<img style="width: 2.2%" id="plusSign" src="images/add.webp">`]],
-    ["#h_name","upload.html",0,["Jméno","Username"]],
-    ["#h_social","upload.html",0,["Sítě","Links"]],
-    ["#h_role","upload.html",0,["Role","Role"]],
-    ["#h_part","upload.html",0,["Část","Part"]],
-    ["#h_color","upload.html",0,["Barva","Color"]],
-    [".errTitle","upload.html",0,["Jejda!","Oh no!"]],
-    [".guessText","upload.html",0,["Hádat: ","Guess: "]],
-    [".diffSelBut:first()","upload.html","title",["Obtížnosti","Difficulties"]],
-    [".diffSelBut:last()","upload.html","title",["Rating","Ratings"]],
-
-    ["title","packs.html",0,["Uložené levely | GD Seznamy", "Saved Levels | GD Lists"]]
-]
 
 var jsStr = {
     // images
@@ -268,6 +180,7 @@ var jsStr = {
     "TYPEPASS": ["Zadej heslo seznamu", "Enter the list's password"],
     "TAGS": [["Pomalý","Rychlý","Hodně objektů","2P","Hacknutý","Layout","Dekorace","1.9","Šílený","Unratelý","Nemožný","Shitpost","Minihra","List Demon","Jam","Challenge","Ztracený","","","",""],
              ["Slow", "Fast", "High Object Count","2P","Hacked","Layout","Decorated","1.9","Mindboggling","Unrated","Impossible","Shitpost","Minigame","List Demon","Jam","Challenge","Lost"]],
+    "UPLOAD": ["Nahrávání", "Upload"],
 
     // comments
     "PHOLD1": ["Tvůj seznam je...",
@@ -369,11 +282,77 @@ var parts = {
         ["Top 10 Levelů od Fanoušků 2019","Top 10 Request Levels 2019"],
         ["Top 15 Levelů od Fanoušků 2021","Top 15 Request Levels 2021"]
     ],
+    "listBrowser": [
+        ["        Hledání", "        Search"]
+    ],
     "listViewer": [
-        ["        Hledání", "        Search"],
+        ["Sdílet", "Share"],
+        ["Skočit na", "Jump To"],
+        ["Členové", "Members"],
+        ["Sdílet", "Share"],
+        ["Skočit na", "Jump To"],
+        ["Připnout", "Pin"],
+        ["Upravit", "Edit"],
+        ["Komentáře", "Comments"],
+        ["Jméno", "Username"],
+        ["Komentář", "Comments"],
+        ["Emotikony", "Emotes"],
+        ["Barva komentáře", "Comment color"],
+        ["Odeslat komentář", "Send comment"],
+        ["Strana: ", "Page: "],
+        ["- Žádné komentáře -", "- No comments -"]
     ],
     "editor": [
-        
+        ["Jejda!", "Oh no!"],
+        ["Štítky", "Tags"],
+        ["- Nastavení collabu -", "- Collab Settings -"],
+        ["Role nahrávatele", "Uploader role"],
+        ["Host", "Host"],
+        ["Nahrál", "Uploaded by"],
+        ["Role", "Roles"],
+        ["Členové", "Members"],
+        ["Role", "Roles"],
+        ["Dekorace", "Decoration"],
+        ["Layout", "Layout"],
+        ["Tester", "Tester"],
+        ["Vložit ze schránky", "Paste from Clipboard"],
+        ["Přidat roli", "Add role"],
+        ["K přidání role vyber předvolbu, nebo klikni na", "To add a role, pick a preset or click"],
+        ["Členové", "Members"],
+        ["Vlastní odkaz", "Custom link"],
+        ["YouTube kanál", "YouTube channel"],
+        ["Přidat", "Add"],
+        ["Zrušit", "Cancel"],
+        ["Vložit ze schránky", "Paste from Clipboard"],
+        ["Přidat člověka", "Add member"],
+        ["K přidání členů přidej roli.", "To add a member, add a role."],
+        ["K přidání člena klikni na", "To add a member, click"],
+        ["Jméno", "Name"],
+        ["Sítě", "Socials"],
+        ["Role", "Role"],
+        ["Část", "Part"],
+        ["Barva", "Color"],
+        ["Uložené levely", "Saved Levels"],
+        ["        Hledat level...", "        Search levels..."],
+        ["Nahrávání", "Upload"],
+        ["Jméno seznamu", "List Name"],
+        ["Tvůrce", "List Creator"],
+        ["Zadej heslo seznamu", "Enter the list's password"],
+        ["     Heslo", "     Password"],
+        ["Ukázat náhled obrázku", "Show preview"],
+        ["Obrázek seznamu", "List Image"],
+        ["Barva pozadí:", "Background Color:"],
+        ["Levely", "Levels"],
+        ["Náhled seznamu", "List Preview"],
+        ["Přidat z uložených", "Add from Saved"],
+        ["Přidat level do seznamu", "Add level"],
+        ["- Nastavení -", "- Settings -"],
+        ["Soukromý seznam", "Private List"],
+        ["Hádání obtížnosti", "Difficulty Guessing"],
+        ["Hádat: ", "Guess: "],
+        ["Obtížnosti", "Difficulties"],
+        ["Rating", "Rating"],
+        ["Nahrát", "Upload"]
     ]
 }
 
@@ -434,36 +413,4 @@ $(function() {
     }
     LANG = currLang;
     $($(".settingsDropdown").children()[currLang]).attr("selected", true)
-    translate()
 })
-
-function translate() {
-    /* Strings:
-0 - Selector
-1 - Page (0 - both pages)
-2 - Attribute (0 - Tag content)
-3 - Strings array
-
-    */
-    strings.forEach(i => {
-        // Replace depending on the directory
-        let isIndex = location.pathname == "/loftop10/" & i[1] == "index.html";
-
-        // Apply only to current page
-        if (location.pathname.match(i[1]) != null || i[1] == 0 || isIndex) {
-            if (i[2] == 0) {
-                // Replacing tag content (text)
-                $(i[0]).text(i[3][LANG])
-            }
-            else if (i[2] == 1) {
-                // Replacing tag content (html)
-                $(i[0]).html(i[3][LANG])
-            }
-            else {
-                // Replacing tag attribute
-                $(i[0]).attr(i[2], i[3][LANG])
-            }
-        }
-
-    })
-}

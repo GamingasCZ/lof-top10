@@ -2,12 +2,7 @@ const EMOJI_AM = 18;
 function getID() {
   let hash = window.location.hash.slice(1)
 
-  if (hash != null) { return -8 } // List preview from editor
-  if (hash["pid"] != null) { return hash["pid"] } // Disable comments on private lists
-  if (hash["random"] != null) { return -11 } // -11 will be replaced with actual ID later
-  if (hash["id"] != null) { return hash["id"] } // Community level/2019 or 2021 list (-2,-3)
-  if (hash["year"] != null) { return hash["year"] == "2021" ? "-3" : "-2" }
-  else { return -9 } // Is Homepage
+  // TODO: make getid function
 }
 var LIST_ID = getID();
 

@@ -1,7 +1,7 @@
 <!-- Share dialog -->
 <div class="uploadBG uploadText" id="shareTools" style="position: fixed; display: none;">
     <img src="./images/smallClose.svg" class="button" style="width: 6%; float: right;" onclick="hideShare()">
-    <p class="uploadText" id="shareText" style="margin-bottom: 0;">Sdílet</p>
+    <p class="uploadText" id="shareText" style="margin-bottom: 0;">%%s</p>
     <input class="uploadText settingsBG" id="shareContainer" readonly></input>
     <div style="display: flex;" class="shareSocials">
         <img src="images/twitter.webp" class="button" style="width: 5vw; margin-right: 1vw;">
@@ -12,7 +12,7 @@
 <!-- Jump To Dialog-->
 <div class="uploadBG uploadText" id="jumpToTools" style="position: fixed; display: none;">
     <img src="./images/smallClose.svg" class="button" style="width: 6%; float: right;" onclick="hideJumpTo()">
-    <p class="uploadText" id="jumpToText" style="margin: 0;">Skočit na...</p>
+    <p class="uploadText" id="jumpToText" style="margin: 0;">%%s</p>
     <div style="display: flex; flex-direction: column;" class="jumpToContainer">
     </div>
 </div>
@@ -28,7 +28,7 @@
 
     </div>
     <div class="editorHeader">
-        <p class="uploadText colMembers" style="margin: 0.2% 0%;">Členové</p>
+        <p class="uploadText colMembers" style="margin: 0.2% 0%;">%%s</p>
     </div>
     <div style="max-height: 48.5%;overflow-y: auto;">
         <table style="min-height: 48.5%;" class="collabTables statsCreators"></table>
@@ -44,23 +44,23 @@
             </div>
             <div class="listOptionsContainer">
                 <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg">
-                    <div id="shareBut">Sdílet</div>
+                    <div id="shareBut">%%s</div>
                 </button>
                 <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg">
-                    <div id="jumpToBut">Skočit na</div>
+                    <div id="jumpToBut">%%s</div>
                 </button>
                 <button onclick="pinList()" class="listHeaderBlue uploadText pin"><img src="images/pin.svg">
-                    <div id="pinBut">Připnout</div>
+                    <div id="pinBut">%%s</div>
                 </button>
                 <button onclick="checkPassword()" class="listHeaderBlue uploadText"><img src="images/edit.svg">
-                    <div id="editBut">Upravit</div>
+                    <div id="editBut">%%s</div>
                 </button>
             </div>
         </div>
         <div id="cToolTop">
             <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img
                     src="images/comment.svg">
-                <div id="commButtonText">Komentáře</div>
+                <div id="commButtonText">%%s</div>
                 <div id="commAmount"></div>
             </button>
             <hr class="lineSplitGeneral">
@@ -73,7 +73,7 @@
         <div class="positionEdit" id="commentMaker">
             <div style="display: flex; align-items: center; padding-left: 1%; margin-bottom: 0.5vw;">
                 <img src="images/bytost.webp" id="pIcon" style="height: max-content; width: 2.5vw;">
-                <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="Jméno" maxlength="20">
+                <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="%%s" maxlength="20">
                 <img src="./images/getStats.webp" onclick="getPlayerIcon()" class="button passImg"
                     style="height: max-content;">
                 <h5 class="uploadText comUserError"></h5>
@@ -81,12 +81,12 @@
 
             <div class="comBox">
                 <div class="uploadText comBoxThings comInpThings" id="comBoxHeader">
-                    <h3>Komentář</h3>
+                    <h3>%%s</h3>
                     <h3 id="charLimit">0/300</h3>
                 </div>
 
                 <div style="display: flex; width: inherit;">
-                    <div contenteditable="" class="uploadText comTextArea comInpArea" style="height: 8vw;" id="comFont">
+                    <div contenteditable="" class="uploadText comTextArea comInpArea" style="height: 5em;" id="comFont">
                     </div>
                 </div>
             </div>
@@ -95,16 +95,16 @@
 
         </div>
         <div class="uploadText comBoxThings" id="comBoxFooter">
-            <img class="comFooterButton comInpThings" src="images/emoji.svg" title="Emotikony"
+            <img class="comFooterButton comInpThings" src="images/emoji.svg" title="%%s"
                 onclick="displayPanel(1)">
-            <img class="comFooterButton comInpThings" src="images/color.svg" title="Barva komentáře"
+            <img class="comFooterButton comInpThings" src="images/color.svg" title="%%s"
                 onclick="displayPanel(2)">
-            <img class="comFooterButton sendBut" src="images/send.svg" title="Odeslat komentář" onclick="sendComment()">
+            <img class="comFooterButton sendBut" src="images/send.svg" title="%%s" onclick="sendComment()">
         </div>
 
         <div class="searchTools uploadText" id="commentTool" style="display: none; justify-content: center;">
             <div class="page">
-                <span id="pageStr" style="padding-right: 2%;font-size: var(--smallFont);max-width: 80%;">Strana: </span>
+                <span id="pageStr" style="padding-right: 2%;font-size: var(--smallFont);max-width: 80%;">%%s</span>
                 <img class="button pageBut" src="images/arrow-left.webp" onclick="commpageSwitch(-1)">
                 <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
                 <span id="maxPage">/1</span>
@@ -116,7 +116,7 @@
 
         <div id="commentList">
         </div>
-        <p class="uploadText noComm" style="text-align: center;">- Žádné komentáře -</p>
+        <p class="uploadText noComm" style="text-align: center;">%%s</p>
 
 
     </div>
