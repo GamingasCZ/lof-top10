@@ -559,7 +559,7 @@ function addPicked(ind) {
         "color": favesData[ind][3],
         "difficulty": [0, 0],
         "background": [1, true, 30, 100], //BG, gradient, alpha, brightness
-        "tags": favesData[ind][5] // TODO: možná změň index
+        "tags": favesData[ind][8] != undefined ? favesData[ind][8] : [] // TODO: možná změň index
     };
     loadLevel(listLenght)
     displayCard(listLenght)
@@ -1025,6 +1025,7 @@ async function preview(skipCheck = false) {
     }
     else {  $(".preview").fadeIn(100) }
 
+    LIST_ID = -8
     generateList(levelList, [$("#listnm").val(), $("#creatornm").val()])
 }
 

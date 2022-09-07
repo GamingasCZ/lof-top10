@@ -1,10 +1,4 @@
 const EMOJI_AM = 18;
-function getID() {
-  let hash = window.location.hash.slice(1)
-
-  // TODO: make getid function
-}
-var LIST_ID = getID();
 
 function listComments() {
   // Finally non-shit

@@ -556,14 +556,16 @@ input:disabled {
 .backToEditor {
     float: left;
     width: 3em;
-    margin: 1em;
+    padding: 1em;
 }
 
 .listErrors {
     opacity: 0.1;
-    width: 22em;
+    width: 15em;
     margin: auto;
     display: block;
+    padding: 1em 0;
+    /*! box-sizing: content-box; */
 }
 
 #listPreview {

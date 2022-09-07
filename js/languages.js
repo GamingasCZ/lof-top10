@@ -91,6 +91,7 @@ var jsStr = {
     "LEVRATE_Q": ["Jaký má level rating?", "What's the level's rating?"],
     "BACK": ["Zpět", "Back"],
     "EMPLIST": ["Seznam je prázdný, přidej do něho level!", "The list is empty, add levels into it!"],
+    "DEADLIST": ["Tento seznam neexistuje!", "This list doesn't exist!"],
     "BY": ["od", "by"],
     "SCORBET": ["Dokážeš to líp?", "Can you score better?"],
     "LIST_FIN": ["Dokončil jsi seznam!", "You finished the list!"],

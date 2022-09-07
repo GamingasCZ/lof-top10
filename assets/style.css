@@ -68,9 +68,9 @@
   --lightHighlight: invert(0.4) sepia(1) saturate(1.5) hue-rotate(90deg);
   --redHighlight: invert(0.4) sepia(1) saturate(4) hue-rotate(300deg);
   --greenGradient: linear-gradient(9deg, #142019, #045124);
-  --defaultGradient: linear-gradient(9deg, #533125, #470451);
+  --defaultGradient: linear-gradient(9deg, #142019, #045124);
   --fontMultiplier: 1;
-  --siteBackground: #140815;
+  --siteBackground: #060c08;
 }
 
 body {
@@ -134,8 +134,21 @@ span {
     color: white;
     text-align: center;
     font-family: pusab;
-    padding: 1vw 2vw;
+    padding: 0.5em 0;
     margin: 0;
+}
+#pinContainer {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+#unpinCard {
+  width: 2.5em;
+  background-color: rgba(0, 0, 0, 0.397);
+  border-radius: 10em;
+  padding: 0.2em;
+  box-sizing: border-box;
 }
 
 .placeholderName {
@@ -185,6 +198,7 @@ span {
   display: flex;
   justify-content: space-between;
   text-align: left;
+  margin: 0 1em;
 }
 
 #commButton {
@@ -285,9 +299,11 @@ span {
   height: 218px;
   position: absolute;
   top: -87px;
-  left: 43%;
+  left: 0;
   background-size: 12em;
   background-repeat: no-repeat;
+  background-position-x: center;
+  /*! padding-right: -3em; */
 }
 
 .boxLinksContainer {
