@@ -27,8 +27,8 @@
 }
 
 #helpTitle {
-    font-size: 2.5vw;
-    margin: 1vw;
+    font-size: var(--bigFont);
+    margin: 0.5em;
     text-align: center
 }
 
@@ -60,11 +60,13 @@
     margin: auto;
     z-index: 5;
     width: 80%;
-    left: 10%;
+    left: 50%;
     padding: 0.8%;
-    top: 2%;
+    /*! top: 2%; */
     max-height: 50vh;
     overflow-y: auto;
+    /*! margin: auto; */
+    transform: translateX(-50%);
 }
 
 .customLists {
@@ -574,7 +576,7 @@ input:disabled {
     background-color: rgb(36, 36, 36);
     color: white;
     padding: 0 1em;
-    margin: 1.5% 0;
+    margin: 1em 0;
     border: white 0.3em solid;
     border-radius: 5px;
     display: block;
@@ -701,6 +703,14 @@ input:disabled {
     width: 2.5em;
     height: 2.5em;
     margin-right: 1vw;
+}
+
+.collListBut {
+    background: rgba(0, 0, 0, 0.6) none repeat scroll 0% 0%;
+    box-sizing: border-box;
+    padding: 0.2em;
+    border-radius: 10em;
+    filter: hue-rotate(0deg);
 }
 
 .positionButtons {

@@ -1029,6 +1029,7 @@ async function loadSite() {
 	}
 
 	if (hash == "") {
+		$("title").text(`${jsStr["GDLISTS"][LANG]}`)
 		await $.get("./parts/homepage.html", site => {
 			$("#app").html(translateDoc(site, "homepage"))
 		})
@@ -1037,6 +1038,7 @@ async function loadSite() {
 
 	switch (true) {
 		case /(editor|update)/.test(hash):
+			$("title").text(`Editor | ${jsStr["GDLISTS"][LANG]}`)
 			await $.get("./parts/editor.html", site => {
 				$("#app").html(translateDoc(site, "editor"))
 				makeEditor(hash != "editor")
@@ -1045,6 +1047,7 @@ async function loadSite() {
 			break;
 
 		case /saved/.test(hash):
+			$("title").text(`${jsStr["SAVED"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 			$("#app").append("<div id='favoritesContainer'></div>")
 			
 			await $.get("./parts/listBrowser.html", data => {
@@ -1056,6 +1059,7 @@ async function loadSite() {
 			break;
 
 		case /browse/.test(hash):
+			$("title").text(`${jsStr["COMMUNITY"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 			await $.get("./parts/listBrowser.html", site => {
 				$("#app").html(translateDoc(site, "listBrowser"))
 				makeBrowser("")

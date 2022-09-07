@@ -128,6 +128,11 @@ span {
   font-family: sans-serif;
 }
 
+/* Homepage containers */
+ul > div {
+  margin-left: 6em;
+}
+
 /*Nadpis v custom Listu*/
 .titles {
     font-size: var(--xlFont);
@@ -210,7 +215,7 @@ span {
 
 .guessBadge {
   vertical-align: sub;
-  width: 2vw;
+  width: var(--normalFont);
 }
 
 /* just so stuff doesn't break :D*/
@@ -964,17 +969,22 @@ a {text-decoration: none;}
 }
 
 #homepageHelp {
-  width: 2vw;
-  height: 2vw;
-  margin-left: 1vw;
+  width: 1em;
+  margin-left: 0.4em;
 }
 
 #categoryBut {
   display: inline-flex;
-  transform: scale(0.5) translate(-3vw, 1vw);
+  align-items: center;
+  gap: 1em;
+  background: #0b48125e;
+  border-radius: 2.1em;
+  margin-left: 1em;
+  padding: 0.2em 0.6em;
 }
-#categoryBut:hover { transform: scale(0.52) translate(-3vw, 1vw); }
-#categoryBut:active { transform: scale(0.55) translate(-3vw, 1vw); }
+#categoryBut img {
+  width: 1.5em;
+}
 
 /* Text color */
 cy { color: rgb(243, 243, 93); }

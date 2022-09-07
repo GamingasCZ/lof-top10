@@ -108,4 +108,8 @@
 .collabTables th div { display: none !important; }
 .collabTables th:nth-child(1) { display: none !important; }
 
+ul > div {
+    margin: 0;
+}
+
 }

@@ -952,15 +952,15 @@ function card(index) {
             </div>
 
             <div class="positionButtons">
-                <img title="${jsStr['L_MOVE_D'][LANG]}" onclick="moveCard('up',${index})" 
-                     class="button upmover${index}" style="transform: rotate(90deg);" id="moveLPosButton"
-                     src="./images/arrow.webp">
+                <img title="${jsStr['L_MOVE_U'][LANG]}" onclick="moveCard('up',${index})" 
+                     class="button upmover${index}" id="moveLPosButton"
+                     src="./images/showCommsU.svg">
 
                 <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" disabled="true" value="${index}">
 
-                <img title="${jsStr['L_MOVE_U'][LANG]}" onclick="moveCard('down',${index})"
-                        class="button downmover${index}" style="transform: rotate(-90deg);" id="moveLPosButton"
-                        src="./images/arrow.webp">
+                <img title="${jsStr['L_MOVE_D'][LANG]}" onclick="moveCard('down',${index})"
+                        class="button downmover${index}" id="moveLPosButton"
+                        src="./images/showCommsD.svg">
             </div>
         </div>
 
@@ -978,7 +978,7 @@ function card(index) {
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
                 <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="display: inline-flex;"><br />
-                <img class="button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.webp" onclick="showCollabTools(${index})">
+                <img class="collListBut button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.webp" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">

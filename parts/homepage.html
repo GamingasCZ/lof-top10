@@ -21,7 +21,7 @@
 <ul style="padding: 0 1vw;">
     <li class="homepageTitles">%%s
         <a href="#browse">
-            <button class="homepageBigButton button noMobileResize" id="categoryBut">
+            <button class="button noMobileResize" id="categoryBut">
                 <img src="images/more.svg">
                 <div class="uploadText">%%s</div>
             </button>
@@ -40,7 +40,7 @@
     </div>
 
     <li class="homepageTitles">%%s
-        <button onclick="clearViewed()" class="homepageBigButton button noMobileResize" id="categoryBut">
+        <button onclick="clearViewed()" class="button noMobileResize" id="categoryBut">
             <img src="images/close.svg">
             <div class="uploadText">%%s</div>
         </button>
@@ -50,10 +50,12 @@
     </div>
 
     <li class="homepageTitles">%%s
-        <button class="homepageBigButton button noMobileResize" id="categoryBut" onclick="showFaves()">
-            <img src="images/more.svg">
-            <div class="uploadText">%%s</div>
-        </button>
+        <a href="#saved">
+            <button class="button noMobileResize" id="categoryBut">
+                <img src="images/more.svg">
+                <div class="uploadText">%%s</div>
+            </button>
+        </a>
     </li>
     <div class="savedLists">
         <div class="uploadText" style="color: #f9e582; margin-left: 5vw;">%%s</div>
@@ -64,18 +66,20 @@
             onclick="openHelp('officialLists')">
     </li>
 
-    <a href="#y2019">
-        <div class="IXstyle noMobileResize" id="listPreview">
-            <div class="uploadText">%%s</div>
-            <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
-        </div>
-    </a>
+    <div class="officialLists">
+        <a href="#y2019">
+            <div class="IXstyle noMobileResize" id="listPreview">
+                <div class="uploadText">%%s</div>
+                <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
+            </div>
+        </a>
 
-    <a href="#y2021">
-        <div class="XXIstyle noMobileResize" id="listPreview">
-            <div class="uploadText">%%s</div>
-            <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
-        </div>
-    </a>
+        <a href="#y2021">
+            <div class="XXIstyle noMobileResize" id="listPreview">
+                <div class="uploadText">%%s</div>
+                <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
+            </div>
+        </a>   
+    </div>
 </ul>
 <script>document.querySelector("#homepageHeader").style.backgroundPosition = ["left", "center", "right"][Math.floor(Math.random() * 3)]</script>
