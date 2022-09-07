@@ -1046,13 +1046,12 @@ async function loadSite() {
 
 		case /saved/.test(hash):
 			$("#app").append("<div id='favoritesContainer'></div>")
-			$("iframe").attr("src", "packs.html?type=favorites")
 			
 			await $.get("./parts/listBrowser.html", data => {
-				$("#app").append(translateDoc(data, "listViewer"))
+				$("#app").append(translateDoc(data, "listBrowser"))
 			})
-			favesData = localStorage.getItem("favorites")
-			listViewerDrawer(favesData, "#favoritesContainer", 1)
+			favesData = JSON.parse(localStorage.getItem("favorites"))
+			listViewerDrawer(favesData, "#app", 1)
 
 			break;
 
@@ -1065,7 +1064,7 @@ async function loadSite() {
 
 		default:
 			if (hash == "") {makeHP(); break};
-			await $.get("../parts/listViewer.html", data => {
+			await $.get("./parts/listViewer.html", data => {
 				$("#app").html(translateDoc(data, "listViewer"))
 				let listObject;
 				if (hash.match(/[A-z]/) == null) listObject = {"type": "id", "id": hash.match(/\d+/)}
@@ -1081,7 +1080,7 @@ async function loadSite() {
 	}
 	clearInterval(spinning)
 	rot = 1
-	$("#app").fadeIn(50)
+	$("#app").fadeIn(100)
 }
 
 $(async function () {

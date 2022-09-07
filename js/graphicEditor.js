@@ -1019,7 +1019,7 @@ async function preview(skipCheck = false) {
     $(".backToEditor").click(editorBack)
 
     if ($(".preview").length == 0) {
-        await $.get("../parts/listViewer.html", data => {
+        await $.get("./parts/listViewer.html", data => {
             $("#app").append("<div class='preview'>"+data+"</div>")
         })
     }

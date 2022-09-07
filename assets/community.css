@@ -557,6 +557,8 @@ input:disabled {
     float: left;
     width: 3em;
     padding: 1em;
+    position: absolute;
+    z-index: 2;
 }
 
 .listErrors {
@@ -1150,7 +1152,7 @@ input:disabled {
 
 .search {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
     flex-grow: 1;
 }
