@@ -214,8 +214,6 @@ const DEFAULT_LEVELLIST = {
 }
 
 function makeEditor(update) {
-    levelList = DEFAULT_LEVELLIST
-
     // Do nothing if in editor
     $(".pickerContainer").on("click", showBGColorPicker)
     if (window.location.search.includes("edit")) $(".uploader").show()
@@ -289,8 +287,8 @@ function makeBrowser(search) {
 
         // Generates stuff
         $.get("./php/getLists.php", data => {
-            if (typeof data != "object") { $(".listContainer").text(jsStr["NO_RES"][LANG]); return; }
-            listViewerDrawer(data, "#app", 4)
+            if (typeof data != "object") { $("#communityContainer").text(jsStr["NO_RES"][LANG]); return; }
+            listViewerDrawer(data, "#communityContainer", 4)
             if (isSearching) $("#app .doSearch").click()
         });
     })

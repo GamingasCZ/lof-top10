@@ -523,7 +523,17 @@ function addFromFaves() {
     $(".savedFilter").val("")
 
     if (favesData != null) { favesData = OGfavesData; makeFavesPicker() }
-    else $("iframe").attr("src", "./packs.html?type=fetchFaves")
+    else {
+        let data = JSON.parse(localStorage.getItem("favorites"))
+        if (data != null) {
+            favesData = data
+            OGfavesData = JSON.parse(JSON.stringify(data))
+        }
+
+        // No key in localStorage (first time entering site)
+        else { favesData = []; OGfavesData = [] }
+        makeFavesPicker()
+    }
 
     $(".boom").show()
     $(".boom").css("background-color", "black")
@@ -569,21 +579,6 @@ function addPicked(ind) {
 
 var favesData
 var OGfavesData
-window.addEventListener("message", mess => {
-    let state = mess.data;
-    if (state == "fetchFaves") {
-        let data = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
-        if (data != null) {
-            favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
-            OGfavesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
-        }
-
-        // No key in localStorage (first time entering site)
-        else { favesData = []; OGfavesData = [] }
-        makeFavesPicker()
-    }
-}
-)
 
 function makeFavesPicker() {
     $(".levelPickerContainer").empty()

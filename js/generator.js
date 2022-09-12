@@ -586,10 +586,9 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		}
 
 		// Generate tags
-		let gradients = ["#5c3904","#5c0404","#5c0404","#04505c","#5c0404","#04555c","#045c0a","#5c0456","#5c0404","#5c3504","#5c0404","#5c0404","#045c0d","#5c0404","#045c0a","#5c5604"]
 		boards[bIndex]["tags"].forEach(tag => {
 			let tagName = tag[1] == -1 ? jsStr["TAGS"][LANG][tag[0]] : tag[1]
-			$(".listTagContainer").append(`<div style="background: ${gradients[tag[0]]};" class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)
+			$(".listTagContainer").append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)
 		});
 
 		// Only display icons on hover
@@ -625,10 +624,6 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		$(".titles").append(jsStr["LLOAD_FAIL"][LANG]);
 	}
 
-	// When clicking a level in saved, scroll to card
-	let paramGetter = new URLSearchParams(window.location.search)
-	let params = Object.fromEntries(paramGetter.entries());
-
 	// Saving viewed list
 	let viewed = getCookie("recentlyViewed");
 	if (!viewed) { viewed = "[]" }
@@ -648,18 +643,11 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		makeCookie(["recentlyViewed", JSON.stringify(parsed)])
 	}
 
-	// Box appear animation
-	$(".box").css("transform", "translateX(-100vw)");
-	$(".box").css("transition", "transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1)");
-	
-	let index = 0
-	let boxAppear = setInterval(() => {
-		if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
-		if ($(".box")[index] != undefined) $(".box")[index].style.transform = "none"
-		index++
-	}, 100);
-
-	if ($(".box")[params.goto - 1] != undefined) $(".box")[params.goto - 1].scrollIntoView()
+	// When clicking a level in saved, scroll to card
+	if (window.location.hash.match(/!\d+/g) != null) {
+		let gotoHash = parseInt(window.location.hash.slice(1).split("!")[1])
+		if ($(".box")[gotoHash - 1] != undefined) $(".box")[gotoHash - 1].scrollIntoView()
+	}
 	return true
 }
 
@@ -772,8 +760,6 @@ function skipGuess(face) { // face = [diff, rating]
 		$(".replayList").click(replayList)
 		$(".finishDiffList")[0].scrollIntoView()
 		$(".diffRes").animate({ "width": perc + "%" }, "300")
-
-		if (LIST_ID == -8) $(".shareDiff").remove() // Remove share in list preview
 	}
 }
 
@@ -846,22 +832,29 @@ let currListIDs = []
 function removeFave(remID) {
 	if (typeof boards != "undefined" && currListIDs.length == 0) Object.values(boards).forEach(x => currListIDs.push(x.levelID))
 
-	let savePage = $("iframe")[0].contentWindow
-	sender = "http://gamingas.wz.cz"
-	if (window.location.port != "") sender = "*" // Allow all if running locally
-
 	let i = 0
-	currentListData["#favoritesContainer"].forEach(x => {
+	currentListData["#app"].forEach(x => {
 		if (parseInt(x[2]) == remID) {
-			currentListData["#favoritesContainer"].splice(i, 1)
+			currentListData["#app"].splice(i, 1)
 		}
 		i++
 	});
 
-	savePage.postMessage(["remove", remID], sender)
+	let faves = JSON.parse(localStorage.getItem("favorites"))
+	let faveIDs = JSON.parse(localStorage.getItem("favoriteIDs"))
+	let levelIndex = faveIDs.indexOf(remID.toString())
+
+	faves.splice(levelIndex, 1)
+	faveIDs.splice(levelIndex, 1)
+
+	localStorage.setItem("favorites", JSON.stringify(faves));
+	localStorage.setItem("favoriteIDs", JSON.stringify(faveIDs));
+
 	if (currListIDs.includes(remID.toString())) {
 		$(`div.box:nth-child(${2 + currListIDs.indexOf(remID.toString())}) > div:nth-child(1) > img:nth-child(1)`).removeClass("disabled")
 	}
+
+	listViewerDrawer(currentListData["#app"], "#app", 1)
 }
 
 function switchLoFList(hash, goto = null) {
@@ -905,9 +898,8 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 							<u>${object[5]}</u>
 						</a> - ${jsStr["L_LEVID"][LANG]}: ${object[2]}</p>
 					</div>
-					<div style="${previewType == 3 ? 'display: none;' : ''}">
-					<img class="button" onclick="removeFave(${object[2]});"
-					style="width: 4vw" src="images/delete.webp">
+					<div style="display: flex; align-items: center; ${previewType == 3 ? 'display: none;' : ''}">
+					<img class="button" onclick="removeFave(${object[2]});" id="remFaveBut" src="images/close.svg">
 					</div>
 					</div>
 					`);
@@ -915,14 +907,13 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 			else if ([2, 5].includes(previewType)) { // Recently viewed list / Pinned list
 				let lightCol = HEXtoRGB(object[3], -60)
 				let darkCol = HEXtoRGB(object[3], 40)
-				let priv = object[0].toString().match(/[A-z]/) != null ? "pid" : "id"
 
 				let dGuesserBadge = ""
 				if (object[5] != undefined) {
 					dGuesserBadge = object[5] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
 				}
 				$(custElement).append(`
-					<div id="listPreview" class="noMobileResize")"
+					<a id="listPreview" class="noMobileResize" href="#${object[0]}" 
 						style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${object[3]}, rgb(${lightCol.join(",")}));
 								border-color: rgb(${darkCol.join(",")}); flex-grow: 1;">
 						<div class="boxHeader" style="flex-direction: row !important;">
@@ -935,7 +926,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 								${previewType == 5 ? `<img src="images/unpin.svg" onclick="pinList('${object[0]}',$(this))" class="button" id="unpinCard">` : ''}
 							</div>
 						</div>
-					</div>
+					</a>
 				`);
 			}
 			else if (previewType == 4) { // Newest lists
@@ -1016,6 +1007,8 @@ async function loadSite() {
 	LIST_CREATOR = null
 	LIST_NAME = null
 	LIST_ID = null
+	originalListData = []
+	levelList = DEFAULT_LEVELLIST
 
 	$(".logo").css("transform", `rotate(360deg)`)
 	let spinning = setInterval(() => {rot += 1; $(".logo").css("transform", `rotate(${rot*360}deg)`)}, 1000)
@@ -1051,17 +1044,18 @@ async function loadSite() {
 			$("#app").append("<div id='favoritesContainer'></div>")
 			
 			await $.get("./parts/listBrowser.html", data => {
-				$("#app").append(translateDoc(data, "listBrowser"))
+				$("#favoritesContainer").append(translateDoc(data, "listBrowser"))
 			})
 			favesData = JSON.parse(localStorage.getItem("favorites"))
-			listViewerDrawer(favesData, "#app", 1)
+			listViewerDrawer(favesData, "#favoritesContainer", 1)
 
 			break;
 
 		case /browse/.test(hash):
 			$("title").text(`${jsStr["COMMUNITY"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 			await $.get("./parts/listBrowser.html", site => {
-				$("#app").html(translateDoc(site, "listBrowser"))
+				$("#app").append("<div id='communityContainer'></div>")
+				$("#communityContainer").html(translateDoc(site, "listBrowser"))
 				makeBrowser("")
 			})
 			break;
@@ -1071,8 +1065,9 @@ async function loadSite() {
 			await $.get("./parts/listViewer.html", data => {
 				$("#app").html(translateDoc(data, "listViewer"))
 				let listObject;
-				if (hash.match(/[A-z]/) == null) listObject = {"type": "id", "id": hash.match(/\d+/)}
-				else if (hash.match(/y\d+/)) listObject = {"type": "year", "id": hash == "y2019" ? -2 : -3}
+				if (hash.match(/y\d+/)) listObject = {"type": "year", "id": hash == "y2019" ? -2 : -3}
+				else if (hash.startsWith("-2") || hash.startsWith("-3")) listObject = {"type": "year", "id": hash.includes("-2") ? -2 : -3}
+				else if (hash.match(/[A-z]/) == null) listObject = {"type": "id", "id": hash.match(/\d+/)[0]}
 				else if (hash == "random") listObject = {"type": "random", "id": -10}
 				else listObject = {"type": "pid", "id": hash}
 
@@ -1253,6 +1248,17 @@ async function lists(list) {
 			}
 		});
 	}
+
+	// Box appear animation
+	$(".box").css("transform", "translateX(-100vw)");
+	$(".box").css("transition", "transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1)");
+
+	let index = 0
+	let boxAppear = setInterval(() => {
+		if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
+		if ($(".box")[index] != undefined) $(".box")[index].style.transform = "none"
+		index++
+	}, 100);
 }
 
 function checkPassword() {
@@ -1261,18 +1267,23 @@ function checkPassword() {
 }
 
 let page = {} // [page, maxPage]
-function pageSwitch(num, data, parent, ctype) {
-	if (page[parent][0] + num < 0) {
+function pageSwitch(num, data, parent, ctype, forceMove) {
+	if (page[parent][0] + num < 0 && !forceMove) {
 		page[parent][0] = 0
 	}
-	else if (page[parent][0] + num > page[parent][1] - 1) {
+	else if (page[parent][0] + num > page[parent][1] - 1 && !forceMove) {
 		page[parent][0] = page[parent][1] - 1;
 	}
 	else {
-		page[parent][0] += num;
-		$(`${parent} #pageSwitcher`).val(page[parent][0] + 1);
+		if (forceMove) page[parent][0] = num
+		else page[parent][0] += num;
 		listViewerDrawer(data, parent, ctype)
 	}
+
+	$(".pageYes").attr("id", "")
+	Object.values($(".pageYes")).forEach(x => {
+		if ($(x).text() == page[parent][0]+1) $(x).attr("id", "pgSelected")
+	})
 }
 
 function search(data, parent, ctype) {
@@ -1305,29 +1316,16 @@ function search(data, parent, ctype) {
 
 }
 
-let sorting = {}
-function sortingList(data, parent, ctype) {
-	listViewerDrawer(data.reverse(), parent, ctype)
-	if (sorting[parent]) {
-		$(`${parent} #sortBut`).css("transform", "scaleY(1)");
-		$(`${parent} #sortBut`).attr("title", jsStr["NEWEST"][LANG])
-	}
-	else {
-		$(`${parent} #sortBut`).css("transform", "scaleY(-1)");
-		$(`${parent} #sortBut`).attr("title", jsStr["OLDEST"][LANG])
-	}
-	sorting[parent] = !sorting[parent]
-}
-
 let originalListData = {}
 let currentListData = {}
 function listViewerDrawer(data, parent, cardType) {
+	let LIST_ONPAGE = 10
+
 	// Store original list data
 	if (originalListData[parent] == undefined) {
 		originalListData[parent] = data; currentListData[parent] = data; originalListData[parent].init = true
+		page[parent] = [0, 0]
 	}
-	if (sorting[parent] == undefined) sorting[parent] = false
-	if (page[parent] == undefined) page[parent] = [0, 0]
 
 	// Clear old cards
 	$(`${parent} .customLists`).empty();
@@ -1337,15 +1335,10 @@ function listViewerDrawer(data, parent, cardType) {
 
 	// Set max page text
 	let listAmount = Object.keys(reversed).length;
-	page[parent][1] = Math.ceil(listAmount / 10);
+	page[parent][1] = Math.ceil(listAmount / LIST_ONPAGE);
 	$(`${parent} #maxPage`).text("/" + page[parent][1]);
 
 	if (originalListData[parent].init) {
-		// List sorting click action
-		$(`${parent} #sortBut`).click(() => {
-			sortingList(currentListData[parent], parent, cardType)
-		})
-
 		// List search button action
 		$(`${parent} .doSearch`).click(() => {
 			search(originalListData[parent], parent, cardType)
@@ -1354,28 +1347,41 @@ function listViewerDrawer(data, parent, cardType) {
 		// Typing in a page (TODO: Add object as page)
 		$(`${parent} #pageSwitcher`).on("change", function () {
 			if (!isNaN(parseInt($(this).val()))) {
-				pageSwitch(parseInt($(this).val()) - page[parent][0] - 1, currentListData[parent], parent, cardType)
+				pageSwitch(parseInt($(this).val()) - page[parent][0] - 1, currentListData[parent], parent, cardType, 1)
 			}
 		})
 
 		// Page -1 (left) action
 		$(`${parent} .pageBut`).eq(0).click(() => {
-			pageSwitch(-1, currentListData[parent], parent, cardType)
+			pageSwitch(-1, currentListData[parent], parent, cardType, 0)
 		})
 		// Page +1 (right) action
 		$(`${parent} .pageBut`).eq(1).click(() => {
-			pageSwitch(1, currentListData[parent], parent, cardType)
+			pageSwitch(1, currentListData[parent], parent, cardType, 0)
 		})
+
+		// Draw pages
+		for (let i = 0; i < clamp(page[parent][1]-1, 0, 4); i++) {
+			$(".pageYes:last()").click(() => pageSwitch(i, currentListData[parent], parent, cardType, 1))
+			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i+2}</div>`)
+		}
+		$(".pageYes:last()").click(() => pageSwitch($(".pageYes").length-2, currentListData[parent], parent, cardType, 1))
+		
+		if (page[parent][1] > 4) {
+			$(".pageBut").eq(1).before(`<hr class="verticalSplitter">`)
+			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${page[parent][1]}</div>`)
+			$(".pageYes:last()").click(() => pageSwitch(page[parent][1]-1, currentListData[parent], parent, cardType, 1))
+		}
 
 		delete originalListData[parent].init
 	}
 
+
 	// Draw Cards
 	if (Object.keys(data).length > 0) {
-		homeCards(data, `${parent} .customLists`, cardType, 10, page[parent][0])
+		homeCards(data, `${parent} .customLists`, cardType, LIST_ONPAGE, page[parent][0])
 	}
 	else {
-		$(`${parent} #maxPage`).text("/1");
 		// No favorites
 		if (cardType == 1) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center; color: #f9e582">${jsStr["NOFAVED"][LANG]}</p>`);
 		// Object is empty

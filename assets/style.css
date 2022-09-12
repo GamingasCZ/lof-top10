@@ -208,7 +208,7 @@ ul > div {
 
 #commButton {
 	background: var(--greenGradient) !important;
-	padding: 1vw;
+	padding: 0.8em;
 	min-width: max-content;
   transition: box-shadow 0.2s;
 }
@@ -281,7 +281,7 @@ ul > div {
 .box {
   background-color: #43a045;
   background-image: url("../images/cardBg.webp");
-  padding: 1em 3em 2em 3em;
+  padding: 1em 3% 2em 3%;
   margin: 2.5em auto 2.5em auto;
   display: flex;
   flex-direction: column;
@@ -417,7 +417,7 @@ u {
   margin: 0.8vw;
   display: flex;
   align-items: center;
-  max-height: 3vw;
+  /*! max-height: 3vw; */
 }
 
 .memberName {
@@ -507,9 +507,9 @@ u {
 }
 
 .boxIcon {
-  width: 3vw;
-  margin-right: 1vw;
-  height: 3vw;
+  width: 2em;
+  margin-right: 0.5em;
+  height: 2em;
 }
 
 #discordTag {
@@ -566,11 +566,13 @@ u {
 }
 
 .verticalSplitter {
-  height: 3vw;
-  margin: 0 1vw;
-  width: 0.3vw;
+  height: 2em;
+  margin: 0 0.2em;
+  width: 0.3em;
   border: none;
   border-radius: 9px;
+  background: var(--greenGradient);
+  box-sizing: border-box;
 }
 
 .stats {
@@ -624,6 +626,10 @@ html, body {
   width: 0%;
 }
 
+#commButtonText {
+  font-size: var(--normalFont);
+}
+
 #linkViewer {
   margin: 0;
   width: 94%;
@@ -667,7 +673,7 @@ html, body {
 
 #commAmount {
 	background: #d94242;
-	font-size: var(--miniFont);
+	font-size: var(--normalFont);
 	padding: 0.1vw;
 	border-radius: 20%;
 	margin-left: 1vh;
@@ -727,7 +733,7 @@ html, body {
 #comBoxFooter {
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
-  justify-content: right !important;
+  justify-content: flex-end !important;
   gap: 1vw;
   margin-right: 5vw;
 }

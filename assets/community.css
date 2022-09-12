@@ -293,9 +293,9 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
 
 .imgPreview {
     padding: 2%;
-    width: 40vw;
+    width: 50%;
     display: none;
-    margin: 2% 22.5% 3%;
+    margin: 2% auto;
     background-color: rgba(255, 255, 255, 0.08);
     border-radius: 20px;
 }
@@ -1108,6 +1108,23 @@ input:disabled {
     display: flex;
     flex-grow: 1;
     justify-content: center;
+    font-size: var(--smallFont);
+}
+
+#searchLists {
+    width: 3em;
+    margin-left: 1%;
+    background: var(--greenGradient);
+    border-radius: 10em;
+    padding: 0.4em;
+    box-sizing: border-box;
+}
+#remFaveBut {
+    width: 2.5em;
+    box-sizing: border-box;
+    background: #00000059;
+    border-radius: 10em;
+    padding: 0.3em;
 }
 
 #passEditor {
@@ -1183,7 +1200,7 @@ input:disabled {
 
 .pageYes {
 	min-width: 2em;
-	background: #0000004f;
+	background: #ffffff0a;;
 	text-align: center;
 	margin: 0 0.2em;
 	border-radius: 0.4em;
@@ -1272,6 +1289,7 @@ input:disabled {
     padding: 0.3em 0.4em;
     border-radius: 100em;
     width: max-content;
+    background: #00000078;
 }
 
 .listTagContainer {
