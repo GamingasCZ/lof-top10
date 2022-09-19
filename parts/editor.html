@@ -117,12 +117,14 @@
 </div>
 
 <div style="display: none;" id="centeredPopup" class="uploadText levelPicker">
-    <div style="display: flex;">
+    <div style="display: flex; align-items: center;">
         <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">%%s</span>
-        <img onclick="hideFavePicker()" src="./images/smallClose.svg" style="width: 3vw;" class="button">
+        <img onclick="hideFavePicker()" src="./images/smallClose.svg" style="width: 2em;" class="button">
     </div>
-    <input placeholder="%%s" class="savedFilter searchWithIcon" style="margin-right: 2vw;">
-    <div class="levelPickerContainer" style="margin-right: 2vw;"></div>
+    <div style="padding: 0 1em 1em;">
+        <input placeholder="%%s" class="savedFilter searchWithIcon">
+        <div class="levelPickerContainer"></div>
+    </div>
 </div>
 
 <div class="uploader">

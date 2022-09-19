@@ -25,39 +25,24 @@
 .comFooterButton { width: 5vw; }
 
 .settingsMenu {
-    right: 7vw;
-    top: 19vw;
-    transform: scale(1.5);
+    top: 13vw;
 }
 
 #shareTools {
     width: 75%;
 }
 
-#jumpToTools {
-    height: 100%;
-    width: 100%;
-}
+#jumpToTools { width: 90%; }
 
 #collabTools {
-    margin: 0;
-    border: none;
     border-radius: 0px;
-    right: 0;
-    bottom: 0;
     width: 100%;
     height: 100%;
 }
-.graphPerc {
-    font-size: 2.5vw;
-}
-.graphContainer { 
-    height: 5.5vw;
-}
+.graphPerc { font-size: 2.5vw;}
+.graphContainer { height: 5.5vw; }
 
-.uploadBG:not(#jumpToTools, #shareTools) {
-    margin: 0;
-}
+#levelUpload {margin: 0 0.6em;}
 
 .diffContainer {
     width: 7.5vw !important;

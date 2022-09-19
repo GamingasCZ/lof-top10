@@ -10,10 +10,13 @@
 </div>
 
 <!-- Jump To Dialog-->
-<div class="uploadBG uploadText" id="jumpToTools" style="position: fixed; display: none;">
-    <img src="./images/smallClose.svg" class="button" style="width: 6%; float: right;" onclick="hideJumpTo()">
-    <p class="uploadText" id="jumpToText" style="margin: 0;">%%s</p>
-    <div style="display: flex; flex-direction: column;" class="jumpToContainer">
+<div style="display: none;" id="jumpToTools" class="uploadText levelPicker">
+    <div style="display: flex; align-items: center;">
+        <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">%%s</span>
+        <img onclick="hideJumpTo()" src="./images/smallClose.svg" style="width: 2em;" class="button">
+    </div>
+    <div style="padding: 0 1em 1em;">
+        <div class="levelPickerContainer"></div>
     </div>
 </div>
 

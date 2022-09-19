@@ -1015,7 +1015,7 @@ cb { color: #5fe7ff ;}
 .levelPicker {
   background-image: var(--greenGradient);
   z-index: 5;
-  padding: 2vw;
+  /*! padding: 1.5em; */
   display: grid;
   border-radius: 10px;
   padding-top: 0;

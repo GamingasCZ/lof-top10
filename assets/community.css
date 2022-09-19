@@ -154,9 +154,9 @@
     justify-content: space-between;
     align-items: center;
     max-height: 3vw;
-    padding: 0.1vw 1vw;
+    padding: 0.1em 1em;
     border-radius: 0.5vw;
-    margin: 1%;
+    margin: 0.2em;
     width: 25vw;
 }
 .roleControls { display: flex; }
@@ -202,7 +202,7 @@ tr>td:nth-child(2n) {
 #collabInp {
     display: inline;
     transform: none;
-    width: 3.5em;
+    width: 50%;
     margin: 0.5%;
     font-size: var(--smallFont);
     background-color: #FFFFFF50;
@@ -365,37 +365,12 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
 }
 
 #jumpToTools {
-    width: 50vw;
-    height: calc(37vh + 18vw);
-    z-index: 4;
-    padding-left: 3vw;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0 !important;
+	z-index: 4;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
-
-.jumpToContainer {
-    display: flex;
-    flex-direction: row;
-    height: 89%;
-    background: #00000042;
-    margin-right: 3vw;
-    border-radius: 2vw;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-#jumpBubble {
-    background: #ff6161;
-    width: 90%;
-    margin-left: 2.5%;
-    justify-content: flex-start;
-    font-size: var(--normalFont);
-    padding: 1%;
-}
-
 
 .cardInput {
     margin: 15px 30%;
@@ -1031,7 +1006,7 @@ input:disabled {
 
 .settingsBG {
     background-color: rgba(255, 255, 255, 0.08);
-    margin: 0% 21% 3%;
+    margin: 0% 19% 3%;
     padding: 1%;
     border-radius: inherit;
     display: flex;
@@ -1094,7 +1069,7 @@ input:disabled {
     font-size: var(--smallFont);
 }
 
-.socButton {width: 1.2em;}
+.socButton {width: 1.2em; padding: 0 0.5%;}
 
 #searchLists {
     width: 3em;

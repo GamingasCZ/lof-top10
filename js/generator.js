@@ -56,15 +56,15 @@ function showJumpTo() {
 	$("#popupBG").show()
 	$("#popupBG").css("opacity", 1)
 	$("#jumpToTools").fadeIn(100);
-	$(".jumpToContainer").text("");
+	$(".levelPickerContainer").empty();
 
 	let ind = 1;
 	Object.values(boards).slice(0, Object.keys(boards).length - ADDIT_VALS - 1).forEach(pos => {
 		let creator = pos.creator;
 		if (typeof creator == "object") creator = "(Collab)"
 
-		$(".jumpToContainer").append(`<div class="roleBubble noMobileResize button" for="${ind}" style="background:${pos.color};" id="jumpBubble">#${ind} ${pos.levelName} - ${creator}</div>`)
-		$(".jumpToContainer:last-child").on("click", (k) => {
+		$(".levelPickerContainer").append(`<div class="roleBubble button" for="${ind}" style="background:${pos.color};" id="favBubble">#${ind} ${pos.levelName} - ${creator}</div>`)
+		$(".levelPickerContainer:last-child").on("click", (k) => {
 			hideJumpTo();
 			if ($(".boards").css("display") == "none") listList()
 			$(".box")[$(k.target).attr("for") - 2].scrollIntoView();

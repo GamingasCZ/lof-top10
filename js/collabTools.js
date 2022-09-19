@@ -321,7 +321,7 @@ function addCollabHuman(load = 0) {
         <td>
             <img class="button noMobileResize socButton" src="${verifySign}"
            ><input onchange="chRoleValue($(this), 'name', 2)" id="collabInp" placeholder="${jsStr["NAME"][LANG]}" value="${humanInstance.name}"></input
-           ><img class="button noMobileResize socButton" src="images/getStats.webp" onclick="verifyPerson($(this), 1)">
+           ><img id="passSubmit" class="button noMobileResize socButton" src="images/searchOpaque.svg" onclick="verifyPerson($(this), 1)">
         </td>
         <td>
             <img class="button noMobileResize socAddButton socButton" src="images/add.webp" onclick="addSocMedia($(this))"
