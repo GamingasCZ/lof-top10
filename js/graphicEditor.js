@@ -803,19 +803,23 @@ function tagPopup(lp) {
 }
 
 function clickTag(e, lp) {
-    let tagName, badgeIndex
+    let tagName, badgeIndex, linkURL
+    let linkHighlight = "none"
     if ($(".tagViewer > .diffOptions").length == 1) $(".tagViewer").empty()
     if (typeof e != "number") { // Event details from click, used in tag picker
         $(e.currentTarget).addClass("tagInUse")
         badgeIndex = Object.values($(".badgeBox")).indexOf(e.currentTarget)
         tagName = $(".tagName").eq(badgeIndex).text()
+        linkURL = ""
 
-        // [badgeIndex, name (-1 default)]
-        levelList[lp]["tags"].push([badgeIndex, -1])
+        // [badgeIndex, name (-1 default),link]
+        levelList[lp]["tags"].push([badgeIndex, -1, ""])
     }
     else { // loading index from tag array
         badgeIndex = levelList[lp]["tags"][e][0]
         tagName = levelList[lp]["tags"][e][1] == -1 ? jsStr["TAGS"][LANG][levelList[lp]["tags"][e][0]] : levelList[lp]["tags"][e][1]
+        linkURL = levelList[lp]["tags"][e][2]
+        linkHighlight = levelList[lp].tags[e][2] == "" ? "none" : "var(--redHighlight)"
     }
 
     $(".tagViewer").append(`
@@ -823,23 +827,33 @@ function clickTag(e, lp) {
         <img src="images/showCommsL.svg" class="button tagMoveL">
         <div class="tagDataContainer">
             <div class="tagButtonsContainer">
-            <img src='images/badges/${badgeIndex}.svg' id="editBadge">
+                <img src="images/link.svg" class="button tagLink" style="filter: ${linkHighlight};">
+                <img src='images/badges/${badgeIndex}.svg' id="editBadge">
                 <img src="images/close.svg" class="button deleteTag">
             </div>
             <input maxlength="50" type="text" id="tagNameInput" class="tagInput" placeholder="Popis štítku" value="${tagName}">
+            <input maxlength="100" type="text" id="tagNameInput" class="tagLinkInput" placeholder="Odkaz" style="display:none" value="${linkURL}">
         </div>
         <img src="images/showComms.svg" class="button tagMoveR">
     </div>
     `)
 
     $(".deleteTag:last()").click(e => {
-        let index = Object.values($("tagEditBox")).indexOf($(e.currentTarget).parents().eq(2))[0]
+        let index = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parents()[2])
         levelList[lp]["tags"].splice(index, 1)
         $(e.currentTarget).parents().eq(2).remove()
 
         if ($(".tagEditBox").length == 0) {
             $(".tagViewer").append(`Klikni na <img style="width: 1.2em;" class="diffOptions" src="images/plus.svg"> k přidání štítků!`)
         }
+    })
+    $(".tagLink:last()").click(e => {
+        let index = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parents()[2])
+        let linkInput = $(e.currentTarget).parents().eq(1).children().eq(2)
+        let nameInput = $(e.currentTarget).parents().eq(1).children().eq(1)
+        if (linkInput.css("display") != "none") { linkInput.hide(); nameInput.show();
+            $(e.currentTarget).css("filter", levelList[lp].tags[index][2] == "" ? "none" : "var(--redHighlight)") }
+        else { linkInput.show(); nameInput.hide(); $(e.currentTarget).css("filter", "var(--lightHighlight)") }
     })
 
     $(".tagMoveL:last()").click(e => {
@@ -874,6 +888,11 @@ function clickTag(e, lp) {
             e.target.value = jsStr["TAGS"][LANG][badgeIndex]
         }
         levelList[lp]["tags"][index][1] = e.target.value
+    })
+    $(".tagLinkInput:last()").on("change", e => {
+        let index = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parents().eq(1)[0])
+
+        levelList[lp]["tags"][index][2] = e.target.value
     })
 }
 

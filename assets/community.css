@@ -115,16 +115,15 @@
 
 #collabTools {
     position: fixed;
-    width: 95%;
-    height: 90vh;
-    right: -8%;
-    bottom: 0%;
+    width: 74%;
+    height: 95vh;
+    left: 50%;
+    top: 50%;
     z-index: 4;
     display: flex;
     padding: 0;
     flex-direction: column;
-    transform: scaleY(0.7);
-    transition-duration: 0.1s;
+    transform: translate(-50%,-50%);
 }
 
 .collabBar {
@@ -133,14 +132,13 @@
     flex-direction: row !important;
     align-items: center !important;
     overflow-y: hidden !important;
-    min-height: 8%;
+    min-height: 3em;
 }
 
 .collabTables {
     border: none;
     text-align: center;
     width: 100%;
-    background: url("../images/fade.webp") repeat-x;
 }
 
 .collabRoles {
@@ -182,18 +180,11 @@ td>* {
     vertical-align: middle;
 }
 
-.collabTables th img:nth-child(1) {
-    width: 2vw;
-    vertical-align: middle;
-}
+.collabTables th img:nth-child(1) { vertical-align: middle; }
 
 .collabTables th div {
-    margin: 0vw 0 0 0.5vw;
-}
-
-.collabTables th {
-    background: rgba(0, 0, 0, 0.1) !important;
-    font-size: var(--bigFont);
+	display: inline;
+	vertical-align: middle;
 }
 
 tr:nth-child(odd) {
@@ -211,7 +202,7 @@ tr>td:nth-child(2n) {
 #collabInp {
     display: inline;
     transform: none;
-    width: 15vw;
+    width: 3.5em;
     margin: 0.5%;
     font-size: var(--smallFont);
     background-color: #FFFFFF50;
@@ -257,6 +248,8 @@ input::-webkit-inner-spin-button {
     padding: 1%;
     margin: 0;
     font-size: var(--smallFont);
+    background-color: #00000070;
+    width: 90%;
 }
 
 /*Would it be better to get rid of this lmao?*/
@@ -1066,19 +1059,6 @@ input:disabled {
     margin-right: 1%;
 }
 
-.searchTools {
-    background-image: var(--greenGradient);
-    border-radius: 1vw;
-    margin: 1% 2%;
-    padding: 0.5%;
-    display: flex;
-    align-items: center;
-    transition: opacity 0.2s ease-in-out;
-    background-repeat: repeat;
-    background-position-y: center;
-    /*flex-wrap: wrap;*/
-}
-
 .noRoles,
 .noRolAdded,
 .addRoles {
@@ -1092,10 +1072,13 @@ input:disabled {
 }
 
 .tableCpicker {
-    border: none;
-    background: none;
-    width: 25%;
-    height: 3vw;
+	width: 1.5em;
+	height: 1.5em;
+	display: inline;
+	border: white solid 4px;
+	padding: 0;
+	border-radius: 5px;
+	position: relative;
 }
 
 .collabHButtons {
@@ -1110,6 +1093,8 @@ input:disabled {
     justify-content: center;
     font-size: var(--smallFont);
 }
+
+.socButton {width: 1.2em;}
 
 #searchLists {
     width: 3em;
@@ -1181,7 +1166,6 @@ input:disabled {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
 }
 
 .pageIndicator {
@@ -1209,7 +1193,7 @@ input:disabled {
 #pgSelected {background: var(--greenGradient);}
 
 #searchBar {
-    width: 80%;
+    width: 15em;
 }
 
 .tagContainer {
@@ -1299,3 +1283,11 @@ input:disabled {
 }
 
 .tagInUse {background: #ffffff2e !important;}
+
+.browserTools {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 1em;
+}

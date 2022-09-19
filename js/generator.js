@@ -479,7 +479,7 @@ var LIST_NAME = null
 var LIST_CREATOR = null
 function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	// Empty list (useful in previews)
-	if (Object.keys(boards).length - ADDIT_VALS == 1) {
+	if (boards[1] == undefined) {
 		$(".boards").append("<h2 class='titles' style='margin-top: 4vw'><img src='images/listEmpty.svg' class='listErrors'>" + jsStr["EMPLIST"][LANG] + "</h2>")
 		return false
 	}
@@ -558,7 +558,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		let currentlyFavedIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
 		let disableStar = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "disabled" : ""
 		let starTitle = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? jsStr["FAV_REM"][LANG] : jsStr["FAV_ADD"][LANG]
-		let diffIndent = diff == "" ? "0" : "1"
+		let diffIndent = diff == "" ? "0" : "0.5"
 
 		let star = `<img title="${starTitle}" src="images/star.webp" class="button favoriteStar ${disableStar}" onclick="fave($(this), ${bIndex}, ['${listData[0]}','${listData[1]}'])">`
 		if (boards.diffGuesser == undefined || (!boards.diffGuesser[0] || isResult)) {
@@ -568,7 +568,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 						${favoriteCheck ? star : ""}
 					</div>
 					<div class="boxHeader">
-						<span id="listLevelName">${diff}<p style="margin: 0; margin-left: ${diffIndent}em;">${boards[bIndex]["levelName"]}</p></span>
+						<span class="listLNContainer">${diff}<p id="listLevelName" style="margin-left: ${diffIndent}em;">${boards[bIndex]["levelName"]}</p></span>
 						<div class="boxLinksContainer">
 							${video}
 							${ID[0]}
@@ -588,6 +588,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		// Generate tags
 		boards[bIndex]["tags"].forEach(tag => {
 			let tagName = tag[1] == -1 ? jsStr["TAGS"][LANG][tag[0]] : tag[1]
+			tagName = tag[2] == "" ? tagName : `<a class="gamLink" target="_blank" href="${tag[2]}">${tagName}</a>`
 			$(".listTagContainer").append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)
 		});
 
@@ -983,6 +984,10 @@ async function makeHP() {
 		hpData.newest = data
 	})
 
+	$(".hpSearchButton").click(e => {
+		switchLoFList('#browse!'+$("#homepageSearch").val())
+	})
+
 	homeCards(hpData.recViewed, ".recentlyViewed", 2)
 	homeCards(hpData.pinned, ".pinnedLists", 5, 5, 0, true)
 	homeCards(hpData.favPicks, ".savedLists", 3)
@@ -1008,7 +1013,7 @@ async function loadSite() {
 	LIST_NAME = null
 	LIST_ID = null
 	originalListData = []
-	levelList = DEFAULT_LEVELLIST
+	levelList = JSON.parse(JSON.stringify(DEFAULT_LEVELLIST))
 
 	$(".logo").css("transform", `rotate(360deg)`)
 	let spinning = setInterval(() => {rot += 1; $(".logo").css("transform", `rotate(${rot*360}deg)`)}, 1000)
@@ -1056,7 +1061,7 @@ async function loadSite() {
 			await $.get("./parts/listBrowser.html", site => {
 				$("#app").append("<div id='communityContainer'></div>")
 				$("#communityContainer").html(translateDoc(site, "listBrowser"))
-				makeBrowser("")
+				makeBrowser(hash.includes("!") ? hash.split("!")[1] : "")
 			})
 			break;
 
@@ -1086,7 +1091,7 @@ $(async function () {
 	// Default 2019 board
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
 
-	window.addEventListener("hashchange", () => loadSite())
+	window.addEventListener("hashchange", loadSite)
 	loadSite()
 
 	// Hiding header and showing scroll to top button
@@ -1389,4 +1394,9 @@ function listViewerDrawer(data, parent, cardType) {
 	}
 
 	// Draw pages
+}
+
+function doSearch(e) {
+	console.log(e)
+	e.preventDefault()
 }

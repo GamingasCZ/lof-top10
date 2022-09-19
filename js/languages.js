@@ -332,7 +332,6 @@ var parts = {
         ["Sítě", "Socials"],
         ["Role", "Role"],
         ["Část", "Part"],
-        ["Barva", "Color"],
         ["Uložené levely", "Saved Levels"],
         ["        Hledat level...", "        Search levels..."],
         ["Nahrávání", "Upload"],

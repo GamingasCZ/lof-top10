@@ -1,11 +1,4 @@
-@media only screen and (max-width: 600px) {
-    .button:not(.noMobileResize) {
-        width: 5vw !important;
-        height: auto !important;
-    }
-    }
-
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 750px) {
 
 :root {
     --fontMultiplier: 0.8;
@@ -76,7 +69,7 @@
 
 .socInp { width: 40vw !important;}
 .percCollab { width: 3vw !important; height: 2vw !important; padding: 0 !important; }
-.tableCpicker { height: 5vw !important; }
+.tableCpicker { /*! height: 5vw !important; */ }
 
 .humHead, .roleHead { display: none; }
 .collabStuff { display: none; }
@@ -106,10 +99,13 @@
 }
 
 .collabTables th div { display: none !important; }
-.collabTables th:nth-child(1) { display: none !important; }
+.collabTables th > div { display: none !important; }
 
 ul > div {
     margin: 0;
 }
 
+.browserTools { flex-direction: column; }
+
+.boxLinksContainer { margin: 0;}
 }

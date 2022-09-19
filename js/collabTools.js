@@ -41,21 +41,12 @@ class Human {
 
 function showCollabTools(id) {
     currEditing = id;
-    let cardCol = $("#top" + id).css("background-color");
-    let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
     $("body").css("overflow-y", "hidden")
-    $(".collabTables").css("background-color", cardCol);
-    $(".collabTables:nth-child(even)").css("background-color", dark);
     $(".eventButton").show();
 
     $(".collabTTitle").text(`- ${jsStr["CT_S_TIT_1"][LANG]} -`);
-    $("#collabTools").css("background-color", cardCol);
-    $("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
-    $(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
-    $(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,34%)`)
 
-    $("#collabTools").fadeIn(50);
-    $("#collabTools").css("transform", "scaleY(1)");
+    $("#collabTools").fadeIn(100);
 
     $(".roleBubble").remove();
     $(".tableRow").remove();
@@ -125,8 +116,7 @@ function hideCollabTools() {
 
     $(".cardLCreator" + currEditing).val($(".verifier").val())
 
-    $("#collabTools").fadeOut(50);
-    $("#collabTools").css("transform", "scaleY(0.7)");
+    $("#collabTools").fadeOut(100);
 }
 
 function refreshRoleList() {
@@ -329,12 +319,12 @@ function addCollabHuman(load = 0) {
     let humanCode = $(`
     <tr class="tableRow">
         <td>
-            <img class="button noMobileResize" style="width: 2vw;" src="${verifySign}"
+            <img class="button noMobileResize socButton" src="${verifySign}"
            ><input onchange="chRoleValue($(this), 'name', 2)" id="collabInp" placeholder="${jsStr["NAME"][LANG]}" value="${humanInstance.name}"></input
-           ><img class="button noMobileResize" style="width: 2vw;" src="images/getStats.webp" onclick="verifyPerson($(this), 1)">
+           ><img class="button noMobileResize socButton" src="images/getStats.webp" onclick="verifyPerson($(this), 1)">
         </td>
         <td>
-            <img class="button noMobileResize socAddButton" style="width: 2vw;" src="images/add.webp" onclick="addSocMedia($(this))"
+            <img class="button noMobileResize socAddButton socButton" src="images/add.webp" onclick="addSocMedia($(this))"
        ></td>
         <td>
             <select onchange="chRoleValue($(this), 'role', 2)" class="uploadText roleList"></select>
@@ -346,21 +336,15 @@ function addCollabHuman(load = 0) {
            ><p class="uploadText" style="display: inline">%</p
         </td>
         <td>
-            <input type="color" class="tableCpicker noMobileResize button" style="width: 85%" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
-        </td>
-        <td>
-            <img class="button noMobileResize" style="width: 2.5vw;" src="images/copy.webp" onclick="clipboardTask(1, $(this), 2)"
-           ><img class="button noMobileResize humRm" style="width: 2.5vw;" src="images/delete.webp" onclick="removeColObject($(this), 2)">
+            <input type="color" id="bgColorPicker" class="tableCpicker noMobileResize button" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
+            <img class="button noMobileResize" style="width: 1em;" src="images/copy.webp" onclick="clipboardTask(1, $(this), 2)"
+           ><img class="button noMobileResize humRm" style="width: 1em;" src="images/close.svg" onclick="removeColObject($(this), 2)">
         </td>
         <input type="hidden" value="${rowID}">
     </tr>
     `).appendTo($(".collabHumans"))
 
     humanInstance.HTMLobject = humanCode[0];
-
-    let cardCol = $("#top" + currEditing).css("background-color");
-    let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
-    $(".roleList").css("background", `rgb(${dark.join(",")})`)
 
     if (load == 0) {
         levelList[currEditing]["creator"][2].push(humanInstance);
@@ -374,7 +358,7 @@ function addCollabHuman(load = 0) {
         }
 
         humanInstance["socials"].forEach(soc => {
-            let smallBut = $(`<img class="button noMobileResize" style="width: 2vw" src=images/${imgs[soc[0]]}.webp>`).appendTo(socialCell)
+            let smallBut = $(`<img class="button noMobileResize socButton" src=images/${imgs[soc[0]]}.webp>`).appendTo(socialCell)
             smallBut.on("click", changeSocial)
             smallBut.on("dblclick", x => { changeSocial(x); removeSocial() });
             // Adds corresponding HTMLelement to array
@@ -412,7 +396,6 @@ function chRoleValue(el, changeValue, type, arr = null) {
         $(el.siblings()[0]).attr("src", "images/bytost.webp");
     }
     if (changeValue == "part") {
-        const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
         let [from, to] = [el.parent()[0].children[0].value, el.parent()[0].children[2].value]
         // Make sure "from" and "to" make sense
         if (arr == 0) { // From
@@ -432,6 +415,7 @@ function chRoleValue(el, changeValue, type, arr = null) {
     refreshRoleList();
 }
 
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 function chMainName(el, vyb) {
     if (typeof levelList[currEditing]["creator"] != "object") {
         let currVerifier = levelList[currEditing]["creator"];
@@ -674,7 +658,7 @@ function confirmSocial() {
 
         // Adds a button to table cell
         let tableBit = $(".socAddButton")[soc_selected].parentElement
-        let smallBut = $(`<img class="button noMobileResize" style="width: 2vw" src=images/${imgs[soc_array[0]]}.webp>`).appendTo(tableBit)
+        let smallBut = $(`<img class="button noMobileResize socButton" src=images/${imgs[soc_array[0]]}.webp>`).appendTo(tableBit)
         smallBut.on("click", changeSocial)
         smallBut.on("dblclick", x => { changeSocial(x); removeSocial() });
 

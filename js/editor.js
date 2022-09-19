@@ -281,7 +281,7 @@ function makeBrowser(search) {
     let isSearching = false
     $.get("./parts/listBrowser.html", dt => {
         if (search != "") {
-            $("#searchBar").val(params.s)
+            $("#searchBar").val(decodeURIComponent(search))
             isSearching = true
         }
 

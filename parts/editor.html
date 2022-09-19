@@ -5,7 +5,7 @@
 <div class="errNotif">
     <img src="images/sadNotif.webp" style="opacity: 0.8; position: absolute; width: 40vw;">
     <div class="errNotText uploadText errTitle" style="top: 2vw;color: tomato;left: 15.5vw;">%%s</div>
-    <div class="errNotText uploadText errorBox">Toto je test!</div>
+    <div class="errNotText uploadText errorBox"></div>
 </div>
 
 <div id="jumpToTools" class="uploadBG uploadText tagTop" style="display: none;">
@@ -18,18 +18,18 @@
 
 <!-- Collab tools -->
 <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
-    <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
+    <div style="display: flex; width: 98%; padding: 1%; align-items: center; height: 4%;">
         <p style="margin: 0 auto;" class="collabTTitle">%%s</p>
-        <img src="./images/delete.webp" class="button" style="width: 6%; height: max-content;"
+        <img src="./images/close.svg" class="button" style="width: 2em; height: max-content;"
             onclick="hideCollabTools()">
     </div>
     <div style="display: flex; width: 100%; padding: 1%; align-items: center">
         <img class="hostIcon" src="./images/bytost.webp" style="margin-right: 1vw;">
-        <input id="posInputBox" class="verifierRole cardInput" autocomplete="off" type="text"
-            placeholder="%%s" style="width: 15vw;" onchange="chMainName($(this), 3)" value="%%s">:
+        <input id="posInputBox" class="verifierRole cardInput" autocomplete="off" type="text" placeholder="%%s"
+            style="width: 15vw;" onchange="chMainName($(this), 3)" value="%%s">:
         <input id="posInputBox" class="verifier cardInput" autocomplete="off" type="text" placeholder="%%s"
             style="width: 25vw; margin: 0vw 1vw;" onchange="chMainName($(this), 1)">
-        <img class="button" src="images/getStats.webp" onclick="chMainName($(this), 2)">
+        <img class="button" id="passSubmit" src="images/searchOpaque.svg" onclick="chMainName($(this), 2)">
     </div>
 
     <div class="mobileTabSwitcher" style="display: none;">
@@ -44,22 +44,25 @@
             <button class="button uploadText eventButton noMobileResize" onclick="addRole(1)">%%s</button>
             <button class="button uploadText eventButton noMobileResize" onclick="addRole(2)">%%s</button>
         </div>
-        <div class="collabHButtons" style="width: 11vw;">
+        <div class="collabHButtons">
             <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')"
-                style="width: 3vw;height: fit-content;" src="images/paste.webp" title="%%s">
+                style="width: 2em;height: fit-content;" src="images/paste.webp" title="%%s">
             <img class="button roleAddButton" onclick="addRole()"
-                style="width: 3vw;margin-left: 0.4vw;height: fit-content;" src="images/add.webp" title="%%s">
+                style="width: 2em;margin-left: 0.3em;height: fit-content;" src="images/add.webp" title="%%s">
         </div>
     </div>
     <div class="collabBG collabHeader collabDIV roleStuff">
         <table style="display: none;" class="collabTables collabRoles">
-            <p class="uploadText noRolAdded">%%s<img id="plusSign"
-                    style="width: 2.2%" src="images/add.webp"></p>
+            <p class="uploadText noRolAdded">%%s<img id="plusSign" style="width: 2.2%" src="images/add.webp"></p>
         </table>
     </div>
 
     <div class="editorHeader collabHeader uploadText collabBar memberStuff">
-        <div class="uploadText button humHead" onclick="rollThing(1)">%%s</div>
+        <div>
+            <div class="uploadText button humHead" onclick="rollThing(1)">%%s</div>
+            <img src="images/help.svg" class="button smallHelp noMobileResize helpButton"
+                onclick="openHelp('humansHelp')">
+        </div>
 
         <div style="display: flex; align-items: center; opacity: 0;" class="socSettings">
             <div class="socialPicker">
@@ -71,10 +74,10 @@
                 <img src="images/cust.webp" class="socialPickerIcon button cLink" title="%%s">
             </div>
 
-            <img src="images/youtube.webp" style="width: 3vw;" class="button openSocPicker">
-            <input id="collabInp" class="socInp" style="width: 50vw;" placeholder="%%s">
-            <img src="images/check.webp" style="width: 2.5vw;" class="button addSocial" title="%%s">
-            <img src="images/error.webp" style="width: 2.5vw;" class="button rmSocial" title="%%s">
+            <img src="images/youtube.webp" style="width: 2em;" class="button openSocPicker">
+            <input id="collabInp" class="socInp" style="width: 20em;" placeholder="%%s">
+            <img src="images/check.webp" style="width: 1.5em;" class="button addSocial" title="%%s">
+            <img src="images/error.webp" style="width: 1.5em;" class="button rmSocial" title="%%s">
         </div>
 
         <div class="collabHButtons" style="width: 11vw;">
@@ -86,36 +89,27 @@
     </div>
     <div class="collabBG collabHeader collabDIV memberStuff" style="height: 125%;;">
         <p class="uploadText noRoles">%%s</p>
-        <p style="display: none;" class="uploadText addRoles">%%s<img style="width: 2.2%"
-                id="plusSign" src="images/add.webp"></p>
+        <p style="display: none;" class="uploadText addRoles">%%s<img style="width: 2.2%" id="plusSign"
+                src="images/add.webp"></p>
         <table style="display: none;" class="collabTables collabHumans">
             <tr class="collabTables">
-                <th class="collabTables" style="width: 26%;">
-                    <img src="images/bytost.webp" style="width: 2vw;">
-                    <div id="h_name" style="display:inline">%%s</div><img src="images/help.svg"
-                        class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
+                <th class="collabTables" style="width: 22%;">
+                    <img src="images/bytost.webp" class="socButton">
+                    <div>%%s</div>
                 </th>
-                <th class="collabTables" style="width: 14%;">
-                    <img src="images/like.webp" style="width: 2vw;">
-                    <div id="h_social" style="display:inline">%%s</div><img src="images/help.svg"
-                        class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
+                <th class="collabTables" style="width: 23%;">
+                    <img src="images/like.webp" class="socButton">
+                    <div>%%s</div>
                 </th>
-                <th class="collabTables" style="width: 25%;">
-                    <img src="images/part.webp" style="width: 2vw;">
-                    <div id="h_role" style="display:inline">%%s</div><img src="images/help.svg"
-                        class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
+                <th class="collabTables" style="width: 11%;">
+                    <img src="images/part.webp" class="socButton">
+                    <div>%%s</div>
                 </th>
-                <th class="collabTables" style="width: 15%;">
-                    <img src="images/length.webp" style="width: 2vw;">
-                    <div id="h_part" style="display:inline">%%s</div><img src="images/help.svg"
-                        class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
+                <th class="collabTables" style="width: 11%;">
+                    <img src="images/length.webp" class="socButton">
+                    <div>%%s</div>
                 </th>
-                <th class="collabTables" style="width: 13%;">
-                    <img src="images/colorSelect.webp" style="width: 2vw;">
-                    <div id="h_color" style="display:inline">%%s</div><img src="images/help.svg"
-                        class="button smallHelp noMobileResize helpButton" onclick="openHelp('humansHelp')">
-                </th>
-                <th class="collabTables"></th>
+                <th class="collabTables" style="width: 7%;"></th>
             </tr>
         </table>
     </div>
@@ -140,8 +134,7 @@
         <div id="passEditor" class="uploadText" style="display: none;">
             <h3 class="listPassType">%%s</h3>
             <div style="display: flex; gap: 0.5vw; justify-content: center;">
-                <input name="lPass" type="text" id="lpass" class="uploadMainInp searchWithIcon"
-                    placeholder="%%s"><br />
+                <input name="lPass" type="text" id="lpass" class="uploadMainInp searchWithIcon" placeholder="%%s"><br />
                 <img id="passSubmit" class="button" src="images/searchOpaque.svg" onclick="checkPassword()">
             </div>
         </div>
@@ -170,12 +163,10 @@
             style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
             <p class="headerTitle uploadText">%%s</p>
             <div style="display: flex;">
-                <img src="images/preview.webp" title="%%s"
-                    class="button previewButton disabled headerButtons">
+                <img src="images/preview.webp" title="%%s" class="button previewButton disabled headerButtons">
                 <img src="images/addfromFaves.webp" title="%%s" onclick="addFromFaves()"
                     class="button addCardButton headerButtons">
-                <img src="images/add.webp" title="%%s" onclick="addLevel()"
-                    class="button addCardButton headerButtons">
+                <img src="images/add.webp" title="%%s" onclick="addLevel()" class="button addCardButton headerButtons">
             </div>
 
         </div>
