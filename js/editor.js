@@ -124,7 +124,7 @@ function uploadList() {
             let currWebsite
             let pstr
             if (!error) {
-                currWebsite = `${window.location.origin + "/lofttop10"}/?${isNaN(data[1]) ? "pid" : "id"}=${data[1]}`;
+                currWebsite = `${window.location.origin + "/lofttop10"}/#${data[1]}`;
                 pstr = `<br>${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${data[0]}</b>`;
             }
             let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
@@ -169,7 +169,7 @@ function updateList() {
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
             if (typeof data == "object") {
-                let currWebsite = `${window.location.origin + "/lofttop10"}/?${isNaN(data[0]) ? "pid" : "id"}=${data[0]}`;
+                let currWebsite = `${window.location.origin + "/lofttop10"}/#${data[0]}`;
                 $(".uploaderDialog").html(`
                 <div style="padding: 3%">
                     <img src="./images/check.webp" style="width:7%;">

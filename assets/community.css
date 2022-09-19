@@ -865,11 +865,11 @@ input:disabled {
 
 .settingSubbox {
     display: flex;
-    gap: 0.5vw;
+    gap: 0.3em;
     background: #0000004d;
-    padding: 0.5vw;
+    padding: 0.4em;
     border-radius: 10px;
-    margin-left: 3vw;
+    margin-left: 3em;
     width: max-content;
     align-items: center;
 }
@@ -878,12 +878,12 @@ input:disabled {
 .diffSelBut {
 	background: #0000004d;
 	border: none;
-	padding: 0.4vw;
+	padding: 0.3em;
 	border-radius: 15px;
 }
 
 .diffSelBut img {
-    width: 2.5vw;
+    width: 2.5em;
 }
 
 .listDiffContainer {

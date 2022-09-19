@@ -1266,7 +1266,7 @@ async function lists(list) {
 	}, 100);
 }
 
-function checkPassword() {
+function goToPWD() {
 	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, window.location.search.includes("pid"), LIST_NAME, LIST_CREATOR]))
 	window.location.hash = `#update`;
 }
