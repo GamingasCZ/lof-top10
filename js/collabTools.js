@@ -228,8 +228,8 @@ function addRole(preset = null, loading = 0) {
     <div class="roleBubble" style="background: ${randomColor()};">
         <input id="roleInp" maxlength="20" oninput="chRoleValue($(this), 'name', 1)" placeholder="${jsStr["NAME"][LANG]}" value=${presetName}></input>
         <div class="roleControls">
-            <img class="button noMobileResize" src="images/copy.webp" onclick="clipboardTask(1, $(this).parent(), 1)"
-            ><img class="button noMobileResize roleRm" src="images/delete.webp" onclick="removeColObject($(this), 1)">
+            <img class="button noMobileResize" src="images/copy.svg" onclick="clipboardTask(1, $(this).parent(), 1)"
+            ><img class="button noMobileResize roleRm" src="images/close.svg" onclick="removeColObject($(this), 1)">
         </div>
     </div>
     `).appendTo($(".collabRoles"));
@@ -337,8 +337,8 @@ function addCollabHuman(load = 0) {
         </td>
         <td>
             <input type="color" id="bgColorPicker" class="tableCpicker noMobileResize button" value="${cpickerCol}" onchange="chRoleValue($(this), 'color', 2)">
-            <img class="button noMobileResize" style="width: 1em;" src="images/copy.webp" onclick="clipboardTask(1, $(this), 2)"
-           ><img class="button noMobileResize humRm" style="width: 1em;" src="images/close.svg" onclick="removeColObject($(this), 2)">
+            <img class="button noMobileResize" style="width: 1em;" src="images/copy.svg" onclick="clipboardTask(1, $(this), 2)">
+            <img class="button noMobileResize humRm" style="width: 1em;" src="images/close.svg" onclick="removeColObject($(this), 2)">
         </td>
         <input type="hidden" value="${rowID}">
     </tr>

@@ -46,6 +46,7 @@ var jsStr = {
     "LIST_UNCHANGED": ["Nezměnil jsi nic v seznamu!", "Your list is unchanged!"],
     "LIST_UPFAIL": ["Seznam se nepodařilo aktualizovat! Zkus to znova později.", "Failed to update the list! Try again later."],
     "DBLCLKTIP": ["Klikni dvakrát k přeskočení kontroly","Double-click to skip check"],
+    "CLISTS": ["Komunitní seznamy", "Community Lists"],
 
     // generator
     "LEV_NOEXIST": ["Level neexistuje!", "Level doesn't exist!"],
@@ -76,6 +77,7 @@ var jsStr = {
     "FAV_ADD": ["Přidat do oblíbených", "Add to Favorites"],
     "COMMUNITY": ["Komunitní", "Community"],
     "SAVED": ["Uložené", "Saved"],
+    "SAVEDLONG": ["Uložené levely", "Saved Levels"],
     "SHOW_PROFILE": ["Zobrazit profil", "Show profile"],
     "NONEXISTENT_L": ["Neexistující seznam", "Nonexistent list"],
     "PREVIEW_L": ["Náhled seznamu", "List Preview"],
@@ -182,6 +184,8 @@ var jsStr = {
     "UPLOAD": ["Nahrávání", "Upload"],
 
     // comments
+    "COMM": ["Komentáře", "Comments"],
+    "NOCOMM": ["- Žádné komentáře -", "- No Comments -"],
     "PHOLD1": ["Tvůj seznam je...",
         "Your list is..."],
     "PHOLD2": ["Líbí se mi tvůj seznam, protože...",

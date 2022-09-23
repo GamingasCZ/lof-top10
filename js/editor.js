@@ -290,7 +290,7 @@ function makeBrowser(search) {
         // Generates stuff
         $.get("./php/getLists.php", data => {
             if (typeof data != "object") { $("#communityContainer").text(jsStr["NO_RES"][LANG]); return; }
-            listViewerDrawer(data, "#communityContainer", 4)
+            listViewerDrawer(data, "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
             if (isSearching) $("#app .doSearch").click()
         });
     })

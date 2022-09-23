@@ -2,7 +2,6 @@
 /* Return codes:
 0 - Connection failure
 1 - Empty/bad request
-2 - No comments
 3 - Bad list ID
 */
 
@@ -41,8 +40,7 @@ $rows = $result -> fetch_all(MYSQLI_ASSOC);
 
 // No comments
 if (count($rows) == 0) {
-    echo "2";
-    exit();
+    exit(json_encode(array()));
 }
 
 $ind = 0;

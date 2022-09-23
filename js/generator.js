@@ -854,7 +854,7 @@ function removeFave(remID) {
 		$(`div.box:nth-child(${2 + currListIDs.indexOf(remID.toString())}) > div:nth-child(1) > img:nth-child(1)`).removeClass("disabled")
 	}
 
-	listViewerDrawer(currentListData["#app"], "#app", 1)
+	listViewerDrawer(currentListData["#app"], "#app", 1, [0,0], jsStr["SAVEDLONG"][LANG])
 }
 
 function switchLoFList(hash, goto = null) {
@@ -947,6 +947,9 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 					</div>
 				</div>
 				`);
+			}
+			else if (previewType == 6) { // Comment
+				comBox(object, custElement)
 			}
 
 		});
@@ -1051,7 +1054,7 @@ async function loadSite() {
 				$("#favoritesContainer").append(translateDoc(data, "listBrowser"))
 			})
 			favesData = JSON.parse(localStorage.getItem("favorites"))
-			listViewerDrawer(favesData, "#favoritesContainer", 1)
+			listViewerDrawer(favesData, "#favoritesContainer", 1 ,[0,0], jsStr["SAVEDLONG"][LANG])
 
 			break;
 
@@ -1337,7 +1340,7 @@ function search(data, parent, ctype) {
 
 let originalListData = {}
 let currentListData = {}
-function listViewerDrawer(data, parent, cardType) {
+function listViewerDrawer(data, parent, cardType, disableControls=[0,0],title="",addElements=[]) {
 	let LIST_ONPAGE = 10
 
 	// Store original list data
@@ -1355,7 +1358,6 @@ function listViewerDrawer(data, parent, cardType) {
 	// Set max page text
 	let listAmount = Object.keys(reversed).length;
 	page[parent][1] = Math.ceil(listAmount / LIST_ONPAGE);
-	$(`${parent} #maxPage`).text("/" + page[parent][1]);
 
 	if (originalListData[parent].init) {
 		// List search button action
@@ -1370,38 +1372,55 @@ function listViewerDrawer(data, parent, cardType) {
 			}
 		})
 
-		// Page -1 (left) action
-		$(`${parent} .pageBut`).eq(0).click(() => {
-			pageSwitch(page[parent][0]-1, currentListData[parent], parent, cardType, 1)
-		})
-		// Page +1 (right) action
-		$(`${parent} .pageBut`).eq(1).click(() => {
-			pageSwitch(page[parent][0]+1, currentListData[parent], parent, cardType, 1)
-		})
+		if (page[parent][1] == 0) $(`${parent} .page`).remove()
+		else {
+			// Page -1 (left) action
+			$(`${parent} .pageBut`).eq(0).click(() => {
+				pageSwitch(page[parent][0]-1, currentListData[parent], parent, cardType, 1)
+			})
+			// Page +1 (right) action
+			$(`${parent} .pageBut`).eq(1).click(() => {
+				pageSwitch(page[parent][0]+1, currentListData[parent], parent, cardType, 1)
+			})
+		}
+
+		// Remove disabled controls
+		for (let i = 0; i < disableControls.length; i++) {if (disableControls[i]) $(`${parent} .browserTools`).children().eq(i).remove()}
+
+		// Sets title for browser
+		if (title == "") $(`${parent} .titles`).remove()
+		else $(`${parent} .titles`).text(title)
+
+		// Adds additional elements
+		addElements.forEach(el => {
+			$(`${parent} .browserTools`).append(el)
+		});
 
 		delete originalListData[parent].init
 	}
 
 	// Draw pages
-	$(".page > *:not(.pageBut)").remove()
-	for (let i = 0; i < clamp(page[parent][1], 0, 5); i++) {
-		$(".pageYes:last()").click(() => pageSwitch(i-1, currentListData[parent], parent, cardType, 1))
-		$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i+1}</div>`)
-	}
-	$(".pageYes:last()").click(() => pageSwitch(page[parent][1]-1, currentListData[parent], parent, cardType, 1))
-	
-	if (page[parent][1] > 4 && page[parent][0]+3 < page[parent][1]) {
-		$(".pageBut").eq(1).before(`<hr class="verticalSplitter">`)
-		$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${page[parent][1]}</div>`)
+	if (page[parent][1] > 0) {
+		$(".page > *:not(.pageBut)").remove()
+		for (let i = 0; i < clamp(page[parent][1], 0, 5); i++) {
+			$(".pageYes:last()").click(() => pageSwitch(i-1, currentListData[parent], parent, cardType, 1))
+			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i+1}</div>`)
+		}
 		$(".pageYes:last()").click(() => pageSwitch(page[parent][1]-1, currentListData[parent], parent, cardType, 1))
+		
+		if (page[parent][1] > 5 && page[parent][0]+3 < page[parent][1]) {
+			$(".pageBut").eq(1).before(`<hr class="verticalSplitter">`)
+			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${page[parent][1]}</div>`)
+			$(".pageYes:last()").click(() => pageSwitch(page[parent][1]-1, currentListData[parent], parent, cardType, 1))
+		}
+	
+		if (page[parent][0] > 2 && page[parent][1] > 5) {
+			$(".pageBut").eq(0).after(`<div class="uploadText pageFirst button">1</div>`)
+			$(".pageFirst").after(`<hr class="verticalSplitter">`)
+			$(".pageFirst").click(() => pageSwitch(0, currentListData[parent], parent, cardType, 1))
+		}
+		if (page[parent][0] == 0) $(".pageYes:first()").attr("id","pgSelected")
 	}
-
-	if (page[parent][0] > 2) {
-		$(".pageBut").eq(0).after(`<div class="uploadText pageFirst button">1</div>`)
-		$(".pageFirst").after(`<hr class="verticalSplitter">`)
-		$(".pageFirst").click(() => pageSwitch(0, currentListData[parent], parent, cardType, 1))
-	}
-	if (page[parent][0] == 0) $(".pageYes:first()").attr("id","pgSelected")
 
 	// Draw Cards
 	if (Object.keys(data).length > 0) {
@@ -1410,6 +1429,8 @@ function listViewerDrawer(data, parent, cardType) {
 	else {
 		// No favorites
 		if (cardType == 1) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center; color: #f9e582">${jsStr["NOFAVED"][LANG]}</p>`);
+		// No comments
+		else if (cardType == 6) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center;">${jsStr["NOCOMM"][LANG]}</p>`);
 		// Object is empty
 		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}

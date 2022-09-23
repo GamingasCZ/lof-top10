@@ -369,11 +369,14 @@ function chatDate(stamp) {
   }
 }
 
-function comBox(cd, dcc, edcc) {
+function comBox(cd, element) {
   let profPic = "";
   let clickable = ["", ""];
   let comColor = "#b9efb1";
   let time = chatDate(cd["timestamp"]);
+
+  let dcc = HEXtoRGB(cd["bgcolor"], 40);
+  let edcc = HEXtoRGB(cd["bgcolor"], 40);
 
   if (cd["timestamp"].length == 9) {
     cd["timestamp"] *= 10;
@@ -421,19 +424,18 @@ function comBox(cd, dcc, edcc) {
     });
   }
   
-  return `
-  <div style="margin-bottom: 2vw; box-shadow: #000000b3 0px 0px 32px;">
+  $(element).append(`
+  <div style="margin: 0.8em; box-shadow: #000000b3 0px 0px 32px;">
   
   <div class="comBoxThings ${clickable[0]
     } uploadText" id="comBoxHeader" ${clickable[1]}"
-  style="margin-bottom: 0 !important;
-  justify-content: flex-start;
+  style="justify-content: flex-start;
   background-color: ${"rgb(" + dcc.join(",") + ")"};
   border: solid ${"rgb(" + edcc.join(",") + ")"
     } 4px;">
 ${profPic}
-            <h3 style="margin-left: 1%; color: ${comColor};">${cd["username"]}</h3>
-            <h3 id="comFont" 
+            <h5 style="margin: 0 1%; color: ${comColor};">${cd["username"]}</h3>
+            <h5 
                 style="margin: 0 0 0 auto; cursor: help;"
                 title="${nT.getDay() + 1}.${nT.getMonth() + 1
     }.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
@@ -443,7 +445,7 @@ ${profPic}
     };">${cd["comment"]}</div>
     
     </div>
-    `;
+    `);
 }
 
 var commentPage = 0;
@@ -475,52 +477,22 @@ function redirectWarn(el) {
   $("#linkNo").click(clPopup)
 }
 
-function displayComments(data) {
+async function displayComments(data) {
   // Don't do anything on list previews and random lists that haven't replaced LIST_ID
   if ([-8, -11].includes(LIST_ID) || typeof data == "string") return
 
-  const PER_PAGE = 5;
+  $("#commAmount").text(data.length)
 
-  if (data != 2) $("#commAmount").text(data.length)
-  else $("#commAmount").text("0")
+  let refreshBut = `<img id="searchLists" class="button refreshBut" onclick="refreshComments()" style="width: 3em;" src="images/replay.svg">`
 
-  $("#commentList").html("");
-  $(".noComm").hide();
-
-  if (data == 2 || data == "") {
-    $(".noComm").show();
-    return null;
+  if ($("#commentList").children().length == 0) {
+    await $.get("./parts/listBrowser.html", d => {
+      $("#commentList").append(translateDoc(d, "listBrowser"))
+    })
   }
-  let comArray = JSON.parse(JSON.stringify(data)).reverse();
-
-  // Max page
-  maxCommentPage = Math.ceil(data.length / PER_PAGE);
-  $("#maxPage").text("/" + maxCommentPage);
-
-  for (x = commentPage * PER_PAGE; x < commentPage * PER_PAGE + PER_PAGE; x++) {
-    let commentData = data[x]
-
-    let darkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
-    let evenDarkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
-
-    $("#commentList").append(
-      comBox(JSON.parse(JSON.stringify(commentData)), darkerComColor, evenDarkerComColor)
-    );
-
-  }
+  listViewerDrawer(data, "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
   $(".comTextArea .gamLink").click(el => redirectWarn(el))
-}
 
-function commpageSwitch(num) {
-  if (commentPage + num < 0) {
-    commentPage = 0;
-  } else if (commentPage + num > maxCommentPage - 1) {
-    commentPage = maxCommentPage - 1;
-  } else {
-    commentPage += num;
-    $("#pageSwitcher").val(commentPage + 1);
-    displayComments(deeta);
-  }
 }
 
 function profile(name) {
@@ -528,14 +500,14 @@ function profile(name) {
 }
 
 function refreshComments() {
-  if ($("#refreshBut")["0"].className.match("disabled") == null) {
-    $("#refreshBut").addClass("disabled");
+  if ($(".refreshBut")["0"].className.match("disabled") == null) {
+    $(".refreshBut").addClass("disabled");
     $.get("./php/getComments.php?listid=" + LIST_ID, function (data) {
       deeta = data;
       displayComments(data);
     });
     setTimeout(() => {
-      $("#refreshBut").removeClass("disabled");
+      $(".refreshBut").removeClass("disabled");
     }, 3000);
   }
 }

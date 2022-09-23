@@ -47,10 +47,11 @@
   --xlFont: calc(2em * var(--fontMultiplier));
   --lightHighlight: invert(0.4) sepia(1) saturate(1.5) hue-rotate(90deg);
   --redHighlight: invert(0.4) sepia(1) saturate(4) hue-rotate(300deg);
-  --greenGradient: linear-gradient(9deg, #142019, #045124);
-  --defaultGradient: linear-gradient(9deg, #142019, #045124);
+  --greenGradient: linear-gradient(9deg, #142019, var(--normalColor));
+  --defaultGradient: linear-gradient(9deg, #142019, var(--normalColor));
   --fontMultiplier: 1;
-  --siteBackground: #060c08;
+  --siteBackground: #08110b;
+  --normalColor: #045124;
 }
 
 body {
@@ -301,7 +302,7 @@ ul > div {
 }
 
 .settingsDropdown {
-  background: #012b003d;
+  background: var(--normalColor);
   border: none;
   border-radius: 0.5vw;
   font-size: var(--smallFont) !important;
@@ -907,8 +908,8 @@ footer {
 }
 
 #homepageSearch {
-  background: linear-gradient(35deg, #10180e, #15291e);
-  border: rgb(27, 63, 31) solid 5px;
+  background: var(--greenGradient);
+  border: var(--normalColor) solid 5px;
   padding: 0.3em;
   font-size: var(--bigFont);
   color: white;
@@ -929,7 +930,7 @@ footer {
 .homepageBigButton {
   display: flex;
   padding: 0.5em 0;
-  background-color: rgba(8, 77, 8, 0.438);
+  background-color: var(--normalColor);
   border-radius: 1vw;
   border: none;
   align-items: center;
@@ -958,7 +959,7 @@ a {text-decoration: none;}
   display: inline-flex;
   align-items: center;
   gap: 1em;
-  background: #0b48125e;
+  background: var(--normalColor);
   border-radius: 2.1em;
   margin-left: 1em;
   padding: 0.2em 0.6em;

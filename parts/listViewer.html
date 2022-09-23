@@ -105,21 +105,7 @@
             <img class="comFooterButton sendBut" src="images/send.svg" title="%%s" onclick="sendComment()">
         </div>
 
-        <div class="searchTools uploadText" id="commentTool" style="display: none; justify-content: center;">
-            <div class="page">
-                <span id="pageStr" style="padding-right: 2%;font-size: var(--smallFont);max-width: 80%;">%%s</span>
-                <img class="button pageBut" src="images/arrow-left.webp" onclick="commpageSwitch(-1)">
-                <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-                <span id="maxPage">/1</span>
-                <img class="button pageBut" src="images/arrow-right.webp" onclick="commpageSwitch(1)">
-            </div>
-            <img onclick="refreshComments()" src="images/refresh.webp" id="refreshBut" class="button"
-                style="width: 3vw;">
-        </div>
-
-        <div id="commentList">
-        </div>
-        <p class="uploadText noComm" style="text-align: center;">%%s</p>
+        <div id="commentList"></div>
 
 
     </div>

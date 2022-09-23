@@ -160,7 +160,7 @@
     width: 25vw;
 }
 .roleControls { display: flex; }
-.roleControls > img { width: 2.5vw; height: 2.5vw; }
+.roleControls > img { width: 2em; height: 2em; }
 
 .roleButtons {
     display: flex;
@@ -171,7 +171,7 @@
     border: none !important;
     background: none !important;
     transform: none !important;
-    width: 20vw !important;
+    width: 100% !important;
     margin: 0.5% !important;
     outline: none;
 }
@@ -202,7 +202,7 @@ tr>td:nth-child(2n) {
 #collabInp {
     display: inline;
     transform: none;
-    width: 50%;
+    width: 45%;
     margin: 0.5%;
     font-size: var(--smallFont);
     background-color: #FFFFFF50;
