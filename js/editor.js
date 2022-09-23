@@ -124,7 +124,7 @@ function uploadList() {
             let currWebsite
             let pstr
             if (!error) {
-                currWebsite = `${window.location.origin + "/lofttop10"}/#${data[1]}`;
+                currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[1]}`;
                 pstr = `<br>${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${data[0]}</b>`;
             }
             let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
@@ -169,7 +169,7 @@ function updateList() {
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
             if (typeof data == "object") {
-                let currWebsite = `${window.location.origin + "/lofttop10"}/#${data[0]}`;
+                let currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[0]}`;
                 $(".uploaderDialog").html(`
                 <div style="padding: 3%">
                     <img src="./images/check.webp" style="width:7%;">
@@ -269,12 +269,14 @@ function makeEditor(update) {
     })
 
     // Show alert if creating list
-    window.addEventListener('beforeunload', exit => {
-        if (Object.keys(levelList).length > ADDIT_VALS+1) exit.preventDefault();
-    });
+    window.addEventListener('beforeunload', pageExit);
 
     $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
     $(".savedFilter").on("keyup", searchFaves)
+}
+
+const pageExit = exit => {
+    if (Object.keys(levelList).length > ADDIT_VALS+1) exit.preventDefault();
 }
 
 function makeBrowser(search) {
@@ -309,10 +311,10 @@ function confirmDelete() {
     let postData = {
         "id": data[0],
         "pwdEntered": $("#lpass").val(),
-        "isHidden": !data[2]
+        "isHidden": data[2] ? 1 : 0
     }
-    murderList();
     $.post("./php/removeList.php", postData, function () {
+        window.removeEventListener("beforeunload", pageExit)
         murderList();
     })
 }
@@ -322,7 +324,7 @@ function removeList() {
     $(".boom").append(`<div class="uploadText removeScreen">
     <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.webp"><br />
     <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -5.4vw;" src="./images/szn1.webp">
-    <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">${jsStr["CONF_DEL"][LANG]}</p>
+    <p id="removeText" style="text-align: center; font-size: var(--bigFont)">${jsStr["CONF_DEL"][LANG]}</p>
     <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
         <button id="rmbutton" onclick="confirmDelete()" class="button uploadText eventButton">${jsStr["YES"][LANG]}</button>
         <button id="rmbutton" onclick="closeRmScreen()" class="button uploadText eventButton">${jsStr["NO"][LANG]}</button>
@@ -350,7 +352,7 @@ function removeList() {
 function murderList() {
     $(".boom").css("display", "initial");
 
-    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.replace("./upload.html?editor"));
+    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.hash = "#editor");
     $("#levelUpload").addClass("killList");
 }
 

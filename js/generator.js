@@ -98,7 +98,7 @@ async function getProfileStats(k, ind) {
 			$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/cp.webp">${user.cp} </p>`)
 		}
 		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/ucoin.webp">${user.userCoins}</p>`)
-		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/demons.webp">${user.demons} </p>`)
+		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/faces/8.webp">${user.demons} </p>`)
 		$(container).after(`<p style="margin:0 1vw"><img class="stats" src="images/star.webp">${user.stars} </p>`)
 	})
 
@@ -492,15 +492,25 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 
 	let amount = singleLevel == -1 ? Object.keys(boards).length - ADDIT_VALS : singleLevel + 1
 	let start = singleLevel == -1 ? 1 : singleLevel
+
+	// Setting page BG from list
+	if (Object.keys(boards).indexOf("pageBGcolor") != -1) {
+		if (boards["pageBGcolor"] != "#020202") {
+			$("body").css("background-color", boards["pageBGcolor"])
+			let hue = getHueFromHEX(boards["pageBGcolor"])
+			$(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+			$("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
+		}
+	}
+	// Setting title image
+	$(".titleImage").attr("src", boards["titleImg"]);
+
 	for (let i = start; i < amount; i++) {
 		let bIndex = (i).toString()
 
 		// Empty names
 		if (boards[bIndex]["levelName"] == "") boards[bIndex]["levelName"] = jsStr["UNNAMED"][LANG]
 		if (boards[bIndex]["creator"] == "") boards[bIndex]["creator"] = jsStr["UNNAMED"][LANG]
-
-		// Setting title image
-		$(".titleImage").attr("src", boards["titleImg"]);
 
 		// Removing card buttons
 		if (boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"] == "") { var ID = ["", ""]; }
@@ -512,27 +522,16 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = ``; }
 		else { var video = `<img src="./images/yticon.webp" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">`; }
 
-
 		// Shit fix. Colors break sometimes
 		let boardFix = fixHEX(boards[bIndex]["color"])
 		if (!boardFix) boardFix = randomColor()
 		let gradientLighter = HEXtoRGB(boardFix, -60)
 
 		// Glow depending on level position
-		var cardBG = `background-color: ${boardFix}; background-image: url(images/cardBg.webp), linear-gradient(39deg, ${boardFix}, rgb(${gradientLighter.join(",")}));`;
+		var cardBG = `background: linear-gradient(39deg, ${boardFix}, rgb(${gradientLighter.join(",")}));`;
 		if (i == 1) { cardBG += `;box-shadow: 2px 2px 60px ${boardFix};`; }
 		if (i == 2) { cardBG += `;box-shadow: 2px 2px 30px ${boardFix};`; }
 		if (i == 3) { cardBG += `;box-shadow: 2px 2px 20px ${boardFix};`; }
-
-		// Setting page BG from list
-		if (Object.keys(boards).indexOf("pageBGcolor") != -1) {
-			$("body").css("background-color", boards["pageBGcolor"])
-			if (boards["pageBGcolor"] != "#020202") {
-				let hue = getHueFromHEX(boards["pageBGcolor"])
-				$(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
-				$("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
-			}
-		}
 
 		// Setting difficulty face
 		let diff = ""
@@ -1149,13 +1148,14 @@ async function lists(list) {
 		if (generateList(boards, [LIST_ID, LIST_NAME])) {
 			$("#crown").before(`<h2 class="titles" style="margin-top: 4vw">(${jsStr["PREVIEW_L"][LANG]})</h2>`);
 		}
+		return
 	}
 	else if (list.type == "random") {
 		$.get("php/getLists.php?random=1", data => {
 			data = data[0]
 			boards = data["data"];
 			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-			<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
+			<p style="font-size: var(--miniFont);margin: 0;">${data["creator"]}</p></div>`);
 			$(".titleImage").attr("src", boards["titleImg"]);
 			$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1186,7 +1186,7 @@ async function lists(list) {
 			LIST_NAME = listName
 			LIST_CREATOR = "GamingasCZ"
 			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${LIST_NAME}</p>
-			<p style="font-size: var(--normalFont);margin: 0;">${LIST_CREATOR}</p></div>`);
+			<p style="font-size: var(--miniFont);margin: 0;">${LIST_CREATOR}</p></div>`);
 
 			generateList(boards, [list.id, listName]);
 		}
@@ -1202,7 +1202,7 @@ async function lists(list) {
 				else {
 					boards = data["data"];
 					$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-					<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
+					<p style="font-size: var(--miniFont);margin: 0;">${data["creator"]}</p></div>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
 					$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1227,7 +1227,7 @@ async function lists(list) {
 			else {
 				boards = data["data"];
 				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-				<p style="font-size: var(--normalFont);margin: 0;">${data["creator"]}</p></div>`);
+				<p style="font-size: var(--miniFont);margin: 0;">${data["creator"]}</p></div>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1240,6 +1240,9 @@ async function lists(list) {
 		}
 		)
 	}
+
+	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, list.type == "pid", LIST_NAME, LIST_CREATOR]))
+
 	$(".loadPlaceholder").remove()
 	
 	let getPinned = getCookie("pinnedLists")
@@ -1258,35 +1261,46 @@ async function lists(list) {
 	$(".box").css("transform", "translateX(-100vw)");
 	$(".box").css("transition", "transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1)");
 
-	let index = 0
-	let boxAppear = setInterval(() => {
-		if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
-		if ($(".box")[index] != undefined) $(".box")[index].style.transform = "none"
-		index++
-	}, 100);
+	if (boards != undefined) {
+		let index = 0
+		let boxAppear = setInterval(() => {
+			if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
+			if ($(".box")[index] != undefined) $(".box")[index].style.transform = "none"
+			index++
+		}, 100);
+	}
 }
 
-function goToPWD() {
-	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, window.location.search.includes("pid"), LIST_NAME, LIST_CREATOR]))
-	window.location.hash = `#update`;
-}
+function goToPWD() {window.location.hash = `#update`}
 
 let page = {} // [page, maxPage]
-function pageSwitch(num, data, parent, ctype, forceMove) {
-	if (page[parent][0] + num < 0 && !forceMove) {
-		page[parent][0] = 0
+function pageSwitch(num, data, parent, ctype) {
+	page[parent][0] = clamp(num, 0, page[parent][1]-1)
+	listViewerDrawer(data, parent, ctype)
+
+	if (page[parent][0] < 3) {
+		for (let i = 0; i < 5; i++) {
+			$(".pageYes").eq(i).text(clamp(i+1, 0, page[parent][1]))
+		}
 	}
-	else if (page[parent][0] + num > page[parent][1] - 1 && !forceMove) {
-		page[parent][0] = page[parent][1] - 1;
+	else if (page[parent][0] + 3 > page[parent][1]) {
+		for (let i = 0; i < 5; i++) {
+			$(".pageYes").eq(4-i).text(clamp(page[parent][1]-i, 0, page[parent][1]))
+		}
 	}
-	else {
-		if (forceMove) page[parent][0] = num
-		else page[parent][0] += num;
-		listViewerDrawer(data, parent, ctype)
+	else if (page[parent][0]) {
+		for (let i = 0; i < 5; i++) {
+			$(".pageYes").eq(i).text(clamp(num-1+i, 0, page[parent][1]))
+		}
 	}
+	$(".pageYes").off("click")
+	Object.values($(".pageYes")).slice(0,-2).forEach(el => {
+		$(el).click(() => pageSwitch($(el).text()-1, currentListData[parent], parent, ctype, 1))
+	})
+		
 
 	$(".pageYes").attr("id", "")
-	Object.values($(".pageYes")).forEach(x => {
+	Object.values($(".pageYes")).slice(0,-2).forEach(x => {
 		if ($(x).text() == page[parent][0]+1) $(x).attr("id", "pgSelected")
 	})
 }
@@ -1358,29 +1372,36 @@ function listViewerDrawer(data, parent, cardType) {
 
 		// Page -1 (left) action
 		$(`${parent} .pageBut`).eq(0).click(() => {
-			pageSwitch(-1, currentListData[parent], parent, cardType, 0)
+			pageSwitch(page[parent][0]-1, currentListData[parent], parent, cardType, 1)
 		})
 		// Page +1 (right) action
 		$(`${parent} .pageBut`).eq(1).click(() => {
-			pageSwitch(1, currentListData[parent], parent, cardType, 0)
+			pageSwitch(page[parent][0]+1, currentListData[parent], parent, cardType, 1)
 		})
-
-		// Draw pages
-		for (let i = 0; i < clamp(page[parent][1]-1, 0, 4); i++) {
-			$(".pageYes:last()").click(() => pageSwitch(i, currentListData[parent], parent, cardType, 1))
-			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i+2}</div>`)
-		}
-		$(".pageYes:last()").click(() => pageSwitch($(".pageYes").length-2, currentListData[parent], parent, cardType, 1))
-		
-		if (page[parent][1] > 4) {
-			$(".pageBut").eq(1).before(`<hr class="verticalSplitter">`)
-			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${page[parent][1]}</div>`)
-			$(".pageYes:last()").click(() => pageSwitch(page[parent][1]-1, currentListData[parent], parent, cardType, 1))
-		}
 
 		delete originalListData[parent].init
 	}
 
+	// Draw pages
+	$(".page > *:not(.pageBut)").remove()
+	for (let i = 0; i < clamp(page[parent][1], 0, 5); i++) {
+		$(".pageYes:last()").click(() => pageSwitch(i-1, currentListData[parent], parent, cardType, 1))
+		$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i+1}</div>`)
+	}
+	$(".pageYes:last()").click(() => pageSwitch(page[parent][1]-1, currentListData[parent], parent, cardType, 1))
+	
+	if (page[parent][1] > 4 && page[parent][0]+3 < page[parent][1]) {
+		$(".pageBut").eq(1).before(`<hr class="verticalSplitter">`)
+		$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${page[parent][1]}</div>`)
+		$(".pageYes:last()").click(() => pageSwitch(page[parent][1]-1, currentListData[parent], parent, cardType, 1))
+	}
+
+	if (page[parent][0] > 2) {
+		$(".pageBut").eq(0).after(`<div class="uploadText pageFirst button">1</div>`)
+		$(".pageFirst").after(`<hr class="verticalSplitter">`)
+		$(".pageFirst").click(() => pageSwitch(0, currentListData[parent], parent, cardType, 1))
+	}
+	if (page[parent][0] == 0) $(".pageYes:first()").attr("id","pgSelected")
 
 	// Draw Cards
 	if (Object.keys(data).length > 0) {

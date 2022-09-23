@@ -284,7 +284,7 @@ function generateFromJSON(part, boards) {
 
     // Is the list hidden?
     if (boards["hidden"] != "0") {
-        $(`img[for="hidden"]`).attr("src", "images/modernCheck.svg")
+        $(`img[for="hidden"]`).attr("src", "images/modernCheckOn.svg")
         $(`input[name="hidden"]`).attr("checked", true)
     }
 
@@ -301,7 +301,7 @@ function generateFromJSON(part, boards) {
 
     // Is it a diff guess list?
     if (levelList["diffGuesser"] != undefined && levelList["diffGuesser"][0]) {
-        $(`img[for="diffGuesser"]`).attr("src", "images/modernCheck.svg")
+        $(`img[for="diffGuesser"]`).attr("src", "images/modernCheckOn.svg")
         $(`input[name="diffGuesser"]`).attr("checked", true)
         $(".settingSubbox").show()
         if (!levelList["diffGuesser"][1]) $(".settingSubbox img").eq(0).addClass("disabled")

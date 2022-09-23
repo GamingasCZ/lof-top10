@@ -1002,6 +1002,7 @@ input:disabled {
     margin-left: 2.5%;
     margin-right: 2.5%;
     font-size: var(--biggerFont);
+    background: #512c2c !important;
 }
 
 .settingsBG {
@@ -1151,13 +1152,13 @@ input:disabled {
 }
 
 .pageBut {
-    width: 2em;
+    width: 1em;
     height: max-content;
     align-self: center;
     margin: 0 1em;
 }
 
-.pageYes {
+.pageYes, .pageFirst {
 	min-width: 2em;
 	background: #ffffff0a;;
 	text-align: center;

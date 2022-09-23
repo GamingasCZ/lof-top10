@@ -107,10 +107,8 @@ var jsStr = {
     "NEWSKIN_D": ["Odemknul jsi nový skin! Vyzkoušej ho v nastavení :).<br><br>Klikej dál!","You've unlocked a new skin! Apply it in the settings :).<br><br>Keep on clicking!"],
     "UPLOAD_T": ["Obrázky seznamu", "List Header Images"],
     "UPLOAD_D": [`Jestli chceš svůj seznam pořádně vyzdobit, můžeš k němu přidat obrázek, který se u něho zobrazí!<br />
-        <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.webp"><br />
         <cr>Nemusíš přidávat žádný obrázek!</cr>`
         , `If you really want to spice up your list, you can add an image, that'll display as the header!<br />
-        <img style="width: 20vw; margin-left: 35%;" src="./images/tutorial.webp"><br />
         <cr>You don't have to add an image!</cr>`],
     "PRIVATE_T": ["Soukromé seznamy", "Private Lists"],
     "PRIVATE_D": [`Soukromé seznamy se <cg>nezobrazí veřejně</cg>, mají <cr>speciální odkaz</cr> k přístupu a <cb>nejde u nich psát komentáře</cb>.<br><br>
@@ -276,7 +274,7 @@ var parts = {
         ["Navštívené", "Visited"],
         ["Promazat", "Clear"],
         ["- Zatím jsi nenavštívil žádné seznamy! -", "- You haven't looked at any lists yet! -"],
-        ["Výběr z uložených","Favorites mix"],
+        ["Mix uložených","Favorites mix"],
         ["Více","More"],
         ["- Zatím jsi neuložil žádné levely! -", "- You haven't saved any levels yet! -"],
         ["Oficiální", "Official"],

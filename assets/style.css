@@ -7,26 +7,6 @@
   }
 }
 
-@keyframes popupHide {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-}
-
-@keyframes headerScroll {
-  from {
-    background-position-x: 0px;
-    background-position-y: 0px;
-  }
-  to {
-    background-position-x: 64px;
-    background-position-y: 64px;
-  }
-}
-
 @keyframes flash {
   0% {
     opacity: 0;
@@ -196,7 +176,7 @@ ul > div {
 .listOptionsContainer {
   display: grid;
   grid-template-columns: 50% 50%;
-  gap: 1vw;
+  gap: 0.4em;
   padding-right: 1vw;
 }
 #listOptionsID {
@@ -391,7 +371,6 @@ u {
   pointer-events: none;
 }
 
-
 .boxHeader {
   display: flex;
   justify-content: space-between;
@@ -502,6 +481,7 @@ u {
   align-items: center;
   padding: 1% 0;
   margin-top: 5vh !important;
+  width: clamp(2vw, 90vw, 40em);
 }
 
 .boxCollabHeader {
@@ -537,11 +517,6 @@ u {
   padding: 8px 5px 5px 5px;
   text-align: center;
   width: 60%;
-}
-
-.popupAnim {
-  animation-name: popupHide;
-  animation-duration: 0.5s;
 }
 
 #yearButton {
@@ -902,12 +877,6 @@ footer {
   transition: opacity 1s ease-out;
 }
 
-iframe {
-  width: 0;
-  height: 0;
-  display: none;
-}
-
 .eventButton {
 	background-color: #00000070 !important;
 	padding: 0% 1vw;
@@ -938,7 +907,7 @@ iframe {
 }
 
 #homepageSearch {
-  background: url("../images/search.svg") 1vw, linear-gradient(35deg, #10180e, #15291e);
+  background: linear-gradient(35deg, #10180e, #15291e);
   border: rgb(27, 63, 31) solid 5px;
   padding: 0.3em;
   font-size: var(--bigFont);
@@ -1043,9 +1012,8 @@ cb { color: #5fe7ff ;}
 }
 
 #favBubble {
-  min-width: calc(100% - 2.5vw);
+  min-width: 88%;
   justify-content: left;
-  max-height: none !important;
 }
 
 .noSaves {
