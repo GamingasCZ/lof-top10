@@ -41,6 +41,11 @@ class Human {
 
 function showCollabTools(id) {
     currEditing = id;
+
+    $(".boom").show()
+    $(".boom").css("background-color", "black")
+    $(".boom").css("opacity", "0.7")
+
     $("body").css("overflow-y", "hidden")
     $(".eventButton").show();
 
@@ -117,6 +122,9 @@ function hideCollabTools() {
     $(".cardLCreator" + currEditing).val($(".verifier").val())
 
     $("#collabTools").fadeOut(100);
+    $(".boom").css("background-color", "white")
+    $(".boom").css("opacity", "0")
+    $(".boom").hide()
 }
 
 function refreshRoleList() {

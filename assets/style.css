@@ -159,8 +159,8 @@ ul > div {
 	display: flex;
 	align-items: center;
 	background: linear-gradient(9deg, #141f20, #044a51) !important;
-	border-radius: 1vw;
-	gap: 0.5vw;
+	border-radius: 1em;
+	gap: 0.2em;
 	max-width: fit-content;
 	border: none;
 	min-width: 7em;

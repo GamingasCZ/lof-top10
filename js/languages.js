@@ -102,6 +102,7 @@ var jsStr = {
     "POINTS": ["bodů", "points"],
     "PLAY_AGAIN": ["Hrát znova", "Play Again"],
     "TWIT_SHARE": ["Sdílet na Twitteru", "Share on Twitter"],
+    "MAKEGUESSES": ["Hádej nebo skipni všechny levely k odemknutí skákání!", "Guess or Skip all levels to unlock jumping!"],
 
     // helpDialogs
     "LICENSE": ["Licence","License"],

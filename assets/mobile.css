@@ -53,13 +53,14 @@
 #pageStr, #sortStr { display: none; }
 
 .socInp { width: 40vw !important;}
-.percCollab { width: 3vw !important; height: 2vw !important; padding: 0 !important; }
-.tableCpicker { /*! height: 5vw !important; */ }
+.percCollab { padding: 0.1em !important; }
 
 .humHead, .roleHead { display: none; }
 .collabStuff { display: none; }
 .mobileTabSwitcher { display: flex !important; }
 .memberStuff { display: none;}
+.roleList {appearance: none;}
+
 
 .collabRoles > .roleBubble {
     max-height: 5vh;

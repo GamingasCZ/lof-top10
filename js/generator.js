@@ -58,6 +58,17 @@ function showJumpTo() {
 	$("#jumpToTools").fadeIn(100);
 	$(".levelPickerContainer").empty();
 
+	// Show nothing if on an unfinished guessing list
+	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && $(".box").length != Object.keys(boards).length - ADDIT_VALS -1) {
+		$(".levelPickerContainer").append(`
+		<div class="noSaves">
+			<img src="./images/guessSkip.svg">
+			<p class="uploadText">${jsStr["MAKEGUESSES"][LANG]}</p>
+		</div>
+		`)
+		return
+	}
+
 	let ind = 1;
 	Object.values(boards).slice(0, Object.keys(boards).length - ADDIT_VALS - 1).forEach(pos => {
 		let creator = pos.creator;
@@ -115,18 +126,17 @@ function showCollabStats(id) {
 
 	let cardCol = $($(".box")[id - 1]).css("background-color");
 	let cardGradient = $($(".box")[id - 1]).css("background-image");
-	let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 40)
-	let extraDark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))), 80)
+	let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))), 40)
+	let extraDark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))), 80)
 
 	$(".collabTTitle").text(`- ${boards[id].levelName} -`);
 	$("#collabTools").css("background-image", cardGradient);
 	$(".editorHeader").css("background-color", `rgb(${dark.join(",")})`)
 	$("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
-	$(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,54%)`)
-	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g)).map(x => parseInt(x))))},40.7%,34%)`)
+	$(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))))},40.7%,54%)`)
+	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))))},40.7%,34%)`)
 
 	$("#collabTools").fadeIn(50);
-	$("#collabTools").css("transform", "scaleY(1)");
 
 	$(".statsCreators").text("") // Reset table
 	$(".collabGraphs").text("") // Reset table
@@ -291,7 +301,6 @@ function showCollabStats(id) {
 
 function hideCollabStats() {
 	$("#collabTools").fadeOut(50);
-	$("#collabTools").css("transform", "scaleY(0.7)");
 
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
@@ -854,7 +863,7 @@ function removeFave(remID) {
 		$(`div.box:nth-child(${2 + currListIDs.indexOf(remID.toString())}) > div:nth-child(1) > img:nth-child(1)`).removeClass("disabled")
 	}
 
-	listViewerDrawer(currentListData["#app"], "#app", 1, [0,0], jsStr["SAVEDLONG"][LANG])
+	listViewerDrawer(currentListData["#app"], "#app", 1, [0, 0], jsStr["SAVEDLONG"][LANG])
 }
 
 function switchLoFList(hash, goto = null) {
@@ -956,38 +965,38 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 }
 
 async function makeHP() {
-	let hpData = {"recViewed": null, "pinned": null, "favPicks": null, "newest": null};
-	
+	let hpData = { "recViewed": null, "pinned": null, "favPicks": null, "newest": null };
+
 	let recentlyViewed = JSON.parse(decodeURIComponent(getCookie("recentlyViewed")))
 	if (recentlyViewed !== null) hpData.recViewed = recentlyViewed
-	
+
 	let pinned = JSON.parse(decodeURIComponent(getCookie("pinnedLists")))
 	if (pinned !== null && pinned.length > 0) hpData.pinned = pinned
-	
+
 	let savedLists = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")))
 	if (savedLists != null && savedLists !== false && savedLists.length > 0) {
 		let randomized = []
 		let randIndexes = []
 		let savedAm = savedLists.length > 4 ? 5 : savedLists.length
-	
+
 		while (randomized.length < savedAm) {
-		let randNum = parseInt(Math.random() * savedLists.length)
-	
-		if (!randIndexes.includes(randNum)) {
-			randomized.push(savedLists[randNum]);
-			randIndexes.push(randNum)
+			let randNum = parseInt(Math.random() * savedLists.length)
+
+			if (!randIndexes.includes(randNum)) {
+				randomized.push(savedLists[randNum]);
+				randIndexes.push(randNum)
+			}
 		}
-		}
-	
+
 		hpData.favPicks = randomized
 	}
-	
+
 	await $.get("./php/getLists.php?homepage=1", data => {
 		hpData.newest = data
 	})
 
 	$(".hpSearchButton").click(e => {
-		switchLoFList('#browse!'+$("#homepageSearch").val())
+		switchLoFList('#browse!' + $("#homepageSearch").val())
 	})
 
 	homeCards(hpData.recViewed, ".recentlyViewed", 2)
@@ -1018,14 +1027,14 @@ async function loadSite() {
 	levelList = JSON.parse(JSON.stringify(DEFAULT_LEVELLIST))
 
 	$(".logo").css("transform", `rotate(360deg)`)
-	let spinning = setInterval(() => {rot += 1; $(".logo").css("transform", `rotate(${rot*360}deg)`)}, 1000)
+	let spinning = setInterval(() => { rot += 1; $(".logo").css("transform", `rotate(${rot * 360}deg)`) }, 1000)
 	$("#app").empty()
 
-	$("body").css("background-color","var(--siteBackground)")
+	$("body").css("background-color", "var(--siteBackground)")
 	if ($(":root").css("--greenGradient") != $(":root").css("--defaultGradient")) {
-		$("nav").css("animation-name","fadeBlack")
-		setTimeout(() => $(":root").css("--greenGradient","var(--defaultGradient)"), 125);
-		setTimeout(() => $("nav").css("animation-name","none"), 250);
+		$("nav").css("animation-name", "fadeBlack")
+		setTimeout(() => $(":root").css("--greenGradient", "var(--defaultGradient)"), 125);
+		setTimeout(() => $("nav").css("animation-name", "none"), 250);
 	}
 
 	if (hash == "") {
@@ -1049,12 +1058,12 @@ async function loadSite() {
 		case /saved/.test(hash):
 			$("title").text(`${jsStr["SAVED"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 			$("#app").append("<div id='favoritesContainer'></div>")
-			
+
 			await $.get("./parts/listBrowser.html", data => {
 				$("#favoritesContainer").append(translateDoc(data, "listBrowser"))
 			})
 			favesData = JSON.parse(localStorage.getItem("favorites"))
-			listViewerDrawer(favesData, "#favoritesContainer", 1 ,[0,0], jsStr["SAVEDLONG"][LANG])
+			listViewerDrawer(favesData, "#favoritesContainer", 1, [0, 0], jsStr["SAVEDLONG"][LANG])
 
 			break;
 
@@ -1068,15 +1077,15 @@ async function loadSite() {
 			break;
 
 		default:
-			if (hash == "") {makeHP(); break};
+			if (hash == "") { makeHP(); break };
 			await $.get("./parts/listViewer.html", data => {
 				$("#app").html(translateDoc(data, "listViewer"))
 				let listObject;
-				if (hash.match(/y\d+/)) listObject = {"type": "year", "id": hash == "y2019" ? -2 : -3}
-				else if (hash.startsWith("-2") || hash.startsWith("-3")) listObject = {"type": "year", "id": hash.includes("-2") ? -2 : -3}
-				else if (hash.match(/[A-z]/) == null) listObject = {"type": "id", "id": hash.match(/\d+/)[0]}
-				else if (hash == "random") listObject = {"type": "random", "id": -10}
-				else listObject = {"type": "pid", "id": hash}
+				if (hash.match(/y\d+/)) listObject = { "type": "year", "id": hash == "y2019" ? -2 : -3 }
+				else if (hash.startsWith("-2") || hash.startsWith("-3")) listObject = { "type": "year", "id": hash.includes("-2") ? -2 : -3 }
+				else if (hash.match(/[A-z]/) == null) listObject = { "type": "id", "id": hash.match(/\d+/)[0] }
+				else if (hash == "random") listObject = { "type": "random", "id": -10 }
+				else listObject = { "type": "pid", "id": hash }
 
 				LIST_ID = listObject.id
 				lists(listObject)
@@ -1247,7 +1256,7 @@ async function lists(list) {
 	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, list.type == "pid", LIST_NAME, LIST_CREATOR]))
 
 	$(".loadPlaceholder").remove()
-	
+
 	let getPinned = getCookie("pinnedLists")
 	if (getPinned !== null & getPinned !== false) {
 		JSON.parse(decodeURIComponent(getPinned)).forEach(arr => {
@@ -1274,37 +1283,37 @@ async function lists(list) {
 	}
 }
 
-function goToPWD() {window.location.hash = `#update`}
+function goToPWD() { window.location.hash = `#update` }
 
 let page = {} // [page, maxPage]
 function pageSwitch(num, data, parent, ctype) {
-	page[parent][0] = clamp(num, 0, page[parent][1]-1)
+	page[parent][0] = clamp(num, 0, page[parent][1] - 1)
 	listViewerDrawer(data, parent, ctype)
 
 	if (page[parent][0] < 3) {
 		for (let i = 0; i < 5; i++) {
-			$(".pageYes").eq(i).text(clamp(i+1, 0, page[parent][1]))
+			$(".pageYes").eq(i).text(clamp(i + 1, 0, page[parent][1]))
 		}
 	}
 	else if (page[parent][0] + 3 > page[parent][1]) {
 		for (let i = 0; i < 5; i++) {
-			$(".pageYes").eq(4-i).text(clamp(page[parent][1]-i, 0, page[parent][1]))
+			$(".pageYes").eq(4 - i).text(clamp(page[parent][1] - i, 0, page[parent][1]))
 		}
 	}
 	else if (page[parent][0]) {
 		for (let i = 0; i < 5; i++) {
-			$(".pageYes").eq(i).text(clamp(num-1+i, 0, page[parent][1]))
+			$(".pageYes").eq(i).text(clamp(num - 1 + i, 0, page[parent][1]))
 		}
 	}
 	$(".pageYes").off("click")
-	Object.values($(".pageYes")).slice(0,-2).forEach(el => {
-		$(el).click(() => pageSwitch($(el).text()-1, currentListData[parent], parent, ctype, 1))
+	Object.values($(".pageYes")).slice(0, -2).forEach(el => {
+		$(el).click(() => pageSwitch($(el).text() - 1, currentListData[parent], parent, ctype, 1))
 	})
-		
+
 
 	$(".pageYes").attr("id", "")
-	Object.values($(".pageYes")).slice(0,-2).forEach(x => {
-		if ($(x).text() == page[parent][0]+1) $(x).attr("id", "pgSelected")
+	Object.values($(".pageYes")).slice(0, -2).forEach(x => {
+		if ($(x).text() == page[parent][0] + 1) $(x).attr("id", "pgSelected")
 	})
 }
 
@@ -1340,7 +1349,7 @@ function search(data, parent, ctype) {
 
 let originalListData = {}
 let currentListData = {}
-function listViewerDrawer(data, parent, cardType, disableControls=[0,0],title="",addElements=[]) {
+function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], title = "", addElements = []) {
 	let LIST_ONPAGE = 10
 
 	// Store original list data
@@ -1376,16 +1385,16 @@ function listViewerDrawer(data, parent, cardType, disableControls=[0,0],title=""
 		else {
 			// Page -1 (left) action
 			$(`${parent} .pageBut`).eq(0).click(() => {
-				pageSwitch(page[parent][0]-1, currentListData[parent], parent, cardType, 1)
+				pageSwitch(page[parent][0] - 1, currentListData[parent], parent, cardType, 1)
 			})
 			// Page +1 (right) action
 			$(`${parent} .pageBut`).eq(1).click(() => {
-				pageSwitch(page[parent][0]+1, currentListData[parent], parent, cardType, 1)
+				pageSwitch(page[parent][0] + 1, currentListData[parent], parent, cardType, 1)
 			})
 		}
 
 		// Remove disabled controls
-		for (let i = 0; i < disableControls.length; i++) {if (disableControls[i]) $(`${parent} .browserTools`).children().eq(i).remove()}
+		for (let i = 0; i < disableControls.length; i++) { if (disableControls[i]) $(`${parent} .browserTools`).children().eq(i).remove() }
 
 		// Sets title for browser
 		if (title == "") $(`${parent} .titles`).remove()
@@ -1403,23 +1412,23 @@ function listViewerDrawer(data, parent, cardType, disableControls=[0,0],title=""
 	if (page[parent][1] > 0) {
 		$(".page > *:not(.pageBut)").remove()
 		for (let i = 0; i < clamp(page[parent][1], 0, 5); i++) {
-			$(".pageYes:last()").click(() => pageSwitch(i-1, currentListData[parent], parent, cardType, 1))
-			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i+1}</div>`)
+			$(".pageYes:last()").click(() => pageSwitch(i - 1, currentListData[parent], parent, cardType, 1))
+			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i + 1}</div>`)
 		}
-		$(".pageYes:last()").click(() => pageSwitch(page[parent][1]-1, currentListData[parent], parent, cardType, 1))
-		
-		if (page[parent][1] > 5 && page[parent][0]+3 < page[parent][1]) {
+		$(".pageYes:last()").click(() => pageSwitch(page[parent][1] - 1, currentListData[parent], parent, cardType, 1))
+
+		if (page[parent][1] > 5 && page[parent][0] + 3 < page[parent][1]) {
 			$(".pageBut").eq(1).before(`<hr class="verticalSplitter">`)
 			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${page[parent][1]}</div>`)
-			$(".pageYes:last()").click(() => pageSwitch(page[parent][1]-1, currentListData[parent], parent, cardType, 1))
+			$(".pageYes:last()").click(() => pageSwitch(page[parent][1] - 1, currentListData[parent], parent, cardType, 1))
 		}
-	
+
 		if (page[parent][0] > 2 && page[parent][1] > 5) {
 			$(".pageBut").eq(0).after(`<div class="uploadText pageFirst button">1</div>`)
 			$(".pageFirst").after(`<hr class="verticalSplitter">`)
 			$(".pageFirst").click(() => pageSwitch(0, currentListData[parent], parent, cardType, 1))
 		}
-		if (page[parent][0] == 0) $(".pageYes:first()").attr("id","pgSelected")
+		if (page[parent][0] == 0) $(".pageYes:first()").attr("id", "pgSelected")
 	}
 
 	// Draw Cards

@@ -153,14 +153,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-height: 3vw;
+    /*! max-height: 3vw; */
     padding: 0.1em 1em;
     border-radius: 0.5vw;
     margin: 0.2em;
     width: 25vw;
 }
 .roleControls { display: flex; }
-.roleControls > img { width: 2em; height: 2em; }
+.roleControls > img { width: 1.5em; height: 1.5em; margin: 0 0.2em;}
 
 .roleButtons {
     display: flex;
@@ -560,7 +560,7 @@ input:disabled {
 }
 
 .hostIcon {
-    width: 4vw;
+    width: 2em;
 }
 
 .editorHeader {
@@ -913,7 +913,7 @@ input:disabled {
 .listDiffEpicRate {
     position: absolute;
     width: 150%;
-    transform: translateY(-0.8vh);
+    top: -0.2em;
 }
 .listDiffRate {
     position: absolute;
@@ -924,8 +924,8 @@ input:disabled {
     position: absolute;
     z-index: 2;
     width: 60%;
-    left: calc(1.7vw + 1.4vh);
-    top: calc(3.3vw + -1.6vh);
+    left: 1.2em;
+    top: 1.5em;
 }
 
 .rateContainer {
