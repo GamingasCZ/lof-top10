@@ -177,7 +177,7 @@ ul > div {
 .listOptionsContainer {
   display: grid;
   grid-template-columns: 50% 50%;
-  gap: 0.4em;
+  gap: 0.2em;
   padding-right: 1vw;
 }
 #listOptionsID {
@@ -598,8 +598,8 @@ html, body {
 	display: flex;
 	align-items: center;
 	border-radius: 100px;
-	gap: 1vw;
-	padding: 0 1vw;
+  gap: 0.5em;
+  padding: 0 0.5em;
   min-width: max-content;
 }
 .diffRes {

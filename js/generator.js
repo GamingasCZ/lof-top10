@@ -432,7 +432,7 @@ function doDiffGuessing(cardBG, bIndex) {
 	$(".boards").append(`
 	<div class="box" style="${cardBG}">
 		<div class="boxHeader">
-			<span id="listLevelName"><p style="margin: 0">${boards[bIndex]["levelName"]}</p></span>
+			<span class="listLNContainer"><p id="listLevelName">${boards[bIndex]["levelName"]}</p></span>
 			<div class="boxLinksContainer">
 				<img src="images/skip.webp" title="${jsStr["SKIP"][LANG]}" style="width: 5vw" class="button skipBut">
 			</div>
@@ -443,18 +443,18 @@ function doDiffGuessing(cardBG, bIndex) {
 		<div class="mainGuesser" id="rates" style="display:none;">
 			<img class="button diffFace cancelGuess" title="${jsStr["BACK"][LANG]}" src="images/arrow-left.webp">
 			<div class="rateContainer">
-				<div class="listDiffContainer button" style="display: inline-flex">
+				<div class="listDiffContainer button noMobileResize" style="display: inline-flex">
 					<img class="listDiffFace" src="images/faces/1.webp">
 				</div>
-				<div class="listDiffContainer button" style="display: inline-flex">
+				<div class="listDiffContainer button noMobileResize" style="display: inline-flex">
 					<img class="listDiffFace" src="images/faces/1.webp">
 					<img class="listDiffStar" src="images/star.webp">
 				</div>
-				<div class="listDiffContainer button" style="display: inline-flex">
+				<div class="listDiffContainer button noMobileResize" style="display: inline-flex">
 					<img class="listDiffFace" src="images/faces/1.webp">
 					<img class="listDiffRate" src="images/faces/featured.webp">
 				</div>
-				<div class="listDiffContainer button" style="display: inline-flex">
+				<div class="listDiffContainer button noMobileResize" style="display: inline-flex">
 					<img class="listDiffFace" src="images/faces/1.webp">
 					<img class="listDiffEpicRate" src="images/faces/epic.webp">
 				</div>
@@ -633,6 +633,8 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		$(".titles").append(jsStr["LLOAD_FAIL"][LANG]);
 	}
 
+	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, listData[2] == "pid", LIST_NAME, LIST_CREATOR]))
+
 	// Saving viewed list
 	let viewed = getCookie("recentlyViewed");
 	if (!viewed) { viewed = "[]" }
@@ -759,9 +761,9 @@ function skipGuess(face) { // face = [diff, rating]
 				<div class="graphLine diffRes" style="background-color: rgb(108, 240, 108); text-align: center;">${perc}%</div>
 			</div>
 			<h4>${jsStr["YOU_GOT"][LANG]} ${points} ${jsStr["OUTTA"][LANG]} ${maxPoints} ${jsStr["POINTS"][LANG]}!</h4>
-			<div style="display: flex; gap: 5vw;">
-				<button class="button niceButton replayList uploadText"><img src="images/replay.svg" style="width: 4vw;">${jsStr["PLAY_AGAIN"][LANG]}</button>
-				<button class="button niceButton shareDiff uploadText"><img src="images/share.svg" style="width: 4vw;">${jsStr["TWIT_SHARE"][LANG]}</button>
+			<div style="display: flex; gap: 1em;">
+				<button class="button niceButton replayList uploadText"><img src="images/replay.svg" style="width: 3em;">${jsStr["PLAY_AGAIN"][LANG]}</button>
+				<button class="button niceButton shareDiff uploadText"><img src="images/share.svg" style="width: 3em;">${jsStr["TWIT_SHARE"][LANG]}</button>
 			</div>
 		</div>
 		`)
@@ -803,6 +805,7 @@ function pinList(rem = null, isOnHomepage = false) {
 	makeCookie(["pinnedLists", JSON.stringify(pinnedLists)])
 
 	if (isOnHomepage !== false) {
+		isOnHomepage.preventDefault()
 		isOnHomepage.parents().eq(2).remove()
 		if ($(".pinnedLists > div").length == 0) {
 			$(".pinnedLists").html(`<div class="uploadText" style="color: #f9e582; margin-left: 5vw;">${jsStr["NOPINNED"][LANG]}</div>`)
@@ -944,7 +947,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 					dGuesserBadge = object.data.diffGuesser[0] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
 				}
 
-				let level1col = object["data"][1].color
+				let level1col = HSLtoHEX(185+parseInt(Math.random() * 111),"63%","50%")
 				let lightCol = HEXtoRGB(level1col, -60)
 				let darkCol = HEXtoRGB(level1col, 40)
 				$(custElement).append(`
@@ -1176,7 +1179,7 @@ async function lists(list) {
 			LIST_NAME = data["name"]
 			LIST_CREATOR = data["creator"]
 
-			generateList(boards, [encodeURIComponent(data["id"]), data["name"]]);
+			generateList(boards, [encodeURIComponent(data["id"]), data["name"], "id"]);
 
 			refreshComments()
 		})
@@ -1200,7 +1203,7 @@ async function lists(list) {
 			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${LIST_NAME}</p>
 			<p style="font-size: var(--miniFont);margin: 0;">${LIST_CREATOR}</p></div>`);
 
-			generateList(boards, [list.id, listName]);
+			generateList(boards, [list.id, listName, "id"]);
 		}
 
 		else {
@@ -1221,7 +1224,7 @@ async function lists(list) {
 					LIST_NAME = data["name"]
 					LIST_CREATOR = data["creator"]
 
-					generateList(boards, [encodeURIComponent(data["id"]), data["name"]]);
+					generateList(boards, [encodeURIComponent(data["id"]), data["name"], "id"]);
 				}
 			}
 			)
@@ -1247,13 +1250,11 @@ async function lists(list) {
 				LIST_NAME = data["name"]
 				LIST_CREATOR = data["creator"]
 
-				generateList(boards, [encodeURIComponent(data["hidden"]), data["name"]]);
+				generateList(boards, [encodeURIComponent(data["hidden"]), data["name"], "pid"]);
 			}
 		}
 		)
 	}
-
-	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, list.type == "pid", LIST_NAME, LIST_CREATOR]))
 
 	$(".loadPlaceholder").remove()
 
