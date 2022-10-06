@@ -3,7 +3,7 @@ const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
 const isInEditor = window.location.pathname.includes("upload");
 
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
-function onYTClick(link) { window.open("https://www.youtube.com/watch?v=" + link, "_blank") };
+function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
 
 function listShare() {
 	$("#popupBG").show()
