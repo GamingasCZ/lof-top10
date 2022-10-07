@@ -36,8 +36,6 @@
   100% {transform: translateY(0px)}
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
-
 :root {
   --smallFont: calc(1em * var(--fontMultiplier));
   --miniFont: calc(0.8em * var(--fontMultiplier));
