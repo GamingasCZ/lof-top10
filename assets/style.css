@@ -241,7 +241,7 @@ ul > div {
 	width: 100%;
 	height: 100%;
 	z-index: 5;
-	margin: -1vw -3vw;
+	margin: -1.5em -2em;
 	border-radius: inherit;
 	mix-blend-mode: screen;
 	opacity: 1;
@@ -439,7 +439,7 @@ u {
 
 .graphContainer {
   width: 85%;
-  height: 2.5vw;
+  height: 2em;
   display: inherit;
   background: #00000039;
   border-radius: 5px;
@@ -555,7 +555,7 @@ u {
 }
 
 .stats {
-  width: 2vw;
+  width: var(--normalFont);
 }
 
 html, body {
@@ -649,7 +649,7 @@ html, body {
 }
 
 /* List always shows by default */
-.comments { display: none;}
+.comments { display: none;margin: 0.5em;}
 
 #commAmount {
 	background: #d94242;
@@ -663,15 +663,16 @@ html, body {
 
 /* Entire comment box, including user input box */
 #commentMaker {
-  margin: 1vw 5vw 0;
+  margin: 1em auto 0;
   padding: 0.5vw;
+  max-width: clamp(73em, 75%, 80em);
 }
 
 /* Comment text area */
 .comTextArea {
   background-color: salmon;
   border: none;
-  max-height: 8vw;
+  max-height: 8vh;
   border-radius: 10px;
   resize: none;
   border-top-left-radius: 0;
@@ -691,7 +692,7 @@ html, body {
 }
 
 .sendBut {
-  margin-left: 2vw !important;
+  margin-left: 2em !important;
 }
 
 /* Header and footer of the comment text area */
@@ -714,8 +715,9 @@ html, body {
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   justify-content: flex-end !important;
-  gap: 1vw;
-  margin-right: 5vw;
+  gap: 1em;
+  /*! margin: 0 calc(46vw - 26em); */
+  max-width: clamp(69em, 67%, 132em);
 }
 
 /* Text placement in the cbox footer and header */
@@ -726,7 +728,7 @@ html, body {
 /* User input box */
 .pIconInp {
   transform: translateY(0) !important;
-  margin: 0 0.5vw 0 1vw !important;
+  margin: 0 0.5em !important;
 }
 
 /* Placement of the entire comment box */
@@ -742,8 +744,8 @@ html, body {
   cursor: pointer;
   height: min-content;
   border-radius: 0% 0% 100% 100%;
-  width: 2.9%;
-  padding: 0.3vw;
+  width: 2em;
+  padding: 0.3em;
 }
 
 #verticalLine {

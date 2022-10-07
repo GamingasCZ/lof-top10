@@ -351,7 +351,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
     top: 50%;
     left: 50%;
     z-index: 4;
-    padding: 0 0vw 3vw 2vw;
+    padding: 0 0vw 1.5em 1.5em;
     transform: translate(-50%,-50%);
 }
 
@@ -896,7 +896,7 @@ input:disabled {
 }
 
 .listDiffFace {
-    width: 3.5em;
+    width: 2.5em;
     height: auto;
     position: absolute;
     z-index: 2;
@@ -912,12 +912,12 @@ input:disabled {
 
 .listDiffEpicRate {
     position: absolute;
-    width: 260%;
-    top: -1.5em;
+    width: 200%;
+    top: -0.8em;
 }
 .listDiffRate {
     position: absolute;
-    width: 4.9em;
+    width: 3.5em;
 }
 
 .listDiffStar {

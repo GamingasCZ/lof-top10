@@ -4,13 +4,13 @@ function listComments() {
   // Finally non-shit
   if ($(".boards").css("display") == "none") {
     $(".comments").fadeOut(50);
-    $("#commButton").attr("style","")
+    $("#commButton").attr("style", "")
     $(".boards").fadeIn(100);
     $("#commentTool").fadeOut(50)
   } else {
     $(".boards").fadeOut(50);
     $(".comments").fadeIn(100);
-    $("#commButton").css("box-shadow","#39c4a95e 0px 0px 28px")
+    $("#commButton").css("box-shadow", "#39c4a95e 0px 0px 28px")
     $("#commentTool").fadeIn(50)
   }
 }
@@ -133,7 +133,7 @@ function setupComments() {
   });
 
   // Pick a random comment color
-  commentColor = randomColor(0,1);
+  commentColor = randomColor(0, 1);
   let invCol = [255 - commentColor[0], commentColor[1], commentColor[2]]
   commentColor = HSLtoHEX(...commentColor)
 
@@ -249,7 +249,7 @@ function displayPanel(what) {
 
         $(".sendBut").css(
           "background-color",
-          `hsl(${255-hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
+          `hsl(${255 - hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
         );
 
         let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");
@@ -408,22 +408,23 @@ function comBox(cd, element) {
       `<img class="emojis" src="./images/emoji/${emojiID}.webp">` +
       selEnd;
   }
-  
+
   // Making links clickable :)
   let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g
   let links = cd["comment"].match(urlRegex)
   if (links != null) {
     cd["comment"] = cd["comment"].replaceAll(/(http|https):\/\//g, "")
-    
+    links = cd["comment"].match(urlRegex)
+
     links.forEach(link => {
-      if (!cd["comment"].includes(`<a href="https://www.${link}" class="gamLink">${link}</a>`)
-          && link.match(/\d+.webp/) == null) { // emoji check, so they don't get treated as link, hope it doesn't break stuff
+      if (!cd["comment"].includes(`class="gamLink"`)
+        && link.match(/\d+.webp/) == null) { // emoji check, so they don't get treated as link, hope it doesn't break stuff
         // i mean... http sites won't work, but who cares lmao
         cd["comment"] = cd["comment"].replaceAll(link, `<a href="https://${link}" class="gamLink">${link}</a>`)
       }
     });
   }
-  
+
   $(element).append(`
   <div style="margin: 0.8em; box-shadow: #000000b3 0px 0px 32px;">
   
@@ -447,10 +448,6 @@ ${profPic}
     </div>
     `);
 }
-
-var commentPage = 0;
-var maxCommentPage = 1;
-var deeta = "";
 
 function redirectWarn(el) {
   el.preventDefault()
@@ -491,6 +488,7 @@ async function displayComments(data) {
     })
   }
   listViewerDrawer(data, "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
+  pageSwitch(page["#commentList"][0], currentListData["#commentList"], "#commentList", 6, 1)
   $(".comTextArea .gamLink").click(el => redirectWarn(el))
 
 }
@@ -503,7 +501,6 @@ function refreshComments() {
   if ($(".refreshBut")["0"].className.match("disabled") == null) {
     $(".refreshBut").addClass("disabled");
     $.get("./php/getComments.php?listid=" + LIST_ID, function (data) {
-      deeta = data;
       displayComments(data);
     });
     setTimeout(() => {

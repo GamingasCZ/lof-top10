@@ -78,7 +78,7 @@ function showJumpTo() {
 		$(".levelPickerContainer:last-child").on("click", (k) => {
 			hideJumpTo();
 			if ($(".boards").css("display") == "none") listList()
-			$(".box")[$(k.target).attr("for") - 2].scrollIntoView();
+			$(".box")[$(k.target).attr("for")  - 2].scrollIntoView();
 		})
 		ind++
 	});
@@ -164,22 +164,22 @@ function showCollabStats(id) {
 			let discordTag = "";
 			for (let soc = 0; soc < creators.socials.length; soc++) {
 				if (names[creators.socials[soc][0]] == jsStr["DC_SERV"][LANG] && creators.socials[soc][1].includes("#"))
-					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin-right: 1vw;"> - ${creators.socials[soc][1]}</p>`
+					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin-right: 0.2em;"> - ${creators.socials[soc][1]}</p>`
 				else {
 					socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
-									style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.webp">`
+									style="width: 2em;" class="button" src="images/${imgs[creators.socials[soc][0]]}.webp">`
 				}
 			}
 
 			let icon = `icon=${creators.verified[0]}&col1=${creators.verified[1]}&col2=${creators.verified[2]}&glow=${creators.verified[3]}&noUser=true`
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
-				<img style="width: 4vw;margin: 0.4vw;" src="${DISABLE_GDB}ttps://gdbrowser.com/icon/freedom69?${icon}">
-				<p class="memberName" style="margin:0 1vw 0; color: ${creators.color}">${creators.name}</p>${discordTag}
+				<img style="width: 2.5em;margin: 0.2em;" src="${DISABLE_GDB}ttps://gdbrowser.com/icon/freedom69?${icon}">
+				<p class="memberName" style="margin:0 0.5em 0; color: ${creators.color}">${creators.name}</p>${discordTag}
 				${socialTags}
 				<hr class="verticalSplitter">
 				<div class="pStatsContainer">
-				<img style="width: 3vw;margin: 0.4vw;" src="images/gdbrowser.webp" class="getProfile button" title="${jsStr["SHOW_PROFILE"][LANG]}">
+				<img style="width: 2em;margin: 0.4vw;" src="images/gdbrowser.webp" class="getProfile button" title="${jsStr["SHOW_PROFILE"][LANG]}">
 				</div>
 			</td>
 		</tr>`)
@@ -195,10 +195,10 @@ function showCollabStats(id) {
 			let discordTag = "";
 			for (let soc = 0; soc < creators.socials.length; soc++) {
 				if (names[creators.socials[soc][0]] == jsStr["DC_SERV"][LANG] && creators.socials[soc][1].includes("#"))
-					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin-right: 1vw;"> - ${creators.socials[soc][1]}</p>`
+					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin-right: 0.2em;"> - ${creators.socials[soc][1]}</p>`
 				else {
 					socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
-									style="width: 3.5vw;" class="button" src="images/${imgs[creators.socials[soc][0]]}.webp">`
+									style="width: 2em;" class="button" src="images/${imgs[creators.socials[soc][0]]}.webp">`
 				}
 			}
 			// Give random icon / or ghost if member doesn't have a name
@@ -522,7 +522,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		if (boards[bIndex]["creator"] == "") boards[bIndex]["creator"] = jsStr["UNNAMED"][LANG]
 
 		// Removing card buttons
-		if (boards[bIndex]["levelID"].match(/^\d+$/g)) { var ID = ["", ""]; }
+		if (boards[bIndex]["levelID"] == null || !boards[bIndex]["levelID"].match(/^\d+$/g)) { var ID = ["", ""]; }
 		else {
 			var ID = [`<img src="./images/gdbrowser.webp" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
 			`<img src="./images/copyID.webp" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`]
@@ -559,7 +559,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 
 		if (boards[bIndex]["tags"] == undefined) boards[bIndex]["tags"] = [] // Old list - no tags
 
-		let hasID = ["", null].includes(boards[bIndex]["levelID"])
+		let hasID = boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"].match(/^\d+$/g) == null
 		let preview = LIST_ID == -8
 
 		let favoriteCheck = preview ? false : (hasID ? false : true)
@@ -845,9 +845,9 @@ function removeFave(remID) {
 	if (typeof boards != "undefined" && currListIDs.length == 0) Object.values(boards).forEach(x => currListIDs.push(x.levelID))
 
 	let i = 0
-	currentListData["#app"].forEach(x => {
+	currentListData["#favoritesContainer"].forEach(x => {
 		if (parseInt(x[2]) == remID) {
-			currentListData["#app"].splice(i, 1)
+			currentListData["#favoritesContainer"].splice(i, 1)
 		}
 		i++
 	});
@@ -866,7 +866,7 @@ function removeFave(remID) {
 		$(`div.box:nth-child(${2 + currListIDs.indexOf(remID.toString())}) > div:nth-child(1) > img:nth-child(1)`).removeClass("disabled")
 	}
 
-	listViewerDrawer(currentListData["#app"], "#app", 1, [0, 0], jsStr["SAVEDLONG"][LANG])
+	listViewerDrawer(currentListData["#favoritesContainer"], "#favoritesContainer", 1, [0, 0], jsStr["SAVEDLONG"][LANG])
 }
 
 function switchLoFList(hash, goto = null) {
@@ -947,7 +947,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 					dGuesserBadge = object.data.diffGuesser[0] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
 				}
 
-				let level1col = HSLtoHEX(185+parseInt(Math.random() * 111),"63%","50%")
+				let level1col = object["data"][1].color
 				let lightCol = HEXtoRGB(level1col, -60)
 				let darkCol = HEXtoRGB(level1col, 40)
 				$(custElement).append(`
@@ -1132,9 +1132,6 @@ $.get("./parts/navbar.html", navbar => {
 
 })
 
-$(".passInput").val("");
-$(".commBut").attr("src", jsStr["COMM_IMG"][LANG]);
-
 async function lists(list) {
 	$(".listInfo").show()
 	$("#crown").show();
@@ -1291,14 +1288,14 @@ function pageSwitch(num, data, parent, ctype) {
 	page[parent][0] = clamp(num, 0, page[parent][1] - 1)
 	listViewerDrawer(data, parent, ctype)
 
-	if (page[parent][0] < 3) {
+	if (page[parent][0] < 3) { // Sets first 4 page numbers
 		for (let i = 0; i < 5; i++) {
 			$(".pageYes").eq(i).text(clamp(i + 1, 0, page[parent][1]))
 		}
 	}
-	else if (page[parent][0] + 3 > page[parent][1]) {
-		for (let i = 0; i < 5; i++) {
-			$(".pageYes").eq(4 - i).text(clamp(page[parent][1] - i, 0, page[parent][1]))
+	else if (page[parent][0] + 4 > page[parent][1]) { // Sets final pages
+		for (let i = 0; i < 6; i++) {
+			$(".pageYes").eq(5 - i).text(clamp(page[parent][1] - i, 0, page[parent][1]))
 		}
 	}
 	else if (page[parent][0]) {
@@ -1412,24 +1409,27 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 	// Draw pages
 	if (page[parent][1] > 0) {
 		$(".page > *:not(.pageBut)").remove()
-		for (let i = 0; i < clamp(page[parent][1], 0, 5); i++) {
+		let keepSize = ( page[parent][0] < 3 || page[parent][1]-page[parent][0] < 4 ) ? 6 : 5
+		for (let i = 0; i < clamp(page[parent][1], 0, keepSize); i++) {
 			$(".pageYes:last()").click(() => pageSwitch(i - 1, currentListData[parent], parent, cardType, 1))
 			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i + 1}</div>`)
 		}
 		$(".pageYes:last()").click(() => pageSwitch(page[parent][1] - 1, currentListData[parent], parent, cardType, 1))
 
-		if (page[parent][1] > 5 && page[parent][0] + 3 < page[parent][1]) {
+		// Add jump to last page
+		if (page[parent][1] > 6 && page[parent][0] + 3 < page[parent][1]) {
 			$(".pageBut").eq(1).before(`<hr class="verticalSplitter">`)
 			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${page[parent][1]}</div>`)
 			$(".pageYes:last()").click(() => pageSwitch(page[parent][1] - 1, currentListData[parent], parent, cardType, 1))
 		}
 
-		if (page[parent][0] > 2 && page[parent][1] > 5) {
+		// Add jump to first page
+		if (page[parent][0] > 2 && page[parent][1] > 6) {
 			$(".pageBut").eq(0).after(`<div class="uploadText pageFirst button">1</div>`)
 			$(".pageFirst").after(`<hr class="verticalSplitter">`)
 			$(".pageFirst").click(() => pageSwitch(0, currentListData[parent], parent, cardType, 1))
 		}
-		if (page[parent][0] == 0) $(".pageYes:first()").attr("id", "pgSelected")
+		$(`.pageYes:contains(${page[parent][0]+1})`).attr("id", "pgSelected")
 	}
 
 	// Draw Cards
@@ -1449,6 +1449,5 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 }
 
 function doSearch(e) {
-	console.log(e)
 	e.preventDefault()
 }
