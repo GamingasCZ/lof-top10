@@ -14,10 +14,13 @@ rm README.md
 BUNDLE=$RANDOM
 cd js
 touch "bundle$BUNDLE.js"
-for f in $(ls -I "bundle$BUNDLE.js");
+uglifyjs languages.js -m >> "bundle$BUNDLE.js"
+for f in $(ls -I "bundle$BUNDLE.js" -I "generator.js" -I "languages.js");
     do
         uglifyjs $f -m >> "bundle$BUNDLE.js";
     done;
+
+uglifyjs generator.js -m >> "bundle$BUNDLE.js"
 
 mv "bundle$BUNDLE.js" ../
 cd ..
@@ -27,21 +30,19 @@ rm -rf js/
 rm php/secretsTemplate.php
 rm php/README.md
 
-# minify css, make bundle and move to root folder
+# minify css, make bundle and move to root folder (SKIPPED: not working properly for now)
+: '
 cd assets/
-touch "mid.css"
-for f in $(ls *.css -I mid.css);
+touch "bundle$BUNDLE.css"
+for f in $(ls *.css);
     do
-        cat $f >> mid.css
+        css-minify -f $f >> "bundle$BUNDLE.css"
     done;
-tr -d '\n \t' < mid.css > "bundle$BUNDLE.css"
+
 mv "bundle$BUNDLE.css" ../
 rm *.css
+'
 
 # replace js and css links in html
-cd ..
-sed -i 's|.*.js\/.*||g' index.html
-sed -i "s|<cssbundle>|<script rel='text/javascript' src='bundle$BUNDLE.js' defer></script>|" index.html
-
-sed -i 's|.*.css\/.*||g' index.html
-sed -i "s|<jsbundle>|<link rel='stylesheet' href='bundle$BUNDLE.css'>|" index.html
+awk "{gsub(\"<jsbundle>\",\"<script rel=\x22text/javascript\x22 src=\x22bundle$BUNDLE.js\x22 defer></script>\")}1" index.html > ok2.html && mv ok2.html index.html
+#awk "{gsub(\"<cssbundle>\",\"<link rel=\x22stylesheet\x22 href=\x22bundle$BUNDLE.css\x22>\")}1" index.html > ok2.html && mv ok2.html index.html

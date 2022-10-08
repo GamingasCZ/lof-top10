@@ -183,6 +183,10 @@ var jsStr = {
     "TAGS": [["Pomalý","Rychlý","Hodně objektů","2P","Hacknutý","Layout","Dekorace","1.9","Šílený","Unratelý","Nemožný","Shitpost","Minihra","List Demon","Jam","Challenge","Ztracený","","","",""],
              ["Slow", "Fast", "High Object Count","2P","Hacked","Layout","Decorated","1.9","Mindboggling","Unrated","Impossible","Shitpost","Minigame","List Demon","Jam","Challenge","Lost"]],
     "UPLOAD": ["Nahrávání", "Upload"],
+    "TAGADDHELP": ['Klikni na <img style="width: 1.2em;" class="diffOptions" src="images/plus.svg"> k přidání štítků!','Click <img style="width: 1.2em;" class="diffOptions" src="images/plus.svg"> to add a tag!'],
+    "ADDTAG": ["Přidat tag", "Add tag"],
+    "TAGDESC": ["Popis štítku","Tag Name"],
+    "TAGLINK": ["Odkaz","Link"],
 
     // comments
     "COMM": ["Komentáře", "Comments"],
@@ -404,16 +408,3 @@ function makeCookie(val) { // Also works for changing cookies
     let expireDate = "Sun, 1 Jan 2040 12:00:00 UTC"
     document.cookie = `${val[0]}=${encodeURIComponent(val[1])}; expires=${expireDate}; SameSite=Lax`
 }
-
-$(function() {
-    var currLang = getCookie("lang");
-    if (currLang == null) {
-        let getLang = navigator.language;
-        if (["cs", "sk"].includes(getLang)) { currLang = 0; }
-        else { currLang = 1; }
-        
-        makeCookie(["lang", currLang])
-    }
-    LANG = currLang;
-    $($(".settingsDropdown").children()[currLang]).attr("selected", true)
-})

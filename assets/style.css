@@ -664,7 +664,7 @@ html, body {
 /* Entire comment box, including user input box */
 #commentMaker {
   margin: 1em auto 0;
-  padding: 0.5vw;
+  padding: 0.5em;
   max-width: clamp(73em, 75%, 80em);
 }
 
@@ -673,7 +673,7 @@ html, body {
   background-color: salmon;
   border: none;
   max-height: 8vh;
-  border-radius: 10px;
+  border-radius: 5px;
   resize: none;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -708,14 +708,14 @@ html, body {
 
 /* Specific stuff relating to the cbox footer and header */
 #comBoxHeader {
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 #comBoxFooter {
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   justify-content: flex-end !important;
-  gap: 1em;
+  gap: 0.5em;
   /*! margin: 0 calc(46vw - 26em); */
   max-width: clamp(69em, 67%, 132em);
 }
@@ -744,7 +744,7 @@ html, body {
   cursor: pointer;
   height: min-content;
   border-radius: 0% 0% 100% 100%;
-  width: 2em;
+  width: 1.3em;
   padding: 0.3em;
 }
 

@@ -385,7 +385,7 @@ function comBox(cd, element) {
 
   // Is user verified?
   if (cd["verified"] == 1) {
-    profPic = `<img class="pIcon" style="height: var(--biggerFont);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
+    profPic = `<img class="pIcon" style="height: var(--normalFont);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
     clickable[0] = "clickable";
     clickable[1] = `onclick="profile('${cd["username"]}')`;
     comColor = "#f9f99a";
@@ -426,14 +426,12 @@ function comBox(cd, element) {
   }
 
   $(element).append(`
-  <div style="margin: 0.8em; box-shadow: #000000b3 0px 0px 32px;">
+  <div style="margin: 1em auto; max-width: 70em;">
   
   <div class="comBoxThings ${clickable[0]
     } uploadText" id="comBoxHeader" ${clickable[1]}"
   style="justify-content: flex-start;
-  background-color: ${"rgb(" + dcc.join(",") + ")"};
-  border: solid ${"rgb(" + edcc.join(",") + ")"
-    } 4px;">
+  background-color: ${"rgb(" + dcc.join(",") + ")"};">
 ${profPic}
             <h5 style="margin: 0 1%; color: ${comColor};">${cd["username"]}</h3>
             <h5 
@@ -487,7 +485,10 @@ async function displayComments(data) {
       $("#commentList").append(translateDoc(d, "listBrowser"))
     })
   }
-  listViewerDrawer(data, "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
+
+  if (currentListData["#commentList"] == undefined) listViewerDrawer(data, "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
+  
+  currentListData["#commentList"] = data
   pageSwitch(page["#commentList"][0], currentListData["#commentList"], "#commentList", 6, 1)
   $(".comTextArea .gamLink").click(el => redirectWarn(el))
 

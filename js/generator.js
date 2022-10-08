@@ -805,10 +805,10 @@ function pinList(rem = null, isOnHomepage = false) {
 	makeCookie(["pinnedLists", JSON.stringify(pinnedLists)])
 
 	if (isOnHomepage !== false) {
-		isOnHomepage.preventDefault()
+		$("#unpinCard").parents().eq(2).attr("href","#")
 		isOnHomepage.parents().eq(2).remove()
 		if ($(".pinnedLists > div").length == 0) {
-			$(".pinnedLists").html(`<div class="uploadText" style="color: #f9e582; margin-left: 5vw;">${jsStr["NOPINNED"][LANG]}</div>`)
+			$(".pinnedLists").html(`<div class="uploadText" style="color: #f9e582">${jsStr["NOPINNED"][LANG]}</div>`)
 		}
 	}
 }
@@ -1102,7 +1102,17 @@ async function loadSite() {
 }
 
 $(async function () {
-	// Default 2019 board
+	var currLang = getCookie("lang");
+    if (currLang == null) {
+        let getLang = navigator.language;
+        if (["cs", "sk"].includes(getLang)) { currLang = 0; }
+        else { currLang = 1; }
+        
+        makeCookie(["lang", currLang])
+    }
+    LANG = currLang;
+    $($(".settingsDropdown").children()[currLang]).attr("selected", true)
+
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
 
 	window.addEventListener("hashchange", loadSite)
@@ -1113,6 +1123,9 @@ $(async function () {
 		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
 		else $(".scrollToTop").css("opacity", 0)
 	})
+
+	// hide click blocking dumb ad container from webzdarma :D
+	$('body > div:not([class], [id])').eq(0).hide()
 })
 
 $.get("./parts/navbar.html", navbar => {
@@ -1286,6 +1299,8 @@ function goToPWD() { window.location.hash = `#update` }
 let page = {} // [page, maxPage]
 function pageSwitch(num, data, parent, ctype) {
 	page[parent][0] = clamp(num, 0, page[parent][1] - 1)
+
+	// Without redrawing, only page scrollbar is set
 	listViewerDrawer(data, parent, ctype)
 
 	if (page[parent][0] < 3) { // Sets first 4 page numbers

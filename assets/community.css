@@ -238,7 +238,6 @@ input::-webkit-inner-spin-button {
 }
 
 .collabHeader {
-    max-height: auto;
     overflow-y: auto;
 }
 
@@ -637,7 +636,7 @@ input:disabled {
     border: none;
     transform: translate(0);
     transition: background-color 50ms;
-    padding: 0.2vw 0 0.2vw 0.7vw;
+    padding: 0.2em 0 0.2em 0.7em;
     font-size: var(--normalFont);
 }
 
@@ -1108,7 +1107,7 @@ input:disabled {
 #passSubmit {
     background: rgba(0, 0, 0, 0.459);
     border-radius: 100%;
-    padding: 0.3vw;
+    padding: 0.3em;
 }
 
 .socialPickerIcon {
@@ -1205,9 +1204,10 @@ input:disabled {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1vw !important;
-    gap: 1vw;
+    padding: 0.5em !important;
+    gap: 0.5em;
     z-index: 5 !important;
+    max-height: 94vh;
 }
 
 .tagEditBox {

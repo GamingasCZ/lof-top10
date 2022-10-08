@@ -831,8 +831,8 @@ function clickTag(e, lp) {
                 <img src='images/badges/${badgeIndex}.svg' id="editBadge">
                 <img src="images/close.svg" class="button deleteTag">
             </div>
-            <input maxlength="50" type="text" id="tagNameInput" class="tagInput" placeholder="Popis štítku" value="${tagName}">
-            <input maxlength="100" type="text" id="tagNameInput" class="tagLinkInput" placeholder="Odkaz" style="display:none" value="${linkURL}">
+            <input maxlength="50" type="text" id="tagNameInput" class="tagInput" placeholder="${jsStr['TAGDESC'][LANG]}" value="${tagName}">
+            <input maxlength="100" type="text" id="tagNameInput" class="tagLinkInput" placeholder="${jsStr['TAGLINK'][LANG]}" style="display:none" value="${linkURL}">
         </div>
         <img src="images/showComms.svg" class="button tagMoveR">
     </div>
@@ -844,7 +844,7 @@ function clickTag(e, lp) {
         $(e.currentTarget).parents().eq(2).remove()
 
         if ($(".tagEditBox").length == 0) {
-            $(".tagViewer").append(`Klikni na <img style="width: 1.2em;" class="diffOptions" src="images/plus.svg"> k přidání štítků!`)
+            $(".tagViewer").append(jsStr["TAGADDHELP"][LANG])
         }
     })
     $(".tagLink:last()").click(e => {
@@ -903,9 +903,9 @@ function openTagPicker(lp) {
 
     $('.cardContainer' + lp).append(`
     <div class="difficultyPicker" style="height: 4.7em;">
-        <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;">Klikni na <img style="width: 1.2em;" class="diffOptions" src="images/plus.svg"> k přidání štítků!</div>
+        <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;">${jsStr["TAGADDHELP"][LANG]}</div>
         <div style="display: flex;align-items: center;">
-            <img style="width:2em; margin-right: 0.5em;" src="./images/plus.svg" title="${jsStr["NORATE"][LANG]}" class="button diffOptions" onclick="tagPopup(${lp})">
+            <img style="width:2em; margin-right: 0.5em;" src="./images/plus.svg" title="${jsStr["ADDTAG"][LANG]}" class="button diffOptions" onclick="tagPopup(${lp})">
         </div>
     </div>`)
 
