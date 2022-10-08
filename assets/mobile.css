@@ -1,14 +1,7 @@
-@media only screen and (max-width: 600px) {
-    .button:not(.noMobileResize) {
-        width: 5vw !important;
-        height: auto !important;
-    }
-    }
+@media only screen and (max-width: 750px) {
 
-@media only screen and (max-width: 550px) {
-
-.comTextArea {
-    height: 20vw;
+:root {
+    --fontMultiplier: 0.8;
 }
 
 .boxHeader {
@@ -23,7 +16,7 @@
     display: none;
 }
 
-.button:not(.noMobileResize), .logo {
+.button:not(.noMobileResize) {
     width: 8vw !important;
     height: auto !important;
 }
@@ -32,54 +25,24 @@
 .comFooterButton { width: 5vw; }
 
 .settingsMenu {
-    right: 7vw;
-    top: 19vw;
-    transform: scale(1.5);
+    top: 13vw;
 }
 
-#shareContainer {
-    font-size: 4vw;
-}
 #shareTools {
     width: 75%;
-    left: 0;
 }
 
-#jumpToTools {
-    top: 0;
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    border: none;
-    border-radius: 0;
-    left: 0;
-    padding: 0;
-}
-
-#crown {
-    transform: translateY(7.7vw) !important;
-    width: 25vw;
-}
+#jumpToTools { width: 90%; }
 
 #collabTools {
-    margin: 0;
-    border: none;
     border-radius: 0px;
-    right: 0;
-    bottom: 0;
     width: 100%;
     height: 100%;
 }
-.graphPerc {
-    font-size: 2.5vw;
-}
-.graphContainer { 
-    height: 5.5vw;
-}
+.graphPerc { font-size: 2.5vw;}
+.graphContainer { height: 5.5vw; }
 
-.uploadBG:not(#jumpToTools, #shareTools) {
-    margin: 0;
-}
+#levelUpload {margin: 0 0.6em;}
 
 .diffContainer {
     width: 7.5vw !important;
@@ -90,13 +53,14 @@
 #pageStr, #sortStr { display: none; }
 
 .socInp { width: 40vw !important;}
-.percCollab { width: 3vw !important; height: 2vw !important; padding: 0 !important; }
-.tableCpicker { height: 5vw !important; }
+.percCollab { padding: 0.1em !important; }
 
 .humHead, .roleHead { display: none; }
 .collabStuff { display: none; }
 .mobileTabSwitcher { display: flex !important; }
 .memberStuff { display: none;}
+.roleList {appearance: none;}
+
 
 .collabRoles > .roleBubble {
     max-height: 5vh;
@@ -120,4 +84,14 @@
     flex-direction: column;
 }
 
+.collabTables th div { display: none !important; }
+.collabTables th > div { display: none !important; }
+
+ul > div {
+    margin: 0;
+}
+
+.browserTools { flex-direction: column; }
+
+.boxLinksContainer { margin: 0;}
 }

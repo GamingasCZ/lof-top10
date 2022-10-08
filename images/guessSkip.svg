@@ -1,0 +1,19 @@
+<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <clipPath id="clipPath1510">
+   <g display="none">
+    <g transform="translate(-.13075)">
+     <rect x="9.0514" y="14.883" width="4.3979" height="4.3979" rx=".5" ry=".5" d="m 9.551383,14.882539 h 3.397886 c 0.277,0 0.5,0.223 0.5,0.5 v 3.397886 c 0,0.277 -0.223,0.5 -0.5,0.5 H 9.551383 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -3.397886 c 0,-0.277 0.223,-0.5 0.5,-0.5 z" fill="#fff" stroke-width="0" style="paint-order:markers stroke fill"/>
+     <rect x="18.812" y="14.883" width="4.3979" height="4.3979" rx=".5" ry=".5" d="m 19.312229,14.882539 h 3.397886 c 0.277,0 0.5,0.223 0.5,0.5 v 3.397886 c 0,0.277 -0.223,0.5 -0.5,0.5 h -3.397886 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -3.397886 c 0,-0.277 0.223,-0.5 0.5,-0.5 z" fill="#fff" stroke-width="0" style="paint-order:markers stroke fill"/>
+    </g>
+    <rect x="8.9206" y="19.988" width="14.159" height="2.0653" rx=".5" ry=".65678" d="M 9.4206333,19.98757 H 22.579366 c 0.277,0 0.5,0.292922 0.5,0.656776 v 0.751738 c 0,0.363854 -0.223,0.656776 -0.5,0.656776 H 9.4206333 c -0.277,0 -0.5,-0.292922 -0.5,-0.656776 v -0.751738 c 0,-0.363854 0.223,-0.656776 0.5,-0.656776 z" fill="#fff" stroke-width="0" style="paint-order:markers stroke fill"/>
+   </g>
+   <path class="powerclip" d="m2.1036 8.2437h27.793v27.793h-27.793zm7.4477 6.6388c-0.277 0-0.5 0.223-0.5 0.5v3.3979c0 0.277 0.223 0.5 0.5 0.5h3.3979c0.277 0 0.5-0.223 0.5-0.5v-3.3979c0-0.277-0.223-0.5-0.5-0.5zm9.7608 0c-0.277 0-0.5 0.223-0.5 0.5v3.3979c0 0.277 0.223 0.5 0.5 0.5h3.3979c0.277 0 0.5-0.223 0.5-0.5v-3.3979c0-0.277-0.223-0.5-0.5-0.5zm-9.8916 5.105c-0.277 0-0.5 0.29292-0.5 0.65678v0.75174c0 0.36385 0.223 0.65678 0.5 0.65678h13.159c0.277 0 0.5-0.29292 0.5-0.65678v-0.75174c0-0.36385-0.223-0.65678-0.5-0.65678z"/>
+  </clipPath>
+ </defs>
+ <g stroke-width="0">
+  <rect x="7.1036" y="13.244" width="17.793" height="17.793" rx="1.4592" ry="1.4592" d="M 8.5628827,13.243697 H 23.437117 c 0.80842,0 1.459241,0.650822 1.459241,1.459241 v 14.874235 c 0,0.80842 -0.650821,1.459241 -1.459241,1.459241 H 8.5628827 c -0.8084196,0 -1.4592412,-0.650821 -1.4592412,-1.459241 V 14.702938 c 0,-0.808419 0.6508216,-1.459241 1.4592412,-1.459241 z" clip-path="url(#clipPath1510)" fill="#fff" style="paint-order:markers stroke fill"/>
+  <text transform="rotate(35.322)" x="24.771479" y="-3.946367" fill="#ffffff" font-family="Comfortaa" font-size="7.2765px" font-weight="bold" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="bevel" style="paint-order:markers stroke fill" xml:space="preserve"><tspan x="24.771479" y="-3.946367" stroke-width="0">?</tspan></text>
+  <text transform="rotate(-17.056)" x="2.9067721" y="14.744759" fill="#ffffff" font-family="Comfortaa" font-size="10.667px" font-weight="bold" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="bevel" style="paint-order:markers stroke fill" xml:space="preserve"><tspan x="2.9067721" y="14.744759">?</tspan></text>
+ </g>
+</svg>

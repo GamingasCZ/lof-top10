@@ -1,17 +1,115 @@
-<p class="titles savedTitle"></p>
-<div class="searchTools savesTools uploadText" style="justify-content: center">
-  <span style="padding-right: 2%;" id="sortStr">%%s</span>
-  <img src="images/sort.webp" id="sortBut" class="button" style="width: 4%; transition-duration: 0s;">
-  <div class="page">
-    <span style="padding-right: 2%;" id="pageStr">%%s</span>
-    <img class="button pageBut" src="images/arrow-left.webp">
-    <input autocomplete="off" class="pageIndicator" id="pageSwitcher" value="1">
-    <span id="maxPage">/1</span>
-    <img class="button pageBut" src="images/arrow-right.webp">
-  </div>
-  <div class="search">
-    <input placeholder="%%s" autocomplete="off" class="searchWithIcon" id="searchBar" style="width: 60%; margin: 0;">
-    <img src="./images/searchButton.svg" class="button passImg doSearch" style="width: 10%; margin-left: 1%;">
-  </div>
+<!-- Share dialog -->
+<div class="uploadBG uploadText" id="shareTools" style="position: fixed; display: none;">
+    <img src="./images/smallClose.svg" class="button" style="width: 6%; float: right;" onclick="hideShare()">
+    <p class="uploadText" id="shareText" style="margin-bottom: 0;">%%s</p>
+    <input class="uploadText settingsBG" id="shareContainer" readonly></input>
+    <div style="display: flex;align-items:flex-start;" class="shareSocials">
+        <img src="images/twitter.webp" class="button" style="width: 3em; margin-right: 0.3em;">
+        <img src="images/reddit.webp" class="button" style="width: 3em;">
+    </div>
 </div>
-<div class="customLists uploadText"></div>
+
+<!-- Jump To Dialog-->
+<div style="display: none;" id="jumpToTools" class="uploadText levelPicker">
+    <div style="display: flex; align-items: center;">
+        <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">%%s</span>
+        <img onclick="hideJumpTo()" src="./images/smallClose.svg" style="width: 2em;" class="button">
+    </div>
+    <div style="padding: 0 1em 1em;">
+        <div class="levelPickerContainer"></div>
+    </div>
+</div>
+
+<!-- Collab stats -->
+<div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
+    <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
+        <p style="margin: 0 auto;" class="collabTTitle"></p>
+        <img src="./images/smallClose.svg" class="button" style="width: 6%; height: max-content;"
+            onclick="hideCollabStats()">
+    </div>
+    <div class="collabGraphs" style="min-height: 49%; max-height: 49%; overflow-y: auto;">
+
+    </div>
+    <div class="editorHeader">
+        <p class="uploadText colMembers" style="margin: 0.2% 0%;">%%s</p>
+    </div>
+    <div style="max-height: 48.5%;overflow-y: auto;">
+        <table style="min-height: 48.5%;" class="collabTables statsCreators"></table>
+    </div>
+</div>
+
+<div class="listMaster">
+    <div class="listInfo" style="display: none;">
+        <div class="titles listInfoContainer" id="listOptionsID">
+            <div class="loadPlaceholder">
+                <div class="placeholderName"></div>
+                <div class="placeholderCreator"></div>
+            </div>
+            <div class="listOptionsContainer">
+                <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg">
+                    <div id="shareBut">%%s</div>
+                </button>
+                <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg">
+                    <div id="jumpToBut">%%s</div>
+                </button>
+                <button onclick="pinList()" class="listHeaderBlue uploadText pin"><img src="images/pin.svg">
+                    <div id="pinBut">%%s</div>
+                </button>
+                <button onclick="goToPWD()" class="listHeaderBlue uploadText"><img src="images/edit.svg">
+                    <div id="editBut">%%s</div>
+                </button>
+            </div>
+        </div>
+        <div id="cToolTop">
+            <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img
+                    src="images/comment.svg" style="width: 2em;">
+                <div id="commButtonText">%%s</div>
+                <div id="commAmount"></div>
+            </button>
+            <hr class="lineSplitGeneral">
+        </div>
+    </div>
+
+    <img class="titleImage">
+
+    <div class="comments">
+        <div class="positionEdit" id="commentMaker">
+            <div style="display: flex; align-items: center; padding-left: 0em; margin-bottom: 0.5em;">
+                <img src="images/bytost.webp" id="pIcon" style="width: 1.8em;">
+                <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="%%s" maxlength="20">
+                <img src="./images/searchOpaque.svg" onclick="getPlayerIcon()" class="button passImg" id="passSubmit"
+                    style="height: max-content;">
+                <h5 class="uploadText comUserError"></h5>
+            </div>
+
+            <div class="comBox">
+                <div class="uploadText comBoxThings comInpThings" id="comBoxHeader">
+                    <h3>%%s</h3>
+                    <h3 id="charLimit">0/300</h3>
+                </div>
+
+                <div style="display: flex; width: inherit;">
+                    <div contenteditable="" class="uploadText comTextArea comInpArea" style="height: 5em;" id="comFont">
+                    </div>
+                </div>
+            </div>
+
+            <div class="emojiPanel"></div>
+
+        </div>
+        <div class="uploadText comBoxThings" id="comBoxFooter">
+            <img class="comFooterButton comInpThings" src="images/emoji.svg" title="%%s"
+                onclick="displayPanel(1)">
+            <img class="comFooterButton comInpThings" src="images/color.svg" title="%%s"
+                onclick="displayPanel(2)">
+            <img class="comFooterButton sendBut" src="images/send.svg" title="%%s" onclick="sendComment()">
+        </div>
+
+        <div id="commentList"></div>
+
+
+    </div>
+
+    <div class="boards">
+    </div>
+</div>

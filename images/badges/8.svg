@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs id="defs2">
+  <linearGradient id="linearGradient927" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop id="stop921" stop-color="#7a2222" offset="0"/>
+   <stop id="stop923" stop-color="#d1f038" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g id="layer1" stroke-linecap="round">
+  <circle id="path234" transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#linearGradient927)" stroke-width="10.519"/>
+  <path id="path3750" transform="translate(-.072506 1.2132)" d="m17.489 15.969c1.6782 1.187-0.05005 3.4563-1.4069 3.933-2.6583 0.93389-5.2761-1.2331-5.8072-3.7819-0.74978-3.5985 2.0883-6.8967 5.5724-7.4254 4.4178-0.67042 8.3678 2.8139 8.8909 7.1225 0.62738 5.1674-3.4633 9.731-8.527 10.25-5.8676 0.6014-11.012-4.061-11.529-9.8298-0.58492-6.5301 4.6204-12.228 11.056-12.744 4.6623-0.37386 9.2261 1.9596 11.77 5.8625" fill="none" stroke="#fff" stroke-linejoin="bevel" stroke-width="2.5"/>
+ </g>
+</svg>

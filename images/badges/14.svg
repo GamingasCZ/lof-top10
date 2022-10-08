@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs id="defs2">
+  <linearGradient id="linearGradient927" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop id="stop921" stop-color="#227a28" offset="0"/>
+   <stop id="stop923" stop-color="#f0c338" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g id="layer1" stroke-linecap="round">
+  <circle id="path234" transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#linearGradient927)" stroke-width="10.519"/>
+  <g id="g13793" transform="rotate(16.738 13.564 20.128)" stroke="#fff" stroke-linejoin="round">
+   <circle id="path13389" cx="11.137" cy="21.612" r="4.6846" fill="#fff" stroke-width="1.855"/>
+   <rect id="rect13391" x="14.85" y="5.3475" width=".97169" height="16.265" rx=".52324" fill="#fff" stroke-width="1.855"/>
+   <path id="path13393" d="m15.45 6.1336s2.121 5.2591 7.2476 3.7123" fill="none" stroke-width="3.055"/>
+  </g>
+ </g>
+</svg>

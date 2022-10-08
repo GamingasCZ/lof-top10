@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs id="defs2">
+  <linearGradient id="linearGradient927" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop id="stop921" stop-color="#7a5722" offset="0"/>
+   <stop id="stop923" stop-color="#f0a538" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g id="layer1">
+  <circle id="path234" transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#linearGradient927)" stroke-linecap="round" stroke-width="10.519"/>
+ </g>
+ <g id="layer2">
+  <path id="path1407" d="m18.295 7.8985-7.997 8.7287 7.997 7.4743" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.4364"/>
+ </g>
+</svg>

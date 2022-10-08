@@ -124,7 +124,7 @@ function uploadList() {
             let currWebsite
             let pstr
             if (!error) {
-                currWebsite = `${window.location.origin + "/lofttop10"}/?${isNaN(data[1]) ? "pid" : "id"}=${data[1]}`;
+                currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[1]}`;
                 pstr = `<br>${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${data[0]}</b>`;
             }
             let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
@@ -169,7 +169,7 @@ function updateList() {
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
             if (typeof data == "object") {
-                let currWebsite = `${window.location.origin + "/lofttop10"}/?${isNaN(data[0]) ? "pid" : "id"}=${data[0]}`;
+                let currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[0]}`;
                 $(".uploaderDialog").html(`
                 <div style="padding: 3%">
                     <img src="./images/check.webp" style="width:7%;">
@@ -207,8 +207,13 @@ function updateList() {
 
 var deeta = '';
 var ogDeeta = '';
+const DEFAULT_LEVELLIST = {
+    "titleImg": "",
+    "pageBGcolor": "#020202",
+    "diffGuesser": [false, true, true]
+}
 
-$(function () {
+function makeEditor(update) {
     // Do nothing if in editor
     $(".pickerContainer").on("click", showBGColorPicker)
     if (window.location.search.includes("edit")) $(".uploader").show()
@@ -250,40 +255,10 @@ $(function () {
         }
     })
     // Showing color picker
-
-    let isSearching = false
-    let paramGetter = new URLSearchParams(window.location.search)
-    let params = Object.fromEntries(paramGetter.entries());
-
-    if (Object.keys(params).length == 0 || params.browse != null || params.s != null) {
-        $(".browser").show()
-        $.get("./parts/listViewer.html", dt => {
-            $(".communityContainer").append(translateDoc(dt, "listViewer"))
-
-            if (params.s != null) {
-                $(".communityContainer").show()
-                $("#searchBar").val(params.s)
-                isSearching = true
-            }
-
-            // Generates stuff
-            $.get("./php/getLists.php", data => {
-                if (typeof data != "object") { $(".listContainer").text(jsStr["NO_RES"][LANG]); return; }
-                listViewerDrawer(data, ".communityContainer", 4)
-                if (isSearching) $(".communityContainer .doSearch").click()
-            });
-        })
-    }
-
-    if (params.editing != null) {
+    if (update) {
         $("#passEditor").show()
         generateFromJSON(1)
         isHidden = $("input[name='hidden']").attr("checked") == "checked";
-    }
-
-
-    if (window.location.port != "") {
-        $(".customLists").append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
     }
 
     $("img[for='diffGuesser']").click(() => {
@@ -294,10 +269,32 @@ $(function () {
     })
 
     // Show alert if creating list
-    window.addEventListener('beforeunload', exit => {
-        if (Object.keys(levelList).length > ADDIT_VALS+1) exit.preventDefault();
-    });
-})
+    window.addEventListener('beforeunload', pageExit);
+
+    $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
+    $(".savedFilter").on("keyup", searchFaves)
+}
+
+const pageExit = exit => {
+    if (Object.keys(levelList).length > ADDIT_VALS+1) exit.preventDefault();
+}
+
+function makeBrowser(search) {
+    let isSearching = false
+    $.get("./parts/listBrowser.html", dt => {
+        if (search != "") {
+            $("#searchBar").val(decodeURIComponent(search))
+            isSearching = true
+        }
+
+        // Generates stuff
+        $.get("./php/getLists.php", data => {
+            if (typeof data != "object") { $("#communityContainer").text(jsStr["NO_RES"][LANG]); return; }
+            listViewerDrawer(data, "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
+            if (isSearching) $("#app .doSearch").click()
+        });
+    })
+}
 
 function closeRmScreen() {
     $(".removeScreen").fadeOut(100)
@@ -314,10 +311,10 @@ function confirmDelete() {
     let postData = {
         "id": data[0],
         "pwdEntered": $("#lpass").val(),
-        "isHidden": !data[2]
+        "isHidden": data[2] ? 1 : 0
     }
-    murderList();
     $.post("./php/removeList.php", postData, function () {
+        window.removeEventListener("beforeunload", pageExit)
         murderList();
     })
 }
@@ -327,7 +324,7 @@ function removeList() {
     $(".boom").append(`<div class="uploadText removeScreen">
     <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.webp"><br />
     <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -5.4vw;" src="./images/szn1.webp">
-    <p id="removeText" style="display: none; text-align: center; font-size: 4vw;">${jsStr["CONF_DEL"][LANG]}</p>
+    <p id="removeText" style="text-align: center; font-size: var(--bigFont)">${jsStr["CONF_DEL"][LANG]}</p>
     <div style="display:flex; flex-direction: row; justify-content: center; opacity:0" class="rmButSet">
         <button id="rmbutton" onclick="confirmDelete()" class="button uploadText eventButton">${jsStr["YES"][LANG]}</button>
         <button id="rmbutton" onclick="closeRmScreen()" class="button uploadText eventButton">${jsStr["NO"][LANG]}</button>
@@ -355,18 +352,18 @@ function removeList() {
 function murderList() {
     $(".boom").css("display", "initial");
 
-    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.replace("./upload.html?editor"));
+    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.hash = "#editor");
     $("#levelUpload").addClass("killList");
 }
 
 function checkCheckbox(changeVal, runFun = null) {
-	if ($(`img[for="${changeVal}"]`).attr("src").match("off") == null) {
-		$(`img[for="${changeVal}"]`).attr("src", "images/check-off.webp")
+	if ($(`img[for="${changeVal}"]`).attr("src").match("On") != null) {
+		$(`img[for="${changeVal}"]`).attr("src", "images/modernCheck.svg")
 		$(`input[name="${changeVal}"]`).attr("checked", false)
 		if (runFun != null) runFun(changeVal, false)
 	}
 	else {
-		$(`img[for="${changeVal}"]`).attr("src", "images/check-on.webp")
+		$(`img[for="${changeVal}"]`).attr("src", "images/modernCheckOn.svg")
 		$(`input[name="${changeVal}"]`).attr("checked", true)
 		if (runFun != null) runFun(changeVal, true)
 	}

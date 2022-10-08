@@ -222,7 +222,6 @@ function openBGPicker(lp) {
 function hideBGdialog() {
     $(".bgProps").fadeOut(100)
     $(".boom").fadeOut(100)
-    $(".gdSlider").off("onclick")
 }
 function showBGdialog() {
     $(".bgProps").fadeIn(100)
@@ -240,7 +239,7 @@ function checkPassword() {
     $("#passSubmit").addClass("disabled")
 
     let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
-    let postReq = {"pwdEntered": $("#lpass").val()};
+    let postReq = { "pwdEntered": $("#lpass").val() };
 
     // Is list private?
     postReq[!loadProps[2] ? "id" : "pid"] = loadProps[0];
@@ -249,12 +248,12 @@ function checkPassword() {
         if (typeof data == "object") generateFromJSON(2, data)
         else {
             $("#passEditor h3").text(jsStr["TYPEPASS"][LANG])
-            $("#passEditor").css("animation-name","inputError")
+            $("#passEditor").css("animation-name", "inputError")
             setTimeout(() => {
                 $("#lpass").attr("disabled", false)
                 $("#passSubmit").removeClass("disabled")
                 $("#lpass").val()
-                $("#passEditor").css("animation-name","")
+                $("#passEditor").css("animation-name", "")
             }, 500);
 
         }
@@ -285,24 +284,24 @@ function generateFromJSON(part, boards) {
 
     // Is the list hidden?
     if (boards["hidden"] != "0") {
-        $(`img[for="hidden"]`).attr("src", "images/check-on.webp")
+        $(`img[for="hidden"]`).attr("src", "images/modernCheckOn.svg")
         $(`input[name="hidden"]`).attr("checked", true)
     }
 
-    
+
     // Removing tutorial
     $("#mainContent").text("");
     $(".previewButton").removeClass("disabled");
-    
+
     $("#listnm").val(boards["name"])
     $("#creatornm").val(boards["creator"])
-    
+
     levelList = JSON.parse(boards["data"]);
     $(".titImgInp").val(levelList["titleImg"])
-    
+
     // Is it a diff guess list?
     if (levelList["diffGuesser"] != undefined && levelList["diffGuesser"][0]) {
-        $(`img[for="diffGuesser"]`).attr("src", "images/check-on.webp")
+        $(`img[for="diffGuesser"]`).attr("src", "images/modernCheckOn.svg")
         $(`input[name="diffGuesser"]`).attr("checked", true)
         $(".settingSubbox").show()
         if (!levelList["diffGuesser"][1]) $(".settingSubbox img").eq(0).addClass("disabled")
@@ -524,7 +523,17 @@ function addFromFaves() {
     $(".savedFilter").val("")
 
     if (favesData != null) { favesData = OGfavesData; makeFavesPicker() }
-    else $("iframe").attr("src", "./packs.html?type=fetchFaves")
+    else {
+        let data = JSON.parse(localStorage.getItem("favorites"))
+        if (data != null) {
+            favesData = data
+            OGfavesData = JSON.parse(JSON.stringify(data))
+        }
+
+        // No key in localStorage (first time entering site)
+        else { favesData = []; OGfavesData = [] }
+        makeFavesPicker()
+    }
 
     $(".boom").show()
     $(".boom").css("background-color", "black")
@@ -559,7 +568,8 @@ function addPicked(ind) {
         "video": null,
         "color": favesData[ind][3],
         "difficulty": [0, 0],
-        "background": [1, true, 30, 100] //BG, gradient, alpha, brightness
+        "background": [1, true, 30, 100], //BG, gradient, alpha, brightness
+        "tags": favesData[ind][8] != undefined ? favesData[ind][8] : [] // TODO: možná změň index
     };
     loadLevel(listLenght)
     displayCard(listLenght)
@@ -569,21 +579,6 @@ function addPicked(ind) {
 
 var favesData
 var OGfavesData
-window.addEventListener("message", mess => {
-    let state = mess.data;
-    if (state == "fetchFaves") {
-        let data = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
-        if (data != null) {
-            favesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
-            OGfavesData = JSON.parse($("iframe")[0].contentDocument.querySelector(".fetcher").innerText)
-        }
-
-        // No key in localStorage (first time entering site)
-        else { favesData = []; OGfavesData = [] }
-        makeFavesPicker()
-    }
-}
-)
 
 function makeFavesPicker() {
     $(".levelPickerContainer").empty()
@@ -662,7 +657,8 @@ async function addLevel() {
         "video": null,
         "color": "",
         "difficulty": [0, 0],
-        "background": [1, true, 30, 100] //BG, gradient, alpha, brightness
+        "background": [1, true, 30, 100], //BG, gradient, alpha, brightness
+        "tags": []
     };
 
     $("#top" + listLenght).css("transform", "scaleY(1)");
@@ -752,6 +748,8 @@ function updateCardData(prevID, newID) {
     $(".cPickerBut" + prevID).attr("class", "button cardButton cPickerBut" + newID);
     $(".dPick" + prevID).attr("onclick", "openDiffPicker(" + newID + ")");
     $(".dPick" + prevID).attr("class", "button cardButton diffContainer dPick" + newID);
+    $(".tagPicker" + prevID).attr("onclick", "openTagPicker(" + newID + ")");
+    $(".tagPicker" + prevID).attr("class", "button cardButton tagPicker" + newID);
 
     if (parseInt(prevID) != parseInt(newID)) {
         levelList[prevID] = levelList[newID + "waiting"];
@@ -776,6 +774,146 @@ function openColorPicker(lp) {
         changeColPicker($(k.target).val(), lp, k.target.previousElementSibling.className == "hueChanger")
     })
     color.appendTo($(".cardContainer" + lp))
+}
+
+function tagPopup(lp) {
+    showBGdialog()
+
+    $(".badgeBox").removeClass("tagInUse")
+    levelList[lp]["tags"].forEach(tag => {
+        $(".badgeBox").eq(tag[0]).addClass("tagInUse")
+    });
+
+    $(".tagTop").fadeIn(50)
+
+    if ($(".tagContainer").children().length == 0) {
+        let tagNames = jsStr["TAGS"][LANG]
+        for (let b = 0; b < 17; b++) {
+            $(".tagContainer").append(`
+            <div class="badgeBox button noMobileResize">
+                <img src="images/badges/${b}.svg" style="width: 50%;">
+                <div class="uploadText tagName" style="font-size: var(--miniFont)">${tagNames[b]}</div>
+            </div>
+            `)
+        }
+        $(".tagClose").click(() => { hideBGdialog(); $(".tagTop").fadeOut(50) })
+        $(".badgeBox").click(e => { clickTag(e, lp) })
+    }
+
+}
+
+function clickTag(e, lp) {
+    let tagName, badgeIndex, linkURL
+    let linkHighlight = "none"
+    if ($(".tagViewer > .diffOptions").length == 1) $(".tagViewer").empty()
+    if (typeof e != "number") { // Event details from click, used in tag picker
+        $(e.currentTarget).addClass("tagInUse")
+        badgeIndex = Object.values($(".badgeBox")).indexOf(e.currentTarget)
+        tagName = $(".tagName").eq(badgeIndex).text()
+        linkURL = ""
+
+        // [badgeIndex, name (-1 default),link]
+        levelList[lp]["tags"].push([badgeIndex, -1, ""])
+    }
+    else { // loading index from tag array
+        badgeIndex = levelList[lp]["tags"][e][0]
+        tagName = levelList[lp]["tags"][e][1] == -1 ? jsStr["TAGS"][LANG][levelList[lp]["tags"][e][0]] : levelList[lp]["tags"][e][1]
+        linkURL = levelList[lp]["tags"][e][2]
+        linkHighlight = levelList[lp].tags[e][2] == "" ? "none" : "var(--redHighlight)"
+    }
+
+    $(".tagViewer").append(`
+    <div class="tagEditBox">
+        <img src="images/showCommsL.svg" class="button tagMoveL">
+        <div class="tagDataContainer">
+            <div class="tagButtonsContainer">
+                <img src="images/link.svg" class="button tagLink" style="filter: ${linkHighlight};">
+                <img src='images/badges/${badgeIndex}.svg' id="editBadge">
+                <img src="images/close.svg" class="button deleteTag">
+            </div>
+            <input maxlength="50" type="text" id="tagNameInput" class="tagInput" placeholder="${jsStr['TAGDESC'][LANG]}" value="${tagName}">
+            <input maxlength="100" type="text" id="tagNameInput" class="tagLinkInput" placeholder="${jsStr['TAGLINK'][LANG]}" style="display:none" value="${linkURL}">
+        </div>
+        <img src="images/showComms.svg" class="button tagMoveR">
+    </div>
+    `)
+
+    $(".deleteTag:last()").click(e => {
+        let index = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parents()[2])
+        levelList[lp]["tags"].splice(index, 1)
+        $(e.currentTarget).parents().eq(2).remove()
+
+        if ($(".tagEditBox").length == 0) {
+            $(".tagViewer").append(jsStr["TAGADDHELP"][LANG])
+        }
+    })
+    $(".tagLink:last()").click(e => {
+        let index = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parents()[2])
+        let linkInput = $(e.currentTarget).parents().eq(1).children().eq(2)
+        let nameInput = $(e.currentTarget).parents().eq(1).children().eq(1)
+        if (linkInput.css("display") != "none") { linkInput.hide(); nameInput.show();
+            $(e.currentTarget).css("filter", levelList[lp].tags[index][2] == "" ? "none" : "var(--redHighlight)") }
+        else { linkInput.show(); nameInput.hide(); $(e.currentTarget).css("filter", "var(--lightHighlight)") }
+    })
+
+    $(".tagMoveL:last()").click(e => {
+        let currIndex = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parent()[0])
+
+        if (currIndex > 0) {
+            let prevValue = levelList[lp]["tags"][currIndex]
+            levelList[lp]["tags"].splice(currIndex, 1) // Delete current value
+            levelList[lp]["tags"].splice(currIndex - 1, 0, prevValue) // Insert it again
+
+            $(".tagEditBox").eq(currIndex).insertBefore($(".tagEditBox").eq(currIndex - 1))
+        }
+    })
+
+    $(".tagMoveR:last()").click(e => {
+        let currIndex = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parent()[0])
+
+        if (currIndex < $(".tagEditBox").length) {
+            let prevValue = levelList[lp]["tags"][currIndex]
+            levelList[lp]["tags"].splice(currIndex, 1) // Delete current value
+            levelList[lp]["tags"].splice(currIndex + 1, 0, prevValue) // Insert it again
+
+            $(".tagEditBox").eq(currIndex).insertAfter($(".tagEditBox").eq(currIndex + 1))
+        }
+    })
+
+    $(".tagInput:last()").on("change", e => {
+        let index = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parents().eq(1)[0])
+
+        if (e.target.value.length == 0) {
+            levelList[lp]["tags"][index][1] = -1
+            e.target.value = jsStr["TAGS"][LANG][badgeIndex]
+        }
+        levelList[lp]["tags"][index][1] = e.target.value
+    })
+    $(".tagLinkInput:last()").on("change", e => {
+        let index = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parents().eq(1)[0])
+
+        levelList[lp]["tags"][index][2] = e.target.value
+    })
+}
+
+function openTagPicker(lp) {
+    $('.cardContainer' + lp).empty()
+    if (openedPane == 3 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
+    openedPane = 3
+
+    $('.cardContainer' + lp).append(`
+    <div class="difficultyPicker" style="height: 4.7em;">
+        <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;">${jsStr["TAGADDHELP"][LANG]}</div>
+        <div style="display: flex;align-items: center;">
+            <img style="width:2em; margin-right: 0.5em;" src="./images/plus.svg" title="${jsStr["ADDTAG"][LANG]}" class="button diffOptions" onclick="tagPopup(${lp})">
+        </div>
+    </div>`)
+
+    let i = 0;
+    levelList[lp]["tags"].forEach(tag => {
+        clickTag(i, lp)
+        i++
+    })
 }
 
 function removeLevel(id) {
@@ -814,36 +952,29 @@ function removeLevel(id) {
     }
 }
 
-var levelList = {
-    "titleImg": "",
-    "pageBGcolor": "#020202",
-    "diffGuesser": [false, true, true]
-}
-
 function card(index) {
     return `
     <div class="card${index}">
     <div onclick="displayCard(${index});" class="smallPosEdit" id="smtop${index}">
     </div>
     <div class="positionEdit" id="top${index}">
-        <div style="display: flex">
+        <div style="display: flex; justify-content: space-between;">
             <div style="display: flex; align-items: center;">
                 <img id="posInputPics" src="./images/star.webp">
-                <input autocomplete="off" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text" style="transform: translateY(0%);">
-
-                <img id="fillButton" src="./images/getStats.webp" onclick="getDetailsFromID(${index})" class="fillID button disabled idDetailGetter${index}">
+                <input autocomplete="off" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text">
+                <img id="passSubmit" src="images/searchOpaque.svg" onclick="getDetailsFromID(${index})" class="fillID button disabled idDetailGetter${index}" style="margin-left: 1em;">
             </div>
 
             <div class="positionButtons">
-                <img title="${jsStr['L_MOVE_D'][LANG]}" onclick="moveCard('up',${index})" 
-                     class="button upmover${index}" style="transform: rotate(90deg);" id="moveLPosButton"
-                     src="./images/arrow.webp">
+                <img title="${jsStr['L_MOVE_U'][LANG]}" onclick="moveCard('up',${index})" 
+                     class="button upmover${index}" id="moveLPosButton"
+                     src="./images/showCommsU.svg">
 
                 <input type="text" autocomplete="off" class="listPosition${index}" id="positionDisplay" disabled="true" value="${index}">
 
-                <img title="${jsStr['L_MOVE_U'][LANG]}" onclick="moveCard('down',${index})"
-                        class="button downmover${index}" style="transform: rotate(-90deg);" id="moveLPosButton"
-                        src="./images/arrow.webp">
+                <img title="${jsStr['L_MOVE_D'][LANG]}" onclick="moveCard('down',${index})"
+                        class="button downmover${index}" id="moveLPosButton"
+                        src="./images/showCommsD.svg">
             </div>
         </div>
 
@@ -856,12 +987,12 @@ function card(index) {
 
                 <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
 
-                <img id="fillButton" onclick="getDetailsFromName(${index})" class="disabled button nameDetailGetter${index}" src="./images/getStats.webp">
-                
+                <img id="passSubmit" src="images/searchOpaque.svg" onclick="getDetailsFromName(${index})" class="disabled button nameDetailGetter${index}">
+
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
-                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="width: 15vw;display: inline-flex;"><br />
-                <img class="button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.webp" onclick="showCollabTools(${index})">
+                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="display: inline-flex;"><br />
+                <img class="collListBut button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.webp" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
@@ -880,6 +1011,8 @@ function card(index) {
                         <img class="diffIcon diffMain" src="./images/faces/0.webp">
                         <img class="diffIcon diffBack">
                     </div>
+                    <img title="${jsStr['TAGSTIT'][LANG]}" class="button cardButton tagPicker${index}"
+                        onclick="openTagPicker(${index})" src="./images/tags.webp">
                 </div>
             </div>
 
@@ -891,18 +1024,31 @@ function card(index) {
     `;
 }
 // <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.webp">
-function preview(skipCheck = false) {
+async function preview(skipCheck = false) {
     if (!checkJson(JSON.stringify(levelList), true) && !skipCheck) return
+    $("#levelUpload").fadeOut(100)
 
-    let data = JSON.stringify(levelList);
-    let encodedData = [];
-    for (i = 0; i < data.length; i++) {
-        encodedData.push(data.charCodeAt(i));
+    $(".uploadTitle").text(jsStr["PREVIEW_L"][LANG])
+    $(".uploader").prepend(`<img src="images/arrow-left.webp" class="button backToEditor">`)
+    $(".backToEditor").click(editorBack)
+
+    if ($(".preview").length == 0) {
+        await $.get("./parts/listViewer.html", data => {
+            $("#app").append("<div class='preview'>"+data+"</div>")
+        })
     }
-    encodedData = btoa(encodedData.join(","));
-    sessionStorage.setItem("previewJson", encodedData);
-    window.open("./index.html?preview=1", "_blank")
+    else {  $(".preview").fadeIn(100) }
 
+    LIST_ID = -8
+    generateList(levelList, [$("#listnm").val(), $("#creatornm").val()])
+}
+
+function editorBack() {
+    $(".uploadTitle").text(jsStr["UPLOAD"][LANG])
+    $(".preview").fadeOut(100)
+    $(".backToEditor").remove()
+    $(".boards").empty()
+    $("#levelUpload").fadeIn(100)
 }
 
 function guesserOptions(ind) {
@@ -915,10 +1061,3 @@ function guesserOptions(ind) {
         checkCheckbox("diffGuesser")
     }
 }
-
-var fuckupMessages;
-$(function () {
-    $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
-
-    $(".savedFilter").on("keyup", searchFaves)
-})

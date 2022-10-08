@@ -21,14 +21,14 @@
 
 .helpButton {
     /*position: absolute;*/
-    width: 2vw;
-    height: 2vw;
+    width: 2em;
+    height: 2em;
     /*right: 23%;*/
 }
 
 #helpTitle {
-    font-size: 2.5vw;
-    margin: 1vw;
+    font-size: var(--bigFont);
+    margin: 0.5em;
     text-align: center
 }
 
@@ -60,19 +60,27 @@
     margin: auto;
     z-index: 5;
     width: 80%;
-    left: 10%;
+    left: 50%;
     padding: 0.8%;
-    top: 2%;
+    /*! top: 2%; */
     max-height: 50vh;
     overflow-y: auto;
+    /*! margin: auto; */
+    transform: translateX(-50%);
+}
+
+.customLists {
+    width: 90%;
+    margin: auto;
 }
 
 .uploadBG {
     background: var(--greenGradient);
-    margin: 0 10vw 2vw;
+    margin: 0 auto;
     border: none;
     border-radius: 10px;
-    box-shadow: black 5px 5px 41px
+    box-shadow: black 5px 5px 41px;
+    max-width: clamp(80em, 85%, 80em);
 }
 
 .uploadMainInp {
@@ -107,16 +115,15 @@
 
 #collabTools {
     position: fixed;
-    width: 95%;
-    height: 90vh;
-    right: -8%;
-    bottom: 0%;
+    width: 74%;
+    height: 95vh;
+    left: 50%;
+    top: 50%;
     z-index: 4;
     display: flex;
     padding: 0;
     flex-direction: column;
-    transform: scaleY(0.7);
-    transition-duration: 0.1s;
+    transform: translate(-50%,-50%);
 }
 
 .collabBar {
@@ -125,14 +132,13 @@
     flex-direction: row !important;
     align-items: center !important;
     overflow-y: hidden !important;
-    min-height: 8%;
+    min-height: 3em;
 }
 
 .collabTables {
     border: none;
     text-align: center;
     width: 100%;
-    background: url("../images/fade.webp") repeat-x;
 }
 
 .collabRoles {
@@ -147,14 +153,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-height: 3vw;
-    padding: 0.1vw 1vw;
+    /*! max-height: 3vw; */
+    padding: 0.1em 1em;
     border-radius: 0.5vw;
-    margin: 1%;
+    margin: 0.2em;
     width: 25vw;
 }
 .roleControls { display: flex; }
-.roleControls > img { width: 2.5vw; height: 2.5vw; }
+.roleControls > img { width: 1.5em; height: 1.5em; margin: 0 0.2em;}
 
 .roleButtons {
     display: flex;
@@ -165,7 +171,7 @@
     border: none !important;
     background: none !important;
     transform: none !important;
-    width: 20vw !important;
+    width: 100% !important;
     margin: 0.5% !important;
     outline: none;
 }
@@ -174,18 +180,11 @@ td>* {
     vertical-align: middle;
 }
 
-.collabTables th img:nth-child(1) {
-    width: 2vw;
-    vertical-align: middle;
-}
+.collabTables th img:nth-child(1) { vertical-align: middle; }
 
 .collabTables th div {
-    margin: 0vw 0 0 0.5vw;
-}
-
-.collabTables th {
-    background: rgba(0, 0, 0, 0.1) !important;
-    font-size: var(--bigFont);
+	display: inline;
+	vertical-align: middle;
 }
 
 tr:nth-child(odd) {
@@ -203,7 +202,7 @@ tr>td:nth-child(2n) {
 #collabInp {
     display: inline;
     transform: none;
-    width: 15vw;
+    width: 45%;
     margin: 0.5%;
     font-size: var(--smallFont);
     background-color: #FFFFFF50;
@@ -239,7 +238,6 @@ input::-webkit-inner-spin-button {
 }
 
 .collabHeader {
-    max-height: auto;
     overflow-y: auto;
 }
 
@@ -249,6 +247,8 @@ input::-webkit-inner-spin-button {
     padding: 1%;
     margin: 0;
     font-size: var(--smallFont);
+    background-color: #00000070;
+    width: 90%;
 }
 
 /*Would it be better to get rid of this lmao?*/
@@ -285,9 +285,9 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
 
 .imgPreview {
     padding: 2%;
-    width: 40vw;
+    width: 50%;
     display: none;
-    margin: 2% 22.5% 3%;
+    margin: 2% auto;
     background-color: rgba(255, 255, 255, 0.08);
     border-radius: 20px;
 }
@@ -300,11 +300,11 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
 
 #bgcolorPicker {
     display: flex;
-    width: 4vh;
-    height: 4vh;
+    width: 2em;
+    height: 2em;
     margin-left: 2%;
     margin-right: 0;
-    border: 0.5vh white solid;
+    border: 0.3em white solid;
     background: none;
     border-radius: 0.5vw;
     padding: 0;
@@ -316,7 +316,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
 }
 
 .pickerContainer > img {
-    width: 3.5vh;
+    width: 1.6em;
 }
 
 .pickerContainer {
@@ -324,7 +324,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
     display: flex;
     align-items: center;
     justify-content: center;
-    left: 2vw;
+    left: 2em;
 }
 
 .colorLabel {
@@ -333,7 +333,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
 }
 
 #fillButton {
-    width: 2.8vw;
+    width: 2em;
 }
 
 #popupBG {
@@ -347,64 +347,42 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
     position: fixed;
     display: none;
     width: 45%;
-    top: 11vw;
-    left: 15vw;
+    top: 50%;
+    left: 50%;
     z-index: 4;
-    padding: 0 0vw 3vw 2vw;
+    padding: 0 0vw 1.5em 1.5em;
+    transform: translate(-50%,-50%);
 }
 
 #shareContainer {
     font-size: var(--normalFont);
-    margin: 0 2vw 2vw 0vw;
+    margin: 1em 0;
     border: none;
     opacity: 1 !important;
-    padding: 1vw;
+    padding: 0.4em;
     width: 80% !important;
 }
 
 #jumpToTools {
-    width: 50vw;
-    height: calc(37vh + 18vw);
-    z-index: 4;
-    position: fixed;
-    padding-left: 3vw;
-    left: 11vw;
-    top: 1vw;
+	z-index: 4;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
-
-.jumpToContainer {
-    display: flex;
-    flex-direction: row;
-    height: 89%;
-    background: #00000042;
-    margin-right: 3vw;
-    border-radius: 2vw;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-#jumpBubble {
-    background: #ff6161;
-    width: 90%;
-    margin-left: 2.5%;
-    justify-content: flex-start;
-    font-size: var(--normalFont);
-    padding: 1%;
-}
-
 
 .cardInput {
     margin: 15px 30%;
     background-color: rgb(36, 36, 36);
     border: rgb(36, 36, 36) 5px solid;
-    border-radius: 5%;
+    border-radius: 20em;
     padding: 3px 5px;
     color: white;
     transform: translateY(-20%);
-    width: 25vw;
+    width: clamp(5em, 21vw, 14em);
     font-family: "pusab";
-    font-size: var(--bigFont);
-    max-height: var(--biggerFont);
+    /* font-size: var(--bigFont); */
+    min-height: 1.5em;
 }
 
 .cardButtonsContainer {
@@ -420,6 +398,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
     width: 100%;
     margin: 1% 0%;
     border-radius: 0.3vw;
+    box-sizing: border-box;
 }
 
 #slider {
@@ -543,17 +522,35 @@ input:disabled {
     height: 40%;
 }
 
+.backToEditor {
+    float: left;
+    width: 3em;
+    padding: 1em;
+    position: absolute;
+    z-index: 2;
+}
+
+.listErrors {
+    opacity: 0.1;
+    width: 15em;
+    margin: auto;
+    display: block;
+    padding: 1em 0;
+    /*! box-sizing: content-box; */
+}
+
 #listPreview {
     background-color: rgb(36, 36, 36);
     color: white;
-    padding: 0% 2% 0% 2%;
-    margin: 1.5% 7%;
-    border: white 0.3vw solid;
+    padding: 0 1em;
+    margin: 1em 0;
+    border: white 0.3em solid;
     border-radius: 5px;
     display: block;
     background-size: 150vw;
     background-position-x: right;
     transition: background-position-x 0.5s;
+    max-width: clamp(80em, 85%, 80em);
 }
 
 #listPreview:hover {
@@ -562,7 +559,7 @@ input:disabled {
 }
 
 .hostIcon {
-    width: 4vw;
+    width: 2em;
 }
 
 .editorHeader {
@@ -580,9 +577,9 @@ input:disabled {
 }
 
 .headerButtons {
-    width: 4vw;
-    height: 4vw;
-    margin-right: 1vw;
+    width: 4em;
+    height: 4em;
+    margin-right: 0.5em;
 }
 
 .headerText {
@@ -625,7 +622,7 @@ input:disabled {
 
 .smallPosEdit {
     padding: 0 !important;
-    margin: 0.8% !important;
+    margin: 0.5% !important;
 }
 
 .positionEdit {
@@ -635,11 +632,12 @@ input:disabled {
 
 #posInputBox {
     margin: 0;
-    background-color: rgba(36, 36, 36, 0.5);
+    background-color: rgba(23, 23, 23, 0.35);
     border: none;
     transform: translate(0);
     transition: background-color 50ms;
-    padding: 0.2vw 0 0.2vw 0.7vw;
+    padding: 0.2em 0 0.2em 0.7em;
+    font-size: var(--normalFont);
 }
 
 .lineSplitGeneral {
@@ -665,41 +663,46 @@ input:disabled {
 }
 
 #moveLPosButton {
-    width: 4vw;
+    width: 2em;
 }
 
 #posInputPics {
-    width: 3.5vw;
-    height: 3.5vw;
+    width: 2.5em;
+    height: 2.5em;
     margin-right: 1vw;
+}
+
+.collListBut {
+    background: rgba(0, 0, 0, 0.6) none repeat scroll 0% 0%;
+    box-sizing: border-box;
+    padding: 0.2em;
+    border-radius: 10em;
+    filter: hue-rotate(0deg);
 }
 
 .positionButtons {
     display: flex;
-    justify-content: flex-end;
+    /*! justify-content: flex-end; */
     align-items: center;
+    width: min-content;
 }
 
 #positionDisplay {
-    width: 13%;
     padding-left: 0;
     padding-right: 0;
     text-align: center;
     margin: 0.5%;
     transform: translate(0);
     font-size: var(--normalFont) !important;
+    height: 1.5em;
+    width: 3em;
+	background: rgba(23, 23, 23, 0.35);
 }
 
 .cardButton {
-    padding-left: 1%;
-    padding-right: 0.5%;
-    width: 4vw;
-    height: 4vw;
-}
-
-#positionDisplay {
-    font-size: var(--xlFont);
-    height: 2.8vw;
+    padding: 0em 0.2em;
+    width: 2.5em;
+    height: 2.5em;
 }
 
 .diffContainer {
@@ -715,8 +718,8 @@ input:disabled {
 }
 
 .diffFace {
-    width: 3vw;
-    padding: 0.5vw 0.5vw;
+    width: 2.5em;
+    padding: 0.5em 0.5em;
     height: fit-content;
 }
 
@@ -732,7 +735,7 @@ input:disabled {
 .diffFaces {
     width: 78%;
     display: flex;
-    gap: 0.5vw;
+    /*! gap: 0em; */
     align-items: center;
     overflow-x: auto;
     overflow-y: hidden;
@@ -836,7 +839,7 @@ input:disabled {
     z-index: 1;
     width: 70%;
     bottom: 12%;
-    right: 12%;
+    right: 14%;
 }
 
 #featuredGlow {
@@ -861,11 +864,11 @@ input:disabled {
 
 .settingSubbox {
     display: flex;
-    gap: 0.5vw;
+    gap: 0.3em;
     background: #0000004d;
-    padding: 0.5vw;
+    padding: 0.4em;
     border-radius: 10px;
-    margin-left: 3vw;
+    margin-left: 3em;
     width: max-content;
     align-items: center;
 }
@@ -874,25 +877,25 @@ input:disabled {
 .diffSelBut {
 	background: #0000004d;
 	border: none;
-	padding: 0.4vw;
+	padding: 0.3em;
 	border-radius: 15px;
 }
 
 .diffSelBut img {
-    width: 2.5vw;
+    width: 2.5em;
 }
 
 .listDiffContainer {
     position: relative;
-    width: calc(20px + 3vw);
-    height: calc(20px + 3vw);
+    width: 2em;
+    height: 3em;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .listDiffFace {
-    width: 100%;
+    width: 2.5em;
     height: auto;
     position: absolute;
     z-index: 2;
@@ -902,26 +905,26 @@ input:disabled {
 /* These bastards don't fit in the containers >:( */
 .listDiffFace[src$="6.webp"], .diffIcon[src$="6.webp"] { transform: scale(1.09) } /*Easy Demon */
 .listDiffFace[src$="7.webp"], .diffIcon[src$="7.webp"] { transform: scale(1.1) } /*Medium Demon */
-.listDiffFace[src$="8.webp"], .diffIcon[src$="8.webp"] { transform: scale(1.12) translateY(-0.13vw) } /*Hard Demon */
-.listDiffFace[src$="9.webp"], .diffIcon[src$="9.webp"] { transform: scale(1.2) translateY(-0.13vw) } /*Insane Demon */
-.listDiffFace[src$="10.webp"], .diffIcon[src$="10.webp"] { transform: scale(1.3) translateY(-0.18vw) } /*Extreme Demon */
+.listDiffFace[src$="8.webp"], .diffIcon[src$="8.webp"] { transform: scale(1.12) translateY(-0.03em); } /*Hard Demon */
+.listDiffFace[src$="9.webp"], .diffIcon[src$="9.webp"] { transform: scale(1.2) translateY(-0.03em); } /*Insane Demon */
+.listDiffFace[src$="10.webp"], .diffIcon[src$="10.webp"] { transform: scale(1.2) translateY(-0.08em); } /*Extreme Demon */
 
 .listDiffEpicRate {
     position: absolute;
-    width: 150%;
-    transform: translateY(-0.8vh);
+    width: 200%;
+    top: -0.8em;
 }
 .listDiffRate {
     position: absolute;
-    width: 140%;
+    width: 3.5em;
 }
 
 .listDiffStar {
     position: absolute;
     z-index: 2;
-    width: 60%;
-    left: calc(1.7vw + 1.4vh);
-    top: calc(3.3vw + -1.6vh);
+    width: 100%;
+    left: 1.2em;
+    top: 1.5em;
 }
 
 .rateContainer {
@@ -998,11 +1001,12 @@ input:disabled {
     margin-left: 2.5%;
     margin-right: 2.5%;
     font-size: var(--biggerFont);
+    background: #512c2c !important;
 }
 
 .settingsBG {
     background-color: rgba(255, 255, 255, 0.08);
-    margin: 0% 21% 3%;
+    margin: 0% 19% 3%;
     padding: 1%;
     border-radius: inherit;
     display: flex;
@@ -1020,7 +1024,7 @@ input:disabled {
 }
 
 .setHelp {
-    width: 2vw;
+    width: 2em;
     margin-left: 2%;
     margin-bottom: 4%;
 }
@@ -1028,19 +1032,6 @@ input:disabled {
 .setCheckbox {
     width: 6%;
     margin-right: 1%;
-}
-
-.searchTools {
-    background-image: var(--greenGradient);
-    border-radius: 1vw;
-    margin: 1% 2%;
-    padding: 0.5%;
-    display: flex;
-    align-items: center;
-    transition: opacity 0.2s ease-in-out;
-    background-repeat: repeat;
-    background-position-y: center;
-    /*flex-wrap: wrap;*/
 }
 
 .noRoles,
@@ -1056,10 +1047,13 @@ input:disabled {
 }
 
 .tableCpicker {
-    border: none;
-    background: none;
-    width: 25%;
-    height: 3vw;
+	width: 1.5em;
+	height: 1.5em;
+	display: inline;
+	border: white solid 4px;
+	padding: 0;
+	border-radius: 5px;
+	position: relative;
 }
 
 .collabHButtons {
@@ -1072,6 +1066,25 @@ input:disabled {
     display: flex;
     flex-grow: 1;
     justify-content: center;
+    font-size: var(--smallFont);
+}
+
+.socButton {width: 1.2em; padding: 0 0.5%;}
+
+#searchLists {
+    width: 3em;
+    margin-left: 1%;
+    background: var(--greenGradient);
+    border-radius: 10em;
+    padding: 0.4em;
+    box-sizing: border-box;
+}
+#remFaveBut {
+    width: 2.5em;
+    box-sizing: border-box;
+    background: #00000059;
+    border-radius: 10em;
+    padding: 0.3em;
 }
 
 #passEditor {
@@ -1094,7 +1107,7 @@ input:disabled {
 #passSubmit {
     background: rgba(0, 0, 0, 0.459);
     border-radius: 100%;
-    padding: 0.3vw;
+    padding: 0.3em;
 }
 
 .socialPickerIcon {
@@ -1126,9 +1139,8 @@ input:disabled {
 
 .search {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
-    flex-grow: 1;
 }
 
 .pageIndicator {
@@ -1139,12 +1151,119 @@ input:disabled {
 }
 
 .pageBut {
-    width: 2vw;
+    width: 1em;
     height: max-content;
     align-self: center;
-    margin: 1%;
+    margin: 0 1em;
 }
 
+.pageYes, .pageFirst {
+	min-width: 2em;
+	background: #ffffff0a;;
+	text-align: center;
+	margin: 0 0.2em;
+	border-radius: 0.4em;
+    display: inline-block;
+}
+#pgSelected {background: var(--greenGradient);}
+
 #searchBar {
-    width: 80%;
+    width: 15em;
+}
+
+.tagContainer {
+    background: #00000052;
+    height: 100%;
+    width: 100%;
+    border-radius: inherit;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 1vw;
+    box-sizing: border-box;
+    gap: 0.7vw;
+    align-content: baseline;
+}
+.badgeBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffffff12;
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+    width: 5.2em;
+    word-break: break-word;
+    text-align: center;
+    justify-content: space-around;
+    height: 6em;
+}
+
+.tagTop {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5em !important;
+    gap: 0.5em;
+    z-index: 5 !important;
+    max-height: 94vh;
+}
+
+.tagEditBox {
+    display: flex;
+    align-items: center;
+    background: #00000073;
+    padding: 0.3em;
+    gap: 0.6em;
+    border-radius: 0.4em;
+    width: min-content;
+}
+
+.tagEditBox img { width: 1em; }
+#editBadge { width: 2em; }
+
+
+.tagButtonsContainer {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+.tagDataContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+}
+
+#tagNameInput {
+    width: 8em;
+    font-size: var(--miniFont);
+    text-align: center;
+}
+
+.listTag {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.3em 0.4em;
+    border-radius: 100em;
+    width: max-content;
+    background: #00000078;
+}
+
+.listTagContainer {
+	margin-top: 1em;
+	display: flex;
+	gap: 1em;
+}
+
+.tagInUse {background: #ffffff2e !important;}
+
+.browserTools {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 1em;
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs id="defs2">
+  <linearGradient id="linearGradient927-4" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop id="stop921-0" stop-color="#7a2222" offset="0"/>
+   <stop id="stop923-9" stop-color="#f03838" offset="1"/>
+  </linearGradient>
+  <mask id="mask-powermask-path-effect8602" maskUnits="userSpaceOnUse">
+   <path id="mask-powermask-path-effect8602_box" d="m7.1638 8.8635h17.672v17.076h-17.672z" fill="#fff"/>
+   <g id="g8600" fill="none">
+    <rect id="rect8598" x="5.7301" y="5.5075" width="20.54" height="9.7121" rx="5.3668" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="3.355"/>
+   </g>
+  </mask>
+ </defs>
+ <g id="layer1">
+  <circle id="path234-1" transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#linearGradient927-4)" stroke-linecap="round" stroke-width="10.519"/>
+ </g>
+ <g id="layer2">
+  <g id="g8614" transform="matrix(.84491 0 0 .84491 2.4814 1.68)">
+   <rect id="rect7370" x="5.7301" y="5.5075" width="20.54" height="9.7121" rx="5.3668" fill="#fff" stroke="#fff" stroke-linejoin="round" stroke-width="1.0548"/>
+   <g id="g8579" mask="url(#mask-powermask-path-effect8602)">
+    <path id="rect8343" x="8.6380596" y="10.337826" width="14.72388" height="14.127259" rx="1.0035042" d="m9.6416 10.338h12.717c0.55594 0 1.0035 0.44756 1.0035 1.0035v12.12c0 0.55594-0.44756 1.0035-1.0035 1.0035h-12.717c-0.55594 0-1.0035-0.44756-1.0035-1.0035v-12.12c0-0.55594 0.44756-1.0035 1.0035-1.0035z" fill="#fff" mask="none" stroke="#fff" stroke-linejoin="round" stroke-width=".94858"/>
+   </g>
+   <rect id="rect8345" x="8.6638" y="20.948" width="4.9177" height="7.4688" rx="1.0035" fill="#fff" stroke="#fff" stroke-linejoin="round"/>
+   <rect id="rect8345-7" x="18.444" y="20.731" width="4.9177" height="7.4688" rx="1.0035" fill="#fff" stroke="#fff" stroke-linejoin="round"/>
+  </g>
+ </g>
+</svg>

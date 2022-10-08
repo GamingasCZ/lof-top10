@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs id="defs2">
+  <linearGradient id="linearGradient927" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop id="stop921" stop-color="#7a7422" offset="0"/>
+   <stop id="stop923" stop-color="#f03838" offset="1"/>
+  </linearGradient>
+  <clipPath id="clipPath1996">
+   <path id="path1998" d="m15.892 6.0031-0.77454-2.9537 0.77454-2.9537v0h0.28829v5.9075z" display="none" fill="#ff0e0e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5318"/>
+   <path id="lpe_path-effect2000" class="powerclip" d="m5.7756-4.9043h15.116v15.907h-15.116zm10.116 10.907h0.28829v-5.9075h-0.28829v0l-0.77454 2.9537z" fill="#ff0e0e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5318"/>
+  </clipPath>
+ </defs>
+ <g id="layer1">
+  <circle id="path234" transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#linearGradient927)" stroke-linecap="round" stroke-width="10.519"/>
+ </g>
+ <g id="layer2" fill="#fff" stroke-linecap="round" stroke-linejoin="round">
+  <path id="path455" transform="matrix(0 -1.666 1.666 0 10.92 29.269)" d="m15.892 6.0031-5.116-2.9537 5.116-2.9537v2.9537z" stroke-width="2.296"/>
+  <path id="path455-3" transform="matrix(0 1.666 1.666 0 10.92 2.9772)" d="m15.892 6.0031-5.116-2.9537 5.116-2.9537v2.9537z" stroke-width="2.296"/>
+  <path id="path455-6" transform="matrix(-1.666 0 0 -1.3486 46.896 20.112)" d="m15.892 6.0031-5.116-2.9537 5.116-2.9537v2.9537z" clip-path="url(#clipPath1996)" stroke-width="2.296"/>
+  <g id="g1250" transform="matrix(1.6932 0 0 1.6932 -16.615 -11.092)" stroke-width="2.296">
+   <path id="path1214" d="m22.84 16v-0.78125l-1.9188-0.8125 0.82914 1.5938z"/>
+   <path id="path1214-7" d="m22.84 16v0.78125l-1.9188 0.8125 0.82914-1.5938z"/>
+  </g>
+  <rect id="rect2110" x="3.0562" y="14.951" width="18.655" height="2.0979" rx=".5" ry=".5" stroke-width="2.4905"/>
+ </g>
+</svg>

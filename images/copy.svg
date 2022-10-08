@@ -1,0 +1,12 @@
+<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <mask id="mask-powermask-path-effect1108" maskUnits="userSpaceOnUse">
+   <path id="mask-powermask-path-effect1108_box" d="m11.094-0.56787h17.834v23.961h-17.834z" fill="#fff"/>
+   <rect x="6.9778" y="7.8319" width="15.834" height="21.961" rx="1.7753" ry="1.7753" d="M 8.7531854,7.831902 H 21.036411 c 0.983543,0 1.775349,0.7918056 1.775349,1.7753488 V 28.01717 c 0,0.983544 -0.791806,1.775349 -1.775349,1.775349 H 8.7531854 c -0.9835432,0 -1.7753488,-0.791805 -1.7753488,-1.775349 V 9.6072508 c 0,-0.9835432 0.7918056,-1.7753488 1.7753488,-1.7753488 z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="bevel" stroke-width="3.5507" style="paint-order:markers stroke fill"/>
+  </mask>
+ </defs>
+ <g transform="matrix(1.0899 0 0 1.0899 -2.4059 -.47098)" fill="#fff">
+  <path x="12.093734" y="0.43213084" width="15.833923" height="21.960617" rx="1.7753488" ry="1.7753488" d="m13.869 0.43213h12.283c0.98354 0 1.7753 0.79181 1.7753 1.7753v18.41c0 0.98354-0.7918 1.7753-1.7753 1.7753h-12.283c-0.98354 0-1.7753-0.79181-1.7753-1.7753v-18.41c0-0.98354 0.7918-1.7753 1.7753-1.7753z" mask="url(#mask-powermask-path-effect1108)" style="paint-order:markers stroke fill"/>
+  <rect x="5.8477" y="7.8319" width="15.834" height="21.961" rx="1.7753" ry="1.7753" style="paint-order:markers stroke fill"/>
+ </g>
+</svg>

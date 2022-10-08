@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs id="defs2">
+  <linearGradient id="linearGradient927" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop id="stop921" stop-color="#7a2222" offset="0"/>
+   <stop id="stop923" stop-color="#f0a838" offset="1"/>
+  </linearGradient>
+  <clipPath id="clipath_lpe_path-effect1229-8">
+   <g id="g1501" display="none">
+    <rect id="rect1495" x="7.6382" y="12.185" width="2.9802" height="3.0531" d="m 7.6381598,12.185005 h 2.9801892 v 3.053089 H 7.6381598 Z"/>
+    <rect id="rect1497" x="12.771" y="12.185" width="2.9802" height="3.0531" d="m 12.770882,12.185005 h 2.980189 v 3.053089 h -2.980189 z"/>
+    <rect id="rect1499" x="7.6382" y="16.284" width="8.1129" height="3.0531" d="M 7.6381598,16.283831 H 15.751071 V 19.33692 H 7.6381598 Z"/>
+   </g>
+   <path id="lpe_path-effect1229-8" class="powerclip" d="m0.97999 4.431h21.614v21.614h-21.614zm6.6582 7.754v3.0531h2.9802v-3.0531zm5.1327 0v3.0531h2.9802v-3.0531zm-5.1327 4.0988v3.0531h8.1129v-3.0531z"/>
+  </clipPath>
+ </defs>
+ <g id="layer1">
+  <circle id="path234" transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#linearGradient927)" stroke-linecap="round" stroke-width="10.519"/>
+ </g>
+ <g id="layer2">
+  <g id="g1289" transform="translate(4.2129 2.0646)">
+   <path id="rect1042" x="9.1282549" y="12.579235" width="5.3177176" height="5.3177176" d="m9.1283 12.579h5.3177v5.3177h-5.3177z" clip-path="url(#clipath_lpe_path-effect1229-8)" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.2965"/>
+   <rect id="rect1233" x="7.6382" y="18.428" width="8.1129" height=".90857" fill="#fff"/>
+  </g>
+  <g id="g1740" transform="translate(2e-7 -.44241)" fill="#fff" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
+   <path id="path1572" d="m16 2.3451-12.32 21.34"/>
+   <path id="path1637" d="m16 2.3451 12.32 21.34"/>
+   <path id="path1639" d="m3.6796 23.685h24.641"/>
+  </g>
+ </g>
+</svg>

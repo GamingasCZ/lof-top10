@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs id="defs2">
+  <linearGradient id="linearGradient927-4" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop id="stop921-0" stop-color="#7a2222" offset="0"/>
+   <stop id="stop923-9" stop-color="#38f0bf" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g id="layer1">
+  <circle id="path234-1" transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#linearGradient927-4)" stroke-linecap="round" stroke-width="10.519"/>
+ </g>
+ <g id="layer2">
+  <g id="g7032" transform="matrix(.93751 0 0 .93751 1.9379 1.5909)" fill="#fff">
+   <g id="g7023" transform="matrix(.8861 0 0 .8861 1.5819 1.7506)">
+    <path id="path6973" transform="rotate(-90 12.104 6.44)" d="m18.381 12.614h-5.0689-5.0689l5.0689-8.7795 2.5344 4.3898z"/>
+    <path id="path6973-5" transform="rotate(-90 17.173 11.509)" d="m18.381 12.614h-5.0689-5.0689l5.0689-8.7795 2.5344 4.3898z"/>
+    <path id="path6973-9" transform="rotate(-90 22.242 16.578)" d="m18.381 12.614h-5.0689-5.0689l5.0689-8.7795 2.5344 4.3898z"/>
+   </g>
+   <rect id="rect7025" x="17.778" y="1.8951" width="2.2215" height="26.949"/>
+  </g>
+ </g>
+</svg>

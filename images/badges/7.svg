@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs id="defs2">
+  <linearGradient id="linearGradient927" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop id="stop921" stop-color="#7a2274" offset="0"/>
+   <stop id="stop923" stop-color="#f09f38" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g id="layer1">
+  <circle id="path234" transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#linearGradient927)" stroke-linecap="round" stroke-width="10.519"/>
+ </g>
+ <g id="layer2">
+  <g id="g3129" transform="matrix(.91828 0 0 .91828 1.0991 2.0039)" fill="#fff" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+   <rect id="rect2960" x="5.8671" y="6.0438" width="1.3473" height="4.7526" stroke-width="1.4901"/>
+   <rect id="rect2960-9" transform="rotate(-90)" x="-7.3034" y="5.9549" width="1.1718" height="6.8286" stroke-width="1.6657"/>
+   <rect id="rect2960-2" x="11.879" y="6.3543" width=".72639" height="17.693" stroke-width="2.111"/>
+   <rect id="rect2960-23" x="19.626" y="6.1316" width="1.1718" height="6.8286" stroke-width="1.6657"/>
+   <rect id="rect2960-23-9" transform="rotate(-90)" x="-13.546" y="19.626" width="1.1718" height="6.8286" stroke-width="1.6657"/>
+   <rect id="rect2960-9-7" transform="rotate(-90)" x="-7.3034" y="19.626" width="1.1718" height="6.8286" stroke-width="1.6657"/>
+   <rect id="rect2960-2-5" x="25.55" y="6.3543" width=".72639" height="17.693" stroke-width="2.111"/>
+   <rect id="rect2960-23-2" transform="rotate(-90)" x="-24.27" y="19.67" width="1.1718" height="6.8286" stroke-width="1.6657"/>
+   <rect id="rect2960-0" x="15.305" y="22.74" width="1.8882" height="1.8881" stroke-width="1.1118"/>
+  </g>
+ </g>
+</svg>

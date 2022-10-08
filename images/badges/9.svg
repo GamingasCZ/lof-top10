@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs id="defs2">
+  <linearGradient id="linearGradient927" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop id="stop921" stop-color="#7a5322" offset="0"/>
+   <stop id="stop923" stop-color="#e5f038" offset="1"/>
+  </linearGradient>
+  <clipPath id="clipPath3967">
+   <path id="path3969" d="m8.9621 12.458 19.526 10.116 1.7306 0.03641s-1.5871-16.801-1.8809-17.06c-0.29376-0.25892-17.189-5.5063-17.189-5.5063l-6.072 4.0351z" display="none" fill="#f00"/>
+   <path id="lpe_path-effect3971" class="powerclip" d="m-3.0294-1.7784h36.808v36.808h-36.808zm11.991 14.236 19.526 10.116 1.7306 0.03641s-1.5871-16.801-1.8809-17.06c-0.29376-0.25892-17.189-5.5063-17.189-5.5063l-6.072 4.0351z" fill="#f00"/>
+  </clipPath>
+  <clipPath id="clipPath3977">
+   <path id="path3979" d="m9.0068 12.426 19.526 10.116 1.7306 0.03641-1.6294-15.63-13.538-7.2872-9.1785 1.3148 3.0884 11.449" fill="#f00"/>
+  </clipPath>
+ </defs>
+ <g id="layer1">
+  <circle id="path234" transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#linearGradient927)" stroke-linecap="round" stroke-width="10.519"/>
+  <g id="g5908" transform="translate(-1.3728)" fill="#fff" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
+   <path id="path3868" transform="matrix(-.1349 .8711 -.8711 -.1349 32.213 4.3477)" d="m25.149 6.8509-2.7594 8.1371 5.1388 6.8861-8.5915-0.10981-4.9611 7.0152-2.5505-8.205-8.205-2.5505 7.0152-4.9611-0.10981-8.5915 6.8861 5.1388z" clip-path="url(#clipPath3967)"/>
+   <path id="path3868-2" transform="matrix(-.1349 .8711 -.8711 -.1349 34.748 4.5701)" d="m25.149 6.8509-2.7594 8.1371 5.1388 6.8861-8.5915-0.10981-4.9611 7.0152-2.5505-8.205-8.205-2.5505 7.0152-4.9611-0.10981-8.5915 6.8861 5.1388z" clip-path="url(#clipPath3977)"/>
+  </g>
+  <path id="path5973" d="m19.738 9.9102 0.21996-7.552 2.1263 0.07332z" fill="#fff"/>
+  <path id="path5973-8" d="m20.293 10.045 5.3764-5.3081 1.4866 1.522z" fill="#fff"/>
+ </g>
+</svg>

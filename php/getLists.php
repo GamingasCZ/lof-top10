@@ -46,7 +46,7 @@ if (count($_GET) == 1) {
   if (in_array("id", array_keys($_GET))) {
     // Private lists can't be accessed by their id!
     $result = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden` = '0' AND `id` = ?", [$_GET["id"]], "s");
-    if (count($result) == 0) {
+    if ($result == null) {
       echo "2";
     } else {
       parseResult($result, true);
@@ -55,7 +55,7 @@ if (count($_GET) == 1) {
     // Private lists
     $result = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden`= ?", [$_GET["pid"]], "s");
 
-    if (count($result) == 0) {
+    if ($result == null) {
       echo "2";
     } // When the pID is invalid
     else {
@@ -63,15 +63,7 @@ if (count($_GET) == 1) {
     }
   } elseif (in_array("random", array_keys($_GET))) {
     // Picking a random list
-    $query = $mysqli->query("SELECT `id` FROM `lists` WHERE `hidden`=0");
-    $result = $query->fetch_all(MYSQLI_ASSOC);
-    $ids = array();
-
-    for ($i = 0; $i < sizeof($result); $i++) {
-      array_push($ids, $result[$i]["id"]);
-    }
-
-    $getList = $mysqli->query("SELECT * FROM `lists` WHERE `id`=" . $ids[array_rand($ids)]);
+    $getList = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` LIKE 0 ORDER BY RAND() LIMIT 1");
     parseResult($getList->fetch_all(MYSQLI_ASSOC));
   } elseif (in_array("homepage", array_keys($_GET))) {
     $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC LIMIT 3 ");

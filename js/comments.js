@@ -1,28 +1,16 @@
 const EMOJI_AM = 18;
-function getID() {
-  let paramGetter = new URLSearchParams(window.location.search)
-  let params = Object.fromEntries(paramGetter.entries());
-
-  if (params["preview"] != null) { return -8 } // List preview from editor
-  if (params["pid"] != null) { return params["pid"] } // Disable comments on private lists
-  if (params["random"] != null) { return -11 } // -11 will be replaced with actual ID later
-  if (params["id"] != null) { return params["id"] } // Community level/2019 or 2021 list (-2,-3)
-  if (params["year"] != null) { return params["year"] == "2021" ? "-3" : "-2" }
-  else { return -9 } // Is Homepage
-}
-var LIST_ID = getID();
 
 function listComments() {
   // Finally non-shit
   if ($(".boards").css("display") == "none") {
     $(".comments").fadeOut(50);
-    $("#commButton").attr("style","")
+    $("#commButton").attr("style", "")
     $(".boards").fadeIn(100);
     $("#commentTool").fadeOut(50)
   } else {
     $(".boards").fadeOut(50);
     $(".comments").fadeIn(100);
-    $("#commButton").css("box-shadow","#39c4a95e 0px 0px 28px")
+    $("#commButton").css("box-shadow", "#39c4a95e 0px 0px 28px")
     $("#commentTool").fadeIn(50)
   }
 }
@@ -64,7 +52,7 @@ function updateCharLimit() {
 var actualText = "";
 var midText = "";
 var commentColor = "";
-$(function () {
+function setupComments() {
   // Is on homepage? (do not load)
   if (LIST_ID == -9) return
 
@@ -145,7 +133,7 @@ $(function () {
   });
 
   // Pick a random comment color
-  commentColor = randomColor(0,1);
+  commentColor = randomColor(0, 1);
   let invCol = [255 - commentColor[0], commentColor[1], commentColor[2]]
   commentColor = HSLtoHEX(...commentColor)
 
@@ -177,7 +165,7 @@ $(function () {
     }
     displayComments(deeta);
   });
-});
+};
 
 function getPlayerIcon() {
   let player = $(".pIconInp").val();
@@ -261,7 +249,7 @@ function displayPanel(what) {
 
         $(".sendBut").css(
           "background-color",
-          `hsl(${255-hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
+          `hsl(${255 - hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
         );
 
         let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");
@@ -381,11 +369,14 @@ function chatDate(stamp) {
   }
 }
 
-function comBox(cd, dcc, edcc) {
+function comBox(cd, element) {
   let profPic = "";
   let clickable = ["", ""];
   let comColor = "#b9efb1";
   let time = chatDate(cd["timestamp"]);
+
+  let dcc = HEXtoRGB(cd["bgcolor"], 40);
+  let edcc = HEXtoRGB(cd["bgcolor"], 40);
 
   if (cd["timestamp"].length == 9) {
     cd["timestamp"] *= 10;
@@ -394,7 +385,7 @@ function comBox(cd, dcc, edcc) {
 
   // Is user verified?
   if (cd["verified"] == 1) {
-    profPic = `<img class="pIcon" style="height: var(--biggerFont);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
+    profPic = `<img class="pIcon" style="height: var(--normalFont);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
     clickable[0] = "clickable";
     clickable[1] = `onclick="profile('${cd["username"]}')`;
     comColor = "#f9f99a";
@@ -417,35 +408,33 @@ function comBox(cd, dcc, edcc) {
       `<img class="emojis" src="./images/emoji/${emojiID}.webp">` +
       selEnd;
   }
-  
+
   // Making links clickable :)
   let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g
   let links = cd["comment"].match(urlRegex)
   if (links != null) {
     cd["comment"] = cd["comment"].replaceAll(/(http|https):\/\//g, "")
-    
+    links = cd["comment"].match(urlRegex)
+
     links.forEach(link => {
-      if (!cd["comment"].includes(`<a href="https://www.${link}" class="gamLink">${link}</a>`)
-          && link.match(/\d+.webp/) == null) { // emoji check, so they don't get treated as link, hope it doesn't break stuff
+      if (!cd["comment"].includes(`class="gamLink"`)
+        && link.match(/\d+.webp/) == null) { // emoji check, so they don't get treated as link, hope it doesn't break stuff
         // i mean... http sites won't work, but who cares lmao
         cd["comment"] = cd["comment"].replaceAll(link, `<a href="https://${link}" class="gamLink">${link}</a>`)
       }
     });
   }
-  
-  return `
-  <div style="margin-bottom: 2vw; box-shadow: #000000b3 0px 0px 32px;">
+
+  $(element).append(`
+  <div style="margin: 1em auto; max-width: 70em;">
   
   <div class="comBoxThings ${clickable[0]
     } uploadText" id="comBoxHeader" ${clickable[1]}"
-  style="margin-bottom: 0 !important;
-  justify-content: flex-start;
-  background-color: ${"rgb(" + dcc.join(",") + ")"};
-  border: solid ${"rgb(" + edcc.join(",") + ")"
-    } 4px;">
+  style="justify-content: flex-start;
+  background-color: ${"rgb(" + dcc.join(",") + ")"};">
 ${profPic}
-            <h3 style="margin-left: 1%; color: ${comColor};">${cd["username"]}</h3>
-            <h3 id="comFont" 
+            <h5 style="margin: 0 1%; color: ${comColor};">${cd["username"]}</h3>
+            <h5 
                 style="margin: 0 0 0 auto; cursor: help;"
                 title="${nT.getDay() + 1}.${nT.getMonth() + 1
     }.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
@@ -455,12 +444,8 @@ ${profPic}
     };">${cd["comment"]}</div>
     
     </div>
-    `;
+    `);
 }
-
-var commentPage = 0;
-var maxCommentPage = 1;
-var deeta = "";
 
 function redirectWarn(el) {
   el.preventDefault()
@@ -487,52 +472,26 @@ function redirectWarn(el) {
   $("#linkNo").click(clPopup)
 }
 
-function displayComments(data) {
+async function displayComments(data) {
   // Don't do anything on list previews and random lists that haven't replaced LIST_ID
   if ([-8, -11].includes(LIST_ID) || typeof data == "string") return
 
-  const PER_PAGE = 5;
+  $("#commAmount").text(data.length)
 
-  if (data != 2) $("#commAmount").text(data.length)
-  else $("#commAmount").text("0")
+  let refreshBut = `<img id="searchLists" class="button refreshBut" onclick="refreshComments()" style="width: 3em;" src="images/replay.svg">`
 
-  $("#commentList").html("");
-  $(".noComm").hide();
-
-  if (data == 2 || data == "") {
-    $(".noComm").show();
-    return null;
+  if ($("#commentList").children().length == 0) {
+    await $.get("./parts/listBrowser.html", d => {
+      $("#commentList").append(translateDoc(d, "listBrowser"))
+    })
   }
-  let comArray = JSON.parse(JSON.stringify(data)).reverse();
 
-  // Max page
-  maxCommentPage = Math.ceil(data.length / PER_PAGE);
-  $("#maxPage").text("/" + maxCommentPage);
-
-  for (x = commentPage * PER_PAGE; x < commentPage * PER_PAGE + PER_PAGE; x++) {
-    let commentData = data[x]
-
-    let darkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
-    let evenDarkerComColor = HEXtoRGB(commentData["bgcolor"], 40);
-
-    $("#commentList").append(
-      comBox(JSON.parse(JSON.stringify(commentData)), darkerComColor, evenDarkerComColor)
-    );
-
-  }
+  if (currentListData["#commentList"] == undefined) listViewerDrawer(data, "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
+  
+  currentListData["#commentList"] = data
+  pageSwitch(page["#commentList"][0], currentListData["#commentList"], "#commentList", 6, 1)
   $(".comTextArea .gamLink").click(el => redirectWarn(el))
-}
 
-function commpageSwitch(num) {
-  if (commentPage + num < 0) {
-    commentPage = 0;
-  } else if (commentPage + num > maxCommentPage - 1) {
-    commentPage = maxCommentPage - 1;
-  } else {
-    commentPage += num;
-    $("#pageSwitcher").val(commentPage + 1);
-    displayComments(deeta);
-  }
 }
 
 function profile(name) {
@@ -540,14 +499,13 @@ function profile(name) {
 }
 
 function refreshComments() {
-  if ($("#refreshBut")["0"].className.match("disabled") == null) {
-    $("#refreshBut").addClass("disabled");
+  if ($(".refreshBut")["0"].className.match("disabled") == null) {
+    $(".refreshBut").addClass("disabled");
     $.get("./php/getComments.php?listid=" + LIST_ID, function (data) {
-      deeta = data;
       displayComments(data);
     });
     setTimeout(() => {
-      $("#refreshBut").removeClass("disabled");
+      $(".refreshBut").removeClass("disabled");
     }, 3000);
   }
 }

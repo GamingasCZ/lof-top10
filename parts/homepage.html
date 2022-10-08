@@ -1,17 +1,17 @@
-<form id="homepageHeader" class="inlineFlex" method="get" action="./upload.html">
-    <input placeholder="%%s" id="homepageSearch" class="homeSearch" name="s" required></input>
-    <button type="submit" class="button">
-        <img style="width: var(--xlFont); height: fit-content;" src="images/searchButton.svg">
+<div id="homepageHeader" class="inlineFlex">
+    <input placeholder="%%s" id="homepageSearch" class="homeSearch"></input>
+    <button class="button hpSearchButton" style="display: flex;">
+        <img id="searchLists" style="width: 4em;" src="images/searchOpaque.svg">
     </button>
-</form>
+</div>
 <div class="inlineFlex searchButs">
-    <a href="./upload.html?editor">
+    <a href="#editor">
         <button class="homepageBigButton button noMobileResize"><img src="images/plus.svg">
             <h2 class="uploadText">%%s</h2>
         </button>
     </a>
     
-    <a href="./index.html?random">
+    <a href="#random">
         <button class="homepageBigButton button noMobileResize"><img src="images/dice.svg">
             <h2 class="uploadText">%%s</h2>
         </button>
@@ -20,62 +20,66 @@
 </div>
 <ul style="padding: 0 1vw;">
     <li class="homepageTitles">%%s
-        <a href="./upload.html?browse">
-            <button class="homepageBigButton button noMobileResize" id="categoryBut">
+        <a href="#browse">
+            <button class="button noMobileResize" id="categoryBut">
                 <img src="images/more.svg">
                 <div class="uploadText">%%s</div>
             </button>
         </a>
     </li>
     <div class="newestLists">
-        <div class="uploadText" style="color: #82f9e5; margin-left: 5vw;">%%s</div>
+        <div class="uploadText" style="color: #82f9e5;">%%s</div>
     </div>
 
     <li class="homepageTitles">%%s
-        <img src="images/help.webp" id="homepageHelp" class="helpButton button"
+        <img src="images/help.svg" id="homepageHelp" class="helpButton button"
             onclick="openHelp('pinnedLists')">
     </li>
     <div class="pinnedLists">
-        <div class="uploadText" style="color: #f9e582; margin-left: 5vw;">%%s</div>
+        <div class="uploadText" style="color: #f9e582;">%%s</div>
     </div>
 
     <li class="homepageTitles">%%s
-        <button onclick="clearViewed()" class="homepageBigButton button noMobileResize" id="categoryBut">
+        <button onclick="clearViewed()" class="button noMobileResize" id="categoryBut">
             <img src="images/close.svg">
             <div class="uploadText">%%s</div>
         </button>
     </li>
     <div class="recentlyViewed">
-        <div class="uploadText" style="color: #f9e582; margin-left: 5vw;">%%s</div>
+        <div class="uploadText" style="color: #f9e582;">%%s</div>
     </div>
 
     <li class="homepageTitles">%%s
-        <button class="homepageBigButton button noMobileResize" id="categoryBut" onclick="showFaves()">
-            <img src="images/more.svg">
-            <div class="uploadText">%%s</div>
-        </button>
+        <a href="#saved">
+            <button class="button noMobileResize" id="categoryBut">
+                <img src="images/more.svg">
+                <div class="uploadText">%%s</div>
+            </button>
+        </a>
     </li>
     <div class="savedLists">
-        <div class="uploadText" style="color: #f9e582; margin-left: 5vw;">%%s</div>
+        <div class="uploadText" style="color: #f9e582;">%%s</div>
     </div>
 
     <li class="homepageTitles">%%s
-        <img src="images/help.webp" id="homepageHelp" class="helpButton button"
+        <img src="images/help.svg" id="homepageHelp" class="helpButton button"
             onclick="openHelp('officialLists')">
     </li>
 
-    <a href="./index.html?year=2019">
-        <div class="IXstyle noMobileResize" id="listPreview">
-            <div class="uploadText">%%s</div>
-            <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
-        </div>
-    </a>
+    <div class="officialLists">
+        <a href="#y2019">
+            <div class="IXstyle noMobileResize" id="listPreview">
+                <div class="uploadText">%%s</div>
+                <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
+            </div>
+        </a>
 
-    <a href="./index.html?year=2021">
-        <div class="XXIstyle noMobileResize" id="listPreview">
-            <div class="uploadText">%%s</div>
-            <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
-        </div>
-    </a>
+        <a href="#y2021">
+            <div class="XXIstyle noMobileResize" id="listPreview">
+                <div class="uploadText">%%s</div>
+                <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
+            </div>
+        </a>   
+    </div>
 </ul>
 <script>document.querySelector("#homepageHeader").style.backgroundPosition = ["left", "center", "right"][Math.floor(Math.random() * 3)]</script>
