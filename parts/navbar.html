@@ -24,19 +24,24 @@
     <h6>%%s</h6>
   </div>
 </div>
-<img class="button" src="images/settings.svg" style="width: 2em; padding-right: 1.5vw;"
-onclick="$('.settingsMenu').fadeToggle(100)">
+<div class="pfpContainer">
+  <img class="userIcon" style="width: 2em;">
+  <div class="pfpPlaceholder button" onclick="openSettings()"></div>
+</div>
 <div class="settingsMenu" style="display: none;">
-  <div class="siteSettingsChild">
+  <div class="siteSettingsChild button loginBut" onclick="login(1)">
+    <img class="setLoginIcon" class="noMobileResize" src="images/gdAcc.svg">
+    <p class="uploadText setLoginText">%%s</p>
+  </div>
+  <!-- <div class="siteSettingsChild">
     <p class="uploadText langText">%%s</p>
     <select class="uploadText settingsDropdown">
       <option id="czech">%%s</option>
       <option id="english">%%s</option>
     </select>
+  </div> -->
+  <div class="button eventButton uploadText settingsButton">
+    <img src="images/settings.svg">Nastavení
   </div>
-  <!-- <div class="siteSettingsChild">
-      <p class="uploadText skinText">Skin</p>
-      <select class="uploadText settingsDropdown skins">
-      </select>
-    </div> -->
+
 </div>

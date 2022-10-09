@@ -266,6 +266,7 @@ var parts = {
         ["Editor", "Editor"],
         ["Seznamy", "Lists"],
         ["Uložené", "Saved"],
+        ["Přihlásit se", "Log in"],
         ["Jazyk", "Language"],
         ["Čeština", "Czech"],
         ["Angličtina", "English"],

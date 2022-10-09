@@ -1,0 +1,12 @@
+<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <mask id="mask-powermask-path-effect1250" maskUnits="userSpaceOnUse">
+   <path id="mask-powermask-path-effect1250_box" d="m10.582-1.0685h22.418v34.137h-22.418z" fill="#fff"/>
+   <g fill="none" stroke="#000" stroke-width="7">
+    <path d="m22.14 15.885h-20.436l6.2386 5.8428-6.4428-5.8428 6.4482-5.6052" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/>
+   </g>
+  </mask>
+ </defs>
+ <rect x="13.082" y="1.4315" width="17.418" height="29.137" rx="2.5" ry="2.5" d="M 15.582264,1.43151 H 28 c 1.385,0 2.5,1.115 2.5,2.5 v 24.13698 c 0,1.385 -1.115,2.5 -2.5,2.5 H 15.582264 c -1.385,0 -2.5,-1.115 -2.5,-2.5 V 3.93151 c 0,-1.385 1.115,-2.5 2.5,-2.5 z" fill="none" mask="url(#mask-powermask-path-effect1250)" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+ <path d="m22.14 15.885h-20.436l6.2386 5.8428-6.4428-5.8428 6.4482-5.6052" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+</svg>

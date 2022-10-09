@@ -1041,3 +1041,60 @@ cb { color: #5fe7ff ;}
 	width: 100% !important;
 	border-radius: 15px;
 }
+
+#loginPopup {
+  position: fixed;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  padding: 1em;
+  text-align: center;
+}
+
+#loginPFP {
+  border-radius: 10em;
+  margin-top: -5em;
+  border: black 10px solid;
+ }
+
+ #userLoggedIn {
+	width: 2.2em;
+	height: max-content;
+	border-radius: 10em;
+	box-sizing: border-box;
+	border: white 3.5px solid;
+	margin: auto 0;
+  position: relative;
+  z-index: 1;
+  transition: top 0.12s cubic-bezier(.47,0,.74,.71), right 0.12s cubic-bezier(.47,0,.74,.71), border 0.3s cubic-bezier(.47,0,.74,.71);
+  top: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.pfpPlaceholder {
+  background-color: #00000063;
+  border-radius: 10em;
+  width: 2em;
+  height: 2em;
+  position: absolute;
+  pointer-events: auto;
+}
+.pfpContainer {
+  margin-right: 0.5em;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.settingsButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.3em;
+  width: 93%;
+}
+.settingsButton > img {width: var(--normalFont);}
+
+.setLoginText { margin-top: 1em !important;}

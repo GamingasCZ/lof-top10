@@ -1045,7 +1045,6 @@ async function loadSite() {
 		await $.get("./parts/homepage.html", site => {
 			$("#app").html(translateDoc(site, "homepage"))
 		})
-		$("iframe").attr("src", "packs.html?type=homepage")
 	}
 
 	switch (true) {
@@ -1076,6 +1075,14 @@ async function loadSite() {
 				$("#app").append("<div id='communityContainer'></div>")
 				$("#communityContainer").html(translateDoc(site, "listBrowser"))
 				makeBrowser(hash.includes("!") ? hash.split("!")[1] : "")
+			})
+			break;
+		case /login/.test(hash):
+			login(2)
+			$("title").text(`${jsStr["GDLISTS"][LANG]}`)
+			await $.get("./parts/homepage.html", site => {
+				$("#app").append(translateDoc(site, "homepage"))
+				makeHP()
 			})
 			break;
 
@@ -1131,6 +1138,26 @@ $(async function () {
 $.get("./parts/navbar.html", navbar => {
 	$("nav").html(translateDoc(navbar, "navbar"))
 
+	try {
+		let userInfo = JSON.parse(localStorage.getItem("userInfo"))
+		if (userInfo != null) {
+			$(".loginBut").removeClass("button")
+			$(".loginBut").attr("onclick", "")
+			$(".setLoginIcon").remove()
+			$(".setLoginText").text(userInfo[0])
+			$(".setLoginText").after(`
+			<div onclick="logout()" class="button eventButton uploadText settingsButton"><img src="images/logout.svg">Odhlásit se</div>
+			`)
+
+			$(".userIcon").attr("id", "userLoggedIn")
+			$(".userIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
+		}
+		else $(".userIcon").attr("src", "images/user.svg")
+	} catch (error) {
+		localStorage.removeItem("userInfo")
+		$(".userIcon").attr("src", "images/user.svg")
+	}
+
 	// Setting mobile picker in navbar to curr site name
 	if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
 	if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
@@ -1144,6 +1171,11 @@ $.get("./parts/navbar.html", navbar => {
 	})
 
 })
+
+function logout() {
+	localStorage.removeItem("userInfo")
+	window.location.reload()
+}
 
 async function lists(list) {
 	$(".listInfo").show()
@@ -1465,4 +1497,55 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 
 function doSearch(e) {
 	e.preventDefault()
+}
+
+function login(part) {
+	if (part == 1) { // Discord popup
+		window.location.replace("https://discord.com/api/oauth2/authorize?client_id=989511463360139264&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fphp%2Faccounts.php&response_type=code&scope=identify")
+	}
+	else if (part == 2) {
+		let loginData = getCookie("logindata")
+		if (loginData) {
+			$("#popupBG").show()
+			$("#popupBG").css("opacity", 1)
+
+			loginData = JSON.parse(decodeURIComponent(loginData))
+			$("#app").prepend(`
+		<div class="uploadBG uploadText" id="loginPopup">
+			<img id="loginPFP" src="https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png">
+			<h2>Vítej v GD Seznamech, <cy>${loginData[0]}</cy>!</h2>
+			<h4>Nyní můžeš využívat všechny funkce stránky :)</h4>
+			<button class="button eventButton uploadText" onclick="hideLoginPopup()">Ok!</button>
+		</div>
+			`)
+			localStorage.setItem("userInfo", JSON.stringify(loginData))
+		}
+	}
+}
+
+function hideLoginPopup() {
+	$("#popupBG").css("opacity", 0)
+	setTimeout(() => { $("#popupBG").hide() }, 100);
+	$("#loginPopup").fadeOut(100, () => $("#loginPopup").remove())
+}
+
+let setOpened = false
+function openSettings() {
+	$('.settingsMenu').fadeToggle(100)
+	if (!setOpened) {
+		let sPos = $(".settingsMenu").position()
+		let sWidth = $(".settingsMenu").width()
+		$("#userLoggedIn").css("top", `calc(${sPos.top}px - 1em)`)
+		$("#userLoggedIn").css("right", `calc(${sWidth/2}px + 1vw - 1em)`)
+		$("#userLoggedIn").css("transform", "scale(2)")
+		$("#userLoggedIn").css("border", "var(--siteBackground) 2px solid")
+	}
+	else {
+		$("#userLoggedIn").css("top", `0`)
+		$("#userLoggedIn").css("right", `0`)
+		$("#userLoggedIn").css("transform", "scale(1)")
+		$("#userLoggedIn").css("border", "")
+	}
+	// $("#userLoggedIn").toggleClass("button")
+	setOpened = !setOpened
 }

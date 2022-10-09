@@ -6,6 +6,10 @@ $password = "";
 $database = "";
 $debugMode = true;
 
+$GDL_ENDPOINT = "http://localhost:8000";
+$DISCORD_CLIENT_ID = "";
+$DISCORD_CLIENT_SECRET = "";
+
 function privateIDGenerator($listName, $creator, $timestamp) {
     $str = $listName . $creator . $timestamp;
     return substr(sha1($str),0,10);
