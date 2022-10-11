@@ -368,3 +368,18 @@ function checkCheckbox(changeVal, runFun = null) {
 		if (runFun != null) runFun(changeVal, true)
 	}
 }
+
+function lockQuotes() {
+    let faces = ["04","05","07","08","15","12","10"]
+    let quotes = [
+        "Jestli se nepříhlásíš, nevydám 2.2 :D!",
+        "Ty tři kliknutí trvaly moc dlouho >:(",
+        "Chtěl jsem to potrollit, ale nešlo to :P",
+        "Na co mám ksakru kliknout :|",
+        "jím banán",
+        "Není to žádný bossfight :/",
+        "aaaaaaaaaaaaaaaaaaaa",
+    ]
+    let pick = Math.random() * faces.length
+    
+}

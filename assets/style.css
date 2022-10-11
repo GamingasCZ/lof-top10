@@ -1098,3 +1098,18 @@ cb { color: #5fe7ff ;}
 .settingsButton > img {width: var(--normalFont);}
 
 .setLoginText { margin-top: 1em !important;}
+
+.quote {
+  font-style: italic;
+}
+.quote:before { content: '\201E'; }
+.quote:after { content: '\201D'; }
+
+.quoteContainer {
+  display: flex;
+  align-items: center;
+  padding: 0.5em;
+  background: #0000004d;
+  margin: 0em;
+  border-radius: 1em;
+}
