@@ -1146,13 +1146,17 @@ $.get("./parts/navbar.html", navbar => {
 			$(".setLoginIcon").remove()
 			$(".setLoginText").text(userInfo[0])
 			$(".setLoginText").after(`
-			<div onclick="logout()" class="button eventButton uploadText settingsButton"><img src="images/logout.svg">Odhlásit se</div>
+			<div onclick="logout()" class="button eventButton uploadText settingsButton noMobileResize"><img src="images/logout.svg">Odhlásit se</div>
 			`)
 
 			$(".userIcon").attr("id", "userLoggedIn")
 			$(".userIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
 		}
-		else $(".userIcon").attr("src", "images/user.svg")
+		else {
+			$(".pfpPlaceholder").remove()
+			$(".userIcon").attr("src", "images/user.svg") // smazat placeholder, dat kliknuti
+			$(".userIcon").click(openSettings)
+		}
 	} catch (error) {
 		localStorage.removeItem("userInfo")
 		$(".userIcon").attr("src", "images/user.svg")

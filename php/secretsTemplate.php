@@ -9,6 +9,7 @@ $debugMode = true;
 $GDL_ENDPOINT = "http://localhost:8000";
 $DISCORD_CLIENT_ID = "";
 $DISCORD_CLIENT_SECRET = "";
+$SECRET = ""; // Use a random string :)
 
 function privateIDGenerator($listName, $creator, $timestamp) {
     $str = $listName . $creator . $timestamp;
