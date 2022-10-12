@@ -1,2 +1,2 @@
 .directory
-php/secrets.php
+src/php/secrets.php
