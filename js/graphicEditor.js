@@ -805,7 +805,7 @@ function tagPopup(lp) {
 function clickTag(e, lp) {
     let tagName, badgeIndex, linkURL
     let linkHighlight = "none"
-    if ($(".tagViewer > .diffOptions").length == 1) $(".tagViewer").empty()
+    if (levelList[lp]["tags"].length == 0) $(".tagViewer").empty()
     if (typeof e != "number") { // Event details from click, used in tag picker
         $(e.currentTarget).addClass("tagInUse")
         badgeIndex = Object.values($(".badgeBox")).indexOf(e.currentTarget)
@@ -843,8 +843,8 @@ function clickTag(e, lp) {
         levelList[lp]["tags"].splice(index, 1)
         $(e.currentTarget).parents().eq(2).remove()
 
-        if ($(".tagEditBox").length == 0) {
-            $(".tagViewer").append(jsStr["TAGADDHELP"][LANG])
+        if (levelList[lp]["tags"].length == 0) {
+            $(".tagViewer:visible").append(jsStr["TAGADDHELP"][LANG])
         }
     })
     $(".tagLink:last()").click(e => {
