@@ -38,7 +38,7 @@
 
 :root {
   --smallFont: calc(1em * var(--fontMultiplier));
-  --miniFont: calc(0.8em * var(--fontMultiplier));
+  --miniFont: calc(0.7em * var(--fontMultiplier));
   --normalFont: calc(1.2em * var(--fontMultiplier));
   --bigFont: calc(1.6em * var(--fontMultiplier));
   --biggerFont: calc(1.8em * var(--fontMultiplier));
@@ -666,6 +666,9 @@ html, body {
   margin: 1em auto 0;
   padding: 0.5em;
   max-width: clamp(73em, 75%, 80em);
+  background: none;
+  border: none;
+  box-shadow: none;
 }
 
 /* Comment text area */
@@ -675,20 +678,39 @@ html, body {
   max-height: 8vh;
   border-radius: 5px;
   resize: none;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
   width: 102%;
   padding: 0.5%;
   overflow: auto;
-  white-space: pre-wrap;
   word-wrap: anywhere;
+  margin: 0.3em 0 0;
+  min-height: 2em;
 }
 
 #comFont {
   font-family: chatFont, serif;
-  font-size: var(--normalFont);
+  font-size: var(--smallFont);
   line-height: 1.1;
   color: white;
+}
+
+#pIcon {
+  width: 2.5em;
+  border-radius: 10em;   
+}
+#cHeader {
+  display: flex;
+  align-items: end;
+  gap: 0.5em;
+  justify-content: space-between;
+}
+#charLimit {
+  margin: 0;
+  font-size: var(--miniFont);
+}
+.cNameContainer {
+  display: flex;
+  align-items: end;
+  gap: 0.5em;
 }
 
 .sendBut {
@@ -698,37 +720,34 @@ html, body {
 /* Header and footer of the comment text area */
 .comBoxThings {
   display: flex;
-  margin: 0;
-  align-items: center;
   justify-content: space-between;
-  width: inherit;
-  /*i despise css.*/
-  padding: 0 1%;
 }
 
 /* Specific stuff relating to the cbox footer and header */
-#comBoxHeader {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
 #comBoxFooter {
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+  /*! border-bottom-left-radius: 15px; */
+  /*! border-bottom-right-radius: 15px; */
   justify-content: flex-end !important;
   gap: 0.5em;
-  /*! margin: 0 calc(46vw - 26em); */
-  max-width: clamp(69em, 67%, 132em);
+  max-width: clamp(70.6em, 67%, 132em);
+}
+
+.comHeaderText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1;
+  margin-left: 0.6em;
+}
+.comHeaderText > h5 {
+  margin: 0;
+  font-size: var(--normalFont);
+  line-height: 1.1;
 }
 
 /* Text placement in the cbox footer and header */
 .comBoxThings > h3 {
   margin: 0;
-}
-
-/* User input box */
-.pIconInp {
-  transform: translateY(0) !important;
-  margin: 0 0.5em !important;
 }
 
 /* Placement of the entire comment box */
@@ -743,7 +762,7 @@ html, body {
   background: none;
   cursor: pointer;
   height: min-content;
-  border-radius: 0% 0% 100% 100%;
+  border-radius: 10em;
   width: 1.3em;
   padding: 0.3em;
 }
@@ -788,32 +807,17 @@ html, body {
   justify-content: flex-start;
   overflow-y: hidden;
   overflow-x: auto;
-  margin-top: 0.5vw;
-  border-radius: 1vw;
+  margin-top: 0.3em;
+  border-radius: 0.3em;
 }
 .listEmoji {
-  padding: 0.5vw;
-  width: 40px;
+  padding: 0.2em;
+  width: 2em;
 }
 
 .emojiPanel > .colorPicker {
   width: 100%;
   padding: 1% 2%;
-}
-
-#commentList {
-  margin: 2vw 6vw;
-  transform: scale(0.9) translateY(-5%);
-}
-
-.clickable {
-  cursor: pointer;
-  transform: none;
-  transition-duration: 0.2s;
-  filter: saturate(100%);
-}
-.clickable:hover {
-  filter: saturate(250%);
 }
 
 #commentTool {
@@ -1101,6 +1105,7 @@ cb { color: #5fe7ff ;}
 
 .quote {
   font-style: italic;
+  font-size: var(--normalFont);
 }
 .quote:before { content: '\201E'; }
 .quote:after { content: '\201D'; }
@@ -1112,4 +1117,49 @@ cb { color: #5fe7ff ;}
   background: #0000004d;
   margin: 0em;
   border-radius: 1em;
+  gap: 0.5em;
+  width: max-content;
 }
+
+#loginHelp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+  width: min(40em, 85%);
+}
+
+#settings {
+  position: absolute;
+  width: 55%;
+  height: 90vh;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.settingsContainer {
+  margin: 0.7em;
+  background: #00000052;
+  display: flex;
+  box-sizing: border-box;
+  padding: 0.4em;
+  flex-direction: column;
+  gap: 0.4em;
+  border-radius: 10px;
+}
+
+.settingCard {
+  display: flex;
+  flex-grow: 1;
+  gap: 0.5em;
+  padding: 0.5em;
+  background: #00000045;
+  box-sizing: border-box;
+  align-items: center;
+  border-radius: 10px;
+}
+.settingCard > div { flex-grow: 1; }
+ 
+ 

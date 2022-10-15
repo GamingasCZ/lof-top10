@@ -1069,7 +1069,7 @@ async function loadSite() {
 
 			break;
 
-		case /browse/.test(hash):
+		case /browse|uploads/.test(hash):
 			$("title").text(`${jsStr["COMMUNITY"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 			await $.get("./parts/listBrowser.html", site => {
 				$("#app").append("<div id='communityContainer'></div>")
@@ -1082,7 +1082,8 @@ async function loadSite() {
 			$("title").text(`${jsStr["GDLISTS"][LANG]}`)
 			await $.get("./parts/homepage.html", site => {
 				$("#app").append(translateDoc(site, "homepage"))
-				makeHP()
+				makeHP();
+				makeCookie(["logindata",""], 1)
 			})
 			break;
 
@@ -1451,7 +1452,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 
 		// Adds additional elements
 		addElements.forEach(el => {
-			$(`${parent} .browserTools`).append(el)
+			$(`${parent} .titleTools`).append(el)
 		});
 
 		delete originalListData[parent].init

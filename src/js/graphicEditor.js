@@ -625,6 +625,18 @@ function makeFavesPicker() {
     })
 }
 
+class Level {
+    constructor (levelName = "", creator = "", levelID = -1, video = "", color = "", difficulty = [0,0], tags = []) {
+        this.levelName = levelName; 
+        this.creator = creator; 
+        this.levelID = levelID; 
+        this.video = video; 
+        this.color = color; 
+        this.difficulty = difficulty; 
+        this.tags = tags; 
+    }
+}
+
 async function addLevel() {
     var listLenght = Object.keys(levelList).length - ADDIT_VALS;
     if (listLenght == 1) {

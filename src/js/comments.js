@@ -74,9 +74,21 @@ function setupComments() {
     );
   }
 
+  // Setup name and pfp, check login
+  let userInfo = JSON.parse(localStorage.getItem("userInfo"))
+  if (userInfo != null) {
+    $("#pIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
+    $("#commentName").text(userInfo[0])
+  }
+  else {
+    $("#loginHelp").show()
+    lockQuotes()
+    $("#commentMaker").remove()
+    $("#commentMaker").remove()
+  }
+
   // Fetch comments
   $.get("./php/getComments.php?listid=" + LIST_ID, function (data) {
-    deeta = data;
     displayComments(data);
   });
 
@@ -140,8 +152,6 @@ function setupComments() {
   let boxColor = HEXtoRGB(commentColor, 30);
   let darkerBoxColor = HEXtoRGB(commentColor, 50);
 
-  $("#commentMaker").css("background-color", commentColor);
-  $("#commentMaker").css("border-color", "rgb(" + boxColor.join(",") + ")");
   $(".comInpArea").css("background-color", "rgb(" + boxColor.join(",") + ")");
   $(".comInpThings").css(
     "background-color",
@@ -222,14 +232,6 @@ function displayPanel(what) {
           ? getHueFromHEX(commentColor)
           : k.target.value;
 
-        $("#commentMaker").css(
-          "background-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`
-        );
-        $("#commentMaker").css(
-          "border-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
-        );
         $(".comInpArea").css(
           "background-color",
           `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
@@ -275,18 +277,17 @@ function displayPanel(what) {
 
 function sendComment() {
   if ($(".sendBut")["0"].className.match("disabled") == null) {
-    if (actualText.length <= 10) {
-      $(".comUserError").show();
-      $(".comUserError").text(jsStr["COM_L"][LANG]);
-      setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-    } else if ($(".pIconInp").val().length <= 4) {
-      $(".comUserError").show();
-      $(".comUserError").text(jsStr["COMU_L"][LANG]);
-      setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-    } else {
       $(".sendBut").addClass("disabled");
+      let token = getCookie("access_token")
+      if (!token) {
+        $(".sendBut").removeClass("disabled");
+        $(".comUserError").show();
+        $(".comUserError").text("Nepodařilo se přihlásit!");
+        setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
+        return
+      }
       let postData = {
-        creator: $(".pIconInp").val(),
+        token: token,
         comment: actualText,
         comType: 0, // Change when I eventually add replies,
         listID: LIST_ID,
@@ -324,7 +325,6 @@ function sendComment() {
           setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
         }
       })
-    }
   }
 }
 
@@ -371,25 +371,14 @@ function chatDate(stamp) {
 
 function comBox(cd, element) {
   let profPic = "";
-  let clickable = ["", ""];
-  let comColor = "#b9efb1";
   let time = chatDate(cd["timestamp"]);
-
-  let dcc = HEXtoRGB(cd["bgcolor"], 40);
-  let edcc = HEXtoRGB(cd["bgcolor"], 40);
 
   if (cd["timestamp"].length == 9) {
     cd["timestamp"] *= 10;
   } // First comment's date is not in milliseconds
   let nT = new Date(cd["timestamp"] * 1000);
 
-  // Is user verified?
-  if (cd["verified"] == 1) {
-    profPic = `<img class="pIcon" style="height: var(--normalFont);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
-    clickable[0] = "clickable";
-    clickable[1] = `onclick="profile('${cd["username"]}')`;
-    comColor = "#f9f99a";
-  }
+  profPic = `<img class="pIcon" style="width: 2.5em; border-radius: 10em;" src="${cd.avatar}">`;
 
   // OwO, adding emojis
   while (cd["comment"].match(/&\d+/g) != null) {
@@ -425,25 +414,21 @@ function comBox(cd, element) {
     });
   }
 
+  let hoverDate = `title="${nT.getDay() + 1}.${nT.getMonth() + 1}.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}"`
   $(element).append(`
   <div style="margin: 1em auto; max-width: 70em;">
-  
-  <div class="comBoxThings ${clickable[0]
-    } uploadText" id="comBoxHeader" ${clickable[1]}"
-  style="justify-content: flex-start;
-  background-color: ${"rgb(" + dcc.join(",") + ")"};">
-${profPic}
-            <h5 style="margin: 0 1%; color: ${comColor};">${cd["username"]}</h3>
-            <h5 
-                style="margin: 0 0 0 auto; cursor: help;"
-                title="${nT.getDay() + 1}.${nT.getMonth() + 1
-    }.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
-        </div>
-    
-        <div class="comTextArea" id="comFont" style="width: 99%; background-color: ${cd["bgcolor"]
-    };">${cd["comment"]}</div>
-    
+    <div class="comBoxThings uploadText" id="comBoxHeader" style="justify-content: flex-start;">
+      ${profPic}
+      <div class="comHeaderText">
+        <h5>${cd["username"]}</h5>
+        <h5 style="font-size: var(--miniFont); cursor: help;" ${hoverDate}>${time}</h5>
+      </div>
     </div>
+      
+    <div class="comTextArea" id="comFont" style="width: 99%; background-color: ${cd["bgcolor"]};">
+      ${cd["comment"]}
+    </div>
+  </div>
     `);
 }
 
@@ -476,9 +461,7 @@ async function displayComments(data) {
   // Don't do anything on list previews and random lists that haven't replaced LIST_ID
   if ([-8, -11].includes(LIST_ID) || typeof data == "string") return
 
-  $("#commAmount").text(data.length)
-
-  let refreshBut = `<img id="searchLists" class="button refreshBut" onclick="refreshComments()" style="width: 3em;" src="images/replay.svg">`
+  $("#commAmount").text(data[0].length)
 
   if ($("#commentList").children().length == 0) {
     await $.get("./parts/listBrowser.html", d => {
@@ -486,16 +469,30 @@ async function displayComments(data) {
     })
   }
 
-  if (currentListData["#commentList"] == undefined) listViewerDrawer(data, "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
+  let ind = 0
+  data[0].forEach(c => {
+    data[1].forEach(u => {
+      // Old comments
+      if (c.uid == -1) {
+        data[0][ind].avatar = `images/oldPFP.png`
+        return
+      }
+
+      if (c.uid == u.id) {
+        data[0][ind].username = u.username
+        data[0][ind].avatar = `https://cdn.discordapp.com/avatars/${u.discord_id}/${u.avatar_hash}.png`
+      }
+    })
+    ind++
+  })
+
+  let refreshBut = `<img id="searchLists" class="button refreshBut" onclick="refreshComments()" style="width: 3em;" src="images/replay.svg">`
+  if (currentListData["#commentList"] == undefined) listViewerDrawer(data[0], "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
   
-  currentListData["#commentList"] = data
+  currentListData["#commentList"] = data[0]
   pageSwitch(page["#commentList"][0], currentListData["#commentList"], "#commentList", 6, 1)
   $(".comTextArea .gamLink").click(el => redirectWarn(el))
 
-}
-
-function profile(name) {
-  window.open("https://gdbrowser.com/u/" + name);
 }
 
 function refreshComments() {

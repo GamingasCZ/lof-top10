@@ -36,20 +36,30 @@ if (preg_match('/[A-z]/', $_GET["listid"])) {
 $query = sprintf("SELECT * FROM `comments` WHERE `listID`='%s' ORDER BY `comID` DESC", $fuckupID);
 $result = $mysqli -> query($query) or die($mysqli -> error);
 
-$rows = $result -> fetch_all(MYSQLI_ASSOC);
+$comments = $result -> fetch_all(MYSQLI_ASSOC);
 
 // No comments
-if (count($rows) == 0) {
+if (count($comments) == 0) {
     exit(json_encode(array()));
 }
 
+$uid_array = array();
 $ind = 0;
-foreach ($rows as $row) {
-    $rows[$ind]["comment"] = htmlspecialchars_decode($row["comment"]);
+foreach ($comments as $row) {
+    array_push($uid_array, $comments[$ind]["uid"]);
+    
+    $comments[$ind]["comment"] = htmlspecialchars_decode($row["comment"]);
     $ind += 1;
 }
-echo json_encode($rows);
 
+$query = sprintf("SELECT DISTINCT users.username,users.discord_id,users.avatar_hash,users.id
+                  FROM comments,users
+                  WHERE comments.uid IN ('%s') AND comments.listID='%s'", join("','", array_unique($uid_array)), $_GET["listid"]);
+$result = $mysqli -> query($query) or die($mysqli -> error);
+
+$users = $result -> fetch_all(MYSQLI_ASSOC);
+
+echo json_encode(array($comments, $users));
 $mysqli -> close();
 
 ?>

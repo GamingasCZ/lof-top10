@@ -73,21 +73,26 @@
     <img class="titleImage">
 
     <div class="comments">
-        <div class="positionEdit" id="commentMaker">
-            <div style="display: flex; align-items: center; padding-left: 0em; margin-bottom: 0.5em;">
-                <img src="images/bytost.webp" id="pIcon" style="width: 1.8em;">
-                <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="%%s" maxlength="20">
-                <img src="./images/searchOpaque.svg" onclick="getPlayerIcon()" class="button passImg" id="passSubmit"
-                    style="height: max-content;">
-                <h5 class="uploadText comUserError"></h5>
+        <div id="loginHelp" class="uploadBG uploaderDialog uploadText" style="display: none;">
+            <div class="quoteContainer">
+                <img src="images/emoji/01.webp" style="width: 3em;" class="loginEmoji">
+                <h2 class="quote">Pokud se nepřihlásíš, nedodělám 2.2!</h2>
             </div>
+            <p>Pro komentování se prosím přihlaš!</p>
+            <div class="button eventButton uploadText settingsButton noMobileResize" style="width: max-content;" onclick="login(1)">
+                <img src="images/discord.svg">Přihlásit se
+              </div>
+        </div>
 
-            <div class="comBox">
-                <div class="uploadText comBoxThings comInpThings" id="comBoxHeader">
-                    <h3>%%s</h3>
-                    <h3 id="charLimit">0/300</h3>
+        <div class="positionEdit" id="commentMaker">
+            <div id="cHeader" class="uploadText">
+                <div class="cNameContainer">
+                    <img id="pIcon" src="">
+                    <div id="commentName"></div>
                 </div>
-
+                <h3 id="charLimit">0/300</h3>
+            </div>
+            <div class="comBox">
                 <div style="display: flex; width: inherit;">
                     <div contenteditable="" class="uploadText comTextArea comInpArea" style="height: 5em;" id="comFont">
                     </div>

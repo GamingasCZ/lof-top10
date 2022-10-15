@@ -152,11 +152,14 @@ var jsStr = {
     "DIFFGUESSER_T": ["Hádání obtížností", "Difficulty guesser"],
     "DIFFGUESSER_D": [`Když je hádání zapnuté a někdo přejde na tvůj seznam, uvidí jen <cb>první level</cb>. Levely se <cg>postupně odemykají</cg> dalším hádáním.`,
                       `When guessing is enabled and someone visits your list, they'll only see the <cb>first level</cb>. The rest of levels get unlocked <cg>as you guess them</cg>.`],
+    "FORCEPASS_T": ["Vynucení hesla", "Password Forcing"],
+    "FORCEPASS_D": [`Od přidání účtů je místo hesel, seznam jednoduše <cb>spojený s tvým účtem</cb>. Možnost lze použít, pokud chceš, aby seznam mohlo upravovat <cr>víc lidí</cr>, nebo jen jestli máš raději hesla.`,
+                    `When guessing is enabled and someone visits your list, they'll only see the <cb>first level</cb>. The rest of levels get unlocked <cg>as you guess them</cg>.`],
 
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],
-    "HELP_TEXT": [`<p class="helpText">Kliknutím na <img width=5% id="plusSign" src="images/add.webp"> přidáš level!</p>`,
+    "HELP_TEXT": [`<p class="helpText">Kliknutím na <img id="passSubmit" src="images/addLevel.svg" style="width:2em; margin: 0 1em"> přidáš level!</p>`,
         `<p class="helpText">Click the <img width=5% id="plusSign" src="images/add.webp"> to add a level!</p>`],
     "L_MOVE_D": ["Přesunout level níž", "Move level up"],
     "L_MOVE_U": ["Přesunout level výš", "Move level down"],
@@ -281,6 +284,9 @@ var parts = {
         ["- Načítání -","- Loading -"],
         ["Připnuté", "Pinned"],
         ["- Zatím jsi nepřipnul žádné seznamy! -", "- You haven't pinned any lists yet! -"],
+        ["Nahrané", "Uploaded"],
+        ["Více", "More"],
+        ["- Zatím jsi nenahrál žádné seznamy! -", "- You haven't uploaded any lists yet! -"],
         ["Navštívené", "Visited"],
         ["Promazat", "Clear"],
         ["- Zatím jsi nenavštívil žádné seznamy! -", "- You haven't looked at any lists yet! -"],
@@ -344,11 +350,8 @@ var parts = {
         ["        Hledat level...", "        Search levels..."],
         ["Nahrávání", "Upload"],
         ["Jméno seznamu", "List Name"],
-        ["Tvůrce", "List Creator"],
         ["Zadej heslo seznamu", "Enter the list's password"],
         ["     Heslo", "     Password"],
-        ["Ukázat náhled obrázku", "Show preview"],
-        ["Obrázek seznamu", "List Image"],
         ["Barva pozadí:", "Background Color:"],
         ["Levely", "Levels"],
         ["Náhled seznamu", "List Preview"],
@@ -360,6 +363,7 @@ var parts = {
         ["Hádat: ", "Guess: "],
         ["Obtížnosti", "Difficulties"],
         ["Rating", "Rating"],
+        ["Vynutit heslo", "Force Password"],
         ["Nahrát", "Upload"]
     ]
 }
@@ -405,7 +409,7 @@ function getCookie(val="") {
     else return finishedCooks;
 }
 
-function makeCookie(val) { // Also works for changing cookies
-    let expireDate = "Sun, 1 Jan 2040 12:00:00 UTC"
+function makeCookie(val,remove = false) { // Also works for changing cookies
+    let expireDate = remove ? "Sat, 1 Jan 2000 12:00:00 UTC" : "Sun, 1 Jan 2040 12:00:00 UTC"
     document.cookie = `${val[0]}=${encodeURIComponent(val[1])}; expires=${expireDate}; SameSite=Lax`
 }

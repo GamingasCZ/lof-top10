@@ -44,6 +44,10 @@ var help = {
     "diffGuesser": {
         "title": jsStr["DIFFGUESSER_T"][LANG],
         "content": jsStr["DIFFGUESSER_D"][LANG]
+    },
+    "forcePass": {
+        "title": jsStr["FORCEPASS_T"][LANG],
+        "content": jsStr["FORCEPASS_D"][LANG]
     }
 }
 

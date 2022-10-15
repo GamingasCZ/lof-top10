@@ -492,6 +492,12 @@ input:disabled {
     background-color: rgb(113, 212, 113);
     border: none;
     margin: 0% 2% 1%;
+    color: black;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    border-radius: 10px;
+    text-shadow: none;
 }
 
 #removebutton {
@@ -571,15 +577,12 @@ input:disabled {
     background-image: url("../images/headerBG.webp");
 }
 
-#plusSign {
-    margin-left: 2%;
-    margin-right: 2%;
-}
-
 .headerButtons {
-    width: 4em;
-    height: 4em;
+    width: 3.2em;
+    height: 3.2em;
     margin-right: 0.5em;
+    padding: 0.4em !important;
+    box-sizing: border-box;
 }
 
 .headerText {
@@ -1016,7 +1019,7 @@ input:disabled {
 .setting {
     display: flex;
     align-items: center;
-    margin-top: 1%;
+    /*! margin-top: 1%; */
 }
 
 .setLabel {
@@ -1024,13 +1027,13 @@ input:disabled {
 }
 
 .setHelp {
-    width: 2em;
-    margin-left: 2%;
-    margin-bottom: 4%;
+    width: 1.5em;
+    margin-left: 1%;
+    margin-bottom: 3%;
 }
 
 .setCheckbox {
-    width: 6%;
+    width: 2em;
     margin-right: 1%;
 }
 
@@ -1260,10 +1263,35 @@ input:disabled {
 
 .tagInUse {background: #ffffff2e !important;}
 
+.titleTools {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    justify-content: center;
+}
+
 .browserTools {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-direction: row;
     gap: 1em;
+    width: 90%;
+    margin: auto;
+}
+
+.browserButton {
+	border-radius: 10em;
+	background: transparent;
+	border: #4c734c solid 1.5px;
+	padding: 0.2em 1em;
+}
+
+#browserBSelected { background: var(--defaultGradient); }
+
+.browserContainer {
+    margin: auto;
+    display: flex;
+    gap: 1.5em;
+    width: max-content;
 }

@@ -11,8 +11,6 @@ function checkJson(data, isPreview=false) {
         if (listName.length < 3) { throw (jsStr["LIST_L"][LANG]); }
         if (listName.length > 40) { throw (jsStr["LIST_TOOL"][LANG]); }
 
-        if (listCreator.length < 3) { throw (jsStr["CREA_L"][LANG]); }
-        if (listCreator.length > 20) { throw (jsStr["CREA_TOOL"][LANG]); }
         if (listCreator.toLowerCase().includes("gamingas")) { throw (jsStr["GG_NEVER"][LANG]); }
 
         // 1/3 Je to vůbec JSON?
@@ -214,6 +212,16 @@ const DEFAULT_LEVELLIST = {
 }
 
 function makeEditor(update) {
+    // Check login
+    if (localStorage.getItem("userInfo") == null) {
+        $("#levelUpload").remove()
+        $("#loginHelp").show()
+        lockQuotes()
+    }
+    else {
+        $("#loginHelp").remove()
+    }
+
     // Do nothing if in editor
     $(".pickerContainer").on("click", showBGColorPicker)
     if (window.location.search.includes("edit")) $(".uploader").show()
@@ -285,6 +293,15 @@ function makeBrowser(search) {
         if (search != "") {
             $("#searchBar").val(decodeURIComponent(search))
             isSearching = true
+        }
+
+        // Add switch buttons
+        if (localStorage.getItem("userInfo") != null) {
+            $(".savedTitle").after(`<div class="browserContainer">
+                <button class="browserButton uploadText button" onclick="switchBrowser('#browse')">Nejnovější</button>
+                <button class="browserButton uploadText button" onclick="switchBrowser('#uploads')">Moje</button>
+            </div>`)
+            $(".browserButton").eq(window.location.hash == "#uploads").attr("id", "browserBSelected")
         }
 
         // Generates stuff
@@ -380,6 +397,9 @@ function lockQuotes() {
         "Není to žádný bossfight :/",
         "aaaaaaaaaaaaaaaaaaaa",
     ]
-    let pick = Math.random() * faces.length
+    let pick = parseInt(Math.random() * faces.length)
+
+    $(".loginEmoji").attr("src",`images/emoji/${faces[pick]}.webp`)
+    $(".quote").text(quotes[pick])
     
 }
