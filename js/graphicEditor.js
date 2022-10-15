@@ -796,9 +796,14 @@ function tagPopup(lp) {
             </div>
             `)
         }
-        $(".tagClose").click(() => { hideBGdialog(); $(".tagTop").fadeOut(50) })
-        $(".badgeBox").click(e => { clickTag(e, lp) })
     }
+    else {
+        $(".tagClose").off("click")
+        $(".badgeBox").off("click")  
+    }
+
+    $(".tagClose").click(() => { hideBGdialog(); $(".tagTop").fadeOut(50) })
+    $(".badgeBox").click(e => { clickTag(e, lp) })
 
 }
 
@@ -903,7 +908,7 @@ function openTagPicker(lp) {
 
     $('.cardContainer' + lp).append(`
     <div class="difficultyPicker" style="height: 4.7em;">
-        <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;">${jsStr["TAGADDHELP"][LANG]}</div>
+        <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;"><div class="addTagHelp">${jsStr["TAGADDHELP"][LANG]}</div></div>
         <div style="display: flex;align-items: center;">
             <img style="width:2em; margin-right: 0.5em;" src="./images/plus.svg" title="${jsStr["ADDTAG"][LANG]}" class="button diffOptions" onclick="tagPopup(${lp})">
         </div>
@@ -912,7 +917,10 @@ function openTagPicker(lp) {
     if (levelList[lp]["tags"] == undefined) {
         levelList[lp]["tags"] = []
     }
-
+    
+    if (levelList[lp]["tags"].length > 0) {
+        $(".addTagHelp").remove()
+    }
     let i = 0;
     levelList[lp]["tags"].forEach(tag => {
         clickTag(i, lp)

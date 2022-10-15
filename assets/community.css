@@ -1267,3 +1267,9 @@ input:disabled {
     flex-direction: row;
     gap: 1em;
 }
+
+.addTagHelp {
+	display: flex;
+	align-items: center;
+	gap: 0.3em;
+}
