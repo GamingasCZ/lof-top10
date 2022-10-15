@@ -63,6 +63,7 @@ function doRequest($mysqli, $queryTemplate, $values, $valueTypes)
 
 // thanks, random stackoverflow person (https://stackoverflow.com/a/46872528/11000740) :)
 function encrypt($plaintext) {
+    global $SECRET;
     $method = "AES-256-CBC";
     $key = hash('sha256', $SECRET, true);
     $iv = openssl_random_pseudo_bytes(16);
@@ -74,6 +75,7 @@ function encrypt($plaintext) {
 }
 
 function decrypt($ivHashCiphertext) {
+    global $SECRET;
     $method = "AES-256-CBC";
     $iv = substr($ivHashCiphertext, 0, 16);
     $hash = substr($ivHashCiphertext, 16, 32);
