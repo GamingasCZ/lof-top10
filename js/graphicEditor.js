@@ -909,6 +909,10 @@ function openTagPicker(lp) {
         </div>
     </div>`)
 
+    if (levelList[lp]["tags"] == undefined) {
+        levelList[lp]["tags"] = []
+    }
+
     let i = 0;
     levelList[lp]["tags"].forEach(tag => {
         clickTag(i, lp)
