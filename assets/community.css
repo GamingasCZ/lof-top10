@@ -1256,6 +1256,7 @@ input:disabled {
 	margin-top: 1em;
 	display: flex;
 	gap: 1em;
+    flex-wrap: wrap;
 }
 
 .tagInUse {background: #ffffff2e !important;}
