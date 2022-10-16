@@ -597,7 +597,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		boards[bIndex]["tags"].forEach(tag => {
 			let tagName = tag[1] == -1 ? jsStr["TAGS"][LANG][tag[0]] : tag[1]
 			tagName = tag[2] == "" ? tagName : `<a class="gamLink" target="_blank" href="${tag[2]}">${tagName}</a>`
-			$(".listTagContainer").append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)
+			$(".listTagContainer").eq(bIndex-1).append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)
 		});
 
 		// Only display icons on hover
