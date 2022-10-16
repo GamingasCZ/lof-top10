@@ -1036,6 +1036,7 @@ async function loadSite() {
 	$("body").css("background-color", "var(--siteBackground)")
 	if ($(":root").css("--greenGradient") != $(":root").css("--defaultGradient")) {
 		$("nav").css("animation-name", "fadeBlack")
+		$("[name='theme-color']").attr("content", $(":root").css("--defaultGradient"))
 		setTimeout(() => $(":root").css("--greenGradient", "var(--defaultGradient)"), 125);
 		setTimeout(() => $("nav").css("animation-name", "none"), 250);
 	}
