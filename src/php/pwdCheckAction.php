@@ -4,7 +4,8 @@ Return codes:
 0 - Error connecting to database
 1 - Empty/incomplete request
 2 - Incorrect password
-3 - Success!!
+3 - List needs password
+4 - Success!!
 */
 
 require("secrets.php");
@@ -30,24 +31,12 @@ else {
     //http_response_code(400);
     exit();
 }
-$datacheck = sanitizeInput([$listType[0], $_POST["pwdEntered"]]);
-
-$datacheck = [$listType[0], $_POST["pwdEntered"]];
-if (in_array("", $datacheck)) {
-    echo "1";
-    exit();
-}
+$datacheck = sanitizeInput([$listType[0]]);
 
 $listData = doRequest($mysqli, sprintf("SELECT * FROM `lists` WHERE `%s`= ?", $listType[1]), [$datacheck[0]], "s");
-$listPwd = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
 
-if ($_POST["pwdEntered"] != $listPwd) {
-    sleep(4);
-    echo "2";
-    //http_response_code(400);
-    exit();
-}
-else {
+$owner = checkListOwnership($mysqli, $listData["uid"]);
+if ($owner) {
     $listData["data"] = htmlspecialchars_decode($listData["data"]);
     echo json_encode($listData);
 }

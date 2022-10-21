@@ -32,12 +32,10 @@ if (!in_array($_POST["comType"], ["0", "1"])) die("5");
 
 $mysqli = new mysqli($hostname, $username, $password, $database);
 
-if ($mysqli->connect_errno) {
-  echo "0";
-  exit();
-}
+if ($mysqli->connect_errno) die("0");
 
-$discord_id = checkAccount(decrypt($_COOKIE["access_token"]))["id"];
+// TODO: check for cookie
+$discord_id = checkAccount()["id"];
 
 $uid_query = $mysqli -> query(sprintf("SELECT `id` FROM `users` WHERE `discord_id` = '%s'", $discord_id));
 $user_id = $uid_query -> fetch_all(MYSQLI_ASSOC)[0]["id"];

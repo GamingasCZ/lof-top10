@@ -19,8 +19,7 @@ if ($mysqli -> connect_errno) {
 }
 
 // Checking request
-error_reporting(0);
-$fuckupData = sanitizeInput(array($_POST["id"],$_POST["pwdEntered"]));
+$fuckupData = sanitizeInput(array($_POST["id"]));
 
 // Password check
 if ($_POST["isHidden"] == 0) {
@@ -30,18 +29,15 @@ else {
   $listData = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden` = ?", [strval($fuckupData[0])], "s");
 }
 
-$listPass = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
-
-// Invalid password
-if ($listPass != $fuckupData[1]) {
-  echo "2";
-  http_response_code(401);
+// This causes passwords to not work, hopefully no one minds :)
+$creatorCheck = checkListOwnership($mysqli, $listData["uid"]);
+if (!$creatorCheck) {
   $mysqli -> close();
-  exit();
+  http_response_code(401);
+  die("2");
 }
 
 // Removing list
-
 if ($_POST["isHidden"] == 0) {
   doRequest($mysqli, "DELETE FROM `lists` WHERE `id` = ?", [$listData["id"]], "i");
 }

@@ -99,7 +99,7 @@ function setupComments() {
 
   // Placeholder related stuff
   $(".comInpArea").on("blur", () => {
-    if (actualText.length == 1) {
+    if (actualText.length == 0) {
       $(".comInpArea").text(selectPholder);
       $(".comInpArea").css("color", "rgba(255,255,255,0.5) !important");
     }
@@ -110,7 +110,6 @@ function setupComments() {
       $(".comInpArea")["0"].innerText = "";
     }
 
-    $(".comInpArea").css("color", "rgba(255,255,255,1) !important");
   });
 
   // MAIN comment handling stuff
@@ -161,38 +160,7 @@ function setupComments() {
   $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")");
   $("#verticalLine").css("border-color", commentColor);
   $(".cpicker").val(commentColor);
-
-  // Page switching
-  $("#pageSwitcher").on("change", function () {
-    commentPage = parseInt($(this).val()) - 1;
-    if (commentPage > maxCommentPage - 1) {
-      commentPage = maxCommentPage - 1;
-      $("#pageSwitcher").val(maxCommentPage);
-    }
-    if (commentPage < 1) {
-      commentPage = 0;
-      $("#pageSwitcher").val(1);
-    }
-    displayComments(deeta);
-  });
 };
-
-function getPlayerIcon() {
-  let player = $(".pIconInp").val();
-  $.get("https://gdbrowser.com/api/profile/" + player, (data, res) => {
-    if (data == "-1") {
-      $(".comUserError").show();
-      $(".comUserError").text(jsStr["GDACC_NOEX"][LANG]);
-      setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-    } else if (res == "success") {
-      $("#pIcon").attr("src", "https://gdbrowser.com/icon/" + player);
-    } else {
-      $(".comUserError").show();
-      $(".comUserError").text(jsStr["GDB_FAIL"][LANG]);
-      setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-    }
-  });
-}
 
 function addEmoji(id) {
   id++;
@@ -201,7 +169,7 @@ function addEmoji(id) {
     midText += `<img class='emojis' src='./images/emoji/${emoji.slice(
       1
     )}.webp'>`;
-    $(".comInpArea").html(midText);
+    $(".comInpArea").html(midText.replace("\n","<br>")+"<br>");
 
     actualText += emoji;
     updateCharLimit();

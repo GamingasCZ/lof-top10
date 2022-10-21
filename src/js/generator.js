@@ -4,6 +4,14 @@ const isInEditor = window.location.pathname.includes("upload");
 
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
+function onIDCopyClick(id, pos) {
+	$(".box").eq(pos-1).append(`<div class="uploadText copyPopup"><h2>ID zkopírováno!</h2><h4>- ${id} -</h4></div>`)
+	setTimeout(() => {
+		$(".copyPopup").fadeOut(() => $(".copyPopup").remove())
+	}, 500);
+	navigator.clipboard.writeText(id)
+	
+}
 
 function listShare() {
 	$("#popupBG").show()
@@ -59,7 +67,7 @@ function showJumpTo() {
 	$(".levelPickerContainer").empty();
 
 	// Show nothing if on an unfinished guessing list
-	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && $(".box").length != Object.keys(boards).length - ADDIT_VALS -1) {
+	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && $(".box").length != Object.keys(boards).length - ADDIT_VALS - 1) {
 		$(".levelPickerContainer").append(`
 		<div class="noSaves">
 			<img src="./images/guessSkip.svg">
@@ -78,7 +86,7 @@ function showJumpTo() {
 		$(".levelPickerContainer:last-child").on("click", (k) => {
 			hideJumpTo();
 			if ($(".boards").css("display") == "none") listList()
-			$(".box")[$(k.target).attr("for")  - 2].scrollIntoView();
+			$(".box")[$(k.target).attr("for") - 2].scrollIntoView();
 		})
 		ind++
 	});
@@ -805,7 +813,7 @@ function pinList(rem = null, isOnHomepage = false) {
 	makeCookie(["pinnedLists", JSON.stringify(pinnedLists)])
 
 	if (isOnHomepage !== false) {
-		$("#unpinCard").parents().eq(2).attr("href","#")
+		$("#unpinCard").parents().eq(2).attr("href", "#")
 		isOnHomepage.parents().eq(2).remove()
 		if ($(".pinnedLists > div").length == 0) {
 			$(".pinnedLists").html(`<div class="uploadText" style="color: #f9e582">${jsStr["NOPINNED"][LANG]}</div>`)
@@ -953,9 +961,19 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				$(custElement).append(`
 				<a id="listPreview" class="noMobileResize" href="#${object["id"]}"
 					 style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${level1col}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
-					<div style="width: 100%">
-						<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object["name"]}</p>
-						<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object["creator"]} -</p>
+					<div style="display: flex;gap: 0.7em;">
+						<div class="inListRating">
+							<img src="images/genericRate.svg">
+							<p class="uploadText" style="margin:-0.1em">${object["rate_ratio"]}</p>
+						</div>
+						<div>
+							<div class="viewContainer"><img src="images/view.svg"><div>2</div></div>
+							<div class="viewContainer"><img src="images/time.svg"><div>7d</div></div>
+						</div>
+						<div>
+							<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object["name"]}</p>
+							<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object["creator"]} -</p>
+						</div>
 					</div>
 				</div>
 				`);
@@ -994,8 +1012,9 @@ async function makeHP() {
 		hpData.favPicks = randomized
 	}
 
+
 	await $.get("./php/getLists.php?homepage=1", data => {
-		hpData.newest = data
+		hpData.newest = data[0]
 	})
 
 	$(".hpSearchButton").click(e => {
@@ -1083,7 +1102,7 @@ async function loadSite() {
 			await $.get("./parts/homepage.html", site => {
 				$("#app").append(translateDoc(site, "homepage"))
 				makeHP();
-				makeCookie(["logindata",""], 1)
+				makeCookie(["logindata", ""], 1)
 			})
 			break;
 
@@ -1111,15 +1130,15 @@ async function loadSite() {
 
 $(async function () {
 	var currLang = getCookie("lang");
-    if (currLang == null) {
-        let getLang = navigator.language;
-        if (["cs", "sk"].includes(getLang)) { currLang = 0; }
-        else { currLang = 1; }
-        
-        makeCookie(["lang", currLang])
-    }
-    LANG = currLang;
-    $($(".settingsDropdown").children()[currLang]).attr("selected", true)
+	if (currLang == null) {
+		let getLang = navigator.language;
+		if (["cs", "sk"].includes(getLang)) { currLang = 0; }
+		else { currLang = 1; }
+
+		makeCookie(["lang", currLang])
+	}
+	LANG = currLang;
+	$($(".settingsDropdown").children()[currLang]).attr("selected", true)
 
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
 
@@ -1142,16 +1161,7 @@ $.get("./parts/navbar.html", navbar => {
 	try {
 		let userInfo = JSON.parse(localStorage.getItem("userInfo"))
 		if (userInfo != null) {
-			$(".loginBut").removeClass("button")
-			$(".loginBut").attr("onclick", "")
-			$(".setLoginIcon").remove()
-			$(".setLoginText").text(userInfo[0])
-			$(".setLoginText").after(`
-			<div onclick="logout()" class="button eventButton uploadText settingsButton noMobileResize"><img src="images/logout.svg">Odhlásit se</div>
-			`)
-
-			$(".userIcon").attr("id", "userLoggedIn")
-			$(".userIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
+			setPFP(userInfo)
 		}
 		else {
 			$(".pfpPlaceholder").remove()
@@ -1183,6 +1193,8 @@ function logout() {
 }
 
 async function lists(list) {
+	let oldList = false
+
 	$(".listInfo").show()
 	$("#crown").show();
 	$("#crown").css("opacity", 1);
@@ -1215,9 +1227,12 @@ async function lists(list) {
 	else if (list.type == "random") {
 		$.get("php/getLists.php?random=1", data => {
 			data = data[0]
-			boards = data["data"];
-			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-			<p style="font-size: var(--miniFont);margin: 0;">${data["creator"]}</p></div>`);
+			boards = data[0]["data"];
+			oldList = 1
+			let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
+			let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
+			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
+			<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 			$(".titleImage").attr("src", boards["titleImg"]);
 			$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1262,9 +1277,12 @@ async function lists(list) {
 					return
 				}
 				else {
-					boards = data["data"];
-					$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-					<p style="font-size: var(--miniFont);margin: 0;">${data["creator"]}</p></div>`);
+					boards = data[0]["data"];
+					oldList = 1
+					let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
+					let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
+					$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
+					<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
 					$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1287,9 +1305,12 @@ async function lists(list) {
 				return
 			}
 			else {
-				boards = data["data"];
-				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-				<p style="font-size: var(--miniFont);margin: 0;">${data["creator"]}</p></div>`);
+				boards = data[0]["data"];
+				oldList = 1
+				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
+				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
+				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
+				<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
@@ -1302,6 +1323,15 @@ async function lists(list) {
 		}
 		)
 	}
+
+	// Load ratings
+	$.get("php/rateAction.php", [LIST_ID], rates => {
+		// 0 - likes, 1 - dislikes
+		$("#likes").text(rates[0])
+		$("#dislikes").text(rates[1])
+	})
+	$("#likeBut").click(rateList)
+	$("#dislikeBut").click(rateList)
 
 	$(".loadPlaceholder").remove()
 
@@ -1329,6 +1359,10 @@ async function lists(list) {
 			index++
 		}, 100);
 	}
+
+	// sadly disable editing old lists :/
+	if (oldList) $(".edit").click(() => openHelp("oldList"))
+	else $(".edit").click(() => goToPWD())
 }
 
 function goToPWD() { window.location.hash = `#update` }
@@ -1461,7 +1495,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 	// Draw pages
 	if (page[parent][1] > 0) {
 		$(".page > *:not(.pageBut)").remove()
-		let keepSize = ( page[parent][0] < 3 || page[parent][1]-page[parent][0] < 4 ) ? 6 : 5
+		let keepSize = (page[parent][0] < 3 || page[parent][1] - page[parent][0] < 4) ? 6 : 5
 		for (let i = 0; i < clamp(page[parent][1], 0, keepSize); i++) {
 			$(".pageYes:last()").click(() => pageSwitch(i - 1, currentListData[parent], parent, cardType, 1))
 			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i + 1}</div>`)
@@ -1481,7 +1515,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 			$(".pageFirst").after(`<hr class="verticalSplitter">`)
 			$(".pageFirst").click(() => pageSwitch(0, currentListData[parent], parent, cardType, 1))
 		}
-		$(`.pageYes:contains(${page[parent][0]+1})`).attr("id", "pgSelected")
+		$(`.pageYes:contains(${page[parent][0] + 1})`).attr("id", "pgSelected")
 	}
 
 	// Draw Cards
@@ -1515,6 +1549,7 @@ function login(part) {
 			$("#popupBG").css("opacity", 1)
 
 			loginData = JSON.parse(decodeURIComponent(loginData))
+			setPFP(loginData)
 			$("#app").prepend(`
 		<div class="uploadBG uploadText" id="loginPopup">
 			<img id="loginPFP" src="https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png">
@@ -1541,7 +1576,7 @@ function openSettings() {
 		let sPos = $(".settingsMenu").position()
 		let sWidth = $(".settingsMenu").width()
 		$("#userLoggedIn").css("top", `calc(${sPos.top}px - 1em)`)
-		$("#userLoggedIn").css("right", `calc(${sWidth/2}px + 1vw - 1em)`)
+		$("#userLoggedIn").css("right", `calc(${sWidth / 2}px + 0.75em - 1em)`)
 		$("#userLoggedIn").css("transform", "scale(2)")
 		$("#userLoggedIn").css("border", "var(--siteBackground) 2px solid")
 	}
@@ -1553,4 +1588,24 @@ function openSettings() {
 	}
 	// $("#userLoggedIn").toggleClass("button")
 	setOpened = !setOpened
+}
+
+function setPFP(userInfo) {
+	// $(".loginBut").removeClass("button")
+	// $(".loginBut").attr("onclick", "")
+	$(".setLoginIcon").remove()
+	$(".setLoginText").text(userInfo[0])
+	$(".setLoginText").after(`
+	<div onclick="logout()" class="button eventButton uploadText settingsButton noMobileResize"><img src="images/logout.svg">Odhlásit se</div>
+	`)
+
+	$(".userIcon").attr("id", "userLoggedIn")
+	$(".userIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
+}
+
+function rateList(el) {
+	let postArray = {"id": LIST_ID, "action": el.target.id == "likeBut"}
+	$.post("php/rateAction.php", postArray, data => {
+		console.log(data)
+	})
 }

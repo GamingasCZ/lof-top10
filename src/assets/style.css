@@ -35,6 +35,16 @@
   50% {transform: translateY(-4em)}
   100% {transform: translateY(0px)}
 }
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
 :root {
   --smallFont: calc(1em * var(--fontMultiplier));
@@ -153,18 +163,32 @@ ul > div {
   background: linear-gradient(180deg, #00000082, transparent);
 }
 
+.listUsername {
+  font-size: var(--miniFont);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.listPFP {
+  width: 2em;
+  border-radius: 10em;
+  border: white 2px solid;
+  box-sizing: border-box;
+}
+
 .listHeaderBlue {
 	display: flex;
 	align-items: center;
 	background: linear-gradient(9deg, #141f20, #044a51) !important;
 	border-radius: 1em;
 	gap: 0.2em;
-	max-width: fit-content;
+	/*! max-width: fit-content; */
 	border: none;
 	min-width: 7em;
 	cursor: pointer;
 	font-size: var(--miniFont) !important;
-  max-width: 100%;
+  /*! max-width: 100%; */
 }
 
 .listHeaderBlue img {
@@ -175,8 +199,9 @@ ul > div {
 .listOptionsContainer {
   display: grid;
   grid-template-columns: 50% 50%;
-  gap: 0.2em;
+  gap: 0.2em 0.4em;
   padding-right: 1vw;
+  align-items: center;
 }
 #listOptionsID {
   display: flex;
@@ -260,6 +285,21 @@ ul > div {
   justify-content: space-between;
 }
 
+.copyPopup {
+	position: absolute;
+	z-index: 3;
+	background: #000000bd;
+	width: 95%;
+	top: 7.5%;
+	right: 2.5%;
+	height: 85%;
+	text-align: center;
+	box-sizing: border-box;
+	border-radius: inherit;
+  animation-name: popIn;
+  animation-duration: 0.05s;
+  animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+}
 
 .box {
   background-color: #43a045;
@@ -312,11 +352,12 @@ ul > div {
   display: flex;
   flex-direction: column;
   background: #0000004a;
-  border-radius: 1vw;
+  border-radius: 1em;
   align-items: center;
-  padding: 0.9vw;
-  margin-bottom: 0.2vw;
-  width: max-content;
+  padding: 0.6em;
+  /*! margin-bottom: 0.6em; */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .siteSettingsChild > p {
@@ -331,16 +372,17 @@ u {
 
 .settingsMenu {
   position: absolute;
-  float: right;
+  /*! float: right; */
   background: var(--greenGradient);
-  right: 1vw;
-  top: 4vw;
-  padding: 0.5vw;
+  right: 0.75em;
+  top: 4em;
+  padding: 0.6em;
   width: max-content;
   border-radius: 1vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.6em;
 }
 
 .favoriteStar {
@@ -725,8 +767,6 @@ html, body {
 
 /* Specific stuff relating to the cbox footer and header */
 #comBoxFooter {
-  /*! border-bottom-left-radius: 15px; */
-  /*! border-bottom-right-radius: 15px; */
   justify-content: flex-end !important;
   gap: 0.5em;
   max-width: clamp(70.6em, 67%, 132em);
@@ -743,6 +783,9 @@ html, body {
   margin: 0;
   font-size: var(--normalFont);
   line-height: 1.1;
+}
+.comHeaderText > h5:nth-child(2) {
+  opacity: 0.4;
 }
 
 /* Text placement in the cbox footer and header */
@@ -1162,4 +1205,53 @@ cb { color: #5fe7ff ;}
 }
 .settingCard > div { flex-grow: 1; }
  
- 
+
+.ratingContainer {
+  display: flex;
+}
+.rateButton {
+  padding: 1.5em;
+  position: relative;
+  border-radius: 0.8em;
+}
+#likeBut:after {
+  background: url(../images/like.svg);
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.4em;
+  height: 2.4em;
+  transform: translate(-50%, -50%) scale(0.5);
+}
+#dislikeBut:after {
+  background: url(../images/dislike.svg);
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.4em;
+  height: 2.4em;
+  transform: translate(-50%, -50%) scale(0.5);
+}
+#dislikeBut {
+  background: linear-gradient(45deg, #0f0404, #170606);
+}
+#likeBut {
+  background: linear-gradient(45deg, #050f04, #081706);
+}
+.rateData {
+  width: 6em;
+  margin: 0 0.5em;
+}
+.likeBar {
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(90deg, #4db34d, #1fd01f 50%, #bf2b2b 51%, #800808);
+  border-radius: 0.3em;
+}
+.likeText {
+	display: flex;
+	justify-content: space-between;
+	font-size: var(--smallFont);
+}

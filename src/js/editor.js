@@ -3,15 +3,10 @@
 function checkJson(data, isPreview=false) {
     try {
         // Kontrola názvů atd.
-        let invalidNames = ["Gamingas", "GamingasCZ"];
-
         let listName = $("#listnm").val();
-        let listCreator = $("#creatornm").val();
 
         if (listName.length < 3) { throw (jsStr["LIST_L"][LANG]); }
         if (listName.length > 40) { throw (jsStr["LIST_TOOL"][LANG]); }
-
-        if (listCreator.toLowerCase().includes("gamingas")) { throw (jsStr["GG_NEVER"][LANG]); }
 
         // 1/3 Je to vůbec JSON?
         var parsedData = JSON.parse(data);
@@ -110,22 +105,20 @@ function uploadList() {
         let postData = {
             "listData": JSON.stringify(levelList),
             "lName": $("#listnm").val(),
-            "lCreator": $("#creatornm").val(),
         }
         if (listHidden == "1") postData["hidden"] = listHidden
 
         $.post("./php/sendList.php", postData, function (data) {
             //0 - password, 1 - listID
             // Change depending on your website
-            let error = data.length != 2
+            let error = data.length != 1
 
             let currWebsite
             let pstr
             if (!error) {
-                currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[1]}`;
-                pstr = `<br>${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${data[0]}</b>`;
+                currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[0]}`;
             }
-            let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
+            let sendMess = !error ? "" : jsStr["LIST_FAIL_UPL"][LANG] + data
 
             $(".uploaderDialog").html(`
                 <img style="padding-left: 3%" src=./images/${!error ? "check" : "error"}.webp >
@@ -262,12 +255,6 @@ function makeEditor(update) {
             $("#imagePrev").attr("src", $(".titImgInp").val())
         }
     })
-    // Showing color picker
-    if (update) {
-        $("#passEditor").show()
-        generateFromJSON(1)
-        isHidden = $("input[name='hidden']").attr("checked") == "checked";
-    }
 
     $("img[for='diffGuesser']").click(() => {
         $(".settingSubbox").slideToggle(50);
@@ -281,6 +268,21 @@ function makeEditor(update) {
 
     $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
     $(".savedFilter").on("keyup", searchFaves)
+
+    if (update) {
+        let info = JSON.parse(sessionStorage.getItem("listProps"))
+        if (info == null) return
+
+        let id = info[2] ? "pid" : "id"
+        let postArray = {}
+        postArray[id] = info[0] // (id/pid): listID
+
+        $.post("./php/pwdCheckAction.php", postArray, check => {
+            if (typeof check == "object") generateFromJSON(2, check)
+            else generateFromJSON(1)
+        })
+        isHidden = $("input[name='hidden']").attr("checked") == "checked";
+    }
 }
 
 const pageExit = exit => {
@@ -307,7 +309,18 @@ function makeBrowser(search) {
         // Generates stuff
         $.get("./php/getLists.php", data => {
             if (typeof data != "object") { $("#communityContainer").text(jsStr["NO_RES"][LANG]); return; }
-            listViewerDrawer(data, "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
+
+            // Change usernames
+            let ind = 0
+            data[0].forEach(c => {
+              data[1].forEach(u => {
+                // Old comments
+                if (c.uid != -1 && c.uid == u.id) data[0][ind].creator = u.username
+              })
+              ind++
+            })
+
+            listViewerDrawer(data[0], "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
             if (isSearching) $("#app .doSearch").click()
         });
     })

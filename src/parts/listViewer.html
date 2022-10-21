@@ -55,12 +55,23 @@
                 <button onclick="pinList()" class="listHeaderBlue uploadText pin"><img src="images/pin.svg">
                     <div id="pinBut">%%s</div>
                 </button>
-                <button onclick="goToPWD()" class="listHeaderBlue uploadText"><img src="images/edit.svg">
+                <button class="listHeaderBlue uploadText edit"><img src="images/edit.svg">
                     <div id="editBut">%%s</div>
                 </button>
             </div>
         </div>
         <div id="cToolTop">
+            <div class="ratingContainer">
+                <button id="likeBut" title="%%s" class="rateButton button"></button>
+                <div class="rateData">
+                    <div class="likeBar"></div>
+                    <div class="likeText uploadText">
+                        <div id="likes"></div>
+                        <div id="dislikes"></div>
+                    </div>
+                </div>
+                <button id="dislikeBut" title="%%s" class="rateButton button"></button>
+            </div>
             <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img
                     src="images/comment.svg" style="width: 2em;">
                 <div id="commButtonText">%%s</div>
@@ -79,9 +90,10 @@
                 <h2 class="quote">Pokud se nepřihlásíš, nedodělám 2.2!</h2>
             </div>
             <p>Pro komentování se prosím přihlaš!</p>
-            <div class="button eventButton uploadText settingsButton noMobileResize" style="width: max-content;" onclick="login(1)">
+            <div class="button eventButton uploadText settingsButton noMobileResize" style="width: max-content;"
+                onclick="login(1)">
                 <img src="images/discord.svg">Přihlásit se
-              </div>
+            </div>
         </div>
 
         <div class="positionEdit" id="commentMaker">
@@ -103,10 +115,8 @@
 
         </div>
         <div class="uploadText comBoxThings" id="comBoxFooter">
-            <img class="comFooterButton comInpThings" src="images/emoji.svg" title="%%s"
-                onclick="displayPanel(1)">
-            <img class="comFooterButton comInpThings" src="images/color.svg" title="%%s"
-                onclick="displayPanel(2)">
+            <img class="comFooterButton comInpThings" src="images/emoji.svg" title="%%s" onclick="displayPanel(1)">
+            <img class="comFooterButton comInpThings" src="images/color.svg" title="%%s" onclick="displayPanel(2)">
             <img class="comFooterButton sendBut" src="images/send.svg" title="%%s" onclick="sendComment()">
         </div>
 

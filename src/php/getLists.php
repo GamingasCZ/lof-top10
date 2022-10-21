@@ -15,30 +15,31 @@ if ($mysqli->connect_errno) {
 
 function parseResult($rows, $singleList = false)
 {
+  global $mysqli;
   $ind = 0;
   if (!$singleList) {
+    $uid_array = array();
     foreach ($rows as $row) {
-      if (base64_decode($row["data"], true) == true) {
-        $row["data"] = base64_decode($row["data"]);
-      }
+      array_push($uid_array, $row["uid"]);
       $row["data"] = json_decode(htmlspecialchars_decode($row["data"]));
+      $rows[$ind]["data"] = $row["data"];
 
-      if ($singleList) {
-        $rows["data"] = $row["data"];
-      } else {
-        $rows[$ind]["data"] = $row["data"];
-      }
       $ind += 1;
     }
+
+    $query = sprintf("SELECT DISTINCT username,id
+                      FROM users
+                      WHERE id IN ('%s')", join("','", array_unique($uid_array)));
   } else {
     // Single list
-    if (base64_decode($rows["data"], true) == true) {
-      $rows["data"] = base64_decode($rows["data"]);
-    }
     $rows["data"] = json_decode(htmlspecialchars_decode($rows["data"]));
-  }
 
-  echo json_encode($rows);
+    $query = sprintf("SELECT username,discord_id,avatar_hash FROM users WHERE id=%s", $rows["uid"]);                  
+  }
+  
+  $result = $mysqli -> query($query) or die($mysqli -> error);
+  $users = $result -> fetch_all(MYSQLI_ASSOC);
+  echo json_encode(array($rows, $users));
 }
 
 if (count($_GET) == 1) {

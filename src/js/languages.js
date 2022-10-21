@@ -152,9 +152,9 @@ var jsStr = {
     "DIFFGUESSER_T": ["Hádání obtížností", "Difficulty guesser"],
     "DIFFGUESSER_D": [`Když je hádání zapnuté a někdo přejde na tvůj seznam, uvidí jen <cb>první level</cb>. Levely se <cg>postupně odemykají</cg> dalším hádáním.`,
                       `When guessing is enabled and someone visits your list, they'll only see the <cb>first level</cb>. The rest of levels get unlocked <cg>as you guess them</cg>.`],
-    "FORCEPASS_T": ["Vynucení hesla", "Password Forcing"],
-    "FORCEPASS_D": [`Od přidání účtů je místo hesel, seznam jednoduše <cb>spojený s tvým účtem</cb>. Možnost lze použít, pokud chceš, aby seznam mohlo upravovat <cr>víc lidí</cr>, nebo jen jestli máš raději hesla.`,
-                    `When guessing is enabled and someone visits your list, they'll only see the <cb>first level</cb>. The rest of levels get unlocked <cg>as you guess them</cg>.`],
+    "OLDLIST_T": ["Starý seznam", "Old list"],
+    "OLDLIST_D": [`Tento seznam byl vydán před updatem z účty a nejde ho upravovat. <a class="gamLink" href="https://twitter.com/g4mingaz">DMni mně</a> pro připsání seznamu na tvůj účet!`,
+                  `This list was uploaded before the account update and can't be edted. <a class="gamLink" href="https://twitter.com/g4mingaz">DM me</a> to have it assigned to your account!`],
 
 
     // graphicEditor
@@ -308,6 +308,8 @@ var parts = {
         ["Skočit na", "Jump To"],
         ["Připnout", "Pin"],
         ["Upravit", "Edit"],
+        ["Líbí se mi to!", "I like this!"],
+        ["Nelíbí se mi to!", "I dislike this!"],
         ["Komentáře", "Comments"],
         ["Jméno", "Username"],
         ["Komentář", "Comments"],
@@ -363,7 +365,6 @@ var parts = {
         ["Hádat: ", "Guess: "],
         ["Obtížnosti", "Difficulties"],
         ["Rating", "Rating"],
-        ["Vynutit heslo", "Force Password"],
         ["Nahrát", "Upload"]
     ]
 }

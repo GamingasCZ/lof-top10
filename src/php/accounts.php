@@ -39,8 +39,8 @@ if (sizeof($_GET) == 1) {
         $mysqli -> query(sprintf("INSERT INTO `users`(`username`, `avatar_hash`, `discord_id`, `refresh_token`) VALUES ('%s','%s','%s','%s')", $ok["username"], $ok["avatar"], $ok["id"], $accessInfo["refresh_token"]));
     } catch (mysqli_sql_exception $err) {
         // Database does not allow duplicate values (already registered), do not die in that case, else ye, commit die :D
-        if (!str_contains($err, "Duplicate")) {
-            $mysqli -> query(sprintf("UPDATE `users` SET `username`='%s', `avatar_hash`='%s', `discord_id`='%s', `refresh_token`='%s' WHERE `discord_id`='%s'", $ok["id"], $ok["username"], $ok["avatar"], $ok["id"], $accessInfo["refresh_token"]));
+        if (str_contains($err, "Duplicate")) {
+            $mysqli -> query(sprintf("UPDATE `users` SET `username`='%s', `avatar_hash`='%s', `refresh_token`='%s' WHERE `discord_id`='%s'", $ok["username"], $ok["avatar"], $accessInfo["refresh_token"], $ok["id"]));
         }
     }
     $mysqli -> close();

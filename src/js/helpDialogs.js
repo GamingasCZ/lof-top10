@@ -45,9 +45,9 @@ var help = {
         "title": jsStr["DIFFGUESSER_T"][LANG],
         "content": jsStr["DIFFGUESSER_D"][LANG]
     },
-    "forcePass": {
-        "title": jsStr["FORCEPASS_T"][LANG],
-        "content": jsStr["FORCEPASS_D"][LANG]
+    "oldList": {
+        "title": jsStr["OLDLIST_T"][LANG],
+        "content": jsStr["OLDLIST_D"][LANG]
     }
 }
 

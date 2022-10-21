@@ -21,19 +21,6 @@
     height: auto !important;
 }
 
-/* Buttons in comment box */
-.comFooterButton { width: 5vw; }
-
-.settingsMenu {
-    top: 13vw;
-}
-
-#shareTools {
-    width: 75%;
-}
-
-#jumpToTools { width: 90%; }
-
 #collabTools {
     border-radius: 0px;
     width: 100%;

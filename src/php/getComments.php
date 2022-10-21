@@ -40,7 +40,7 @@ $comments = $result -> fetch_all(MYSQLI_ASSOC);
 
 // No comments
 if (count($comments) == 0) {
-    exit(json_encode(array()));
+    exit(json_encode(array([],[])));
 }
 
 $uid_array = array();

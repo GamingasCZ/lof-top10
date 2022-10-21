@@ -266,10 +266,8 @@ function generateFromJSON(part, boards) {
 
     // Disabling input boxes when editing a list
     $("#listnm").attr("disabled", "true");
-    $("#creatornm").attr("disabled", "true");
     if (part == 1) {
         $("#listnm").val(loadProps[3]);
-        $("#creatornm").val(loadProps[4]);
         $(".uploadBG > *:not(#listnm, #creatornm, br)").hide()
         $("#passEditor").show()
         return
@@ -277,7 +275,7 @@ function generateFromJSON(part, boards) {
 
     $(".uploadBG > *:not(.imgPreview)").show()
     $("#passEditor").slideUp(50)
-    $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
+    $("#submitbutton > div").text(jsStr["L_UPDATE"][LANG])
     $("#submitbutton").attr("onclick", "updateList()")
 
     $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
@@ -294,7 +292,6 @@ function generateFromJSON(part, boards) {
     $(".previewButton").removeClass("disabled");
 
     $("#listnm").val(boards["name"])
-    $("#creatornm").val(boards["creator"])
 
     levelList = JSON.parse(boards["data"]);
     $(".titImgInp").val(levelList["titleImg"])
@@ -803,7 +800,7 @@ function tagPopup(lp) {
         for (let b = 0; b < 17; b++) {
             $(".tagContainer").append(`
             <div class="badgeBox button noMobileResize">
-                <img src="images/badges/${b}.svg" style="width: 50%;">
+                <img src="images/badges/${b}.svg">
                 <div class="uploadText tagName" style="font-size: var(--miniFont)">${tagNames[b]}</div>
             </div>
             `)
