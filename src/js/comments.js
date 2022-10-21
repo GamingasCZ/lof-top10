@@ -112,6 +112,24 @@ function setupComments() {
 
   });
 
+  // Pick a random comment color
+  commentColor = randomColor(0, 1);
+  let invCol = [255 - commentColor[0], commentColor[1], commentColor[2]]
+  commentColor = HSLtoHEX(...commentColor)
+
+  let boxColor = HEXtoRGB(commentColor, 30);
+  let darkerBoxColor = HEXtoRGB(commentColor, 50);
+
+  $(".comInpArea").css("background-color", "rgb(" + boxColor.join(",") + ")");
+  $(".comInpThings").css(
+    "background-color",
+    "rgb(" + darkerBoxColor.join(",") + ")"
+  );
+  $(".sendBut").css("background-color", "hsl(" + invCol.join(",") + ")");
+  $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")");
+  $("#verticalLine").css("border-color", commentColor);
+  $(".cpicker").val(commentColor);
+
   // MAIN comment handling stuff
   $(".comInpArea").on("keyup keypress", (k) => {
     // Only perform stuff once
@@ -121,7 +139,11 @@ function setupComments() {
       text = text.replace(/<div>/g, "\n"); // Div tag is most likely newline
       text = text.replace(/<\/div>/g, ""); // Remove div tag end
       let keepImgs = text;
-      keepImgs = keepImgs.replace(/<br>/g, "");
+      // keepImgs = keepImgs.replace(/<br>/g, "");
+
+        let pos = keepImgs.lastIndexOf('<br>');
+        if (pos != -1) keepImgs = keepImgs.substring(0,pos) + keepImgs.substring(pos+4)
+
 
       // this is the worst fix imaginable
       text = text.replace(/<img class="emojis" src=".\/images\/emoji\//g, "&");
@@ -142,24 +164,6 @@ function setupComments() {
       updateCharLimit();
     }
   });
-
-  // Pick a random comment color
-  commentColor = randomColor(0, 1);
-  let invCol = [255 - commentColor[0], commentColor[1], commentColor[2]]
-  commentColor = HSLtoHEX(...commentColor)
-
-  let boxColor = HEXtoRGB(commentColor, 30);
-  let darkerBoxColor = HEXtoRGB(commentColor, 50);
-
-  $(".comInpArea").css("background-color", "rgb(" + boxColor.join(",") + ")");
-  $(".comInpThings").css(
-    "background-color",
-    "rgb(" + darkerBoxColor.join(",") + ")"
-  );
-  $(".sendBut").css("background-color", "hsl(" + invCol.join(",") + ")");
-  $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")");
-  $("#verticalLine").css("border-color", commentColor);
-  $(".cpicker").val(commentColor);
 };
 
 function addEmoji(id) {
@@ -169,7 +173,7 @@ function addEmoji(id) {
     midText += `<img class='emojis' src='./images/emoji/${emoji.slice(
       1
     )}.webp'>`;
-    $(".comInpArea").html(midText.replace("\n","<br>")+"<br>");
+    $(".comInpArea").html("<div>"+midText.replace(/\n/g,"</div><div>")+"</div>");
 
     actualText += emoji;
     updateCharLimit();
@@ -365,6 +369,7 @@ function comBox(cd, element) {
       `<img class="emojis" src="./images/emoji/${emojiID}.webp">` +
       selEnd;
   }
+  cd["comment"] = cd["comment"].replace(/\n/g,"<br>")
 
   // Making links clickable :)
   let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g

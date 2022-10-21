@@ -717,7 +717,7 @@ html, body {
 .comTextArea {
   background-color: salmon;
   border: none;
-  max-height: 8vh;
+  max-height: 6em;
   border-radius: 5px;
   resize: none;
   width: 102%;
