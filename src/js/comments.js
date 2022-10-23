@@ -141,8 +141,8 @@ function setupComments() {
       let keepImgs = text;
       // keepImgs = keepImgs.replace(/<br>/g, "");
 
-        let pos = keepImgs.lastIndexOf('<br>');
-        if (pos != -1) keepImgs = keepImgs.substring(0,pos) + keepImgs.substring(pos+4)
+      let pos = keepImgs.lastIndexOf('<br>');
+      if (pos != -1) keepImgs = keepImgs.substring(0, pos) + keepImgs.substring(pos + 4)
 
 
       // this is the worst fix imaginable
@@ -157,7 +157,6 @@ function setupComments() {
         text = text.slice(1);
         keepImgs = keepImgs.slice(1);
       }
-
       actualText = text;
       midText = keepImgs;
 
@@ -166,18 +165,66 @@ function setupComments() {
   });
 };
 
+function getCaretPosition(element) {
+  var caretOffset = 0;
+
+  var range = window.getSelection().getRangeAt(0);
+  var preCaretRange = range.cloneRange();
+  preCaretRange.selectNodeContents(element);
+  preCaretRange.setEnd(range.endContainer, range.endOffset);
+  caretOffset = preCaretRange.toString().length;
+
+  return caretOffset;
+}
+
 function addEmoji(id) {
   id++;
   let emoji = "&" + (id > 9 ? id : "0" + id);
   if (actualText.length + emoji.length < 300) {
-    midText += `<img class='emojis' src='./images/emoji/${emoji.slice(
-      1
-    )}.webp'>`;
-    $(".comInpArea").html("<div>"+midText.replace(/\n/g,"</div><div>")+"</div>");
+    let caret = getCaretPosition($(".comInpArea")[0])
+
+    midText = midText.slice(0, caret) + `<img class='emojis' src='./images/emoji/${emoji.slice(1)}.webp'>` + midText.slice(caret);
+
+    let hasEmojis = midText.match(/<img class='emojis' src='.\/images\/emoji\/(\d+)/g) != null
+    let emojiIndexArray, emojiIDarray
+    if (hasEmojis) {
+      emojiIDarray = midText.match(/<img class='emojis' src='.\/images\/emoji\/(\d+)/g).map(x => x.slice(-2))
+      emojiIndexArray = []
+
+      let emojiClone = midText
+      while (emojiClone.match(/<img class='emojis' src='.\/images\/emoji\/(\d+)/g) != null) {
+        let index = emojiClone.indexOf("<img class='emojis' src='./images/emoji/")
+        emojiClone = emojiClone.replace(/<img class='emojis' src='\.\/images\/emoji\/\d+.webp'>/, "%".repeat(50))
+
+        emojiIndexArray.push(index)
+      }
+
+      midText = midText.replace(/<img class='emojis' src='.\/images\/emoji\/\d+.webp'>/g, "")
+    }
+
+    if (hasEmojis) {
+      let ind = 0
+      let caret = getCaretPosition($(".comInpArea")[0])
+      emojiIndexArray.forEach(el => {
+        let overAdded = (el < caret) * 3
+        midText = midText.slice(0, el + overAdded) + `&${emojiIDarray[ind]}` + midText.slice(el + overAdded);
+        ind++
+      });
+    }
+    
+    drawEmojis()
+    $(".comInpArea").html("<div>" + midText.replace(/\n/g, "</div><div>") + "</div>");
 
     actualText += emoji;
     updateCharLimit();
   }
+}
+
+function drawEmojis() {
+  let emojis = midText.match(/&\d+/g)
+  emojis.forEach(e => {
+    midText = midText.replace(e, `<img class='emojis' src='./images/emoji/${e.slice(1)}.webp'>`)
+  });
 }
 
 var lastOpenedPanel = -1;
@@ -249,54 +296,54 @@ function displayPanel(what) {
 
 function sendComment() {
   if ($(".sendBut")["0"].className.match("disabled") == null) {
-      $(".sendBut").addClass("disabled");
-      let token = getCookie("access_token")
-      if (!token) {
+    $(".sendBut").addClass("disabled");
+    let token = getCookie("access_token")
+    if (!token) {
+      $(".sendBut").removeClass("disabled");
+      $(".comUserError").show();
+      $(".comUserError").text("Nepodařilo se přihlásit!");
+      setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
+      return
+    }
+    let postData = {
+      token: token,
+      comment: actualText,
+      comType: 0, // Change when I eventually add replies,
+      listID: LIST_ID,
+      comColor: commentColor,
+    };
+
+    $.post("./php/sendComment.php", postData, (data) => {
+      if (data == 6) {
+        // Success text
+        $(".comUserError").show();
+        $(".comUserError").css("color", "#5df469 !important");
+        $(".comUserError").text(jsStr["C_SENT"][LANG]);
+        setTimeout(() => {
+          $(".comUserError").fadeOut(3000);
+          $(".comUserError").css("color", "tomato");
+        }, 3000);
+
+        refreshComments();
+
+        // Resetting comment form
+        actualText = "";
+        midText = "";
+        $(".comInpArea").text("");
+        updateCharLimit();
+
+        // 10 second comment rate limit
+        setTimeout(() => {
+          $(".sendBut").removeClass("disabled");
+        }, 10000);
+      } else {
+        // Comment send error
         $(".sendBut").removeClass("disabled");
         $(".comUserError").show();
-        $(".comUserError").text("Nepodařilo se přihlásit!");
+        $(".comUserError").text(jsStr["C_ERR"][LANG] + data);
         setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-        return
       }
-      let postData = {
-        token: token,
-        comment: actualText,
-        comType: 0, // Change when I eventually add replies,
-        listID: LIST_ID,
-        comColor: commentColor,
-      };
-
-      $.post("./php/sendComment.php", postData, (data) => {
-        if (data == 6) {
-          // Success text
-          $(".comUserError").show();
-          $(".comUserError").css("color", "#5df469 !important");
-          $(".comUserError").text(jsStr["C_SENT"][LANG]);
-          setTimeout(() => {
-            $(".comUserError").fadeOut(3000);
-            $(".comUserError").css("color", "tomato");
-          }, 3000);
-
-          refreshComments();
-
-          // Resetting comment form
-          actualText = "";
-          midText = "";
-          $(".comInpArea").text("");
-          updateCharLimit();
-
-          // 10 second comment rate limit
-          setTimeout(() => {
-            $(".sendBut").removeClass("disabled");
-          }, 10000);
-        } else {
-          // Comment send error
-          $(".sendBut").removeClass("disabled");
-          $(".comUserError").show();
-          $(".comUserError").text(jsStr["C_ERR"][LANG] + data);
-          setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-        }
-      })
+    })
   }
 }
 
@@ -369,7 +416,7 @@ function comBox(cd, element) {
       `<img class="emojis" src="./images/emoji/${emojiID}.webp">` +
       selEnd;
   }
-  cd["comment"] = cd["comment"].replace(/\n/g,"<br>")
+  cd["comment"] = cd["comment"].replace(/\n/g, "<br>")
 
   // Making links clickable :)
   let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g
@@ -461,7 +508,7 @@ async function displayComments(data) {
 
   let refreshBut = `<img id="searchLists" class="button refreshBut" onclick="refreshComments()" style="width: 3em;" src="images/replay.svg">`
   if (currentListData["#commentList"] == undefined) listViewerDrawer(data[0], "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
-  
+
   currentListData["#commentList"] = data[0]
   pageSwitch(page["#commentList"][0], currentListData["#commentList"], "#commentList", 6, 1)
   $(".comTextArea .gamLink").click(el => redirectWarn(el))
