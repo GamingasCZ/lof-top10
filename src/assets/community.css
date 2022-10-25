@@ -543,7 +543,6 @@ input:disabled {
     margin: auto;
     display: block;
     padding: 1em 0;
-    /*! box-sizing: content-box; */
 }
 
 #listPreview {
@@ -555,13 +554,13 @@ input:disabled {
     border-radius: 5px;
     display: block;
     background-size: 150vw;
-    background-position-x: right;
+    background-position-x: 99%;
     transition: background-position-x 0.5s;
     max-width: clamp(80em, 85%, 80em);
 }
 
 #listPreview:hover {
-    background-position-x: left;
+    background-position-x: 1%;
     cursor: pointer;
 }
 
@@ -945,9 +944,9 @@ input:disabled {
 .listDiffStar {
     position: absolute;
     z-index: 2;
-    width: 100%;
-    left: 1.2em;
-    top: 1.5em;
+    width: 60%;
+    left: 1.3em;
+    top: 1.7em;
 }
 
 .rateContainer {

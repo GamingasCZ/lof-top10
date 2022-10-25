@@ -958,9 +958,13 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				let level1col = object["data"][1].color
 				let lightCol = HEXtoRGB(level1col, -60)
 				let darkCol = HEXtoRGB(level1col, 40)
+				
+				let privateBorder = object["hidden"] == 0 ? "" : "border-color: rgba(255, 255, 255, 0.25); border-style: dotted;"
+				let link = object["hidden"] == 0 ? object["id"] : object["hidden"]
+
 				$(custElement).append(`
-				<a id="listPreview" class="noMobileResize" href="#${object["id"]}"
-					 style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${level1col}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
+				<a id="listPreview" class="noMobileResize" href="#${link}"
+					 style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${level1col}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")});${privateBorder}">
 					<div style="display: flex;gap: 0.7em;">
 						<div class="inListRating">
 							<img src="images/genericRate.svg">
@@ -1093,7 +1097,7 @@ async function loadSite() {
 			await $.get("./parts/listBrowser.html", site => {
 				$("#app").append("<div id='communityContainer'></div>")
 				$("#communityContainer").html(translateDoc(site, "listBrowser"))
-				makeBrowser(hash.includes("!") ? hash.split("!")[1] : "")
+				makeBrowser()
 			})
 			break;
 		case /login/.test(hash):
@@ -1119,7 +1123,6 @@ async function loadSite() {
 
 				LIST_ID = listObject.id
 				lists(listObject)
-				setupComments()
 			})
 			break;
 	}
@@ -1324,12 +1327,6 @@ async function lists(list) {
 		)
 	}
 
-	// Load ratings
-	$.get("php/rateAction.php", [LIST_ID], rates => {
-		// 0 - likes, 1 - dislikes
-		$("#likes").text(rates[0])
-		$("#dislikes").text(rates[1])
-	})
 	$("#likeBut").click(rateList)
 	$("#dislikeBut").click(rateList)
 
@@ -1363,6 +1360,16 @@ async function lists(list) {
 	// sadly disable editing old lists :/
 	if (oldList) $(".edit").click(() => openHelp("oldList"))
 	else $(".edit").click(() => goToPWD())
+
+	// Load ratings
+	$.get("php/rateAction.php", {"id": LIST_ID}, rates => {
+		// 0 - likes, 1 - dislikes
+		$("#likes").text(rates[0])
+		$("#dislikes").text(rates[1])
+
+		if (rates[2] == 0) colorizeDislike() // Had disliked
+		else if (rates[2] == 1) colorizeLike() // Had liked
+	})
 }
 
 function goToPWD() { window.location.hash = `#update` }
@@ -1603,9 +1610,30 @@ function setPFP(userInfo) {
 	$(".userIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
 }
 
+function colorizeLike() {
+	$("#likeBut").css("background", "#2bb047")
+	$(":root").css("--likeGlow","brightness(6)")
+
+	$("#dislikeBut").css("background", "#1c0505")
+}
+function colorizeDislike() {
+	$("#dislikeBut").css("background", "#b02b2b")
+	$(":root").css("--dislikeGlow","brightness(6)")
+
+	$("#likeBut").css("background", "#051c0c")
+}
+
 function rateList(el) {
-	let postArray = {"id": LIST_ID, "action": el.target.id == "likeBut"}
+	let smashedLike = el.target.id == "likeBut"
+	let postArray = {"id": LIST_ID, "action": smashedLike}
 	$.post("php/rateAction.php", postArray, data => {
-		console.log(data)
+		if (smashedLike) {
+			$("#likes").text(parseInt($("#likes").text()) + 1)
+			colorizeLike()
+		}
+		else {
+			$("#dislikes").text(parseInt($("#dislikes").text()) + 1)
+			colorizeDislike()
+		}
 	})
 }

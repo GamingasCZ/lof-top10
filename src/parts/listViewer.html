@@ -4,8 +4,8 @@
     <p class="uploadText" id="shareText" style="margin-bottom: 0;">%%s</p>
     <input class="uploadText settingsBG" id="shareContainer" readonly></input>
     <div style="display: flex;align-items:flex-start;" class="shareSocials">
-        <img src="images/twitter.webp" class="button" style="width: 3em; margin-right: 0.3em;">
-        <img src="images/reddit.webp" class="button" style="width: 3em;">
+        <img src="images/twitter.webp" class="button" style="width: 3em; margin-right: 0.3em;" loading="lazy">
+        <img src="images/reddit.webp" class="button" style="width: 3em;" loading="lazy">
     </div>
 </div>
 
@@ -13,7 +13,7 @@
 <div style="display: none;" id="jumpToTools" class="uploadText levelPicker">
     <div style="display: flex; align-items: center;">
         <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">%%s</span>
-        <img onclick="hideJumpTo()" src="./images/smallClose.svg" style="width: 2em;" class="button">
+        <img onclick="hideJumpTo()" src="./images/smallClose.svg" style="width: 2em;" class="button" loading="lazy">
     </div>
     <div style="padding: 0 1em 1em;">
         <div class="levelPickerContainer"></div>
@@ -25,7 +25,7 @@
     <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
         <p style="margin: 0 auto;" class="collabTTitle"></p>
         <img src="./images/smallClose.svg" class="button" style="width: 6%; height: max-content;"
-            onclick="hideCollabStats()">
+            onclick="hideCollabStats()" loading="lazy">
     </div>
     <div class="collabGraphs" style="min-height: 49%; max-height: 49%; overflow-y: auto;">
 
@@ -86,20 +86,21 @@
     <div class="comments">
         <div id="loginHelp" class="uploadBG uploaderDialog uploadText" style="display: none;">
             <div class="quoteContainer">
-                <img src="images/emoji/01.webp" style="width: 3em;" class="loginEmoji">
+                <img src="images/emoji/01.webp" style="width: 3em;" class="loginEmoji" loading="lazy">
                 <h2 class="quote">Pokud se nepřihlásíš, nedodělám 2.2!</h2>
             </div>
             <p>Pro komentování se prosím přihlaš!</p>
             <div class="button eventButton uploadText settingsButton noMobileResize" style="width: max-content;"
                 onclick="login(1)">
-                <img src="images/discord.svg">Přihlásit se
+                <img src="images/discord.svg" loading="lazy">Přihlásit se
             </div>
         </div>
 
+        <p id="comTest"></p>
         <div class="positionEdit" id="commentMaker">
             <div id="cHeader" class="uploadText">
                 <div class="cNameContainer">
-                    <img id="pIcon" src="">
+                    <img id="pIcon" src="" loading="lazy">
                     <div id="commentName"></div>
                 </div>
                 <h3 id="charLimit">0/300</h3>
@@ -115,9 +116,9 @@
 
         </div>
         <div class="uploadText comBoxThings" id="comBoxFooter">
-            <img class="comFooterButton comInpThings" src="images/emoji.svg" title="%%s" onclick="displayPanel(1)">
-            <img class="comFooterButton comInpThings" src="images/color.svg" title="%%s" onclick="displayPanel(2)">
-            <img class="comFooterButton sendBut" src="images/send.svg" title="%%s" onclick="sendComment()">
+            <img class="comFooterButton comInpThings" src="images/emoji.svg" loading="lazy" title="%%s" onclick="displayPanel(1)">
+            <img class="comFooterButton comInpThings" src="images/color.svg" loading="lazy" title="%%s" onclick="displayPanel(2)">
+            <img class="comFooterButton sendBut" src="images/send.svg" loading="lazy" title="%%s" onclick="sendComment()">
         </div>
 
         <div id="commentList"></div>

@@ -35,10 +35,7 @@ if ($len > 25000 || $len < 150) {
 }
 
 // TODO: check for cookie
-$discord_id = checkAccount()["id"];
-
-$uid_query = $mysqli -> query(sprintf("SELECT `id` FROM `users` WHERE `discord_id` = '%s'", $discord_id));
-$user_id = $uid_query -> fetch_all(MYSQLI_ASSOC)[0]["id"];
+$user_id = checkAccount()["id"];
 
 // Checking request
 error_reporting($debugMode ? -1 : 0);

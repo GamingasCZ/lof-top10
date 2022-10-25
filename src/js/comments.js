@@ -8,6 +8,7 @@ function listComments() {
     $(".boards").fadeIn(100);
     $("#commentTool").fadeOut(50)
   } else {
+    setupComments()
     $(".boards").fadeOut(50);
     $(".comments").fadeIn(100);
     $("#commButton").css("box-shadow", "#39c4a95e 0px 0px 28px")
@@ -16,7 +17,7 @@ function listComments() {
 }
 
 function updateCharLimit() {
-  var charLimit = actualText.length;
+  var charLimit = emojiText.length;
 
   // I finally got to use the switch statement!!! (so exciting)
   switch (Math.floor(charLimit / 50)) {
@@ -51,10 +52,13 @@ function updateCharLimit() {
 
 var actualText = "";
 var midText = "";
+var emojiText = "";
 var commentColor = "";
 function setupComments() {
   // Is on homepage? (do not load)
   if (LIST_ID == -9) return
+  // Is already setup?
+  if ($(".commentList").text() != "") return
 
   var placeholders = [
     jsStr["PHOLD1"][LANG],
@@ -70,7 +74,7 @@ function setupComments() {
   for (let i = 0; i < EMOJI_AM; i++) {
     let em = i + 1 < 10 ? "0" + (i + 1) : i + 1;
     $(".emojiPanel").append(
-      `<img class="listEmoji" src="./images/emoji/${em}.webp" onclick="addEmoji(${i})">`
+      `<img class="listEmoji button" src="./images/emoji/${em}.webp" onclick="addEmoji(${i})">`
     );
   }
 
@@ -94,20 +98,21 @@ function setupComments() {
 
   // Adds a placeholder to the comment area
   var selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
-  $(".comInpArea").text(selectPholder);
-  $(".comInpArea").css("color", "rgba(255,255,255,0.5) !important");
+  $("#comFont").text(selectPholder);
+  $("#comFont").css("color", "rgba(255,255,255,0.5)");
 
   // Placeholder related stuff
-  $(".comInpArea").on("blur", () => {
-    if (actualText.length == 0) {
-      $(".comInpArea").text(selectPholder);
-      $(".comInpArea").css("color", "rgba(255,255,255,0.5) !important");
+  $("#comFont").on("blur", () => {
+    if ($("#comFont").text() == "") {
+      $("#comFont").text(selectPholder);
+      $("#comFont").css("color", "rgba(255,255,255,0.5)");
     }
   });
 
-  $(".comInpArea").on("click", () => {
-    if (placeholders.indexOf($(".comInpArea")["0"].innerText) != -1) {
-      $(".comInpArea")["0"].innerText = "";
+  $("#comFont").on("click", () => {
+    if (placeholders.indexOf($("#comFont")["0"].innerText) != -1) {
+      $("#comFont")[0].innerText = "";
+      $("#comFont").css("color", "");
     }
 
   });
@@ -131,43 +136,33 @@ function setupComments() {
   $(".cpicker").val(commentColor);
 
   // MAIN comment handling stuff
-  $(".comInpArea").on("keyup keypress", (k) => {
-    // Only perform stuff once
-    if (k.type == "keyup") {
-      let text = $(".comInpArea").html();
+  $(".comInpArea").on("keydown", (k) => {
+    let text = $(".comInpArea").html();
 
-      text = text.replace(/<div>/g, "\n"); // Div tag is most likely newline
-      text = text.replace(/<\/div>/g, ""); // Remove div tag end
-      let keepImgs = text;
-      // keepImgs = keepImgs.replace(/<br>/g, "");
+    text = text.replace(/<div>/g, "\n"); // Div tag is most likely newline
+    text = text.replace(/<\/div>/g, ""); // Remove div tag end
 
-      let pos = keepImgs.lastIndexOf('<br>');
-      if (pos != -1) keepImgs = keepImgs.substring(0, pos) + keepImgs.substring(pos + 4)
+    // // this is the worst fix imaginable
+    text = text.replace(/<img class="emojis" onerror="\$\(this\)\.remove\(\)" src="\.\/images\/emoji\//g, "&");
+    text = text.replace(/.webp">/g, "");
 
+    // Remove excess tags
+    text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "");
 
-      // this is the worst fix imaginable
-      text = text.replace(/<img class="emojis" src=".\/images\/emoji\//g, "&");
-      text = text.replace(/.webp">/g, "");
-
-      // Remove excess tags
-      text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "");
-
-      // Remove excess newline
-      if (text.startsWith("\n")) {
-        text = text.slice(1);
-        keepImgs = keepImgs.slice(1);
-      }
-      actualText = text;
-      midText = keepImgs;
-
-      updateCharLimit();
+    // Remove excess newline
+    if (text.startsWith("\n")) {
+      text = text.slice(1);
     }
-  });
+    actualText = text;
+    midText = text
+    emojiText = text.replace(/&\d+/g, "&").replace(/\n/g, "")
+
+    updateCharLimit();
+  }
+  );
 };
 
 function getCaretPosition(element) {
-  var caretOffset = 0;
-
   var range = window.getSelection().getRangeAt(0);
   var preCaretRange = range.cloneRange();
   preCaretRange.selectNodeContents(element);
@@ -180,51 +175,55 @@ function getCaretPosition(element) {
 function addEmoji(id) {
   id++;
   let emoji = "&" + (id > 9 ? id : "0" + id);
-  if (actualText.length + emoji.length < 300) {
+  if (emojiText.length + emoji.length < 300) {
     let caret = getCaretPosition($(".comInpArea")[0])
 
-    midText = midText.slice(0, caret) + `<img class='emojis' src='./images/emoji/${emoji.slice(1)}.webp'>` + midText.slice(caret);
-
-    let hasEmojis = midText.match(/<img class='emojis' src='.\/images\/emoji\/(\d+)/g) != null
-    let emojiIndexArray, emojiIDarray
-    if (hasEmojis) {
-      emojiIDarray = midText.match(/<img class='emojis' src='.\/images\/emoji\/(\d+)/g).map(x => x.slice(-2))
-      emojiIndexArray = []
-
-      let emojiClone = midText
-      while (emojiClone.match(/<img class='emojis' src='.\/images\/emoji\/(\d+)/g) != null) {
-        let index = emojiClone.indexOf("<img class='emojis' src='./images/emoji/")
-        emojiClone = emojiClone.replace(/<img class='emojis' src='\.\/images\/emoji\/\d+.webp'>/, "%".repeat(50))
-
-        emojiIndexArray.push(index)
-      }
-
-      midText = midText.replace(/<img class='emojis' src='.\/images\/emoji\/\d+.webp'>/g, "")
+    emojiText = emojiText.slice(0, caret) + `&` + emojiText.slice(caret);
+    let hasEmojis = emojiText.slice(0, caret + 1).match(/&/g)
+    let emAmount
+    if (hasEmojis != null) {
+      emAmount = hasEmojis.length
     }
+    else emAmount = 1
 
-    if (hasEmojis) {
-      let ind = 0
-      let caret = getCaretPosition($(".comInpArea")[0])
-      emojiIndexArray.forEach(el => {
-        let overAdded = (el < caret) * 3
-        midText = midText.slice(0, el + overAdded) + `&${emojiIDarray[ind]}` + midText.slice(el + overAdded);
-        ind++
-      });
-    }
-    
+    let emojiPos = midText.slice(0, caret + emAmount * 3)
+
+    let noFuckupPos = 0
+    if (emojiPos.endsWith("&")) noFuckupPos = 0
+    midText = (emojiPos.slice(0, caret + emAmount * 3 - 3 + noFuckupPos)) + `${emoji}` + midText.slice(caret + noFuckupPos + emAmount * 3 - 3);
     drawEmojis()
-    $(".comInpArea").html("<div>" + midText.replace(/\n/g, "</div><div>") + "</div>");
 
-    actualText += emoji;
     updateCharLimit();
   }
 }
 
+function setCaretAtStartEnd( el ){
+  el.focus();
+  if (typeof window.getSelection != "undefined"
+          && typeof document.createRange != "undefined") {
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+  } else if (typeof document.body.createTextRange != "undefined") {
+      var textRange = document.body.createTextRange();
+      textRange.moveToElementText(el);
+      textRange.collapse(false);
+      textRange.select();
+  }
+}
+
 function drawEmojis() {
-  let emojis = midText.match(/&\d+/g)
+  let emojiText = midText
+  let emojis = emojiText.match(/&\d+/g)
   emojis.forEach(e => {
-    midText = midText.replace(e, `<img class='emojis' src='./images/emoji/${e.slice(1)}.webp'>`)
+    let element = $(`<img class='emojis' onerror="$(this).remove()" src='./images/emoji/${e.slice(1)}.webp'>`)
+    emojiText = emojiText.replace(e, element[0].outerHTML)
   });
+  $(".comInpArea").html("<div>" + emojiText.replace(/\n/g, "</div><div>") + "</div>");
+  setCaretAtStartEnd($(".comInpArea")[0])
 }
 
 var lastOpenedPanel = -1;
@@ -307,7 +306,7 @@ function sendComment() {
     }
     let postData = {
       token: token,
-      comment: actualText,
+      comment: midText,
       comType: 0, // Change when I eventually add replies,
       listID: LIST_ID,
       comColor: commentColor,
@@ -397,7 +396,7 @@ function comBox(cd, element) {
   } // First comment's date is not in milliseconds
   let nT = new Date(cd["timestamp"] * 1000);
 
-  profPic = `<img class="pIcon" style="width: 2.5em; border-radius: 10em;" src="${cd.avatar}">`;
+  profPic = `<img class="pIcon" style="width: 2.2em; border-radius: 10em;" src="${cd.avatar}">`;
 
   // OwO, adding emojis
   while (cd["comment"].match(/&\d+/g) != null) {
@@ -441,7 +440,7 @@ function comBox(cd, element) {
       ${profPic}
       <div class="comHeaderText">
         <h5>${cd["username"]}</h5>
-        <h5 style="font-size: var(--miniFont); cursor: help;" ${hoverDate}>${time}</h5>
+        <h5 style="font-size: var(--tinyFont); cursor: help;" ${hoverDate}>${time}</h5>
       </div>
     </div>
       

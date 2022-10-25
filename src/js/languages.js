@@ -298,7 +298,7 @@ var parts = {
         ["Top 15 Levelů od Fanoušků 2021","Top 15 Request Levels 2021"]
     ],
     "listBrowser": [
-        ["        Hledání", "        Search"]
+        [" Hledání", " Search"]
     ],
     "listViewer": [
         ["Sdílet", "Share"],

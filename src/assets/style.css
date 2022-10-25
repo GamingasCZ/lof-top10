@@ -60,6 +60,9 @@
   --fontMultiplier: 1;
   --siteBackground: #08110b;
   --normalColor: #045124;
+  --tinyFont: calc(0.5em * var(--fontMultiplier));
+  --likeGlow: none;
+  --dislikeGlow: none
 }
 
 body {
@@ -723,9 +726,11 @@ html, body {
   width: 102%;
   padding: 0.5%;
   overflow: auto;
-  word-wrap: anywhere;
+  /*! word-wrap: anywhere; */
   margin: 0.3em 0 0;
   min-height: 2em;
+  /*! word-break: break-all; */
+  white-space: normal;
 }
 
 #comFont {
@@ -781,8 +786,8 @@ html, body {
 }
 .comHeaderText > h5 {
   margin: 0;
-  font-size: var(--normalFont);
-  line-height: 1.1;
+  font-size: var(--smallFont);
+  line-height: 1.4;
 }
 .comHeaderText > h5:nth-child(2) {
   opacity: 0.4;
@@ -1222,7 +1227,8 @@ cb { color: #5fe7ff ;}
   left: 50%;
   width: 2.4em;
   height: 2.4em;
-  transform: translate(-50%, -50%) scale(0.5);
+  transform: translate(-50%, -50%) scale(0.8);
+  filter: var(--likeGlow);
 }
 #dislikeBut:after {
   background: url(../images/dislike.svg);
@@ -1232,13 +1238,14 @@ cb { color: #5fe7ff ;}
   left: 50%;
   width: 2.4em;
   height: 2.4em;
-  transform: translate(-50%, -50%) scale(0.5);
+  transform: translate(-50%, -50%) scale(0.8);
+  filter: var(--dislikeGlow);
 }
 #dislikeBut {
-  background: linear-gradient(45deg, #0f0404, #170606);
+  background: #cc2121;
 }
 #likeBut {
-  background: linear-gradient(45deg, #050f04, #081706);
+  background: #21cc5b;
 }
 .rateData {
   width: 6em;
@@ -1246,12 +1253,38 @@ cb { color: #5fe7ff ;}
 }
 .likeBar {
   width: 100%;
-  height: 50%;
-  background: linear-gradient(90deg, #4db34d, #1fd01f 50%, #bf2b2b 51%, #800808);
+  height: 40%;
+  background: linear-gradient(90deg, #188818, #4be890 50%, #e84b5a 51%, #680707);
   border-radius: 0.3em;
 }
 .likeText {
 	display: flex;
 	justify-content: space-between;
 	font-size: var(--smallFont);
+}
+
+#likes:before {
+  content: "";
+  background: url(../images/like.svg);
+  position: absolute;
+  width: 1.5em;
+  height: 1.7em;
+  transform: scale(0.5) translate(-2.5em, -0.3em);
+  filter: brightness(3.5);
+}
+#likes {
+  margin-left: 0.8em;
+}
+
+#dislikes:after {
+  content: "";
+  background: url(../images/dislike.svg);
+  position: absolute;
+  width: 1.5em;
+  height: 1.7em;
+  transform: scale(0.5) translate(-0.5em, -0.3em);
+  filter: brightness(3.5);
+}
+#dislikes {
+  margin-right: 0.8em;
 }

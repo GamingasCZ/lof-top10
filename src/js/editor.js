@@ -289,9 +289,11 @@ const pageExit = exit => {
     if (Object.keys(levelList).length > ADDIT_VALS+1) exit.preventDefault();
 }
 
-function makeBrowser(search) {
+function makeBrowser() {
     let isSearching = false
     $.get("./parts/listBrowser.html", dt => {
+        hash = window.location.hash
+        let search = hash.includes("!") ? hash.split("!")[1] : ""
         if (search != "") {
             $("#searchBar").val(decodeURIComponent(search))
             isSearching = true
@@ -299,23 +301,22 @@ function makeBrowser(search) {
 
         // Add switch buttons
         if (localStorage.getItem("userInfo") != null) {
-            $(".savedTitle").after(`<div class="browserContainer">
+            $(".titleTools").after(`<div class="browserContainer">
                 <button class="browserButton uploadText button" onclick="switchBrowser('#browse')">Nejnovější</button>
                 <button class="browserButton uploadText button" onclick="switchBrowser('#uploads')">Moje</button>
             </div>`)
-            $(".browserButton").eq(window.location.hash == "#uploads").attr("id", "browserBSelected")
+            $(".browserButton").eq(hash == "#uploads").attr("id", "browserBSelected")
         }
 
         // Generates stuff
-        $.get("./php/getLists.php", data => {
-            if (typeof data != "object") { $("#communityContainer").text(jsStr["NO_RES"][LANG]); return; }
-
+        let req = hash == "#uploads" ? "?user" : ""
+        $.get("./php/getLists.php"+req, data => {
             // Change usernames
             let ind = 0
             data[0].forEach(c => {
               data[1].forEach(u => {
                 // Old comments
-                if (c.uid != -1 && c.uid == u.id) data[0][ind].creator = u.username
+                if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
               })
               ind++
             })
@@ -324,6 +325,42 @@ function makeBrowser(search) {
             if (isSearching) $("#app .doSearch").click()
         });
     })
+}
+
+function switchBrowser(hash) {
+    let req = ""
+    let ind = 0
+    switch (hash) {
+        case "#uploads":
+            req = "?user"; ind = 1; break;
+        case "#hidden":
+            req = "?hidden"; ind = 2; break;     
+        default:
+            break;
+    }
+    $(".browserButton").attr("id", "")
+    $(".browserButton").eq(ind).attr("id", "browserBSelected")
+    if (["#uploads", "#hidden"].includes(hash)) {
+        if ($(".privateSel").length == 0) {
+            $("#browserBSelected").after(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton privateSel" title="Zobrazit soukromé"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
+            $(".privateSel").click(() => switchBrowser("#hidden"))
+        }
+    }
+    else $(".privateSel").remove()
+
+    $.get("./php/getLists.php"+req, data => {
+        // Change usernames
+        let ind = 0
+        data[0].forEach(c => {
+          data[1].forEach(u => {
+            // Old comments
+            if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+          })
+          ind++
+        })
+
+        listViewerDrawer(data[0], "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
+    });
 }
 
 function closeRmScreen() {

@@ -27,14 +27,14 @@ function parseResult($rows, $singleList = false)
       $ind += 1;
     }
 
-    $query = sprintf("SELECT DISTINCT username,id
+    $query = sprintf("SELECT DISTINCT username,discord_id
                       FROM users
-                      WHERE id IN ('%s')", join("','", array_unique($uid_array)));
+                      WHERE discord_id IN ('%s')", join("','", array_unique($uid_array)));
   } else {
     // Single list
     $rows["data"] = json_decode(htmlspecialchars_decode($rows["data"]));
 
-    $query = sprintf("SELECT username,discord_id,avatar_hash FROM users WHERE id=%s", $rows["uid"]);                  
+    $query = sprintf("SELECT username,discord_id,avatar_hash FROM users WHERE discord_id=%s", $rows["uid"]);                  
   }
   
   $result = $mysqli -> query($query) or die($mysqli -> error);
@@ -68,6 +68,11 @@ if (count($_GET) == 1) {
     parseResult($getList->fetch_all(MYSQLI_ASSOC));
   } elseif (in_array("homepage", array_keys($_GET))) {
     $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC LIMIT 3 ");
+    parseResult($result->fetch_all(MYSQLI_ASSOC));
+  } elseif (in_array("user", array_keys($_GET)) or in_array("hidden", array_keys($_GET))) {
+    $accountID = checkAccount()["id"];
+    $showHidden = in_array("hidden", array_keys($_GET)) ? "" : "AND `hidden` LIKE 0";
+    $result = $mysqli->query(sprintf("SELECT * FROM `lists` WHERE `uid`=%s %s ORDER BY `hidden` DESC, `id` DESC", $accountID, $showHidden));
     parseResult($result->fetch_all(MYSQLI_ASSOC));
   }
 } elseif (count($_GET) > 1) {
