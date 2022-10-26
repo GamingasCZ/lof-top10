@@ -309,7 +309,16 @@ function makeBrowser() {
         }
 
         // Generates stuff
-        let req = hash == "#uploads" ? "?user" : ""
+        let req = ["","?user","?hidden"][browser]
+        $(".browserButton").attr("id", "")
+        if (browser > 0) {
+            if ($(".privateSel").length == 0) {
+                $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton privateSel" title="Zobrazit soukromé"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
+                $(".privateSel").click(() => switchBrowser("#hidden"))
+            }
+        }
+        $(".browserButton").eq(browser).attr("id", "browserBSelected")
+
         $.get("./php/getLists.php"+req, data => {
             // Change usernames
             let ind = 0
@@ -327,6 +336,8 @@ function makeBrowser() {
     })
 }
 
+// TODO: when returning, go to previously viewed tab
+let browser = 0
 function switchBrowser(hash) {
     let req = ""
     let ind = 0
@@ -338,11 +349,14 @@ function switchBrowser(hash) {
         default:
             break;
     }
+    if (browser == ind) return
+    browser = ind
+
     $(".browserButton").attr("id", "")
     $(".browserButton").eq(ind).attr("id", "browserBSelected")
     if (["#uploads", "#hidden"].includes(hash)) {
         if ($(".privateSel").length == 0) {
-            $("#browserBSelected").after(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton privateSel" title="Zobrazit soukromé"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
+            $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton privateSel" title="Zobrazit soukromé"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
             $(".privateSel").click(() => switchBrowser("#hidden"))
         }
     }

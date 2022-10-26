@@ -433,7 +433,7 @@ function comBox(cd, element) {
     });
   }
 
-  let hoverDate = `title="${nT.getDay() + 1}.${nT.getMonth() + 1}.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}"`
+  let hoverDate = `title="${nT.toLocaleDateString()} ${nT.toLocaleTimeString()}"`
   $(element).append(`
   <div style="margin: 1em auto; max-width: 70em;">
     <div class="comBoxThings uploadText" id="comBoxHeader" style="justify-content: flex-start;">

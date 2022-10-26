@@ -34,6 +34,12 @@ function parseResult($rows, $singleList = false)
     // Single list
     $rows["data"] = json_decode(htmlspecialchars_decode($rows["data"]));
 
+    setcookie("lastViewed", 0, time()+300);
+    if (isset($_COOKIE["lastViewed"]) && $_COOKIE["lastViewed"] != $rows["id"]) {
+      doRequest($mysqli, "UPDATE lists SET views = views+1 WHERE id=?", [$rows["id"]], "i");
+      $rows["views"] += 1;
+    }
+    setcookie("lastViewed", $rows["id"], time()+300);
     $query = sprintf("SELECT username,discord_id,avatar_hash FROM users WHERE discord_id=%s", $rows["uid"]);                  
   }
   

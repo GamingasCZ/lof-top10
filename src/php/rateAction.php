@@ -36,7 +36,7 @@ switch ($method) {
         $result = ["result" => null, "ratings" => null];
         if (is_null($checkRate)) { // No rating
             $rowQuery = doRequest($mysqli,"INSERT INTO `ratings`(`rate`,`uid`,`list_id`) VALUES (?,?,?)", [boolval($fuckupData[1]), $accountCheck, $fuckupData[0]], "iss");
-            $valueQuery = doRequest($mysqli,"UPDATE lists SET rate_ratio = rate_ratio + ? WHERE id=?", [$rating, $fuckupData[0]], "ii");
+            $valueQuery = doRequest($mysqli,"UPDATE lists SET rate_ratio = rate_ratio+? WHERE id=?", [$rating, $fuckupData[0]], "ii");
             $result["result"] = "added";
         }
         elseif ($checkRate["rate"] !== $fuckupData[1]) { // Change rating

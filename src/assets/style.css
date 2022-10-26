@@ -466,7 +466,7 @@ u {
 }
 
 .loading {
-  width: 3vw;
+  width: 2.2em;
   margin: 0.4vw;
   animation-duration: 1s;
   animation-iteration-count: infinite;

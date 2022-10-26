@@ -125,6 +125,8 @@ async function getProfileStats(k, ind) {
 }
 
 function showCollabStats(id) {
+	if (window.location.hash == "#editor") boards = levelList
+	$("#popupBG").css("background", "#00000087")
 	$("#popupBG").css("opacity", 1)
 	setTimeout(() => { $("#popupBG").show() }, 100);
 
@@ -132,21 +134,21 @@ function showCollabStats(id) {
 	let names = [jsStr["YT_CHAN"][LANG], jsStr["TW_PROF"][LANG], jsStr["TW_CHAN"][LANG], jsStr["DC_SERV"][LANG], jsStr["CUST_LINK"][LANG]];
 	let imgs = ["youtube", "twitter", "twitch", "discord", "cust"];
 
-	let cardCol = $($(".box")[id - 1]).css("background-color");
-	let cardGradient = $($(".box")[id - 1]).css("background-image");
-	let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))), 40)
-	let extraDark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))), 80)
+	let cardCol = boards[id]["color"];
+	let cardGradient = $(".box").eq(id - 1).css("background-image");
+	let dark = HEXtoRGB(cardCol, 40)
+	let extraDark = HEXtoRGB(cardCol, 80)
 
 	$(".collabTTitle").text(`- ${boards[id].levelName} -`);
-	$("#collabTools").css("background-image", cardGradient);
+	$(".collabViewer").css("background-image", cardGradient);
 	$(".editorHeader").css("background-color", `rgb(${dark.join(",")})`)
-	$("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
-	$(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))))},40.7%,54%)`)
-	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))))},40.7%,34%)`)
+	$(".collabViewer").css("border-color", `rgb(${dark.join(",")})`)
+	$(".collabHead").css("background-color", `hsl(${getHueFromHEX(cardCol)},40.7%,54%)`)
+	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(cardCol)},40.7%,34%)`)
 
-	$("#collabTools").fadeIn(50);
+	$(".collabViewer").fadeIn(50);
 
-	$(".statsCreators").text("") // Reset table
+	$(".statsCreators").html("<tr style='visibility: collapse;'><th style='width: 35%'></th><th style='width: 20%'></th><th></th></tr>") // Reset table
 	$(".collabGraphs").text("") // Reset table
 
 	let humanRoles = [];
@@ -172,7 +174,7 @@ function showCollabStats(id) {
 			let discordTag = "";
 			for (let soc = 0; soc < creators.socials.length; soc++) {
 				if (names[creators.socials[soc][0]] == jsStr["DC_SERV"][LANG] && creators.socials[soc][1].includes("#"))
-					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin-right: 0.2em;"> - ${creators.socials[soc][1]}</p>`
+					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin:0 0.7em; font-size: var(--miniFont);">${creators.socials[soc][1]}</p>`
 				else {
 					socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
 									style="width: 2em;" class="button" src="images/${imgs[creators.socials[soc][0]]}.webp">`
@@ -180,14 +182,19 @@ function showCollabStats(id) {
 			}
 
 			let icon = `icon=${creators.verified[0]}&col1=${creators.verified[1]}&col2=${creators.verified[2]}&glow=${creators.verified[3]}&noUser=true`
-			$(".statsCreators").append(`<tr class='tableRow'>
+			$(".statsCreators").append(`<tr class='tableRow' style="background: #0000002e;">
 			<td style="display: flex; justify-content: left; align-items: center">
 				<img style="width: 2.5em;margin: 0.2em;" src="${DISABLE_GDB}ttps://gdbrowser.com/icon/freedom69?${icon}">
-				<p class="memberName" style="margin:0 0.5em 0; color: ${creators.color}">${creators.name}</p>${discordTag}
-				${socialTags}
-				<hr class="verticalSplitter">
+				<div style="text-align:left">
+					<p class="memberName" style="margin:0 0.5em; color: ${creators.color}">${creators.name}</p>
+					${discordTag}
+				</div>
+				
+			</td>
+			<td>${socialTags}</td>
+			<td>
 				<div class="pStatsContainer">
-				<img style="width: 2em;margin: 0.4vw;" src="images/gdbrowser.webp" class="getProfile button" title="${jsStr["SHOW_PROFILE"][LANG]}">
+					<img style="width: 2em;margin: 0.4vw;" src="images/gdbrowser.webp" class="getProfile button" title="${jsStr["SHOW_PROFILE"][LANG]}">
 				</div>
 			</td>
 		</tr>`)
@@ -222,8 +229,8 @@ function showCollabStats(id) {
 
 			$(".statsCreators").append(`<tr class='tableRow'>
 			<td style="display: flex; justify-content: left; align-items: center">
-				<img style="width: 4vw;margin: 0.4vw;" src="images/emoji/${randIcon}.webp">
-				<p class="memberName" style="color: ${creators.color}; margin: 0 1vw 0;">${creators.name}</p>${discordTag}
+				<img style="width: 2.5em;margin: 0.2em;" src="images/emoji/${randIcon}.webp">
+				<p class="memberName" style="color: ${creators.color}; margin: 0 0.5em;">${creators.name}</p>${discordTag}
 				${socialTags}
 			</td>
 		</tr>`)
@@ -308,7 +315,7 @@ function showCollabStats(id) {
 }
 
 function hideCollabStats() {
-	$("#collabTools").fadeOut(50);
+	$(".collabViewer").fadeOut(50);
 
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
@@ -959,6 +966,8 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				let lightCol = HEXtoRGB(level1col, -60)
 				let darkCol = HEXtoRGB(level1col, 40)
 				
+				let uploadDate = new Date(object["timestamp"]*1000)
+				let preciseTime = `title="${uploadDate.toLocaleDateString()} ${uploadDate.toLocaleTimeString()}"`
 				let privateBorder = object["hidden"] == 0 ? "" : "border-color: rgba(255, 255, 255, 0.25); border-style: dotted;"
 				let link = object["hidden"] == 0 ? object["id"] : object["hidden"]
 
@@ -971,8 +980,8 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 							<p class="uploadText" style="margin:-0.1em">${object["rate_ratio"]}</p>
 						</div>
 						<div>
-							<div class="viewContainer"><img src="images/view.svg"><div>2</div></div>
-							<div class="viewContainer"><img src="images/time.svg"><div>7d</div></div>
+							<div class="viewContainer"><img src="images/view.svg"><div>${object["views"]}</div></div>
+							<div ${preciseTime} class="viewContainer timeContainer"><img src="images/time.svg"><div>${parseElapsed(Date.now()/1000 - object["timestamp"])}</div></div>
 						</div>
 						<div>
 							<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object["name"]}</p>
@@ -1029,6 +1038,15 @@ async function makeHP() {
 	homeCards(hpData.pinned, ".pinnedLists", 5, 5, 0, true)
 	homeCards(hpData.favPicks, ".savedLists", 3)
 	homeCards(hpData.newest, ".newestLists", 4)
+}
+
+function parseElapsed(secs) {
+	if (secs < 60) return Math.round(secs)+jsStr["SHORTTIME"][LANG][0]; //s - seconds
+	else if (secs < 3600) return Math.round(secs/60)+jsStr["SHORTTIME"][LANG][1]; //m - minutes
+	else if (secs < 86400) return Math.round(secs/3600)+jsStr["SHORTTIME"][LANG][2]; //h - hours
+	else if (secs < 604800) return Math.round(secs/86400)+jsStr["SHORTTIME"][LANG][3]; //d - days
+	else if (secs < 1892160000) return Math.round(secs/604800)+jsStr["SHORTTIME"][LANG][4]; //w - weeks
+	else return Math.round(secs/1892160000)+jsStr["SHORTTIME"][LANG][5]; //y - years
 }
 
 function clearViewed() {
@@ -1231,20 +1249,20 @@ async function lists(list) {
 		$.get("php/getLists.php?random=1", data => {
 			data = data[0]
 			boards = data[0]["data"];
-			oldList = 1
+			oldList = data[0]["uid"] == -1
 			let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
 			let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
 			<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 			$(".titleImage").attr("src", boards["titleImg"]);
-			$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+			$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
 			LIST_ID = parseInt(data["id"])
 
-			LIST_NAME = data["name"]
-			LIST_CREATOR = data["creator"]
+			LIST_NAME = data[0]["name"]
+			LIST_CREATOR = data[0]["creator"]
 
-			generateList(boards, [encodeURIComponent(data["id"]), data["name"], "id"]);
+			generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
 
 			refreshComments()
 		})
@@ -1281,18 +1299,18 @@ async function lists(list) {
 				}
 				else {
 					boards = data[0]["data"];
-					oldList = 1
+					oldList = data[0]["uid"] == -1
 					let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 					let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
 					$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
 					<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 					$(".titleImage").attr("src", boards["titleImg"]);
-					$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+					$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
-					LIST_NAME = data["name"]
-					LIST_CREATOR = data["creator"]
+					LIST_NAME = data[0]["name"]
+					LIST_CREATOR = data[0]["creator"]
 
-					generateList(boards, [encodeURIComponent(data["id"]), data["name"], "id"]);
+					generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
 				}
 			}
 			)
@@ -1309,19 +1327,19 @@ async function lists(list) {
 			}
 			else {
 				boards = data[0]["data"];
-				oldList = 1
+				oldList = data[0]["uid"] == -1
 				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
 				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
 				<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 				$(".titleImage").attr("src", boards["titleImg"]);
-				$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
-				LIST_ID = data["hidden"]
-				LIST_NAME = data["name"]
-				LIST_CREATOR = data["creator"]
+				LIST_ID = data[0]["hidden"]
+				LIST_NAME = data[0]["name"]
+				LIST_CREATOR = data[0]["creator"]
 
-				generateList(boards, [encodeURIComponent(data["hidden"]), data["name"], "pid"]);
+				generateList(boards, [encodeURIComponent(data[0]["hidden"]), data[0]["name"], "pid"]);
 			}
 		}
 		)
@@ -1598,7 +1616,7 @@ function openSettings() {
 }
 
 function setPFP(userInfo) {
-	// $(".loginBut").removeClass("button")
+	$(".loginBut").removeClass("button")
 	// $(".loginBut").attr("onclick", "")
 	$(".setLoginIcon").remove()
 	$(".setLoginText").text(userInfo[0])

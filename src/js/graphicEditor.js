@@ -1043,7 +1043,7 @@ async function preview(skipCheck = false) {
 
     if ($(".preview").length == 0) {
         await $.get("./parts/listViewer.html", data => {
-            $("#app").append("<div class='preview'>"+data+"</div>")
+            $("#app").append("<div class='preview'>"+translateDoc(data,"listViewer")+"</div>")
         })
     }
     else {  $(".preview").fadeIn(100) }

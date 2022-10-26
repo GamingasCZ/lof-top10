@@ -581,7 +581,7 @@ input:disabled {
     font-size: var(--miniFont)
 }
 .viewContainer img { width: 1.6em; }
-
+.timeContainer { cursor: help;}
 
 .hostIcon {
     width: 2em;

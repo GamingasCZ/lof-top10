@@ -21,20 +21,21 @@
 </div>
 
 <!-- Collab stats -->
-<div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
-    <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
+<div class="uploadBG uploadText collabViewer" id="collabTools" style="position: fixed; display: none;">
+    <div style="display: flex; padding: 0.1%; align-items: center;">
         <p style="margin: 0 auto;" class="collabTTitle"></p>
-        <img src="./images/smallClose.svg" class="button" style="width: 6%; height: max-content;"
+        <img src="./images/smallClose.svg" class="button" style="width: 2em; height: max-content;"
             onclick="hideCollabStats()" loading="lazy">
     </div>
     <div class="collabGraphs" style="min-height: 49%; max-height: 49%; overflow-y: auto;">
 
     </div>
-    <div class="editorHeader">
+    <div class="editorHeader collabHead">
         <p class="uploadText colMembers" style="margin: 0.2% 0%;">%%s</p>
     </div>
     <div style="max-height: 48.5%;overflow-y: auto;">
-        <table style="min-height: 48.5%;" class="collabTables statsCreators"></table>
+        <table style="min-height: 48.5%;" class="collabTables statsCreators">
+        </table>
     </div>
 </div>
 
