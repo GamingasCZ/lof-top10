@@ -20,6 +20,7 @@ function passwordGenerator($listName, $creator, $timestamp)
 // Not secret :)
 function sanitizeInput($inputArray)
 {
+    global $debugMode;
     error_reporting($debugMode ? -1 : 0);
 
     $i = 0;
