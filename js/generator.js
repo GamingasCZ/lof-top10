@@ -585,7 +585,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 					</div>
 	
 					${boxCreator(boards[bIndex]["creator"], bIndex, false)}
-					<div class="${boards[bIndex]["tags"].length ? "listTagContainer" : ""}"></div>
+					<div class="listTagContainer"></div>
 				</div>
 				`);
 		}
