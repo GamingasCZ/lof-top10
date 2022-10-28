@@ -1210,6 +1210,7 @@ $.get("./parts/navbar.html", navbar => {
 
 function logout() {
 	localStorage.removeItem("userInfo")
+	makeCookie("accessToken", true)
 	window.location.reload()
 }
 
@@ -1385,8 +1386,8 @@ async function lists(list) {
 		$("#likes").text(rates[0])
 		$("#dislikes").text(rates[1])
 
-		if (rates[2] == 0) colorizeDislike() // Had disliked
-		else if (rates[2] == 1) colorizeLike() // Had liked
+		discolorRatings()
+		if (rates[2] >= 0) colorRatings(rates[2]) // colorize if has rated
 	})
 }
 
@@ -1628,30 +1629,36 @@ function setPFP(userInfo) {
 	$(".userIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
 }
 
-function colorizeLike() {
-	$("#likeBut").css("background", "#2bb047")
-	$(":root").css("--likeGlow","brightness(6)")
+function colorRatings(like) {
+	if (like) {
+		$("#likeBut").css("background", "#2bb047")
+		$(":root").css("--likeGlow","brightness(6)")
 
-	$("#dislikeBut").css("background", "#1c0505")
+		$("#dislikeBut").css("background", "#1c0505")
+	}
+	else {
+		$("#dislikeBut").css("background", "#b02b2b")
+		$(":root").css("--dislikeGlow","brightness(6)")
+	
+		$("#likeBut").css("background", "#051c0c")
+	}
+
 }
-function colorizeDislike() {
-	$("#dislikeBut").css("background", "#b02b2b")
-	$(":root").css("--dislikeGlow","brightness(6)")
-
-	$("#likeBut").css("background", "#051c0c")
+function discolorRatings() {
+	$("#likeBut").css("background","")
+	$("#dislikeBut").css("background","")
+	$(":root").css("--likeGlow","none")
+	$(":root").css("--dislikeGlow","none")
 }
 
 function rateList(el) {
-	let smashedLike = el.target.id == "likeBut"
+	let smashedLike = 0|el.target.id == "likeBut"
 	let postArray = {"id": LIST_ID, "action": smashedLike}
 	$.post("php/rateAction.php", postArray, data => {
-		if (smashedLike) {
-			$("#likes").text(parseInt($("#likes").text()) + 1)
-			colorizeLike()
-		}
-		else {
-			$("#dislikes").text(parseInt($("#dislikes").text()) + 1)
-			colorizeDislike()
-		}
+		$("#likes").text(data.ratings[0])
+		$("#dislikes").text(data.ratings[1])
+		discolorRatings()
+		if (data.result == "deleted") return
+		else colorRatings(smashedLike)
 	})
 }
