@@ -120,20 +120,22 @@ function setupComments() {
   // Pick a random comment color
   commentColor = randomColor(0, 1);
   let invCol = [255 - commentColor[0], commentColor[1], commentColor[2]]
-  commentColor = HSLtoHEX(...commentColor)
+  hexColor = HSLtoHEX(...commentColor)
+  let darkHexColor = HSLtoHEX(commentColor[0], "100%", "3.7%")
 
-  let boxColor = HEXtoRGB(commentColor, 30);
-  let darkerBoxColor = HEXtoRGB(commentColor, 50);
-
-  $(".comInpArea").css("background-color", "rgb(" + boxColor.join(",") + ")");
+  $(".comInpArea").css("background-color", darkHexColor);
+  $(".comInpArea").css("border", `${hexColor} 3px solid`);
+  $(".comInpArea").css("box-shadow", `${hexColor} 0 0 10px`);
+  $("#pIcon").css("border", `${hexColor} 3px solid`);
+  $("#pIcon").css("box-shadow", `${hexColor} 0 0 10px`);
   $(".comInpThings").css(
     "background-color",
-    "rgb(" + darkerBoxColor.join(",") + ")"
+    `hsl(${commentColor[0]}, 100%, 3.7%)`
   );
   $(".sendBut").css("background-color", "hsl(" + invCol.join(",") + ")");
-  $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")");
-  $("#verticalLine").css("border-color", commentColor);
-  $(".cpicker").val(commentColor);
+  $(".emojiPanel").css("background-color", darkHexColor);
+  $(".cpicker").val(hexColor);
+  commentColor = HSLtoHEX(...commentColor)
 
   // MAIN comment handling stuff
   $(".comInpArea").on("keydown", (k) => {
@@ -250,22 +252,16 @@ function displayPanel(what) {
           ? getHueFromHEX(commentColor)
           : k.target.value;
 
-        $(".comInpArea").css(
-          "background-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
-        );
-        $(".comInpThings").css(
-          "background-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 10}%)`
-        );
-        $(".emojiPanel").css(
-          "background-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
-        );
-        $("#verticalLine").css(
-          "border-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
-        );
+        $(".comInpArea").css({"background-color": `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`,
+                              "border-color": `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`,
+                              "box-shadow": `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%) 0 0 10px`});
+
+        $("#pIcon").css({"border": `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%) 3px solid`,
+                         "box-shadow": `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%) 0 0 10px`});
+
+        $(".comInpThings").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`);
+
+        $(".emojiPanel").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`);
 
         $(".sendBut").css(
           "background-color",
@@ -396,7 +392,9 @@ function comBox(cd, element) {
   } // First comment's date is not in milliseconds
   let nT = new Date(cd["timestamp"] * 1000);
 
-  profPic = `<img class="pIcon" style="width: 2.2em; border-radius: 10em;" src="${cd.avatar}">`;
+  let comGlow = `${cd["bgcolor"]} 0 0 10px`
+  let comBorder = `${cd["bgcolor"]} 3px solid`
+  profPic = `<img id="pIcon" style="box-shadow: ${comGlow}; border: ${comBorder};" src="${cd.avatar}">`;
 
   // OwO, adding emojis
   while (cd["comment"].match(/&\d+/g) != null) {
@@ -433,6 +431,7 @@ function comBox(cd, element) {
     });
   }
 
+  let darkBG = `hsl(${getHueFromHEX(cd["bgcolor"])}, 100%, 3.7%)`
   let hoverDate = `title="${nT.toLocaleDateString()} ${nT.toLocaleTimeString()}"`
   $(element).append(`
   <div style="margin: 1em auto; max-width: 70em;">
@@ -444,7 +443,7 @@ function comBox(cd, element) {
       </div>
     </div>
       
-    <div class="comTextArea" id="comFont" style="width: 99%; background-color: ${cd["bgcolor"]};">
+    <div class="comTextArea" id="comFont" style="background-color: ${darkBG}; box-shadow: ${comGlow}; border: ${comBorder};">
       ${cd["comment"]}
     </div>
   </div>

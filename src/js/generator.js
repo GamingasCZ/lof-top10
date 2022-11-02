@@ -1083,6 +1083,8 @@ async function loadSite() {
 	LIST_NAME = null
 	LIST_ID = null
 	originalListData = []
+	currentListData = []
+	page = {}
 	levelList = JSON.parse(JSON.stringify(DEFAULT_LEVELLIST))
 
 	$(".logo").css("transform", `rotate(360deg)`)
@@ -1200,10 +1202,12 @@ $.get("./parts/navbar.html", navbar => {
 		else {
 			$(".pfpPlaceholder").remove()
 			$(".userIcon").attr("src", "images/user.svg") // smazat placeholder, dat kliknuti
+			$(".userIcon").addClass("button")
 			$(".userIcon").click(openSettings)
 		}
 	} catch (error) {
 		localStorage.removeItem("userInfo")
+		$(".userIcon").addClass("button")
 		$(".userIcon").attr("src", "images/user.svg")
 	}
 

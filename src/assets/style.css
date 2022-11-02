@@ -749,11 +749,13 @@ html, body {
   font-size: var(--smallFont);
   line-height: 1.1;
   color: white;
+  text-shadow: none;
 }
 
 #pIcon {
-  width: 2.5em;
-  border-radius: 10em;   
+  width: 2.2em;
+  border-radius: 10em; 
+  box-sizing: border-box;  
 }
 #cHeader {
   display: flex;
