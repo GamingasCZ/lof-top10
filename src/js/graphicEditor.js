@@ -264,7 +264,7 @@ function showBGsettings() {
         $("#backDragContainer").on("mousemove", e => {
             let dragPos;
             // Center of the select box = offset from #backDragContainer Y pos + 1/2 of the select box
-            let center = $("#backDragContainer").position().top - e.originalEvent.clientY + $(".backSett").position().top + $("#backDragContainer").position().top
+            let center = $("#backDragContainer").position().top - e.originalEvent.clientY + $(".backSett").position().top + $(".cutBox").height()/2
             if (center > 0) dragPos = 0 // Do not use the first half of the select box
             else dragPos = clamp(Math.abs(center), 0, parseInt($(".cutImage").height() - $(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)))
 
