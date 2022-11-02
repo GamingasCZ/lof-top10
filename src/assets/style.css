@@ -57,8 +57,9 @@
   --redHighlight: invert(0.4) sepia(1) saturate(4) hue-rotate(300deg);
   --greenGradient: linear-gradient(9deg, #142019, var(--normalColor));
   --defaultGradient: linear-gradient(9deg, #142019, var(--normalColor));
-  --fontMultiplier: 1;
+  --defaultBackground: #08110b;
   --siteBackground: #08110b;
+  --fontMultiplier: 1;
   --normalColor: #045124;
   --tinyFont: calc(0.5em * var(--fontMultiplier));
   --likeGlow: none;
@@ -426,6 +427,7 @@ u {
   width: 5em;
   height: 5em;
   margin-right: 5%;
+  filter: drop-shadow(#000000c2 0px 0px 8px);
 }
 
 .collabParent {
@@ -682,10 +684,19 @@ html, body {
 }
 
 .titleImage {
-  margin-left: auto;
-  margin-right: auto;
-  width: 40em;
-  display: block;
+  width: 100%;
+  height: 50%;
+  position: absolute;
+  top: 2.5em;
+  z-index: -5;
+  background-size: cover;
+}
+.titleImage::after {
+  content: "";
+  background: linear-gradient(0deg, var(--siteBackground), transparent);
+  width: 100%;
+  height: 100%;
+  position: absolute;
 }
 
 .boards {
@@ -1254,7 +1265,7 @@ cb { color: #5fe7ff ;}
 .likeBar {
   width: 100%;
   height: 40%;
-  background: linear-gradient(90deg, #188818, #4be890 50%, #e84b5a 51%, #680707);
+  background: linear-gradient(90deg, #e84b5a, #680707);
   border-radius: 0.3em;
 }
 .likeText {
@@ -1288,3 +1299,12 @@ cb { color: #5fe7ff ;}
 #dislikes {
   margin-right: 0.8em;
 }
+
+.likeFill {
+  background: linear-gradient(90deg, #188818, #4be890);
+  width: 50%;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.2s ease-in-out;
+}
+ 

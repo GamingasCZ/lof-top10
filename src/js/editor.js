@@ -199,9 +199,10 @@ function updateList() {
 var deeta = '';
 var ogDeeta = '';
 const DEFAULT_LEVELLIST = {
-    "titleImg": "",
+    "titleImg": ["", 0, 33, 0, true], // URL, position, coverage, halign, gradient
     "pageBGcolor": "#020202",
-    "diffGuesser": [false, true, true]
+    "diffGuesser": [false, true, true], // enabled, diff, rating
+    "translucent": false
 }
 
 function makeEditor(update) {
@@ -223,45 +224,18 @@ function makeEditor(update) {
     $(".previewButton").on("click", () => preview(false))
     $(".previewButton").on("dblclick", () => preview(true))
 
-    // List image preview action
-    $("#imageArrow").on("click", function () {
-        $("#imgError").text("")
-        if ($(this).css("transform").match("-1")) {
-            // Hide preview
-            $("#imageArrow").css("transform", "scaleY(1)");
-            $("#imageArrow").attr("title", jsStr["SH_IMPREV"][LANG])
-            $(".imgPreview").slideUp(200)
-        }
-        else {
-            // Show preview
-            $("#imageArrow").css("transform", "scaleY(-1)");
-            $("#imageArrow").attr("title", jsStr["HI_IMPREV"][LANG])
-            $("#imagePrev").css("width", "40vw")
-            $("#imagePrev").attr("src", $(".titImgInp").val())
-            $(".imgPreview").slideDown(200)
-        }
-    })
-    // When the image failed to load (sad crying emoji)
-    $("#imagePrev").on("error", function () {
-        $("#imagePrev").css("width", "10%")
-        $("#imagePrev").attr("src", "./images/error.webp")
-        $("#imgError").text(jsStr["IM_NOTFOUND"][LANG])
-    })
-    // Change preview image on URL change
-    $(".titImgInp").on("change", function () {
-        if ($("#imageArrow").css("transform").match("-1")) {
-            $("#imgError").text("")
-            $("#imagePrev").css("width", "40vw")
-            $("#imagePrev").attr("src", $(".titImgInp").val())
-        }
-    })
-
     $("img[for='diffGuesser']").click(() => {
         $(".settingSubbox").slideToggle(50);
         checkCheckbox("diffGuesser");
         $(".diffSelBut img").removeClass("disabled")
         levelList.diffGuesser = [$("input[name='diffGuesser']").prop("checked"),true,true]
     })
+
+    // TODO: fix for old lists!!
+    $("#listimg").on("change", () => levelList.titleImg[0] = $("#listimg").val())
+    $(".imgSetButton").click(showBGsettings)
+
+    $("img[for=transCards]").click(() => {checkCheckbox("transCards", (x,y) => levelList.translucent = y)})
 
     // Show alert if creating list
     window.addEventListener('beforeunload', pageExit);
@@ -309,6 +283,8 @@ function makeBrowser() {
         }
 
         // Generates stuff
+        if (hash == "#uploads") browser = 1
+
         let req = ["","?user","?hidden"][browser]
         $(".browserButton").attr("id", "")
         if (browser > 0) {
@@ -336,7 +312,6 @@ function makeBrowser() {
     })
 }
 
-// TODO: when returning, go to previously viewed tab
 let browser = 0
 function switchBrowser(hash) {
     let req = ""

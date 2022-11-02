@@ -1,4 +1,4 @@
-const ADDIT_VALS = 2;
+const ADDIT_VALS = 3;
 const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
 const isInEditor = window.location.pathname.includes("upload");
 
@@ -139,12 +139,12 @@ function showCollabStats(id) {
 	let dark = HEXtoRGB(cardCol, 40)
 	let extraDark = HEXtoRGB(cardCol, 80)
 
-	$(".collabTTitle").text(`- ${boards[id].levelName} -`);
+	$(".collabViewer .collabTTitle").text(`- ${boards[id].levelName} -`);
 	$(".collabViewer").css("background-image", cardGradient);
-	$(".editorHeader").css("background-color", `rgb(${dark.join(",")})`)
+	$(".collabViewer .collabHead").css("background-color", `rgb(${dark.join(",")})`)
 	$(".collabViewer").css("border-color", `rgb(${dark.join(",")})`)
-	$(".collabHead").css("background-color", `hsl(${getHueFromHEX(cardCol)},40.7%,54%)`)
-	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(cardCol)},40.7%,34%)`)
+	$(".collabViewer .collabHead").css("background-color", `hsl(${getHueFromHEX(cardCol)},40.7%,54%)`)
+	$(".collabViewer .collabDIV").css("background-color", `hsl(${getHueFromHEX(cardCol)},40.7%,34%)`)
 
 	$(".collabViewer").fadeIn(50);
 
@@ -174,7 +174,7 @@ function showCollabStats(id) {
 			let discordTag = "";
 			for (let soc = 0; soc < creators.socials.length; soc++) {
 				if (names[creators.socials[soc][0]] == jsStr["DC_SERV"][LANG] && creators.socials[soc][1].includes("#"))
-					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin:0 0.7em; font-size: var(--miniFont);">${creators.socials[soc][1]}</p>`
+					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin:0 0.7em; font-size: var(--miniFont)">${creators.socials[soc][1]}</p>`
 				else {
 					socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
 									style="width: 2em;" class="button" src="images/${imgs[creators.socials[soc][0]]}.webp">`
@@ -227,10 +227,10 @@ function showCollabStats(id) {
 			}
 			else { randIcon = "ghostCube"; }
 
-			$(".statsCreators").append(`<tr class='tableRow'>
-			<td style="display: flex; justify-content: left; align-items: center">
+			$(".statsCreators").append(`<tr class='tableRow' style="background: #0000002e;">
+			<td colspan="3" style="text-align: left;">
 				<img style="width: 2.5em;margin: 0.2em;" src="images/emoji/${randIcon}.webp">
-				<p class="memberName" style="color: ${creators.color}; margin: 0 0.5em;">${creators.name}</p>${discordTag}
+				<p class="memberName" style="color: ${creators.color}; margin: 0 0.5em; display: inline;">${creators.name}</p>${discordTag}
 				${socialTags}
 			</td>
 		</tr>`)
@@ -520,14 +520,20 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	// Setting page BG from list
 	if (Object.keys(boards).indexOf("pageBGcolor") != -1) {
 		if (boards["pageBGcolor"] != "#020202") {
-			$("body").css("background-color", boards["pageBGcolor"])
+			$(":root").css("--siteBackground", boards["pageBGcolor"])
 			let hue = getHueFromHEX(boards["pageBGcolor"])
 			$(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
 			$("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
 		}
 	}
 	// Setting title image
-	$(".titleImage").attr("src", boards["titleImg"]);
+	if (typeof boards["titleImg"] == "string" && boards["titleImg"] != "") $(".titleImage").css("background-image", `url("${boards["titleImg"]}")`);
+	else {
+		$(".titleImage").css("background-image", `url("${boards["titleImg"][0]}")`);
+		$(".titleImage").css("background-position-y", `${boards["titleImg"][1]}%`);
+		$(".titleImage").css("height", `${boards["titleImg"][2]}%`);
+	}
+
 
 	for (let i = start; i < amount; i++) {
 		let bIndex = (i).toString()
@@ -544,15 +550,21 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		}
 
 		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = ``; }
-		else { var video = `<img src="./images/yticon.webp" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">`; }
+		else { var video = `<img src="./images/modYT.svg" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">`; }
 
 		// Shit fix. Colors break sometimes
 		let boardFix = fixHEX(boards[bIndex]["color"])
 		if (!boardFix) boardFix = randomColor()
 		let gradientLighter = HEXtoRGB(boardFix, -60)
 
+		let translucent
+		if (boards["translucent"] != undefined && boards["translucent"]) {
+			translucent = ["66",",0.4"]
+		}
+		else translucent = ["",""]
+
 		// Glow depending on level position
-		var cardBG = `background: linear-gradient(39deg, ${boardFix}, rgb(${gradientLighter.join(",")}));`;
+		var cardBG = `background: linear-gradient(39deg, ${boardFix}${translucent[0]}, rgb(${gradientLighter.join(",")}${translucent[1]}));`;
 		if (i == 1) { cardBG += `;box-shadow: 2px 2px 60px ${boardFix};`; }
 		if (i == 2) { cardBG += `;box-shadow: 2px 2px 30px ${boardFix};`; }
 		if (i == 3) { cardBG += `;box-shadow: 2px 2px 20px ${boardFix};`; }
@@ -648,7 +660,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		$(".titles").append(jsStr["LLOAD_FAIL"][LANG]);
 	}
 
-	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, listData[2] == "pid", LIST_NAME, LIST_CREATOR]))
+	if (LIST_NAME != null) sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, listData[2] == "pid", LIST_NAME, LIST_CREATOR]))
 
 	// Saving viewed list
 	let viewed = getCookie("recentlyViewed");
@@ -668,6 +680,8 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 
 		makeCookie(["recentlyViewed", JSON.stringify(parsed)])
 	}
+
+	$(".box").css("backdrop-filter", "blur(8px)")
 
 	// When clicking a level in saved, scroll to card
 	if (window.location.hash.match(/!\d+/g) != null) {
@@ -970,16 +984,16 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				let preciseTime = `title="${uploadDate.toLocaleDateString()} ${uploadDate.toLocaleTimeString()}"`
 				let privateBorder = object["hidden"] == 0 ? "" : "border-color: rgba(255, 255, 255, 0.25); border-style: dotted;"
 				let link = object["hidden"] == 0 ? object["id"] : object["hidden"]
-
+				let disliked = object["rate_ratio"] < 0 ? ["flex-direction: column-reverse;", "transform: rotate(180deg);"] : ["",""]
 				$(custElement).append(`
 				<a id="listPreview" class="noMobileResize" href="#${link}"
 					 style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${level1col}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")});${privateBorder}">
 					<div style="display: flex;gap: 0.7em;">
-						<div class="inListRating">
-							<img src="images/genericRate.svg">
+						<div class="inListRating" style="${disliked[0]}">
+							<img src="images/genericRate.svg" style="${disliked[1]}">
 							<p class="uploadText" style="margin:-0.1em">${object["rate_ratio"]}</p>
 						</div>
-						<div>
+						<div class="cInfoContainer">
 							<div class="viewContainer"><img src="images/view.svg"><div>${object["views"]}</div></div>
 							<div ${preciseTime} class="viewContainer timeContainer"><img src="images/time.svg"><div>${parseElapsed(Date.now()/1000 - object["timestamp"])}</div></div>
 						</div>
@@ -1025,19 +1039,20 @@ async function makeHP() {
 		hpData.favPicks = randomized
 	}
 
+	homeCards(hpData.recViewed, ".recentlyViewed", 2)
+	homeCards(hpData.pinned, ".pinnedLists", 5, 5, 0, true)
+	homeCards(hpData.favPicks, ".savedLists", 3)
 
-	await $.get("./php/getLists.php?homepage=1", data => {
-		hpData.newest = data[0]
+	$.get("./php/getLists.php?homepage=1", data => {
+		homeCards(data[0], ".newestLists", 4)
+	})
+	$.get("./php/getLists.php?homeUser", data => {
+		homeCards(data[0], ".uploadedLists", 4)
 	})
 
 	$(".hpSearchButton").click(e => {
 		switchLoFList('#browse!' + $("#homepageSearch").val())
 	})
-
-	homeCards(hpData.recViewed, ".recentlyViewed", 2)
-	homeCards(hpData.pinned, ".pinnedLists", 5, 5, 0, true)
-	homeCards(hpData.favPicks, ".savedLists", 3)
-	homeCards(hpData.newest, ".newestLists", 4)
 }
 
 function parseElapsed(secs) {
@@ -1074,7 +1089,7 @@ async function loadSite() {
 	let spinning = setInterval(() => { rot += 1; $(".logo").css("transform", `rotate(${rot * 360}deg)`) }, 1000)
 	$("#app").empty()
 
-	$("body").css("background-color", "var(--siteBackground)")
+	$(":root").css("--siteBackground", "var(--defaultBackground)")
 	if ($(":root").css("--greenGradient") != $(":root").css("--defaultGradient")) {
 		$("nav").css("animation-name", "fadeBlack")
 		setTimeout(() => $(":root").css("--greenGradient", "var(--defaultGradient)"), 125);
@@ -1133,9 +1148,7 @@ async function loadSite() {
 			await $.get("./parts/listViewer.html", data => {
 				$("#app").html(translateDoc(data, "listViewer"))
 				let listObject;
-				if (hash.match(/y\d+/)) listObject = { "type": "year", "id": hash == "y2019" ? -2 : -3 }
-				else if (hash.startsWith("-2") || hash.startsWith("-3")) listObject = { "type": "year", "id": hash.includes("-2") ? -2 : -3 }
-				else if (hash.match(/[A-z]/) == null) listObject = { "type": "id", "id": hash.match(/\d+/)[0] }
+				if (hash.match(/[A-z]/) == null) listObject = { "type": "id", "id": hash.match(/\d+/)[0] }
 				else if (hash == "random") listObject = { "type": "random", "id": -10 }
 				else listObject = { "type": "pid", "id": hash }
 
@@ -1210,7 +1223,8 @@ $.get("./parts/navbar.html", navbar => {
 
 function logout() {
 	localStorage.removeItem("userInfo")
-	makeCookie("accessToken", true)
+	makeCookie(["accessToken",""], true)
+	makeCookie(["cA",""], true)
 	window.location.reload()
 }
 
@@ -1237,7 +1251,6 @@ async function lists(list) {
 		}
 		boards = JSON.parse(decodedData);
 
-		$(".titleImage").attr("src", boards["titleImg"]);
 		$("title").html(`${jsStr["PREVIEW_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 		LIST_NAME = null
 		LIST_CREATOR = "person"
@@ -1255,43 +1268,21 @@ async function lists(list) {
 			let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
 			<p class="listUsername">${profilePic}${listCreator}</p></div>`);
-			$(".titleImage").attr("src", boards["titleImg"]);
 			$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
 			LIST_ID = parseInt(data["id"])
 
 			LIST_NAME = data[0]["name"]
 			LIST_CREATOR = data[0]["creator"]
+			$("#commAmount").text(data[0]["commAmount"])
 
 			generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
 
 			refreshComments()
 		})
 	}
-	else if (list.type == "id" || list.type == "year") {
-		if ([-2, -3].includes(list.id)) {
-			let listName = `Top ${list.id == -2 ? 10 : 15} LoF ${list.id == -2 ? 2019 : 2021}`
-
-			if (LIST_ID == -2 || window.location.pathname.match("upload") == -1) {
-				await $.get("./assets/2019.json", json => boards = json)
-			}
-			else if (LIST_ID == -3 || window.location.pathname.match("upload") != -1) {
-				await $.get("./assets/2021.json", json => boards = json)
-			}
-
-			$("#editBut").parent().remove()
-			$("title").html(`${listName} | ${jsStr["GDLISTS"][LANG]}`)
-
-			LIST_NAME = listName
-			LIST_CREATOR = "GamingasCZ"
-			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${LIST_NAME}</p>
-			<p style="font-size: var(--miniFont);margin: 0;">${LIST_CREATOR}</p></div>`);
-
-			generateList(boards, [list.id, listName, "id"]);
-		}
-
-		else {
-			$.get("./php/getLists.php?id=" + list.id, function (data) {
+	else if (list.type == "id") {
+		$.get("./php/getLists.php?id=" + list.id, function (data) {
 				if ([1, 2].includes(data)) {
 					$(".boards").append("<h2 class='titles'><img src='images/listError.svg' class='listErrors'>" + jsStr["DEADLIST"][LANG] + "</h2>")
 					$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
@@ -1305,18 +1296,16 @@ async function lists(list) {
 					let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
 					$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
 					<p class="listUsername">${profilePic}${listCreator}</p></div>`);
-					$(".titleImage").attr("src", boards["titleImg"]);
 					$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
 					LIST_NAME = data[0]["name"]
 					LIST_CREATOR = data[0]["creator"]
+					$("#commAmount").text(data[0]["commAmount"])
 
 					generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
 				}
 			}
-			)
-		}
-
+		)
 	}
 	else if (list.type == "pid") {
 		await $.get("./php/getLists.php?pid=" + list.id, function (data) {
@@ -1333,12 +1322,12 @@ async function lists(list) {
 				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
 				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
 				<p class="listUsername">${profilePic}${listCreator}</p></div>`);
-				$(".titleImage").attr("src", boards["titleImg"]);
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
 				LIST_ID = data[0]["hidden"]
 				LIST_NAME = data[0]["name"]
 				LIST_CREATOR = data[0]["creator"]
+				$("#commAmount").text(data[0]["commAmount"])
 
 				generateList(boards, [encodeURIComponent(data[0]["hidden"]), data[0]["name"], "pid"]);
 			}
@@ -1386,7 +1375,7 @@ async function lists(list) {
 		$("#likes").text(rates[0])
 		$("#dislikes").text(rates[1])
 
-		discolorRatings()
+		discolorRatings(rates[0], rates[1])
 		if (rates[2] >= 0) colorRatings(rates[2]) // colorize if has rated
 	})
 }
@@ -1631,24 +1620,33 @@ function setPFP(userInfo) {
 
 function colorRatings(like) {
 	if (like) {
-		$("#likeBut").css("background", "#2bb047")
+		$("#likeBut").css("background", "radial-gradient(#20c68f, rgb(23, 81, 35))")
+		$("#likeBut").css("box-shadow", "#20c68f80 0px 0px 29px")
+
 		$(":root").css("--likeGlow","brightness(6)")
 
 		$("#dislikeBut").css("background", "#1c0505")
 	}
 	else {
-		$("#dislikeBut").css("background", "#b02b2b")
+		$("#dislikeBut").css("background", "radial-gradient(rgb(72, 0, 24), rgb(179, 7, 7))")
+		$("#dislikeBut").css("box-shadow", "#ff0c00c9 0px 0px 29px")
 		$(":root").css("--dislikeGlow","brightness(6)")
 	
 		$("#likeBut").css("background", "#051c0c")
 	}
 
 }
-function discolorRatings() {
+function discolorRatings(l,d) {
 	$("#likeBut").css("background","")
+	$("#likeBut").css("box-shadow", "")
 	$("#dislikeBut").css("background","")
+	$("#dislikeBut").css("box-shadow", "")
 	$(":root").css("--likeGlow","none")
 	$(":root").css("--dislikeGlow","none")
+
+	// make like bar
+	if (l+d == 0) $(".likeFill").css("width","") // reset bar, this would result in dividing by zero :O
+	$(".likeFill").css("width", `${l/(l+d)*100}%`)
 }
 
 function rateList(el) {
@@ -1657,7 +1655,7 @@ function rateList(el) {
 	$.post("php/rateAction.php", postArray, data => {
 		$("#likes").text(data.ratings[0])
 		$("#dislikes").text(data.ratings[1])
-		discolorRatings()
+		discolorRatings(data.ratings[0], data.ratings[1])
 		if (data.result == "deleted") return
 		else colorRatings(smashedLike)
 	})

@@ -16,6 +16,42 @@
     <div class="tagContainer"></div>
 </div>
 
+<!-- Background options -->
+<div id="jumpToTools" class="uploadBG uploadText backSett" style="display: none;">
+    <div style="text-align: center; width: 100%;">
+        <img src="./images/smallClose.svg" class="button" style="width: 1.5em; float: right;" onclick="hideBGsettings()">
+        <p style="margin: 0;">Nastavení obrázku</p>
+    </div>
+    <div id="backImageSettings">
+        <div id="backDragContainer">
+            <div class="cutImage"></div>
+            <svg class="cutBox" height="210" width="400">
+                <path d="M0 0 L400 0 L400 210 L0 210 L0 0" fill=none stroke-width=15>
+            </svg>
+        </div>
+        <div>
+            <div>
+                <label>Zakrytí</label>
+                <input type="range" min="25" max="95" value="33" id="bgCoverageSlider">
+            </div>
+            <div>
+                <label>Zarovnání</label>
+                <div>
+                    <img src="images/alignLeft.svg" id="passSubmit" class="button alignButtons">
+                    <img src="images/alignCenter.svg" id="passSubmit" class="button alignButtons">
+                    <img src="images/alignRight.svg" id="passSubmit" class="button alignButtons">
+                </div>
+            </div>
+            <div>
+                <img src="images/modernCheck.svg" onclick="checkCheckbox('')" class="setCheckbox button">Přechod
+            </div>
+        </div>
+    </div>
+    <div class="bgError" style="display: none;">
+        <img src="images/close.svg">Nepodařilo se načíst obrázek!
+    </div>
+</div>
+
 <!-- Collab tools -->
 <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
     <div style="display: flex; width: 98%; padding: 1%; align-items: center; height: 4%;">
@@ -48,12 +84,14 @@
             <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')"
                 style="width: 1.3em;height: fit-content;" src="images/paste.webp" title="%%s">
             <img class="button roleAddButton" onclick="addRole()"
-                style="width: 1.3em;margin-left: 0.3em;height: fit-content;" id="passSubmit" src="images/addLevel.svg" title="%%s">
+                style="width: 1.3em;margin-left: 0.3em;height: fit-content;" id="passSubmit" src="images/addLevel.svg"
+                title="%%s">
         </div>
     </div>
     <div class="collabBG collabHeader collabDIV roleStuff">
         <table style="display: none;" class="collabTables collabRoles">
-            <p class="uploadText noRolAdded">%%s<img id="plusSign" style="width: 2.2%" id="passSubmit" src="images/addLevel.svg"></p>
+            <p class="uploadText noRolAdded">%%s<img id="plusSign" style="width: 2.2%" id="passSubmit"
+                    src="images/addLevel.svg"></p>
         </table>
     </div>
 
@@ -84,13 +122,14 @@
             <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)"
                 style="width: 1.3em; height: fit-content;" src="images/paste.webp" title="%%s">
             <img class="button disabled addHumanButton" onclick="addCollabHuman()"
-                style="width: 1.3em;margin-left: 0.2vw;height: fit-content;" id="passSubmit" src="images/addLevel.svg" title="%%s">
+                style="width: 1.3em;margin-left: 0.2vw;height: fit-content;" id="passSubmit" src="images/addLevel.svg"
+                title="%%s">
         </div>
     </div>
     <div class="collabBG collabHeader collabDIV memberStuff" style="height: 125%;;">
         <p class="uploadText noRoles">%%s</p>
-        <p style="display: none;" class="uploadText addRoles">%%s<img style="width: 2.2%" id="plusSign"
-                id="passSubmit" src="images/addLevel.svg"></p>
+        <p style="display: none;" class="uploadText addRoles">%%s<img style="width: 2.2%" id="plusSign" id="passSubmit"
+                src="images/addLevel.svg"></p>
         <table style="display: none;" class="collabTables collabHumans">
             <tr class="collabTables">
                 <th class="collabTables" style="width: 22%;">
@@ -135,25 +174,18 @@
             <h2 class="quote">Pokud se nepřihlásíš, nedodělám 2.2!</h2>
         </div>
         <p>Pro vytvoření seznamu se prosím přihlaš!</p>
-        <div class="button eventButton uploadText settingsButton noMobileResize" style="width: max-content;" onclick="login(1)">
+        <div class="button eventButton uploadText settingsButton noMobileResize" style="width: max-content;"
+            onclick="login(1)">
             <img src="images/discord.svg">Přihlásit se
-          </div>
+        </div>
     </div>
     <form id="levelUpload" class="uploadBG uploaderDialog">
         <br>
-        <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="%%s"><br />
-        <div id="passEditor" class="uploadText" style="display: none;">
-            <h3 class="listPassType">%%s</h3>
-            <div style="display: flex; gap: 0.5vw; justify-content: center;">
-                <input name="lPass" type="text" id="lpass" class="uploadMainInp searchWithIcon" placeholder="%%s"><br />
-                <img id="passSubmit" class="button" src="images/searchOpaque.svg" onclick="checkPassword()">
-            </div>
+        <input type="text" id="listnm" class="uploadMainInp" placeholder="%%s"><br />
+        <div class="titImageContainer">
+            <input type="text" id="listimg" class="uploadMainInp" placeholder="%%s" style="margin: 0;">
+            <img src="./images/gear.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize imgSetButton">
         </div>
-        <div class="imgPreview">
-            <img src="" id="imagePrev" class="uploadText" style="width: inherit;">
-            <p id="imgError" class="uploadText" style="color: tomato;"></p>
-        </div>
-        <br />
         <div class="listColPicker">
             <div style="display: flex;">
                 <label align="center" for="bgcolor" class="uploadText colorLabel">%%s</label>
@@ -169,10 +201,12 @@
             style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
             <p class="headerTitle uploadText">%%s</p>
             <div style="display: flex;">
-                <img id="passSubmit" src="images/preview.svg" title="%%s" class="button previewButton disabled headerButtons">
+                <img id="passSubmit" src="images/preview.svg" title="%%s"
+                    class="button previewButton disabled headerButtons">
                 <img id="passSubmit" src="images/addfromFaves.svg" title="%%s" onclick="addFromFaves()"
                     class="button addCardButton headerButtons">
-                <img id="passSubmit" src="images/addLevel.svg" title="%%s" onclick="addLevel()" class="button addCardButton headerButtons">
+                <img id="passSubmit" src="images/addLevel.svg" title="%%s" onclick="addLevel()"
+                    class="button addCardButton headerButtons">
             </div>
 
         </div>
@@ -202,11 +236,16 @@
                 <button title="%%s" type="button" onclick="guesserOptions(2)" class="diffSelBut"><img
                         src="images/faces/epic.webp" class="button"></button>
             </div>
+            <div class="setting diffSetting">
+                <img src="images/modernCheck.svg" for="transCards" class="setCheckbox button"'>
+                <label for="transCards" class="uploadText setLabel">Průsvitné karty</label>
+            </div>
         </div>
 
         <div id="submitarea">
             <div onclick="uploadList()" class="button noMobileResize uploadText" id="submitbutton">
-                <img src="images/upload.svg"><div>%%s</div>
+                <img src="images/upload.svg">
+                <div>%%s</div>
             </div>
         </div>
 

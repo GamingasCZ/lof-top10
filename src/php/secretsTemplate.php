@@ -11,15 +11,14 @@ $DISCORD_CLIENT_ID = "";
 $DISCORD_CLIENT_SECRET = "";
 $SECRET = ""; // Use a random string :)
 
+// Start session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 function privateIDGenerator($listName, $creator, $timestamp) {
     $str = $listName . $creator . $timestamp;
     return substr(sha1($str),0,10);
-}
-
-function passwordGenerator($listName, $creator, $timestamp)
-{
-    // Your code here... :)
-    return 0;
 }
 
 // Not secret :)
@@ -115,12 +114,20 @@ function post($url, $data, $headers, $needsRURL = false) {
     return $result;
 }
 
-function checkAccount($token) {
+function checkAccount() {
+    if (isset($_SESSION["cA"])) return decrypt(json_decode($_SESSION["cA"]);
+
     $tokenHeaders = array('Authorization: Bearer ' . $accessInfo["access_token"]);
     $baseURL = "https://discord.com/api/v10/users/@me";
     $ok = json_decode(post($baseURL, array(), $tokenHeaders), true);
 
+    $_SESSION["cA"] = encrypt(json_encode($ok));
     return $ok;
+}
+
+function checkListOwnership($mysqli, $user_id) {
+    $client_id = checkAccount()["id"];
+    return $user_id == $client_id;
 }
 
 ?>

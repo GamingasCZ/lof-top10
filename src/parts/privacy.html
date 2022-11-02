@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/community.css">
+<style>
+    .collectContainer {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+    }
+
+    .collectContainer>div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: var(--miniFont);
+    }
+
+    .collectContainer img {
+        width: 2.5em;
+        padding: 0.7em;
+    }
+</style>
+<div id="jumpToTools" class="uploadBG uploadText">
+    <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">Soukromí</span>
+    <ul>
+        <li>NO data is collected when browsing the entire site!</li>
+    </ul>
+    <p>Features that need data collected:</p>
+    <div class="collectContainer">
+        <div>
+            <button class="button" id="passSubmit">
+                <img src="../images/gdAcc.svg"></button>
+            <div>Accounts</div>
+        </div>
+
+        <div>
+            <button class="button" id="passSubmit">
+                <img src="../images/browseMobHeader.svg"></button>
+            <div>Lists</div>
+        </div>
+
+
+        <div>
+            <button class="button" id="passSubmit">
+                <img src="../images/comment.svg"></button>
+            <div>Comments</div>
+        </div>
+
+
+        <div>
+            <button class="button" id="passSubmit">
+                <img src="../images/savedMobHeader.svg"></button>
+            <div>Ratings</div>
+        </div>
+
+    </div>
+    <div>
+        <h2>Accounts</h2>
+        <h4>When logging in:</h4>
+        <li>Discord Username</li>
+        <li>Discord Account ID</li>
+        <li>Discord Avatar ID</li>
+        <li>Refresh Token</li>
+        <li>Current Time</li>
+    </div>
+    <button>Explanation of cookies used</button>
+</div>

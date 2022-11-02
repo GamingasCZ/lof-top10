@@ -48,7 +48,7 @@ var help = {
     "oldList": {
         "title": jsStr["OLDLIST_T"][LANG],
         "content": jsStr["OLDLIST_D"][LANG]
-    }
+    },
 }
 
 function closeHelp() {

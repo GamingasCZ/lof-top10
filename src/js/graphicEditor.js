@@ -230,34 +230,66 @@ function showBGdialog() {
     $(".boom").animate({ "opacity": 100 }, 200)
 }
 
-function checkPassword() {
-    if (Object.values($("#passSubmit")[0].classList).includes("disabled")) return
+function hideBGsettings() {
+    hideBGdialog()
+    $(".backSett").fadeOut(50)
+}
 
-    if ($("#lpass").val().length == 0) return
+function showBGsettings() {
+    showBGdialog()
+    $(".cutImage").css("background-image",`url("${levelList.titleImg[0]})`)
+    $(".backSett").fadeIn(50)
+    $(".bgError").hide()
 
-    $("#lpass").attr("disabled", true)
-    $("#passSubmit").addClass("disabled")
+    let image = new Image()
+    image.src = levelList.titleImg[0]
+    image.addEventListener('load', () => {
+        console.log(image)
+        $("#backImageSettings").show()
+        $("cutImage").css("backgroud-image", `url(${levelList.titleImg[0]})`)
+        let ratio = image.width/image.height
+        $("#backDragContainer").css("width", `192px`)
+        $("#backDragContainer").css("height", `${192/ratio}px`)
 
-    let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
-    let postReq = { "pwdEntered": $("#lpass").val() };
-
-    // Is list private?
-    postReq[!loadProps[2] ? "id" : "pid"] = loadProps[0];
-    $("#passEditor h3").text(jsStr["CHECKING"][LANG])
-    $.post("./php/pwdCheckAction.php", postReq, function (data) {
-        if (typeof data == "object") generateFromJSON(2, data)
-        else {
-            $("#passEditor h3").text(jsStr["TYPEPASS"][LANG])
-            $("#passEditor").css("animation-name", "inputError")
-            setTimeout(() => {
-                $("#lpass").attr("disabled", false)
-                $("#passSubmit").removeClass("disabled")
-                $("#lpass").val()
-                $("#passEditor").css("animation-name", "")
-            }, 500);
-
-        }
+        $("#bgCoverageSlider").on("input", updateDragBox)
+        $(".cutImage").css("background", $("#listimg").val())
+        
+        let svgWidth = $(".cutImage").width()
+        let svgHeight = $(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)
+        $(".cutBox").attr("width", svgWidth)
+        $(".cutBox").attr("height", svgHeight)
+        $(".cutBox > path").attr("d",`M0 0 L${svgWidth} 0 L${svgWidth} ${svgHeight} L0 ${svgHeight} L0 0`)
+        
+        $("#backDragContainer").off("mousemove")
+        $("#backDragContainer").on("mousemove", e => {
+            let dragPos;
+            // Center of the select box = offset from #backDragContainer Y pos + 1/2 of the select box
+            let center = $("#backDragContainer").position().top - e.originalEvent.clientY + $(".backSett").position().top + $("#backDragContainer").position().top
+            if (center > 0) dragPos = 0 // Do not use the first half of the select box
+            else dragPos = clamp(Math.abs(center), 0, parseInt($(".cutImage").height()-$(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)))
+            
+            if (e.originalEvent.buttons == 1) { // Move only when holding LMB
+                $(".cutBox").css("top", `${dragPos}px`)
+            }
+        })
+        $("#backDragContainer").one("mouseup", () => levelList.titleImg[1] = parseInt($(".cutBox").css("top").slice(0,-2)))
+    });
+    image.addEventListener('error', () => {
+        $("#backImageSettings").hide()
+        $(".bgError").show()
     })
+}
+
+function updateDragBox() {
+    console.log( $("#bgCoverageSlider").val())
+    levelList.titleImg[2] = $("#bgCoverageSlider").val()
+    let svgWidth = $(".cutImage").width()
+    let svgHeight = $(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)
+    $(".cutBox").attr("width", svgWidth)
+    $(".cutBox").attr("height", svgHeight)
+    $(".cutBox > path").attr("d",`M0 0 L${svgWidth} 0 L${svgWidth} ${svgHeight} L0 ${svgHeight} L0 0`)
+
+    $(".cutBox").css("top", 0)
 }
 
 function generateFromJSON(part, boards) {
@@ -266,15 +298,9 @@ function generateFromJSON(part, boards) {
 
     // Disabling input boxes when editing a list
     $("#listnm").attr("disabled", "true");
-    if (part == 1) {
-        $("#listnm").val(loadProps[3]);
-        $(".uploadBG > *:not(#listnm, #creatornm, br)").hide()
-        $("#passEditor").show()
-        return
-    }
+    $("#listnm").val(loadProps[3]);
 
     $(".uploadBG > *:not(.imgPreview)").show()
-    $("#passEditor").slideUp(50)
     $("#submitbutton > div").text(jsStr["L_UPDATE"][LANG])
     $("#submitbutton").attr("onclick", "updateList()")
 
@@ -292,10 +318,15 @@ function generateFromJSON(part, boards) {
     $(".previewButton").removeClass("disabled");
 
     $("#listnm").val(boards["name"])
-
+    
     levelList = JSON.parse(boards["data"]);
-    $(".titImgInp").val(levelList["titleImg"])
-
+    
+    if (levelList["translucent"] != undefined && levelList["translucent"]) {
+        $(`img[for="transCards"]`).attr("src", "images/modernCheckOn.svg")
+        $(`input[name="transCards"]`).attr("checked", true)
+    }
+    
+    $("#listimg").val(levelList["titleImg"][0]) // TODO: check for old lists
     // Is it a diff guess list?
     if (levelList["diffGuesser"] != undefined && levelList["diffGuesser"][0]) {
         $(`img[for="diffGuesser"]`).attr("src", "images/modernCheckOn.svg")
