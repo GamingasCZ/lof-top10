@@ -237,7 +237,7 @@ function hideBGsettings() {
 
 function showBGsettings() {
     showBGdialog()
-    $(".cutImage").css("background-image",`url("${levelList.titleImg[0]})`)
+    $(".cutImage").css("background-image", `url("${levelList.titleImg[0]})`)
     $(".backSett").fadeIn(50)
     $(".bgError").hide()
 
@@ -247,32 +247,32 @@ function showBGsettings() {
         console.log(image)
         $("#backImageSettings").show()
         $("cutImage").css("backgroud-image", `url(${levelList.titleImg[0]})`)
-        let ratio = image.width/image.height
+        let ratio = image.width / image.height
         $("#backDragContainer").css("width", `192px`)
-        $("#backDragContainer").css("height", `${192/ratio}px`)
+        $("#backDragContainer").css("height", `${192 / ratio}px`)
 
         $("#bgCoverageSlider").on("input", updateDragBox)
         $(".cutImage").css("background", $("#listimg").val())
-        
+
         let svgWidth = $(".cutImage").width()
         let svgHeight = $(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)
         $(".cutBox").attr("width", svgWidth)
         $(".cutBox").attr("height", svgHeight)
-        $(".cutBox > path").attr("d",`M0 0 L${svgWidth} 0 L${svgWidth} ${svgHeight} L0 ${svgHeight} L0 0`)
-        
+        $(".cutBox > path").attr("d", `M0 0 L${svgWidth} 0 L${svgWidth} ${svgHeight} L0 ${svgHeight} L0 0`)
+
         $("#backDragContainer").off("mousemove")
         $("#backDragContainer").on("mousemove", e => {
             let dragPos;
             // Center of the select box = offset from #backDragContainer Y pos + 1/2 of the select box
             let center = $("#backDragContainer").position().top - e.originalEvent.clientY + $(".backSett").position().top + $("#backDragContainer").position().top
             if (center > 0) dragPos = 0 // Do not use the first half of the select box
-            else dragPos = clamp(Math.abs(center), 0, parseInt($(".cutImage").height()-$(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)))
-            
+            else dragPos = clamp(Math.abs(center), 0, parseInt($(".cutImage").height() - $(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)))
+
             if (e.originalEvent.buttons == 1) { // Move only when holding LMB
                 $(".cutBox").css("top", `${dragPos}px`)
             }
         })
-        $("#backDragContainer").one("mouseup", () => levelList.titleImg[1] = parseInt($(".cutBox").css("top").slice(0,-2)))
+        $("#backDragContainer").one("mouseup", () => levelList.titleImg[1] = parseInt($(".cutBox").css("top").slice(0, -2)))
     });
     image.addEventListener('error', () => {
         $("#backImageSettings").hide()
@@ -281,13 +281,13 @@ function showBGsettings() {
 }
 
 function updateDragBox() {
-    console.log( $("#bgCoverageSlider").val())
+    console.log($("#bgCoverageSlider").val())
     levelList.titleImg[2] = $("#bgCoverageSlider").val()
     let svgWidth = $(".cutImage").width()
     let svgHeight = $(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)
     $(".cutBox").attr("width", svgWidth)
     $(".cutBox").attr("height", svgHeight)
-    $(".cutBox > path").attr("d",`M0 0 L${svgWidth} 0 L${svgWidth} ${svgHeight} L0 ${svgHeight} L0 0`)
+    $(".cutBox > path").attr("d", `M0 0 L${svgWidth} 0 L${svgWidth} ${svgHeight} L0 ${svgHeight} L0 0`)
 
     $(".cutBox").css("top", 0)
 }
@@ -318,15 +318,20 @@ function generateFromJSON(part, boards) {
     $(".previewButton").removeClass("disabled");
 
     $("#listnm").val(boards["name"])
-    
+
     levelList = JSON.parse(boards["data"]);
-    
+
     if (levelList["translucent"] != undefined && levelList["translucent"]) {
         $(`img[for="transCards"]`).attr("src", "images/modernCheckOn.svg")
         $(`input[name="transCards"]`).attr("checked", true)
     }
-    
-    $("#listimg").val(levelList["titleImg"][0]) // TODO: check for old lists
+
+    if (typeof levelList["titleImg"] == "string") { // Old lists
+        let link = levelList["titleImg"]
+        levelList["titleImg"] = DEFAULT_LEVELLIST.titleImg
+        levelList["titleImg"][0] = link
+    }
+    $("#listimg").val(levelList["titleImg"][0])
     // Is it a diff guess list?
     if (levelList["diffGuesser"] != undefined && levelList["diffGuesser"][0]) {
         $(`img[for="diffGuesser"]`).attr("src", "images/modernCheckOn.svg")
@@ -416,7 +421,7 @@ function moveCard(position, currID) {
 }
 
 function updateSmPos() {
-    for (i = 1; i < getListLen(levelList)+1; i++) {
+    for (i = 1; i < getListLen(levelList) + 1; i++) {
         let chosenColor = $("#top" + i).css("background-color");
         $("#smtop" + i).css("background-color", chosenColor);
         $("#smtop" + i).css("border-color", chosenColor);
@@ -441,7 +446,7 @@ function updateSmPos() {
 }
 
 function displayCard(id) {
-    if (id > 0 & id < getListLen(levelList)+1) {
+    if (id > 0 & id < getListLen(levelList) + 1) {
         $(".smallPosEdit").show();
         $("#smtop" + id.toString()).hide();
         $(".positionEdit").hide();
@@ -545,7 +550,7 @@ function searchFaves(data) {
 }
 
 function addFromFaves() {
-    if (getListLen(levelList)+1 > 50) return
+    if (getListLen(levelList) + 1 > 50) return
 
     $(".levelPickerContainer").text("")
     $(".savedFilter").val("")
@@ -588,7 +593,7 @@ function maxAddedDialog() {
 }
 
 function addPicked(ind) {
-    var listLenght = getListLen(levelList)+1;
+    var listLenght = getListLen(levelList) + 1;
     levelList[listLenght] = {
         "levelName": favesData[ind][0],
         "creator": favesData[ind][1],
@@ -610,7 +615,7 @@ var OGfavesData
 
 function makeFavesPicker() {
     $(".levelPickerContainer").empty()
-    if (getListLen(levelList)+1 > 50) {
+    if (getListLen(levelList) + 1 > 50) {
         maxAddedDialog()
         return
     }
@@ -654,19 +659,19 @@ function makeFavesPicker() {
 }
 
 class Level {
-    constructor (levelName = "", creator = "", levelID = -1, video = "", color = "", difficulty = [0,0], tags = []) {
-        this.levelName = levelName; 
-        this.creator = creator; 
-        this.levelID = levelID; 
-        this.video = video; 
-        this.color = color; 
-        this.difficulty = difficulty; 
-        this.tags = tags; 
+    constructor(levelName = "", creator = "", levelID = -1, video = "", color = "", difficulty = [0, 0], tags = []) {
+        this.levelName = levelName;
+        this.creator = creator;
+        this.levelID = levelID;
+        this.video = video;
+        this.color = color;
+        this.difficulty = difficulty;
+        this.tags = tags;
     }
 }
 
 async function addLevel() {
-    var listLenght = getListLen(levelList)+1;
+    var listLenght = getListLen(levelList) + 1;
     if (listLenght == 1) {
         // Removing tutorial
         $("#mainContent").text("");
@@ -891,8 +896,10 @@ function clickTag(e, lp) {
         let index = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parents()[2])
         let linkInput = $(e.currentTarget).parents().eq(1).children().eq(2)
         let nameInput = $(e.currentTarget).parents().eq(1).children().eq(1)
-        if (linkInput.css("display") != "none") { linkInput.hide(); nameInput.show();
-            $(e.currentTarget).css("filter", levelList[lp].tags[index][2] == "" ? "none" : "var(--redHighlight)") }
+        if (linkInput.css("display") != "none") {
+            linkInput.hide(); nameInput.show();
+            $(e.currentTarget).css("filter", levelList[lp].tags[index][2] == "" ? "none" : "var(--redHighlight)")
+        }
         else { linkInput.show(); nameInput.hide(); $(e.currentTarget).css("filter", "var(--lightHighlight)") }
     })
 
@@ -960,18 +967,18 @@ function removeLevel(id) {
     delete levelList[($(".listPosition" + id.toString()).val())];
 
     // Enables the add button
-    if (getListLen(levelList)+1 < 51) {
+    if (getListLen(levelList) + 1 < 51) {
         $(".addCardButton").removeClass("disabled");
     }
 
-    for (j = id + 1; j <= getListLen(levelList)+1; j++) {
+    for (j = id + 1; j <= getListLen(levelList) + 1; j++) {
         updateCardData(j, j - 1);
         availFill(0, $(".cardLName" + id), "freedom69", id)
         availFill(1, $(".cardLCreator" + id), "freedom69", id)
     }
 
     // Adds the tutorial, when the list is empty
-    if (getListLen(levelList)+1 == 1) {
+    if (getListLen(levelList) + 1 == 1) {
         $("#mainContent").html(jsStr["HELP_TEXT"][LANG]);
         $(".previewButton").addClass("disabled");
     }
@@ -1074,10 +1081,10 @@ async function preview(skipCheck = false) {
 
     if ($(".preview").length == 0) {
         await $.get("./parts/listViewer.html", data => {
-            $("#app").append("<div class='preview'>"+translateDoc(data,"listViewer")+"</div>")
+            $("#app").append("<div class='preview'>" + translateDoc(data, "listViewer") + "</div>")
         })
     }
-    else {  $(".preview").fadeIn(100) }
+    else { $(".preview").fadeIn(100) }
 
     LIST_ID = -8
     generateList(levelList, [$("#listnm").val(), $("#creatornm").val()])
