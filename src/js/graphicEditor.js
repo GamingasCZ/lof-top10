@@ -344,7 +344,7 @@ function generateFromJSON(part, boards) {
         $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
     }
 
-    for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
+    for (y = 0; y < getListLen(levelList); y++) {
         loadLevel(y + 1)
     }
     updateSmPos()
@@ -393,8 +393,8 @@ function moveCard(position, currID) {
             listPlacement--
         }
     }
-    else if (position == "down" & currID < Object.keys(levelList).length - ADDIT_VALS) {
-        if (listPlacement < Object.keys(levelList).length - 1 - ADDIT_VALS) {
+    else if (position == "down" & currID < getListLen(levelList)) {
+        if (listPlacement < getListLen(levelList)) {
             refreshCardDetails(listPlacement)
             $(".card" + (listPlacement + 1)).after($(".card" + (listPlacement)));
 
@@ -416,7 +416,7 @@ function moveCard(position, currID) {
 }
 
 function updateSmPos() {
-    for (i = 1; i < Object.keys(levelList).length - ADDIT_VALS; i++) {
+    for (i = 1; i < getListLen(levelList)+1; i++) {
         let chosenColor = $("#top" + i).css("background-color");
         $("#smtop" + i).css("background-color", chosenColor);
         $("#smtop" + i).css("border-color", chosenColor);
@@ -441,7 +441,7 @@ function updateSmPos() {
 }
 
 function displayCard(id) {
-    if (id > 0 & id < Object.keys(levelList).length - ADDIT_VALS) {
+    if (id > 0 & id < getListLen(levelList)+1) {
         $(".smallPosEdit").show();
         $("#smtop" + id.toString()).hide();
         $(".positionEdit").hide();
@@ -545,7 +545,7 @@ function searchFaves(data) {
 }
 
 function addFromFaves() {
-    if (Object.keys(levelList).length - ADDIT_VALS > 50) return
+    if (getListLen(levelList)+1 > 50) return
 
     $(".levelPickerContainer").text("")
     $(".savedFilter").val("")
@@ -588,7 +588,7 @@ function maxAddedDialog() {
 }
 
 function addPicked(ind) {
-    var listLenght = Object.keys(levelList).length - ADDIT_VALS;
+    var listLenght = getListLen(levelList)+1;
     levelList[listLenght] = {
         "levelName": favesData[ind][0],
         "creator": favesData[ind][1],
@@ -610,7 +610,7 @@ var OGfavesData
 
 function makeFavesPicker() {
     $(".levelPickerContainer").empty()
-    if (Object.keys(levelList).length - ADDIT_VALS > 50) {
+    if (getListLen(levelList)+1 > 50) {
         maxAddedDialog()
         return
     }
@@ -666,7 +666,7 @@ class Level {
 }
 
 async function addLevel() {
-    var listLenght = Object.keys(levelList).length - ADDIT_VALS;
+    var listLenght = getListLen(levelList)+1;
     if (listLenght == 1) {
         // Removing tutorial
         $("#mainContent").text("");
@@ -960,18 +960,18 @@ function removeLevel(id) {
     delete levelList[($(".listPosition" + id.toString()).val())];
 
     // Enables the add button
-    if (Object.keys(levelList).length - ADDIT_VALS < 51) {
+    if (getListLen(levelList)+1 < 51) {
         $(".addCardButton").removeClass("disabled");
     }
 
-    for (j = id + 1; j <= Object.keys(levelList).length - ADDIT_VALS; j++) {
+    for (j = id + 1; j <= getListLen(levelList)+1; j++) {
         updateCardData(j, j - 1);
         availFill(0, $(".cardLName" + id), "freedom69", id)
         availFill(1, $(".cardLCreator" + id), "freedom69", id)
     }
 
     // Adds the tutorial, when the list is empty
-    if ((Object.keys(levelList)).length - ADDIT_VALS == 1) {
+    if (getListLen(levelList)+1 == 1) {
         $("#mainContent").html(jsStr["HELP_TEXT"][LANG]);
         $(".previewButton").addClass("disabled");
     }

@@ -76,10 +76,6 @@ body {
     font-family: pusab;
     src: url("../assets/Poppins-Medium.ttf");
 }
-@font-face {
-  font-family: light;
-  src: url("../assets/MerriweatherSans-Light.ttf");
-}
 
 @font-face {
     font-family: chatFont;
@@ -233,17 +229,6 @@ ul > div {
   margin: auto;
   text-align: center;
   font-family: pusab;  
-}
-
-.title {
-  width: 50vw;
-  transform: scale(1,1) rotateZ(0deg);
-  transition-duration: 0.3s;
-}
-
-.title:hover {
-  transform: scale(1.1,1.1) rotateZ(2deg);
-  transition-duration: 0.3s;
 }
 
 #listLevelSub {
@@ -405,6 +390,7 @@ u {
   transition: opacity 0.2s linear;
   pointer-events: all;
   margin: 1%;
+  z-index: 2;
 }
 .overlay {
   width: 100%;
@@ -565,10 +551,6 @@ u {
   width: 60%;
 }
 
-#yearButton {
-  width: inherit;
-  margin: 0px 8vw 0px 0px;
-}
 .yearButtonImg {
   border: none;
   margin: 0 !important;

@@ -13,14 +13,14 @@ function checkJson(data, isPreview=false) {
         $(".errorBox").text(jsStr["SUCC_UPL"][LANG]);
 
         // 1.5/3 Je seznam prázdný?
-        if (Object.keys(parsedData).length - ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
+        if (getListLen(parsedData) == 0) { throw (jsStr["EMPT_L"][LANG]) }
 
         if (data.length > 25000) {
             throw (`${jsStr["TOOBIG1"][LANG]} (${(data.length / 25000).toFixed(2)}% ${jsStr["TOOBIG2"][LANG]}).${jsStr["TOOBIG3"][LANG]}`)
         }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
-        for (i = 1; i < Object.keys(parsedData).length - ADDIT_VALS; i++) {
+        for (i = 1; i < getListLen(parsedData) + 10; i++) {
             if (parsedData[i] == undefined) {
                 throw (i + ". místo neexistuje. Bug mi nahlaš (nebo si nehrej s JSONem :D).")
             }
@@ -260,7 +260,7 @@ function makeEditor(update) {
 }
 
 const pageExit = exit => {
-    if (Object.keys(levelList).length > ADDIT_VALS+1) exit.preventDefault();
+    if (getListLen(boards)) exit.preventDefault();
 }
 
 function makeBrowser() {

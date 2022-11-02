@@ -1,6 +1,5 @@
-const ADDIT_VALS = 3;
+const getListLen = b => Object.keys(b).filter(x => x.match(/\d+/)).length
 const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
-const isInEditor = window.location.pathname.includes("upload");
 
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
@@ -59,7 +58,7 @@ function hideShare() {
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
 }
-const getListLen = b => Object.keys(b).filter(x => x.match(/\d+/)).length
+
 function showJumpTo() {
 	$("#popupBG").show()
 	$("#popupBG").css("opacity", 1)
@@ -1358,7 +1357,7 @@ async function lists(list) {
 	if (boards != undefined) {
 		let index = 0
 		let boxAppear = setInterval(() => {
-			if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
+			if (index == getListLen(boards)) { clearInterval(boxAppear) }
 			if ($(".box")[index] != undefined) $(".box")[index].style.transform = "none"
 			index++
 		}, 100);
