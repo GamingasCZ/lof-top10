@@ -59,7 +59,7 @@ function hideShare() {
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
 }
-
+const getListLen = b => Object.keys(b).filter(x => x.match(/\d+/)).length
 function showJumpTo() {
 	$("#popupBG").show()
 	$("#popupBG").css("opacity", 1)
@@ -67,7 +67,7 @@ function showJumpTo() {
 	$(".levelPickerContainer").empty();
 
 	// Show nothing if on an unfinished guessing list
-	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && $(".box").length != Object.keys(boards).length - ADDIT_VALS - 1) {
+	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && $(".box").length != getListLen(boards)) {
 		$(".levelPickerContainer").append(`
 		<div class="noSaves">
 			<img src="./images/guessSkip.svg">
@@ -78,7 +78,7 @@ function showJumpTo() {
 	}
 
 	let ind = 1;
-	Object.values(boards).slice(0, Object.keys(boards).length - ADDIT_VALS - 1).forEach(pos => {
+	Object.values(boards).slice(0, getListLen(boards)).forEach(pos => {
 		let creator = pos.creator;
 		if (typeof creator == "object") creator = "(Collab)"
 
@@ -514,7 +514,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	// Todo remove ! from line below and somewhere next in the code or whatever
 	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && singleLevel == -1) singleLevel = 1
 
-	let amount = singleLevel == -1 ? Object.keys(boards).length - ADDIT_VALS : singleLevel + 1
+	let amount = singleLevel == -1 ? getListLen(boards) + 1 : singleLevel + 1
 	let start = singleLevel == -1 ? 1 : singleLevel
 
 	// Setting page BG from list
@@ -655,11 +655,6 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		}
 
 	};
-	// Removing stuff if list is empty
-	if ($(".box").length == 0 & location.pathname.match(/(upload)/g) == null) {
-		$(".titles").append(jsStr["LLOAD_FAIL"][LANG]);
-	}
-
 	if (LIST_NAME != null) sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, listData[2] == "pid", LIST_NAME, LIST_CREATOR]))
 
 	// Saving viewed list
@@ -693,7 +688,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 
 function shareDiffResult() {
 	let double = (boards.diffGuesser[1] && boards.diffGuesser[2]) ? 2 : 1
-	let maxPoints = (Object.keys(boards).length - ADDIT_VALS - 1) * double
+	let maxPoints = getListLen(boards) * double
 
 	text = `${LIST_NAME} ${jsStr["BY"][LANG]} ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${maxPoints}\n${jsStr["SCORBET"][LANG]}\ngamingas.wz.cz/lofttop10/?id=${LIST_ID}`
 	window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank")
@@ -738,7 +733,7 @@ function skipGuess(face) { // face = [diff, rating]
 	$(".skipBut").remove()
 	$(".box:last()").remove()
 
-	let isLastLevel = $(".box").length + 1 == Object.keys(boards).length - ADDIT_VALS - 1
+	let isLastLevel = $(".box").length + 1 == getListLen(boards)
 	generateList(boards, [LIST_ID, LIST_CREATOR], $(".box").length + 1, true)
 	if (!isLastLevel) generateList(boards, [LIST_ID, LIST_CREATOR], $(".box").length + 1, false)
 
@@ -780,8 +775,8 @@ function skipGuess(face) { // face = [diff, rating]
 	if (isLastLevel) {
 		$(".favoriteStar").show()
 		let double = (boards.diffGuesser[1] && boards.diffGuesser[2]) ? 2 : 1
-		let maxPoints = (Object.keys(boards).length - ADDIT_VALS - 1) * double
-		let perc = Math.round((points / (Object.keys(boards).length - ADDIT_VALS - 1)) * 100 / double)
+		let maxPoints = getListLen(boards) * double
+		let perc = Math.round((points / getListLen(boards)) * 100 / double)
 
 		$(".boards").after(`
 		<div class="uploadText uploadBG finishDiffList">
