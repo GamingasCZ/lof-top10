@@ -53,6 +53,7 @@
   --bigFont: calc(1.6em * var(--fontMultiplier));
   --biggerFont: calc(1.8em * var(--fontMultiplier));
   --xlFont: calc(2em * var(--fontMultiplier));
+
   --lightHighlight: invert(0.4) sepia(1) saturate(1.5) hue-rotate(90deg);
   --redHighlight: invert(0.4) sepia(1) saturate(4) hue-rotate(300deg);
   --greenGradient: linear-gradient(9deg, #142019, var(--normalColor));
@@ -63,7 +64,8 @@
   --normalColor: #045124;
   --tinyFont: calc(0.5em * var(--fontMultiplier));
   --likeGlow: none;
-  --dislikeGlow: none
+  --dislikeGlow: none;
+  --listBGgradient: transparent;
 }
 
 body {
@@ -384,7 +386,7 @@ u {
 }
 
 .scrollToTop {
-  width: 4vw;
+  width: 2em;
   transform: rotate(90deg) !important;
   opacity: 0;
   transition: opacity 0.2s linear;
@@ -675,7 +677,7 @@ html, body {
 }
 .titleImage::after {
   content: "";
-  background: linear-gradient(0deg, var(--siteBackground), transparent);
+  background: var(--listBGgradient);
   width: 100%;
   height: 100%;
   position: absolute;
@@ -1156,7 +1158,7 @@ cb { color: #5fe7ff ;}
 .quoteContainer {
   display: flex;
   align-items: center;
-  padding: 0.5em;
+  padding: 0 0.5em;
   background: #0000004d;
   margin: 0em;
   border-radius: 1em;

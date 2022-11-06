@@ -598,7 +598,17 @@ input:disabled {
     position: absolute;
     background: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4962ef64-2a17-4f23-834e-14e177b0e45e/dfedtjl-174273d9-bea0-4064-a915-d7c72aac189c.png/v1/fill/w_1280,h_1810,strp/weavile_cave_by_gamingascz_dfedtjl-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTgxMCIsInBhdGgiOiJcL2ZcLzQ5NjJlZjY0LTJhMTctNGYyMy04MzRlLTE0ZTE3N2IwZTQ1ZVwvZGZlZHRqbC0xNzQyNzNkOS1iZWEwLTQwNjQtYTkxNS1kN2M3MmFhYzE4OWMucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.VV6m6sFRhuACRaaiqC0h2Ro4H3HKGr8PuEdLKJ4afZM");
     background-size: contain;
-  }
+}
+
+.BGsettBG {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    filter: blur(8px);
+    z-index: -4;
+    opacity: 0.4;
+    background-size: cover;
+}
 #backImageSettings {
     display: flex;
     gap: 1em;
@@ -612,8 +622,15 @@ input:disabled {
 	cursor: move;
 	stroke: #5fdd5f;
 	filter: drop-shadow(rgb(0, 0, 0) 0px 0px 0.3em);
+    transform: scaleX(1);
+    transition: transform 0.2s;
 }
-.alignButtons { width: 1.5em; }
+
+.cutBox:active {
+    transform: scaleX(1.05);
+}
+
+.alignButtons { width: 1.5em; border-radius: 0.3em !important;}
 
 #bgCoverageSlider::-moz-range-thumb {
     background: #4d6c4f;
@@ -639,7 +656,15 @@ input:disabled {
 #bgCoverageSlider::-moz-range-thumb:active {
     transform: scale(1.4);
 }
+#bgCoverageSlider {
+    width: 100%;
+   }   
 
+.gradCheck {
+    display: flex;
+    align-items: center;
+    margin-top: 0.4em;
+}
 .bgError {
 	display: flex;
 	align-items: center;

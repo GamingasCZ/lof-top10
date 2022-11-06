@@ -80,10 +80,12 @@ if (count($_GET) == 1) {
     $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC LIMIT 3 ");
     parseResult($result->fetch_all(MYSQLI_ASSOC));
   } elseif (!empty(array_intersect(["user","hidden","homeUser"], array_keys($_GET)))) {
-    $accountID = checkAccount()["id"];
+    $account = checkAccount();
+    if (!$account) die("[]"); // Not logged in
+
     $showHidden = in_array("hidden", array_keys($_GET)) ? "" : "AND `hidden` LIKE 0";
     $limit = in_array("homeUser", array_keys($_GET)) ? "LIMIT 3" : "";
-    $result = $mysqli->query(sprintf("SELECT * FROM `lists` WHERE `uid`=%s %s ORDER BY `hidden` DESC, `id` DESC %s", $accountID, $showHidden, $limit));
+    $result = $mysqli->query(sprintf("SELECT * FROM `lists` WHERE `uid`=%s %s ORDER BY `hidden` DESC, `id` DESC %s", $account["id"], $showHidden, $limit));
     parseResult($result->fetch_all(MYSQLI_ASSOC));
   }
 } elseif (count($_GET) > 1) {

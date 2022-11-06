@@ -241,12 +241,18 @@ function showBGsettings() {
     $(".backSett").fadeIn(50)
     $(".bgError").hide()
 
+    if (levelList.titleImg[0].length == 0) {
+        $("#backImageSettings").hide()
+        $(".bgNoneEntered").show()
+        return
+    }
+
     let image = new Image()
     image.src = levelList.titleImg[0]
     image.addEventListener('load', () => {
-        console.log(image)
         $("#backImageSettings").show()
-        $("cutImage").css("backgroud-image", `url(${levelList.titleImg[0]})`)
+        $(".cutImage").css("background-image", `url("${levelList.titleImg[0]}")`)
+        $(".BGsettBG").css("background-image", `url("${levelList.titleImg[0]}")`)
         let ratio = image.width / image.height
         $("#backDragContainer").css("width", `192px`)
         $("#backDragContainer").css("height", `${192 / ratio}px`)
@@ -260,6 +266,12 @@ function showBGsettings() {
         $(".cutBox").attr("height", svgHeight)
         $(".cutBox > path").attr("d", `M0 0 L${svgWidth} 0 L${svgWidth} ${svgHeight} L0 ${svgHeight} L0 0`)
 
+        $(".gradCheckbox").off("click")
+        $(".gradCheckbox").on("click", () => {
+            levelList["titleImg"][4] = !levelList["titleImg"][4]
+            $(".gradCheckbox").attr("src",`images/modernCheck${levelList["titleImg"][4] ? "On" : ""}.svg`)
+        })
+
         $("#backDragContainer").off("mousemove")
         $("#backDragContainer").on("mousemove", e => {
             let dragPos;
@@ -270,13 +282,15 @@ function showBGsettings() {
 
             if (e.originalEvent.buttons == 1) { // Move only when holding LMB
                 $(".cutBox").css("top", `${dragPos}px`)
+                levelList.titleImg[1] = (dragPos)/$(".cutImage").height()*100
+                $(".BGsettBG").css("background-position-y", `${levelList.titleImg[1]}%`)
             }
         })
         $("#backDragContainer").one("mouseup", () => levelList.titleImg[1] = parseInt($(".cutBox").css("top").slice(0, -2)))
     });
     image.addEventListener('error', () => {
         $("#backImageSettings").hide()
-        $(".bgError").show()
+        $(".bgBadFetch").show()
     })
 }
 
@@ -1073,6 +1087,7 @@ function card(index) {
 // <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.webp">
 async function preview(skipCheck = false) {
     if (!checkJson(JSON.stringify(levelList), true) && !skipCheck) return
+    $(".errNotif").fadeOut(10)
     $("#levelUpload").fadeOut(100)
 
     $(".uploadTitle").text(jsStr["PREVIEW_L"][LANG])

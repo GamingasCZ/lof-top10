@@ -16,16 +16,22 @@ function getRatings($userID, $list_id) {
     // todo: may be optimized by doing just one request, counting client-side
     $likeQuery = doRequest($mysqli,"SELECT count(*) FROM ratings WHERE rate=1 AND list_id=?", [$list_id], "s");
     $dislikeQuery = doRequest($mysqli,"SELECT count(*) FROM ratings WHERE rate=0 AND list_id=?", [$list_id], "s");
-    $hasRatedQuery = doRequest($mysqli,"SELECT `rate` FROM ratings WHERE `uid`=? AND list_id=?", [$userID, $list_id], "ii");
-    $hasRatedQuery = $hasRatedQuery === null ? -1 : $hasRatedQuery["rate"];
+    $hasRatedQuery;
+    if ($userID) {
+        $hasRatedQuery = doRequest($mysqli,"SELECT `rate` FROM ratings WHERE `uid`=? AND list_id=?", [$userID, $list_id], "ii");
+        $hasRatedQuery = $hasRatedQuery === null ? -1 : $hasRatedQuery["rate"];
+    }
+    else $hasRatedQuery = -2;
     return array($likeQuery["count(*)"], $dislikeQuery["count(*)"], $hasRatedQuery);
 }
 
 $method = $_SERVER["REQUEST_METHOD"];
 switch ($method) {
     case 'GET': // Fetches ratings
-        $userID = checkAccount()["id"];
-        echo json_encode(getRatings($userID, $_GET["id"]));
+        $user = checkAccount();
+        if ($user) $user = $user["id"]; // Use user's id if no error occured, else is false
+
+        echo json_encode(getRatings($user, $_GET["id"]));
         break;
         
     case 'POST': // No rate => rate

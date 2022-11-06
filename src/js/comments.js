@@ -88,7 +88,7 @@ function setupComments() {
     $("#loginHelp").show()
     lockQuotes()
     $("#commentMaker").remove()
-    $("#commentMaker").remove()
+    $("#comBoxFooter").remove()
   }
 
   // Fetch comments
@@ -119,7 +119,6 @@ function setupComments() {
 
   // Pick a random comment color
   commentColor = randomColor(0, 1);
-  let invCol = [255 - commentColor[0], commentColor[1], commentColor[2]]
   hexColor = HSLtoHEX(...commentColor)
   let darkHexColor = HSLtoHEX(commentColor[0], "100%", "3.7%")
 
@@ -132,7 +131,7 @@ function setupComments() {
     "background-color",
     `hsl(${commentColor[0]}, 100%, 3.7%)`
   );
-  $(".sendBut").css("background-color", "hsl(" + invCol.join(",") + ")");
+  $(".sendBut").css("background-color", hexColor);
   $(".emojiPanel").css("background-color", darkHexColor);
   $(".cpicker").val(hexColor);
   commentColor = HSLtoHEX(...commentColor)
@@ -265,7 +264,7 @@ function displayPanel(what) {
 
         $(".sendBut").css(
           "background-color",
-          `hsl(${255 - hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
+          `hsl(${hue}, ${DEFAULT_SATURATION}, 30%)`
         );
 
         let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");

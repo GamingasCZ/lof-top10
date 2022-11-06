@@ -526,8 +526,10 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		}
 	}
 	// Setting title image
+	$(":root").css("--listBGgradient", "linear-gradient(0deg, var(--siteBackground), transparent)")
 	if (typeof boards["titleImg"] == "string" && boards["titleImg"] != "") $(".titleImage").css("background-image", `url("${boards["titleImg"]}")`);
 	else {
+		if (!boards["titleImg"][4]) $(":root").css("--listBGgradient", "transparent")
 		$(".titleImage").css("background-image", `url("${boards["titleImg"][0]}")`);
 		$(".titleImage").css("background-position-y", `${boards["titleImg"][1]}%`);
 		$(".titleImage").css("height", `${boards["titleImg"][2]}%`);
@@ -544,8 +546,8 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		// Removing card buttons
 		if (boards[bIndex]["levelID"] == null || !boards[bIndex]["levelID"].match(/^\d+$/g)) { var ID = ["", ""]; }
 		else {
-			var ID = [`<img src="./images/gdbrowser.webp" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
-			`<img src="./images/copyID.webp" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`]
+			var ID = [`<img src="./images/modGDB.svg" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
+			`<img src="./images/modID.svg" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`]
 		}
 
 		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = ``; }
@@ -1159,6 +1161,40 @@ async function loadSite() {
 }
 
 $(async function () {
+	$.get("./parts/navbar.html", navbar => {
+		$("nav").html(translateDoc(navbar, "navbar"))
+	
+		try {
+			let userInfo = JSON.parse(localStorage.getItem("userInfo"))
+			if (userInfo != null) {
+				setPFP(userInfo)
+			}
+			else {
+				$(".pfpPlaceholder").remove()
+				$(".userIcon").attr("src", "images/user.svg") // smazat placeholder, dat kliknuti
+				$(".userIcon").addClass("button")
+				$(".userIcon").click(openSettings)
+			}
+		} catch (error) {
+			localStorage.removeItem("userInfo")
+			$(".userIcon").addClass("button")
+			$(".userIcon").attr("src", "images/user.svg")
+		}
+	
+		// Setting mobile picker in navbar to curr site name
+		if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
+		if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
+	
+		$($(".settingsDropdown > option")[LANG]).attr("selected", true)
+	
+		$(".settingsDropdown").on("change", () => {
+			let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
+			makeCookie(["lang", switchLang])
+			window.location.reload();
+		})
+	
+	})
+
 	var currLang = getCookie("lang");
 	if (currLang == null) {
 		let getLang = navigator.language;
@@ -1180,44 +1216,8 @@ $(async function () {
 		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
 		else $(".scrollToTop").css("opacity", 0)
 	})
-
-	// hide click blocking dumb ad container from webzdarma :D
-	$('body > div:not([class], [id])').eq(0).hide()
 })
 
-$.get("./parts/navbar.html", navbar => {
-	$("nav").html(translateDoc(navbar, "navbar"))
-
-	try {
-		let userInfo = JSON.parse(localStorage.getItem("userInfo"))
-		if (userInfo != null) {
-			setPFP(userInfo)
-		}
-		else {
-			$(".pfpPlaceholder").remove()
-			$(".userIcon").attr("src", "images/user.svg") // smazat placeholder, dat kliknuti
-			$(".userIcon").addClass("button")
-			$(".userIcon").click(openSettings)
-		}
-	} catch (error) {
-		localStorage.removeItem("userInfo")
-		$(".userIcon").addClass("button")
-		$(".userIcon").attr("src", "images/user.svg")
-	}
-
-	// Setting mobile picker in navbar to curr site name
-	if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
-	if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
-
-	$($(".settingsDropdown > option")[LANG]).attr("selected", true)
-
-	$(".settingsDropdown").on("change", () => {
-		let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
-		makeCookie(["lang", switchLang])
-		window.location.reload();
-	})
-
-})
 
 function logout() {
 	localStorage.removeItem("userInfo")
@@ -1333,9 +1333,6 @@ async function lists(list) {
 		)
 	}
 
-	$("#likeBut").click(rateList)
-	$("#dislikeBut").click(rateList)
-
 	$(".loadPlaceholder").remove()
 
 	let getPinned = getCookie("pinnedLists")
@@ -1372,6 +1369,13 @@ async function lists(list) {
 		// 0 - likes, 1 - dislikes
 		$("#likes").text(rates[0])
 		$("#dislikes").text(rates[1])
+
+		$("#likeBut").click(rateList)
+		$("#dislikeBut").click(rateList)
+
+		if (rates[2] == -2) { // Not logged in
+			return $(".rateButton").remove()
+		}
 
 		discolorRatings(rates[0], rates[1])
 		if (rates[2] >= 0) colorRatings(rates[2]) // colorize if has rated
@@ -1604,9 +1608,8 @@ function openSettings() {
 }
 
 function setPFP(userInfo) {
-	$(".loginBut").removeClass("button")
-	// $(".loginBut").attr("onclick", "")
-	$(".setLoginIcon").remove()
+	$(".loginBut").remove()
+	$(".logContainer").show()
 	$(".setLoginText").text(userInfo[0])
 	$(".setLoginText").after(`
 	<div onclick="logout()" class="button eventButton uploadText settingsButton noMobileResize"><img src="images/logout.svg">Odhlásit se</div>

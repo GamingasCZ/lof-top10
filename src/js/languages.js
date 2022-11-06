@@ -161,7 +161,7 @@ var jsStr = {
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],
     "HELP_TEXT": [`<p class="helpText">Kliknutím na <img id="passSubmit" src="images/addLevel.svg" style="width:2em; margin: 0 1em"> přidáš level!</p>`,
-        `<p class="helpText">Click the <img width=5% id="plusSign" src="images/add.webp"> to add a level!</p>`],
+        `<p class="helpText">Click <img id="passSubmit" src="images/addLevel.svg" style="width:2em; margin: 0 1em"> to add a level!</p>`],
     "L_MOVE_D": ["Přesunout level níž", "Move level up"],
     "L_MOVE_U": ["Přesunout level výš", "Move level down"],
     "L_LEVID": ["ID levelu", "Level ID"],

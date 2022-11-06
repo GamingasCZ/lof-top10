@@ -20,7 +20,7 @@ function checkJson(data, isPreview=false) {
         }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
-        for (i = 1; i < getListLen(parsedData) + 10; i++) {
+        for (i = 1; i < getListLen(parsedData) + 1; i++) {
             if (parsedData[i] == undefined) {
                 throw (i + ". místo neexistuje. Bug mi nahlaš (nebo si nehrej s JSONem :D).")
             }

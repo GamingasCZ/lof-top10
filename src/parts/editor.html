@@ -18,6 +18,7 @@
 
 <!-- Background options -->
 <div id="jumpToTools" class="uploadBG uploadText backSett" style="display: none;">
+    <div class="BGsettBG"></div>
     <div style="text-align: center; width: 100%;">
         <img src="./images/smallClose.svg" class="button" style="width: 1.5em; float: right;" onclick="hideBGsettings()">
         <p style="margin: 0;">Nastavení obrázku</p>
@@ -26,7 +27,7 @@
         <div id="backDragContainer">
             <div class="cutImage"></div>
             <svg class="cutBox" height="210" width="400">
-                <path d="M0 0 L400 0 L400 210 L0 210 L0 0" fill=none stroke-width=15>
+                <path d="M0 0 L400 0 L400 210 L0 210 L0 0" fill=none stroke-width=10>
             </svg>
         </div>
         <div>
@@ -42,13 +43,16 @@
                     <img src="images/alignRight.svg" id="passSubmit" class="button alignButtons">
                 </div>
             </div>
-            <div>
-                <img src="images/modernCheck.svg" onclick="checkCheckbox('')" class="setCheckbox button">Přechod
+            <div class="gradCheck">
+                <img src="images/modernCheckOn.svg" class="setCheckbox button gradCheckbox">Přechod
             </div>
         </div>
     </div>
-    <div class="bgError" style="display: none;">
-        <img src="images/close.svg">Nepodařilo se načíst obrázek!
+    <div class="bgError bgBadFetch" style="display: none;">
+        <img src="images/close.svg"><div>Nepodařilo se načíst obrázek! URL obrázku velkou většinu času končí <cb>předponou .jpg/.png/.webp/.gif</cb>!</div>
+    </div>
+    <div class="bgError bgNoneEntered" style="display: none; background-color: #00a2ff5e;">
+        <img src="images/info.svg"><div>Zadej <cr>URL</cr> <cy>obrázku</cy> nebo <cy>gif/webp animace</cy> a zde pak budeš moct nastavit jeho vlastnosti!</div>
     </div>
 </div>
 
