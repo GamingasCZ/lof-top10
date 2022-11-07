@@ -217,6 +217,7 @@ ul > div {
 	padding: 0.8em;
 	min-width: max-content;
   transition: box-shadow 0.2s;
+	gap: 0.8em;
 }
 
 .guessBadge {
@@ -703,7 +704,7 @@ html, body {
 	font-size: var(--normalFont);
 	padding: 0.1vw;
 	border-radius: 20%;
-	margin-left: 1vh;
+	/*! margin-left: 1vh; */
 	min-width: var(--miniFont);
 	text-align: center;
 }

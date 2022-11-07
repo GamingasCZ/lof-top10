@@ -290,15 +290,15 @@ function displayPanel(what) {
 
 function sendComment() {
   if ($(".sendBut")["0"].className.match("disabled") == null) {
-    $(".sendBut").addClass("disabled");
-    let token = getCookie("access_token")
-    if (!token) {
-      $(".sendBut").removeClass("disabled");
-      $(".comUserError").show();
-      $(".comUserError").text("Nepodařilo se přihlásit!");
-      setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
+    if (midText.length < 10) {
+      $("#charLimit").css("animation", "inputError 0.5s linear")
+      setTimeout(() => {
+        $("#charLimit").css("animation", "")
+      }, 500);
       return
     }
+
+    $(".sendBut").addClass("disabled");
     let postData = {
       token: token,
       comment: midText,
