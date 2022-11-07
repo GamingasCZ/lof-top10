@@ -684,6 +684,11 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		let gotoHash = parseInt(window.location.hash.slice(1).split("!")[1])
 		if ($(".box")[gotoHash - 1] != undefined) $(".box")[gotoHash - 1].scrollIntoView()
 	}
+	
+	// sadly disable editing old lists :/
+	if ($(".listPFP").attr("src").includes("oldPFP")) $(".edit").click(() => openHelp("oldList"))
+	else $(".edit").click(() => goToPWD())
+
 	return true
 }
 
@@ -1223,8 +1228,6 @@ function logout() {
 }
 
 async function lists(list) {
-	let oldList = false
-
 	$(".listInfo").show()
 	$("#crown").show();
 	$("#crown").css("opacity", 1);
@@ -1260,7 +1263,6 @@ async function lists(list) {
 
 			data = data[0]
 			boards = data[0]["data"];
-			oldList = data[0]["uid"] == -1
 			let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
 			let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
@@ -1289,7 +1291,6 @@ async function lists(list) {
 					LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
 
 					boards = data[0]["data"];
-					oldList = data[0]["uid"] == -1
 					let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 					let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
 					$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
@@ -1316,7 +1317,6 @@ async function lists(list) {
 				LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
 
 				boards = data[0]["data"];
-				oldList = data[0]["uid"] == -1
 				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
 				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
@@ -1358,10 +1358,6 @@ async function lists(list) {
 			index++
 		}, 100);
 	}
-
-	// sadly disable editing old lists :/
-	if (oldList) $(".edit").click(() => openHelp("oldList"))
-	else $(".edit").click(() => goToPWD())
 
 	// Load ratings
 	$.get("php/rateAction.php", {"id": LIST_ID}, rates => {

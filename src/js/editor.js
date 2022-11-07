@@ -352,6 +352,9 @@ function switchBrowser(hash) {
           ind++
         })
 
+        page["#communityContainer"][0] = 0
+        currentListData["#communityContainer"] = data[0]
+        originalListData["#communityContainer"] = data[0]
         listViewerDrawer(data[0], "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
     });
 }
