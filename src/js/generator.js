@@ -532,6 +532,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		if (!boards["titleImg"][4]) $(":root").css("--listBGgradient", "transparent")
 		$(".titleImage").css("background-image", `url("${boards["titleImg"][0]}")`);
 		$(".titleImage").css("background-position-y", `${boards["titleImg"][1]}%`);
+		$(".titleImage").css("background-position-x", `${["left", "center", "right"][boards["titleImg"][3]]}`);
 		$(".titleImage").css("height", `${boards["titleImg"][2]}%`);
 	}
 
@@ -686,8 +687,10 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	}
 	
 	// sadly disable editing old lists :/
-	if ($(".listPFP").attr("src").includes("oldPFP")) $(".edit").click(() => openHelp("oldList"))
-	else $(".edit").click(() => goToPWD())
+	if ($(".listPFP").length > 0) {
+		if ($(".listPFP").attr("src").includes("oldPFP")) $(".edit").click(() => openHelp("oldList"))
+		else $(".edit").click(() => goToPWD())
+	}
 
 	return true
 }

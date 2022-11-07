@@ -266,6 +266,17 @@ function showBGsettings() {
         $(".cutBox").attr("height", svgHeight)
         $(".cutBox > path").attr("d", `M0 0 L${svgWidth} 0 L${svgWidth} ${svgHeight} L0 ${svgHeight} L0 0`)
 
+        $(".alignButtons").css("filter","brightness(0.3)")
+        $(".alignButtons").eq(levelList["titleImg"][3]).css("filter","")
+        $(".alignButtons").off("click")
+        $(".alignButtons").on("click", e => {
+            let pos = Object.values($(".alignButtons")).indexOf(e.target)
+            levelList["titleImg"][3] = pos
+            $(".alignButtons").css("filter", "brightness(0.3)")
+            $(e.target).css("filter", "")
+            $(".BGsettBG").css("background-position-x", ["left", "center", "right"][pos])
+        })
+
         $(".gradCheckbox").off("click")
         $(".gradCheckbox").on("click", () => {
             levelList["titleImg"][4] = !levelList["titleImg"][4]
@@ -282,7 +293,7 @@ function showBGsettings() {
 
             if (e.originalEvent.buttons == 1) { // Move only when holding LMB
                 $(".cutBox").css("top", `${dragPos}px`)
-                levelList.titleImg[1] = (dragPos)/$(".cutImage").height()*100
+                levelList.titleImg[1] = (dragPos+$(".cutBox").height())/$(".cutImage").height()*100
                 $(".BGsettBG").css("background-position-y", `${levelList.titleImg[1]}%`)
             }
         })

@@ -81,4 +81,10 @@ ul > div {
 .browserTools { flex-direction: column; }
 
 .boxLinksContainer { margin: 0;}
+
+#backImageSettings {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
 }

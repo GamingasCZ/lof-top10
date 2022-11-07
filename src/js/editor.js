@@ -199,7 +199,7 @@ function updateList() {
 var deeta = '';
 var ogDeeta = '';
 const DEFAULT_LEVELLIST = {
-    "titleImg": ["", 0, 33, 0, true], // URL, position, coverage, halign, gradient
+    "titleImg": ["", 0, 33, 1, true], // URL, position, coverage, halign, gradient
     "pageBGcolor": "#020202",
     "diffGuesser": [false, true, true], // enabled, diff, rating
     "translucent": false
