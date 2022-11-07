@@ -300,7 +300,6 @@ function sendComment() {
 
     $(".sendBut").addClass("disabled");
     let postData = {
-      token: token,
       comment: midText,
       comType: 0, // Change when I eventually add replies,
       listID: LIST_ID,
