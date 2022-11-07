@@ -1466,7 +1466,8 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 	let reversed = JSON.parse(JSON.stringify(data)).reverse();
 
 	// Set max page text
-	let listAmount = Object.keys(reversed).length;
+	let revLen = Object.keys(reversed).length
+	let listAmount = revLen == 0 ? 1 : revLen
 	page[parent][1] = Math.ceil(listAmount / LIST_ONPAGE);
 
 	if (originalListData[parent].init) {
@@ -1482,7 +1483,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 			}
 		})
 
-		if (page[parent][1] == 0) $(`${parent} .page`).remove()
+		if (originalListData[parent].length == 0) $(`${parent} .page`).hide()
 		else {
 			// Page -1 (left) action
 			$(`${parent} .pageBut`).eq(0).click(() => {
@@ -1510,7 +1511,8 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 	}
 
 	// Draw pages
-	if (page[parent][1] > 0) {
+	if (Object.keys(data).length > 0) {
+		$(`${parent} .page`).show()
 		$(".page > *:not(.pageBut)").remove()
 		let keepSize = (page[parent][0] < 3 || page[parent][1] - page[parent][0] < 4) ? 6 : 5
 		for (let i = 0; i < clamp(page[parent][1], 0, keepSize); i++) {

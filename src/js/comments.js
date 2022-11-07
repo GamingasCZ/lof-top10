@@ -504,10 +504,8 @@ async function displayComments(data) {
   })
 
   let refreshBut = `<img id="searchLists" class="button refreshBut" onclick="refreshComments()" style="width: 3em;" src="images/replay.svg">`
-  if (currentListData["#commentList"] == undefined) listViewerDrawer(data[0], "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
+  listViewerDrawer(data[0], "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
 
-  currentListData["#commentList"] = data[0]
-  pageSwitch(page["#commentList"][0], currentListData["#commentList"], "#commentList", 6, 1)
   $(".comTextArea .gamLink").click(el => redirectWarn(el))
 
 }
