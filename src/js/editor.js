@@ -297,18 +297,22 @@ function makeBrowser() {
 
         $.get("./php/getLists.php"+req, data => {
             // Change usernames
-            let ind = 0
-            data[0].forEach(c => {
-              data[1].forEach(u => {
-                // Old comments
-                if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
-              })
-              ind++
-            })
+            changeUsernames(data)
 
             listViewerDrawer(data[0], "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
             if (isSearching) $("#app .doSearch").click()
         });
+    })
+}
+
+function changeUsernames(data) {
+    let ind = 0
+    data[0].forEach(c => {
+      data[1].forEach(u => {
+        // Old comments
+        if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+      })
+      ind++
     })
 }
 

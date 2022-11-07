@@ -404,6 +404,13 @@ u {
   pointer-events: none;
 }
 
+.listHeader {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.7em;
+}
+
 .boxHeader {
   display: flex;
   justify-content: space-between;

@@ -894,18 +894,7 @@ function removeFave(remID) {
 	listViewerDrawer(currentListData["#favoritesContainer"], "#favoritesContainer", 1, [0, 0], jsStr["SAVEDLONG"][LANG])
 }
 
-function switchLoFList(hash, goto = null) {
-
-	window.location.hash = hash
-	/*
-	if (window.location.hash == hash) {
-		// HOW DOES THIS WORK??!! You shouldn't have to subtract 4
-		if (goto != null) $(".box")[goto - 4].scrollIntoView();
-
-	}
-	else window.location.assign(goto == null ? hash : hash + `&goto=${goto}`)
-	*/
-}
+const switchLoFList = hash => window.location.hash = hash
 
 // const MAX_ON_PAGE = 4;
 function homeCards(obj, custElement = ".listContainer", previewType = 1, overwriteMax = false, custPagination = 0, reverseList = false) {
@@ -949,17 +938,22 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				if (object[5] != undefined) {
 					dGuesserBadge = object[5] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
 				}
+
+				let uploadDate = new Date(object[4])
+				let preciseTime = `title="${uploadDate.toLocaleDateString()} ${uploadDate.toLocaleTimeString()}"`
 				$(custElement).append(`
 					<a id="listPreview" class="noMobileResize" href="#${object[0]}" 
 						style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${object[3]}, rgb(${lightCol.join(",")}));
 								border-color: rgb(${darkCol.join(",")}); flex-grow: 1;">
-						<div class="boxHeader" style="flex-direction: row !important;">
-							<div>
+						<div class="listHeader">
+						<div class="cInfoContainer">
+							<div ${preciseTime} class="viewContainer timeContainer"><img src="images/time.svg"><div>${parseElapsed(Date.now()/1000 - object[4]/1000)}</div></div>
+						</div>
+							<div style="flex-grow: 1;">
 								<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object[1]}</p>
 								<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object[2]} -</p>
 							</div>
 							<div id="pinContainer">
-								<p class="uploadText" style="margin: 0; font-size: var(--miniFont);">${window.parent.window.chatDate(object[4] / 1000)}</p>
 								${previewType == 5 ? `<img src="images/unpin.svg" onclick="pinList('${object[0]}',$(this))" class="button" id="unpinCard">` : ''}
 							</div>
 						</div>
@@ -1040,9 +1034,11 @@ async function makeHP() {
 	homeCards(hpData.favPicks, ".savedLists", 3)
 
 	$.get("./php/getLists.php?homepage=1", data => {
+		changeUsernames(data)
 		homeCards(data[0], ".newestLists", 4)
 	})
 	$.get("./php/getLists.php?homeUser", data => {
+		changeUsernames(data)
 		homeCards(data[0], ".uploadedLists", 4)
 	})
 
@@ -1064,7 +1060,7 @@ function clearViewed() {
 	if ($(".recentlyViewed").length == 0) return
 	$(".recentlyViewed").empty()
 	makeCookie(["recentlyViewed", "[]"])
-	$(".recentlyViewed").html(`<div class="uploadText" style="color: #f9e582; margin-left: 5vw;">${jsStr["NOVIEWED"][LANG]}</div>`)
+	$(".recentlyViewed").html(`<div class="uploadText" style="color: #f9e582">${jsStr["NOVIEWED"][LANG]}</div>`)
 }
 
 var listData = "";
@@ -1259,6 +1255,9 @@ async function lists(list) {
 	}
 	else if (list.type == "random") {
 		$.get("php/getLists.php?random=1", data => {
+			LIST_NAME = data[0]["name"]
+			LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
+
 			data = data[0]
 			boards = data[0]["data"];
 			oldList = data[0]["uid"] == -1
@@ -1270,8 +1269,6 @@ async function lists(list) {
 
 			LIST_ID = parseInt(data["id"])
 
-			LIST_NAME = data[0]["name"]
-			LIST_CREATOR = data[0]["creator"]
 			$("#commAmount").text(data[0]["commAmount"])
 
 			generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
@@ -1288,6 +1285,9 @@ async function lists(list) {
 					return
 				}
 				else {
+					LIST_NAME = data[0]["name"]
+					LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
+
 					boards = data[0]["data"];
 					oldList = data[0]["uid"] == -1
 					let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
@@ -1296,8 +1296,6 @@ async function lists(list) {
 					<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 					$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
-					LIST_NAME = data[0]["name"]
-					LIST_CREATOR = data[0]["creator"]
 					$("#commAmount").text(data[0]["commAmount"])
 
 					generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
@@ -1314,6 +1312,9 @@ async function lists(list) {
 				return
 			}
 			else {
+				LIST_NAME = data[0]["name"]
+				LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
+
 				boards = data[0]["data"];
 				oldList = data[0]["uid"] == -1
 				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
@@ -1323,8 +1324,6 @@ async function lists(list) {
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
 				LIST_ID = data[0]["hidden"]
-				LIST_NAME = data[0]["name"]
-				LIST_CREATOR = data[0]["creator"]
 				$("#commAmount").text(data[0]["commAmount"])
 
 				generateList(boards, [encodeURIComponent(data[0]["hidden"]), data[0]["name"], "pid"]);
