@@ -332,7 +332,7 @@ function addCollabHuman(load = 0) {
            ><img id="passSubmit" class="button noMobileResize socButton" src="images/searchOpaque.svg" onclick="verifyPerson($(this), 1)">
         </td>
         <td>
-            <img class="button noMobileResize socAddButton socButton" src="images/add.webp" onclick="addSocMedia($(this))"
+            <img class="button noMobileResize socAddButton socButton" src="images/addLevel.svg" id="passSubmit" onclick="addSocMedia($(this))"
        ></td>
         <td>
             <select onchange="chRoleValue($(this), 'role', 2)" class="uploadText roleList"></select>

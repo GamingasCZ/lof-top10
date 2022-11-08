@@ -923,8 +923,8 @@ input:disabled {
 #starRate {
 	z-index: 2;
 	width: 45%;
-    left: calc(1.7vw + 1.4vh);
-    top: calc(1.3vw + 1.5vh);
+    left: calc(1.2vw + 1.4vh);
+    top: calc(0.9vw + 1.1vh);
 }
 
 #diffBG {
@@ -1111,12 +1111,16 @@ input:disabled {
 .noRolAdded,
 .addRoles {
     margin-left: 1%;
-    color: rgb(173, 230, 185);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
 }
 
 .noRolAdded,
 .addRoles>img {
-    transform: translateY(0.6vw);
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
 }
 
 .tableCpicker {

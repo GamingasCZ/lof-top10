@@ -1261,8 +1261,8 @@ async function lists(list) {
 	}
 	else if (list.type == "random") {
 		$.get("php/getLists.php?random=1", data => {
-			LIST_NAME = data[0]["name"]
-			LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
+			LIST_NAME = data[0][0]["name"]
+			LIST_CREATOR = data[0][0]["creator"].length == 0 ? data[1][0]["username"] : data[0][0]["creator"]
 
 			data = data[0]
 			boards = data[0]["data"];
@@ -1272,7 +1272,7 @@ async function lists(list) {
 			<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 			$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
-			LIST_ID = parseInt(data["id"])
+			LIST_ID = parseInt(data[0]["id"])
 
 			$("#commAmount").text(data[0]["commAmount"])
 
