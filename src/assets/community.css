@@ -509,16 +509,6 @@ input:disabled {
     text-shadow: none;
 }
 
-#removebutton {
-    width: auto;
-    padding: 0.5% 1%;
-    height: auto;
-    background-color: rgb(212, 113, 113);
-    color: rgb(255, 0, 0);
-    border: none;
-    margin: 0% 2% 1%;
-}
-
 .backToEditor {
     float: left;
     width: 3em;

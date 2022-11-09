@@ -1,6 +1,6 @@
 //Holba buenas hyperhackeře :D. Nyní sleduješ můj hrozný kód :).
 
-function checkJson(data, isPreview=false) {
+function checkJson(data, isPreview = false) {
     try {
         // Kontrola názvů atd.
         let listName = $("#listnm").val();
@@ -40,7 +40,7 @@ function checkJson(data, isPreview=false) {
             $(".errorBox").html(jsStr["NO_JSON"][LANG]);
         }
         else {
-            if (isPreview) error += "<br><br><cy>Tip: "+jsStr["DBLCLKTIP"][LANG]+".</cy>"
+            if (isPreview) error += "<br><br><cy>Tip: " + jsStr["DBLCLKTIP"][LANG] + ".</cy>"
             $(".errorBox").html(error);
         }
 
@@ -137,6 +137,8 @@ function uploadList() {
     }
 }
 function updateList() {
+    if ($("#submitbutton").hasClass("disabled")) return
+
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
         // Is the "hidden" checkbox checked?
@@ -155,7 +157,9 @@ function updateList() {
 
         $("#submitbutton").prepend("<img class='loading' src='images/loading.webp'>")
         $("#submitbutton").addClass("disabled")
-        $("#removebutton").addClass("disabled")
+        $(".editables").addClass("disabled")
+        $(".editables").css("pointer-events", "none")
+        $(".removeList").hide()
 
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
@@ -178,20 +182,17 @@ function updateList() {
                 return
             }
 
-            // List is unchanged
-            else if (data == 4) {
-                $(".errNotif").fadeIn(100);
-                $(".errorBox").html(jsStr["LIST_UNCHANGED"][LANG]);
-                setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
-            }
+            else if (data == 4) $(".errorBox").html(jsStr["LIST_UNCHANGED"][LANG]); // List is unchanged
+            else $(".errorBox").html(jsStr["LIST_UPFAIL"][LANG]); // List fart
 
-            else {
-                $(".errNotif").fadeIn(100);
-                $(".errorBox").html(jsStr["LIST_UPFAIL"][LANG]);
-                setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
-            }
+            $(".errNotif").fadeIn(100);
+            setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
+
             $("#submitbutton").removeClass("disabled")
-            $("#removebutton").removeClass("disabled")
+            $(".editables").removeClass("disabled")
+            $(".editables").css("pointer-events", "")
+            $(".loading").remove()
+            $(".removeList").show()
         })
     }
 }
@@ -228,14 +229,14 @@ function makeEditor(update) {
         $(".settingSubbox").slideToggle(50);
         checkCheckbox("diffGuesser");
         $(".diffSelBut img").removeClass("disabled")
-        levelList.diffGuesser = [$("input[name='diffGuesser']").prop("checked"),true,true]
+        levelList.diffGuesser = [$("input[name='diffGuesser']").prop("checked"), true, true]
     })
 
     // TODO: fix for old lists!!
     $("#listimg").on("change", () => levelList.titleImg[0] = $("#listimg").val())
     $(".imgSetButton").click(showBGsettings)
 
-    $("img[for=transCards]").click(() => {checkCheckbox("transCards", (x,y) => levelList.translucent = y)})
+    $("img[for=transCards]").click(() => { checkCheckbox("transCards", (x, y) => levelList.translucent = y) })
 
     // Show alert if creating list
     window.addEventListener('beforeunload', pageExit);
@@ -285,7 +286,7 @@ function makeBrowser() {
         // Generates stuff
         if (hash == "#uploads") browser = 1
 
-        let req = ["","?user","?hidden"][browser]
+        let req = ["", "?user", "?hidden"][browser]
         $(".browserButton").attr("id", "")
         if (browser > 0) {
             if ($(".privateSel").length == 0) {
@@ -295,11 +296,11 @@ function makeBrowser() {
         }
         $(".browserButton").eq(browser).attr("id", "browserBSelected")
 
-        $.get("./php/getLists.php"+req, data => {
+        $.get("./php/getLists.php" + req, data => {
             // Change usernames
             changeUsernames(data)
 
-            listViewerDrawer(data[0], "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
+            listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
             if (isSearching) $("#app .doSearch").click()
         });
     })
@@ -308,11 +309,11 @@ function makeBrowser() {
 function changeUsernames(data) {
     let ind = 0
     data[0].forEach(c => {
-      data[1].forEach(u => {
-        // Old comments
-        if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
-      })
-      ind++
+        data[1].forEach(u => {
+            // Old comments
+            if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+        })
+        ind++
     })
 }
 
@@ -324,7 +325,7 @@ function switchBrowser(hash) {
         case "#uploads":
             req = "?user"; ind = 1; break;
         case "#hidden":
-            req = "?hidden"; ind = 2; break;     
+            req = "?hidden"; ind = 2; break;
         default:
             break;
     }
@@ -341,29 +342,29 @@ function switchBrowser(hash) {
     }
     else $(".privateSel").remove()
 
-    $.get("./php/getLists.php"+req, data => {
+    $.get("./php/getLists.php" + req, data => {
         // Change usernames
         let ind = 0
         data[0].forEach(c => {
-          data[1].forEach(u => {
-            // Old comments
-            if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
-          })
-          ind++
+            data[1].forEach(u => {
+                // Old comments
+                if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+            })
+            ind++
         })
 
         page["#communityContainer"][0] = 0
         currentListData["#communityContainer"] = data[0]
         originalListData["#communityContainer"] = data[0]
-        listViewerDrawer(data[0], "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
+        listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
     });
 }
 
 function closeRmScreen() {
     $(".removeScreen").fadeOut(100)
-    $(".boom").animate({ "opacity": 0 }, 500, function () {
-        $(".boom").css("background-color", "white")
-        $(".boom").css("display", "none")
+    $("#app > .boom").animate({ "opacity": 0 }, 500, function () {
+        $("#app > .boom").css("background-color", "white")
+        $("#app > .boom").css("display", "none")
         $(".removeScreen").remove()
     })
 }
@@ -384,7 +385,7 @@ function confirmDelete() {
 
 function removeList() {
     // Confirm remove
-    $(".boom").append(`<div class="uploadText removeScreen">
+    $("#app > .boom").append(`<div class="uploadText removeScreen">
     <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.webp"><br />
     <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -5.4vw;" src="./images/szn1.webp">
     <p id="removeText" style="text-align: center; font-size: var(--bigFont)">${jsStr["CONF_DEL"][LANG]}</p>
@@ -394,9 +395,9 @@ function removeList() {
     <div>
     </div>`);
 
-    $(".boom").css("background-color", "black");
-    $(".boom").css("display", "initial");
-    $(".boom").animate({ "opacity": 1 }, 500, function () {
+    $("#app > .boom").css("background-color", "black");
+    $("#app > .boom").css("display", "block");
+    $("#app > .boom").animate({ "opacity": 1 }, 500, function () {
         $("#removeText").fadeIn(2000);
         $(".rmButSet").animate({ "opacity": 1 }, 2000);
     })
@@ -404,36 +405,42 @@ function removeList() {
     $("#rmbutton").on("mouseover", function () {
         $("#rmimg1").css("transform", "translateY(-5%)");
         $("#rmimg2").css("transform", "translateY(5%)");
-        $(".boom").css("background-color", "rgb(11, 0, 0)");
+        $("#app > .boom").css("background-color", "rgb(11, 0, 0)");
     })
     $("#rmbutton").on("mouseout", function () {
         $("#rmimg1").css("transform", "translateY(0%)");
         $("#rmimg2").css("transform", "translateY(0%)");
-        $(".boom").css("background-color", "rgb(0, 0, 0)");
+        $("#app > .boom").css("background-color", "rgb(0, 0, 0)");
     })
 }
 function murderList() {
-    $(".boom").css("display", "initial");
+    $("#app").before("<div class='boom boomReal'></div>")
 
-    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.hash = "#editor");
+    $(".boomReal").css("display", "block")
+    $(".boomReal").animate({ "opacity": 1 }, 2000, () => {
+        window.location.hash = "#editor"
+        $(".boomReal").animate({ "opacity": 0 }, 100, () => {
+            $(".boomReal").remove()
+        });
+    });
     $("#levelUpload").addClass("killList");
 }
 
 function checkCheckbox(changeVal, runFun = null) {
-	if ($(`img[for="${changeVal}"]`).attr("src").match("On") != null) {
-		$(`img[for="${changeVal}"]`).attr("src", "images/modernCheck.svg")
-		$(`input[name="${changeVal}"]`).attr("checked", false)
-		if (runFun != null) runFun(changeVal, false)
-	}
-	else {
-		$(`img[for="${changeVal}"]`).attr("src", "images/modernCheckOn.svg")
-		$(`input[name="${changeVal}"]`).attr("checked", true)
-		if (runFun != null) runFun(changeVal, true)
-	}
+    if ($(`img[for="${changeVal}"]`).attr("src").match("On") != null) {
+        $(`img[for="${changeVal}"]`).attr("src", "images/modernCheck.svg")
+        $(`input[name="${changeVal}"]`).attr("checked", false)
+        if (runFun != null) runFun(changeVal, false)
+    }
+    else {
+        $(`img[for="${changeVal}"]`).attr("src", "images/modernCheckOn.svg")
+        $(`input[name="${changeVal}"]`).attr("checked", true)
+        if (runFun != null) runFun(changeVal, true)
+    }
 }
 
 function lockQuotes() {
-    let faces = ["04","05","07","08","15","12","10"]
+    let faces = ["04", "05", "07", "08", "15", "12", "10"]
     let quotes = [
         "Jestli se nepříhlásíš, nevydám 2.2 :D!",
         "Ty tři kliknutí trvaly moc dlouho >:(",
@@ -445,7 +452,7 @@ function lockQuotes() {
     ]
     let pick = parseInt(Math.random() * faces.length)
 
-    $(".loginEmoji").attr("src",`images/emoji/${faces[pick]}.webp`)
+    $(".loginEmoji").attr("src", `images/emoji/${faces[pick]}.webp`)
     $(".quote").text(quotes[pick])
-    
+
 }

@@ -329,7 +329,12 @@ function generateFromJSON(part, boards) {
     $("#submitbutton > div").text(jsStr["L_UPDATE"][LANG])
     $("#submitbutton").attr("onclick", "updateList()")
 
-    $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
+    $("#submitarea").append(`
+    <div onclick="removeList()" class="button noMobileResize uploadText removeList" id="submitbutton" style="background-color: rgb(255, 100, 100)">
+        <img src="images/del.svg">
+        <div>${jsStr["DELETE"][LANG]}</div>
+    </div>
+    `)
 
     // Is the list hidden?
     if (boards["hidden"] != "0") {

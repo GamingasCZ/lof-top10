@@ -186,14 +186,14 @@
     <form id="levelUpload" class="uploadBG uploaderDialog">
         <br>
         <input type="text" id="listnm" class="uploadMainInp" placeholder="%%s"><br />
-        <div class="titImageContainer">
+        <div class="titImageContainer editables">
             <input type="text" id="listimg" class="uploadMainInp" placeholder="%%s" style="margin: 0;">
             <img src="./images/gear.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize imgSetButton">
         </div>
         <div class="listColPicker">
             <div style="display: flex;">
                 <label align="center" for="bgcolor" class="uploadText colorLabel">%%s</label>
-                <div class="pickerContainer button">
+                <div class="pickerContainer button editables">
                     <img src="./images/color.svg" style="z-index: 1;">
                     <div id="bgcolorPicker"></div>
                 </div>
@@ -201,7 +201,7 @@
             <p class="bgcolorContainer" style="display: none;"></p>
         </div>
 
-        <div class="editorHeader"
+        <div class="editorHeader editables"
             style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
             <p class="headerTitle uploadText">%%s</p>
             <div style="display: flex;">
@@ -215,11 +215,11 @@
 
         </div>
 
-        <div class="editorHeader uploadText" id="mainContent">
+        <div class="editorHeader uploadText editables" id="mainContent">
         </div>
 
         <p class="uploadText setTitle">%%s</p>
-        <div class="settingsBG">
+        <div class="settingsBG editables">
             <div class="setting">
                 <input type="checkbox" style="display: none;" name="hidden">
                 <img src="images/modernCheck.svg" onclick='checkCheckbox("hidden")' for="hidden"
