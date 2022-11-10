@@ -92,11 +92,18 @@ function showBGColorPicker() {
 }
 
 function uploadList() {
+    if ($("#submitbutton").hasClass("disabled")) return
+
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
         $("#listData").attr("value", JSON.stringify(levelList));
 
-        $("#submitbutton").replaceWith($("<img class='loading' style='animation-name: loading;' src='images/loading.webp'>"))
+        $("#submitbutton").prepend("<img class='loading' src='images/loading.webp'>")
+        $("#submitbutton").addClass("disabled")
+        $(".editables").addClass("disabled")
+        $(".editables").css("pointer-events", "none")
+        $("#listnm").addClass("disabled")
+        $("#listnm").css("pointer-events", "none")
 
         // Is the "hidden" checkbox checked?
         if ($("input[name='hidden']").attr("checked") == "checked") { var listHidden = "1" }
@@ -113,26 +120,25 @@ function uploadList() {
             // Change depending on your website
             let error = data.length != 1
 
-            let currWebsite
-            let pstr
+
             if (!error) {
                 currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[0]}`;
             }
             let sendMess = !error ? "" : jsStr["LIST_FAIL_UPL"][LANG] + data
 
-            $(".uploaderDialog").html(`
-                <img style="padding-left: 3%" src=./images/${!error ? "check" : "error"}.webp >
-                <p class="uploadText" style="padding: 0 3% 0 3%">${sendMess}</p>
+            if (error) {
+                $(".errorBox").html(sendMess); // List fart
 
-                <div style="display:flex; flex-direction: column${error ? ';display: none;' : ';'}">
-                    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
-                    <div class="uploadText shareContainer">
-                        <p class="shareBG uploadText">${currWebsite}</p>
-                        <img class="button shareBut" src="./images/openList.webp" onclick="window.open('${currWebsite}','_blank')">
-                    </div>
-                </div >
+                $(".errNotif").fadeIn(100);
+                setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
+            }
 
-            `);
+            $("#submitbutton").removeClass("disabled")
+            $(".editables").removeClass("disabled")
+            $(".editables").css("pointer-events", "")
+            $("#listnm").removeClass("disabled")
+            $("#listnm").css("pointer-events", "")
+            $(".loading").remove()
         })
     }
 }
