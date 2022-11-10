@@ -362,6 +362,15 @@ function generateFromJSON(part, boards) {
         levelList["titleImg"][0] = link
     }
     $("#listimg").val(levelList["titleImg"][0])
+    $(".cutBox").css("top", `${levelList["titleImg"][1]}%`)
+    
+    $("#bgCoverageSlider").val(levelList["titleImg"][2])
+    
+    $(".alignButtons").css("filter","brightness(0.3)")
+    $(".alignButtons").eq(levelList["titleImg"][3]).css("filter","")
+
+    if (!levelList["titleImg"][4]) $(".gradCheckbox").attr("src",`images/modernCheck.svg`)
+
     // Is it a diff guess list?
     if (levelList["diffGuesser"] != undefined && levelList["diffGuesser"][0]) {
         $(`img[for="diffGuesser"]`).attr("src", "images/modernCheckOn.svg")
