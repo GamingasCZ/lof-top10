@@ -1,0 +1,31 @@
+<svg id="svg14" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <g id="g1279" transform="matrix(.72912 0 0 .72912 4.7949 4.3342)" fill="url(#linearGradient1311)" stroke="url(#linearGradient1342)">
+  <g id="g12" transform="matrix(1.0899 0 0 1.0899 -2.4059 -.47098)" mask="url(#mask-powermask-path-effect1207)">
+   <path id="path8" x="12.093734" y="0.43213084" width="15.833923" height="21.960617" rx="1.7753488" ry="1.7753488" d="m13.869 0.43213h12.283c0.98354 0 1.7753 0.79181 1.7753 1.7753v18.41c0 0.98354-0.7918 1.7753-1.7753 1.7753h-12.283c-0.98354 0-1.7753-0.79181-1.7753-1.7753v-18.41c0-0.98354 0.7918-1.7753 1.7753-1.7753z" mask="url(#mask-powermask-path-effect1108)" style="paint-order:markers stroke fill"/>
+   <path id="rect10" x="5.8477001" y="7.8319001" width="15.834" height="21.961" rx="1.7753" ry="1.7753" d="m7.623 7.8319h12.283c0.98352 0 1.7753 0.79178 1.7753 1.7753v18.41c0 0.98352-0.79178 1.7753-1.7753 1.7753h-12.283c-0.98352 0-1.7753-0.79178-1.7753-1.7753v-18.41c0-0.98352 0.79178-1.7753 1.7753-1.7753z" style="paint-order:markers stroke fill"/>
+  </g>
+  <g id="g1057" transform="translate(.76059 3.9022)" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2.3" stroke-width="4">
+   <path id="path308" d="m23.071 26.181v-12.296" style="paint-order:stroke fill markers"/>
+   <path id="path308-6" d="m16.923 20.033h12.296" style="paint-order:stroke fill markers"/>
+  </g>
+ </g>
+ <defs id="defs6">
+  <linearGradient id="linearGradient1309">
+   <stop id="stop1305" stop-color="#e5d454" offset="0"/>
+   <stop id="stop1307" stop-color="#fba233" offset="1"/>
+  </linearGradient>
+  <mask id="mask-powermask-path-effect1108" maskUnits="userSpaceOnUse">
+   <path id="mask-powermask-path-effect1108_box" d="m11.094-0.56787h17.834v23.961h-17.834z" fill="#fff"/>
+   <rect id="rect3" x="6.9778" y="7.8319" width="15.834" height="21.961" rx="1.7753" ry="1.7753" d="M 8.7531854,7.831902 H 21.036411 c 0.983543,0 1.775349,0.7918056 1.775349,1.7753488 V 28.01717 c 0,0.983544 -0.791806,1.775349 -1.775349,1.775349 H 8.7531854 c -0.9835432,0 -1.7753488,-0.791805 -1.7753488,-1.775349 V 9.6072508 c 0,-0.9835432 0.7918056,-1.7753488 1.7753488,-1.7753488 z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="bevel" stroke-width="3.5507" style="paint-order:markers stroke fill"/>
+  </mask>
+  <mask id="mask-powermask-path-effect1207" maskUnits="userSpaceOnUse">
+   <path id="mask-powermask-path-effect1207_box" d="m4.3477-1.0679h25.08v32.361h-25.08z" fill="#fff"/>
+   <g id="g1205" transform="matrix(.91752 0 0 .91752 2.2075 .43213)" style="">
+    <path id="path1201" d="m23.832 32.352v-14.933" fill-opacity=".63793" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2.3" stroke-width="7.5" style="paint-order:stroke fill markers"/>
+    <path id="path1203" d="m17.435 23.947h13.935" fill-opacity=".63793" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2.3" stroke-width="7.182" style="paint-order:stroke fill markers"/>
+   </g>
+  </mask>
+  <linearGradient id="linearGradient1311" x1="3.9675" x2="31.98" y1="16.041" y2="16.041" gradientUnits="userSpaceOnUse" xlink:href="#linearGradient1309"/>
+  <linearGradient id="linearGradient1342" x1="3.9675" x2="31.98" y1="16.041" y2="16.041" gradientUnits="userSpaceOnUse" xlink:href="#linearGradient1309"/>
+ </defs>
+</svg>

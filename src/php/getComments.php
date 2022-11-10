@@ -52,9 +52,9 @@ foreach ($comments as $row) {
     $ind += 1;
 }
 
-$query = sprintf("SELECT DISTINCT users.username,users.discord_id,users.avatar_hash,users.id
-                  FROM comments,users
-                  WHERE comments.uid IN ('%s') AND comments.listID='%s'", join("','", array_unique($uid_array)), $_GET["listid"]);
+$query = sprintf("SELECT DISTINCT username,discord_id,avatar_hash,id
+                  FROM users
+                  WHERE id IN (%s)", join(",", array_unique($uid_array)), $_GET["listid"]);
 $result = $mysqli -> query($query) or die($mysqli -> error);
 
 $users = $result -> fetch_all(MYSQLI_ASSOC);

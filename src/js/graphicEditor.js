@@ -374,9 +374,10 @@ function generateFromJSON(part, boards) {
     // Change page background, if not default
     if (levelList["pageBGcolor"] != "#020202") {
         $("#bgcolorPicker").css("background", levelList["pageBGcolor"])
-        $("body").css("background-color", levelList["pageBGcolor"])
+        $(":root").css("--siteBackground", levelList["pageBGcolor"])
         let hue = getHueFromHEX(levelList["pageBGcolor"])
         $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+        
     }
 
     for (y = 0; y < getListLen(levelList); y++) {
@@ -401,7 +402,7 @@ function refreshCardDetails(lp) {
     $("#top" + lp).css("background-color", levelList[lp]["color"])
 
     if (levelList[lp]["difficulty"] != undefined) {
-        let rate = ["", "featured", "epic"][levelList[lp]["difficulty"][1]]
+        let rate = ["", "star", "featured", "epic"][levelList[lp]["difficulty"][1]]
 
         $(`.dPick${lp} > .diffMain`).attr("src", `images/faces/${levelList[lp]["difficulty"][0]}.webp`) // change face
         if (rate != "") $(`.dPick${lp} > .diffBack`).attr("src", `images/faces/${rate}.webp`) // change rate glow
@@ -817,7 +818,7 @@ function updateCardData(prevID, newID) {
     $(".removerButton" + prevID).attr("class", "button cardButton removerButton" + newID);
     $("#colorPicker" + prevID).attr("id", "colorPicker" + newID);
     $(".colButton" + prevID).attr("onclick", "showCollabTools(" + newID + ")");
-    $(".colButton" + prevID).attr("class", "button colButton" + newID);
+    $(".colButton" + prevID).attr("class", "button collListBut colButton" + newID);
     $(".cardContainer" + prevID).attr("class", "cardExtrasContainer cardContainer" + newID);
     $(".cPickerBut" + prevID).attr("onclick", "openColorPicker(" + newID + ")");
     $(".cPickerBut" + prevID).attr("class", "button cardButton cPickerBut" + newID);
@@ -1003,8 +1004,8 @@ function removeLevel(id) {
 
     for (j = id + 1; j <= getListLen(levelList) + 1; j++) {
         updateCardData(j, j - 1);
-        availFill(0, $(".cardLName" + id), "freedom69", id)
-        availFill(1, $(".cardLCreator" + id), "freedom69", id)
+        availFill(0, $(".cardLName" + id).text(), "freedom69", id)
+        availFill(1, $(".cardLCreator" + id).text(), "freedom69", id)
     }
 
     // Adds the tutorial, when the list is empty

@@ -1123,6 +1123,7 @@ async function loadSite() {
 				$("#favoritesContainer").append(translateDoc(data, "listBrowser"))
 			})
 			favesData = JSON.parse(localStorage.getItem("favorites"))
+			if (favesData == null) favesData = []
 			listViewerDrawer(favesData, "#favoritesContainer", 1, [0, 0], jsStr["SAVEDLONG"][LANG])
 
 			break;
@@ -1200,7 +1201,7 @@ $(async function () {
 	})
 
 	var currLang = getCookie("lang");
-	if (currLang == null) {
+	if (!currLang) {
 		let getLang = navigator.language;
 		if (["cs", "sk"].includes(getLang)) { currLang = 0; }
 		else { currLang = 1; }
@@ -1481,7 +1482,10 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 			}
 		})
 
-		if (originalListData[parent].length == 0) $(`${parent} .page`).hide()
+		if (originalListData[parent].length == 0) {
+			$(`${parent} .page`).hide()
+			$(`${parent} .search`).hide()
+		}
 		else {
 			// Page -1 (left) action
 			$(`${parent} .pageBut`).eq(0).click(() => {
@@ -1511,6 +1515,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 	// Draw pages
 	if (Object.keys(data).length > 0) {
 		$(`${parent} .page`).show()
+		$(`${parent} .search`).show()
 		$(".page > *:not(.pageBut)").remove()
 		let keepSize = (page[parent][0] < 3 || page[parent][1] - page[parent][0] < 4) ? 6 : 5
 		for (let i = 0; i < clamp(page[parent][1], 0, keepSize); i++) {
