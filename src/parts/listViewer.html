@@ -9,6 +9,19 @@
     </div>
 </div>
 
+<!-- Upload Popup-->
+<div id="jumpToTools" class="uploadText finishUpload levelPicker" style="display: none;">
+    <div style="display: flex; align-items: center; flex-direction: column; position: relative;">
+        <img src="images/uploading.webp" class="dragonUpload">
+        <h1 style="margin-top: 3em;">Seznam byl nahrán!</h1>
+        <label style="margin-right: 18em;">Sdílet</label>
+        <input class="listLink" type="text" readonly value="" style="width: 17em;">
+        <div class="button finishButton noMobileResize clipboardCopy"><img src="images/link.svg">Kopírovat odkaz</div>
+        <div class="button finishButton noMobileResize edit" style="margin-top: 3em;"><img src="images/edit.svg">Upravit seznam</div>
+        <div class="button finishButton noMobileResize" onclick="hideFinishUpload()"><img src="images/smallClose.svg">Zavřít</div>
+    </div>
+</div>
+
 <!-- Jump To Dialog-->
 <div style="display: none;" id="jumpToTools" class="uploadText levelPicker">
     <div style="display: flex; align-items: center;">

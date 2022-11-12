@@ -8,9 +8,10 @@ function onIDCopyClick(id, pos) {
 	setTimeout(() => {
 		$(".copyPopup").fadeOut(() => $(".copyPopup").remove())
 	}, 500);
-	navigator.clipboard.writeText(id)
+	clipboardCopy(id)
 	
 }
+const clipboardCopy = id => navigator.clipboard.writeText(id)
 
 function listShare() {
 	$("#popupBG").show()
@@ -51,6 +52,27 @@ function listShare() {
 	}
 
 	$("#shareContainer").val("gamingas.wz.cz/?" + link);
+}
+
+function showFinishUpload(isUpdating) {
+	$(".finishUpload").fadeIn(50);
+	$("#popupBG").css("opacity", 1)
+	$("#popupBG").show();
+
+	$(".clipboardCopy").off()
+	$(".clipboardCopy").click(() => clipboardCopy(window.location.toString()))
+
+	if (isUpdating) $(".finishUpload h1").text("Seznam aktualizován!")
+
+	$(".listLink").val(window.location.toString().split("//")[1])
+	sessionStorage.removeItem("listUpload")
+}
+
+function hideFinishUpload() {
+	$(".dragonUpload").css("top", "-50em")
+	$(".finishUpload").fadeOut(100);
+	$("#popupBG").css("opacity", 0)
+	setTimeout(() => { $("#popupBG").hide() }, 100);
 }
 
 function hideShare() {
@@ -1363,6 +1385,12 @@ async function lists(list) {
 		}, 100);
 	}
 
+	// Show upload finish dialog
+	let uploadFinish = sessionStorage.getItem("listUpload")
+	if (uploadFinish != null) {
+		showFinishUpload(JSON.parse(uploadFinish)[1])
+	}
+
 	// Load ratings
 	$.get("php/rateAction.php", {"id": LIST_ID}, rates => {
 		// 0 - likes, 1 - dislikes
@@ -1381,7 +1409,7 @@ async function lists(list) {
 	})
 }
 
-function goToPWD() { window.location.hash = `#update` }
+function goToPWD() { hideFinishUpload(); window.location.hash = `#update` }
 
 let page = {} // [page, maxPage]
 function pageSwitch(num, data, parent, ctype) {

@@ -1041,7 +1041,6 @@ cb { color: #5fe7ff ;}
 .levelPicker {
   background-image: var(--greenGradient);
   z-index: 5;
-  /*! padding: 1.5em; */
   display: grid;
   border-radius: 10px;
   padding-top: 0;
@@ -1300,4 +1299,48 @@ cb { color: #5fe7ff ;}
   border-radius: inherit;
   transition: width 0.2s ease-in-out;
 }
+
+.finishButton > img {
+  width: 1.5em;
+}
+.finishButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.4em;
+  border-radius: 6em;
+  margin: 0.5em 0;
+  width: 20em;
+}
+
+@keyframes fly {
+  0% { transform: translateY(0em);}
+  50% { transform: translateY(-1em);}
+  100% { transform: translateY(0em);}
+}
+
+.dragonUpload {
+  width: 19em;
+  position: absolute;
+  top: -10em;
+  pointer-events: none;
+  animation: fly infinite ease-in-out 6s;
+  transition: top 1s;
+}
+
+.finishUpload {
+  width: min(90%, 25em) !important;
+  top: 60% !important;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+ }
  
+.finishUpload::before {
+  content: "";
+  background: linear-gradient(0deg, #064b23, transparent);
+  position: absolute;
+  width: 100%;
+  height: 5em;
+  top: -5em;
+}

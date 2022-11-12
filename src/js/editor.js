@@ -118,9 +118,13 @@ function uploadList() {
         $.post("./php/sendList.php", postData, function (data) {
             //0 - password, 1 - listID
             // Change depending on your website
+            if (typeof data == "object") {
+                sessionStorage.setItem("listUpload",JSON.stringify([data[0], 0]))
+                switchLoFList(data[0])
+                return
+            }
+
             let error = data.length != 1
-
-
             if (!error) {
                 currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[0]}`;
             }
@@ -170,21 +174,8 @@ function updateList() {
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
             if (typeof data == "object") {
-                let currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[0]}`;
-                $(".uploaderDialog").html(`
-                <div style="padding: 3%">
-                    <img src="./images/check.webp" style="width:7%;">
-                    <p class="uploadText">${jsStr["LIST_UPDATED"][LANG]}</p>
-                </div>
-
-                <div style="display:flex; flex-direction: column;">
-                    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
-                    <div class="uploadText shareContainer">
-                        <p class="shareBG uploadText">${currWebsite}</p>
-                        <img class="button shareBut" src="./images/openList.webp" onclick="window.open('${currWebsite}','_blank')">
-                    </div>
-                 </div >
-                `)
+                sessionStorage.setItem("listUpload",JSON.stringify([data[0], 1]))
+                switchLoFList(data[0])
                 return
             }
 
