@@ -79,9 +79,11 @@ function setupComments() {
   }
 
   // Setup name and pfp, check login
-  let userInfo = JSON.parse(localStorage.getItem("userInfo"))
+  let userInfo = null
+  if (hasLocalStorage()) userInfo = JSON.parse(localStorage.getItem("userInfo"))
   if (userInfo != null) {
-    $("#pIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
+    if (userInfo[2] == null) $("#pIcon").attr("src", "images/defaultPFP.webp")
+    else $("#pIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
     $("#commentName").text(userInfo[0])
   }
   else {
@@ -89,6 +91,9 @@ function setupComments() {
     lockQuotes()
     $("#commentMaker").remove()
     $("#comBoxFooter").remove()
+    if (!hasLocalStorage()) {
+      $("#loginHelp").remove()
+    }
   }
 
   // Fetch comments
@@ -496,7 +501,8 @@ async function displayComments(data) {
 
       if (c.uid == u.id) {
         data[0][ind].username = u.username
-        data[0][ind].avatar = `https://cdn.discordapp.com/avatars/${u.discord_id}/${u.avatar_hash}.png`
+        if (u.avatar_hash == "") data[0][ind].avatar = "images/defaultPFP.webp" // user is using default dc pfp for some reason
+        else data[0][ind].avatar = `https://cdn.discordapp.com/avatars/${u.discord_id}/${u.avatar_hash}.png`
       }
     })
     ind++

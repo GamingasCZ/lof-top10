@@ -597,7 +597,7 @@ u {
 }
 
 html, body {
-    max-width: 100%;
+    width: max-content;
     overflow-x: hidden;
     height: 100%;
     scroll-behavior: smooth;

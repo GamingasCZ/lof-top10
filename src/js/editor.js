@@ -205,7 +205,7 @@ const DEFAULT_LEVELLIST = {
 
 function makeEditor(update) {
     // Check login
-    if (localStorage.getItem("userInfo") == null) {
+    if (hasLocalStorage() && localStorage.getItem("userInfo") == null) {
         $("#levelUpload").remove()
         $("#loginHelp").show()
         lockQuotes()
@@ -272,10 +272,10 @@ function makeBrowser() {
         }
 
         // Add switch buttons
-        if (localStorage.getItem("userInfo") != null) {
+        if (hasLocalStorage() && localStorage.getItem("userInfo") != null) {
             $(".titleTools").after(`<div class="browserContainer">
-                <button class="browserButton uploadText button" onclick="switchBrowser('#browse')">Nejnovější</button>
-                <button class="browserButton uploadText button" onclick="switchBrowser('#uploads')">Moje</button>
+                <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#browse')">Nejnovější</button>
+                <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#uploads')">Moje</button>
             </div>`)
             $(".browserButton").eq(hash == "#uploads").attr("id", "browserBSelected")
         }
@@ -287,7 +287,7 @@ function makeBrowser() {
         $(".browserButton").attr("id", "")
         if (browser > 0) {
             if ($(".privateSel").length == 0) {
-                $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton privateSel" title="Zobrazit soukromé"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
+                $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton noMobileResize privateSel" title="Zobrazit soukromé"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
                 $(".privateSel").click(() => switchBrowser("#hidden"))
             }
         }
@@ -333,7 +333,7 @@ function switchBrowser(hash) {
     $(".browserButton").eq(ind).attr("id", "browserBSelected")
     if (["#uploads", "#hidden"].includes(hash)) {
         if ($(".privateSel").length == 0) {
-            $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton privateSel" title="Zobrazit soukromé"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
+            $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton noMobileResize privateSel" title="Zobrazit soukromé"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
             $(".privateSel").click(() => switchBrowser("#hidden"))
         }
     }

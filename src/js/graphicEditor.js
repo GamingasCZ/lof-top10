@@ -597,7 +597,9 @@ function addFromFaves() {
 
     if (favesData != null) { favesData = OGfavesData; makeFavesPicker() }
     else {
-        let data = JSON.parse(localStorage.getItem("favorites"))
+        let data = null
+        if (hasLocalStorage()) data = JSON.parse(localStorage.getItem("favorites"))
+        
         if (data != null) {
             favesData = data
             OGfavesData = JSON.parse(JSON.stringify(data))

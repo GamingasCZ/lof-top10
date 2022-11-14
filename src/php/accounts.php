@@ -20,8 +20,6 @@ if (sizeof($_GET) == 1) {
     $accessInfo = json_decode(post($baseURL, $tokenUrl, $tokenHeaders, 1), true);
     if (array_key_exists("error", $accessInfo)) die(0);
 
-    // Encrypt and save access token into a cookie
-    setcookie("access_token", encrypt($accessInfo["access_token"]), time()+$accessInfo["expires_in"], "/");
     // Get user data
     $tokenHeaders = array('Authorization: Bearer ' . $accessInfo["access_token"]);
     $baseURL = "https://discord.com/api/v10/users/@me";
@@ -30,8 +28,10 @@ if (sizeof($_GET) == 1) {
     $userInfo = json_encode(array($ok["username"], $ok["id"], $ok["avatar"]));
     setcookie("logindata", $userInfo, time()+30, "/");
 
+    // Encrypt and save access token into a cookie
+    setcookie("access_token", encrypt($accessInfo["access_token"]."|".time()-$accessInfo["expires_in"]."|".$ok["id"]), time()+$accessInfo["expires_in"], "/");
+
     // Save data to database
-    // TODO: accounts shouldn't duplicate
     $mysqli = new mysqli($hostname, $username, $password, $database);
     if ($mysqli -> connect_errno) die("0");
 
