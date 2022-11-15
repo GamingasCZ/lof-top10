@@ -17,7 +17,7 @@ function listComments() {
 }
 
 function updateCharLimit() {
-  var charLimit = emojiText.length;
+  var charLimit = actualText.length;
 
   // I finally got to use the switch statement!!! (so exciting)
   switch (Math.floor(charLimit / 50)) {
@@ -52,7 +52,6 @@ function updateCharLimit() {
 
 var actualText = "";
 var midText = "";
-var emojiText = "";
 var commentColor = "";
 function setupComments() {
   // Is on homepage? (do not load)
@@ -114,7 +113,7 @@ function setupComments() {
     }
   });
 
-  $("#comFont").on("click", () => {
+  $("#comFont").on("focus", () => {
     if (placeholders.indexOf($("#comFont")["0"].innerText) != -1) {
       $("#comFont")[0].innerText = "";
       $("#comFont").css("color", "");
@@ -140,94 +139,54 @@ function setupComments() {
   commentColor = HSLtoHEX(...commentColor)
 
   // MAIN comment handling stuff
-  $(".comInpArea").on("keydown", (k) => {
-    let text = $(".comInpArea").html();
+  $(".comInpArea").on("keyup keydown", (k) => {
+    // Only perform stuff once
+    if (k.type == "keyup") {
+      let text = $(".comInpArea").html();
 
-    text = text.replace(/<div>/g, "\n"); // Div tag is most likely newline
-    text = text.replace(/<\/div>/g, ""); // Remove div tag end
+      text = text.replace(/<div>/g, "\n"); // Div tag is most likely newline
+      text = text.replace(/<\/div>/g, ""); // Remove div tag end
+      let keepImgs = text;
+      keepImgs = keepImgs.replace(/<br>/g, "");
 
-    // // this is the worst fix imaginable
-    text = text.replace(/<img class="emojis" onerror="\$\(this\)\.remove\(\)" src="\.\/images\/emoji\//g, "&");
-    text = text.replace(/.webp">/g, "");
+      // this is the worst fix imaginable
+      text = text.replace(/<img class="emojis" src=".\/images\/emoji\//g, "&");
+      text = text.replace(/.webp">/g, "");
 
-    // Remove excess tags
-    text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "");
+      // Remove excess tags
+      text = text.replace(/<(“[^”]*”|'[^’]*’|[^'”>])*>/g, "");
 
-    // Remove excess newline
-    if (text.startsWith("\n")) {
-      text = text.slice(1);
+      // Remove excess newline
+      if (text.startsWith("\n")) {
+        text = text.slice(1);
+        keepImgs = keepImgs.slice(1);
+      }
+
+      actualText = text;
+      midText = keepImgs;
+
+      updateCharLimit();
     }
-    actualText = text;
-    midText = text
-    emojiText = text.replace(/&\d+/g, "&").replace(/\n/g, "")
-
-    updateCharLimit();
-  }
-  );
+  });
 };
-
-function getCaretPosition(element) {
-  var range = window.getSelection().getRangeAt(0);
-  var preCaretRange = range.cloneRange();
-  preCaretRange.selectNodeContents(element);
-  preCaretRange.setEnd(range.endContainer, range.endOffset);
-  caretOffset = preCaretRange.toString().length;
-
-  return caretOffset;
-}
 
 function addEmoji(id) {
   id++;
   let emoji = "&" + (id > 9 ? id : "0" + id);
-  if (emojiText.length + emoji.length < 300) {
-    let caret = getCaretPosition($(".comInpArea")[0])
-
-    emojiText = emojiText.slice(0, caret) + `&` + emojiText.slice(caret);
-    let hasEmojis = emojiText.slice(0, caret + 1).match(/&/g)
-    let emAmount
-    if (hasEmojis != null) {
-      emAmount = hasEmojis.length
+  if (actualText.length + emoji.length < 300) {
+    midText += `<img class='emojis' src='./images/emoji/${emoji.slice(
+      1
+    )}.webp'>`;
+    if (midText.includes("\n")) {
+      let newText = "<div>"+midText.replace(/\n/g, "</div><div>")+"</div>"
+      newText = newText.replace(/<div><\/div>/g, "<div><br></div>")
+      $(".comInpArea").html(newText);
     }
-    else emAmount = 1
+    else $(".comInpArea").html(midText);
 
-    let emojiPos = midText.slice(0, caret + emAmount * 3)
-
-    let noFuckupPos = 0
-    if (emojiPos.endsWith("&")) noFuckupPos = 0
-    midText = (emojiPos.slice(0, caret + emAmount * 3 - 3 + noFuckupPos)) + `${emoji}` + midText.slice(caret + noFuckupPos + emAmount * 3 - 3);
-    drawEmojis()
-
+    actualText += emoji;
     updateCharLimit();
   }
-}
-
-function setCaretAtStartEnd( el ){
-  el.focus();
-  if (typeof window.getSelection != "undefined"
-          && typeof document.createRange != "undefined") {
-      var range = document.createRange();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      var sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-  } else if (typeof document.body.createTextRange != "undefined") {
-      var textRange = document.body.createTextRange();
-      textRange.moveToElementText(el);
-      textRange.collapse(false);
-      textRange.select();
-  }
-}
-
-function drawEmojis() {
-  let emojiText = midText
-  let emojis = emojiText.match(/&\d+/g)
-  emojis.forEach(e => {
-    let element = $(`<img class='emojis' onerror="$(this).remove()" src='./images/emoji/${e.slice(1)}.webp'>`)
-    emojiText = emojiText.replace(e, element[0].outerHTML)
-  });
-  $(".comInpArea").html("<div>" + emojiText.replace(/\n/g, "</div><div>") + "</div>");
-  setCaretAtStartEnd($(".comInpArea")[0])
 }
 
 var lastOpenedPanel = -1;
@@ -290,17 +249,9 @@ function displayPanel(what) {
 
 function sendComment() {
   if ($(".sendBut")["0"].className.match("disabled") == null) {
-    if (midText.length < 10) {
-      $("#charLimit").css("animation", "inputError 0.5s linear")
-      setTimeout(() => {
-        $("#charLimit").css("animation", "")
-      }, 500);
-      return
-    }
-
     $(".sendBut").addClass("disabled");
     let postData = {
-      comment: midText,
+      comment: actualText,
       comType: 0, // Change when I eventually add replies,
       listID: LIST_ID,
       comColor: commentColor,
@@ -308,15 +259,6 @@ function sendComment() {
 
     $.post("./php/sendComment.php", postData, (data) => {
       if (data == 6) {
-        // Success text
-        $(".comUserError").show();
-        $(".comUserError").css("color", "#5df469 !important");
-        $(".comUserError").text(jsStr["C_SENT"][LANG]);
-        setTimeout(() => {
-          $(".comUserError").fadeOut(3000);
-          $(".comUserError").css("color", "tomato");
-        }, 3000);
-
         refreshComments();
 
         // Resetting comment form
@@ -329,12 +271,6 @@ function sendComment() {
         setTimeout(() => {
           $(".sendBut").removeClass("disabled");
         }, 10000);
-      } else {
-        // Comment send error
-        $(".sendBut").removeClass("disabled");
-        $(".comUserError").show();
-        $(".comUserError").text(jsStr["C_ERR"][LANG] + data);
-        setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
       }
     })
   }
