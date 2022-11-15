@@ -58,7 +58,7 @@ function setupComments() {
   // Is on homepage? (do not load)
   if (LIST_ID == -9) return
   // Is already setup?
-  if ($(".commentList").text() != "") return
+  if ($("#commentList").text() != "") return
 
   var placeholders = [
     jsStr["PHOLD1"][LANG],
@@ -130,8 +130,6 @@ function setupComments() {
   $(".comInpArea").css("background-color", darkHexColor);
   $(".comInpArea").css("border", `${hexColor} 3px solid`);
   $(".comInpArea").css("box-shadow", `${hexColor} 0 0 10px`);
-  $("#pIcon").css("border", `${hexColor} 3px solid`);
-  $("#pIcon").css("box-shadow", `${hexColor} 0 0 10px`);
   $(".comInpThings").css(
     "background-color",
     `hsl(${commentColor[0]}, 100%, 3.7%)`
@@ -259,9 +257,6 @@ function displayPanel(what) {
         $(".comInpArea").css({"background-color": `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`,
                               "border-color": `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`,
                               "box-shadow": `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%) 0 0 10px`});
-
-        $("#pIcon").css({"border": `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%) 3px solid`,
-                         "box-shadow": `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%) 0 0 10px`});
 
         $(".comInpThings").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`);
 
@@ -397,7 +392,7 @@ function comBox(cd, element) {
 
   let comGlow = `${cd["bgcolor"]} 0 0 10px`
   let comBorder = `${cd["bgcolor"]} 3px solid`
-  profPic = `<img id="pIcon" style="box-shadow: ${comGlow}; border: ${comBorder};" src="${cd.avatar}">`;
+  profPic = `<img id="pIcon" src="${cd.avatar}">`;
 
   // OwO, adding emojis
   while (cd["comment"].match(/&\d+/g) != null) {

@@ -218,6 +218,7 @@ ul > div {
 	min-width: max-content;
   transition: box-shadow 0.2s;
 	gap: 0.8em;
+	height: 100% !important;
 }
 
 .guessBadge {
@@ -606,7 +607,7 @@ html, body {
 .button {
   display: inline;
   background-color: #00000000;
-  transform: scale(1,1);
+  transform: scale(1.0);
   transition-duration: 0.2s;
   border: none;
 }
@@ -623,7 +624,7 @@ html, body {
 }
 
 .button:hover {
-  transform: scale(1.1,1.1);
+  transform: scale(1.05);
   transition-duration: 0.2s;
   cursor: pointer;
 }
@@ -1235,31 +1236,33 @@ cb { color: #5fe7ff ;}
   display: flex;
 }
 .rateButton {
-  padding: 1.5em;
+  padding: 1.2em;
   position: relative;
   border-radius: 0.8em;
 }
 #likeBut:after {
-  background: url(../images/like.svg);
+  background: url(../images/like.svg) no-repeat;
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2.4em;
-  height: 2.4em;
+  width: 1.8em;
+  height: 1.8em;
   transform: translate(-50%, -50%) scale(0.8);
   filter: var(--likeGlow);
+  background-size: 1.8em;
 }
 #dislikeBut:after {
-  background: url(../images/dislike.svg);
+  background: url(../images/dislike.svg) no-repeat;
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2.4em;
-  height: 2.4em;
+  width: 1.8em;
+  height: 1.8em;
   transform: translate(-50%, -50%) scale(0.8);
   filter: var(--dislikeGlow);
+  background-size: 1.8em;
 }
 #dislikeBut {
   background: #cc2121;
