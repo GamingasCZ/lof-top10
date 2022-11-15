@@ -274,8 +274,8 @@ function makeBrowser() {
         // Add switch buttons
         if (hasLocalStorage() && localStorage.getItem("userInfo") != null) {
             $(".titleTools").after(`<div class="browserContainer">
-                <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#browse')">Nejnovější</button>
-                <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#uploads')">Moje</button>
+                <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#browse')">${jsStr["NEWEST"][LANG]}</button>
+                <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#uploads')">${jsStr["UPLOADS"][LANG]}</button>
             </div>`)
             $(".browserButton").eq(hash == "#uploads").attr("id", "browserBSelected")
         }
@@ -287,7 +287,7 @@ function makeBrowser() {
         $(".browserButton").attr("id", "")
         if (browser > 0) {
             if ($(".privateSel").length == 0) {
-                $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton noMobileResize privateSel" title="Zobrazit soukromé"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
+                $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton noMobileResize privateSel" title="${jsStr["SH_PRIVATE"][LANG]}"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
                 $(".privateSel").click(() => switchBrowser("#hidden"))
             }
         }
@@ -333,7 +333,7 @@ function switchBrowser(hash) {
     $(".browserButton").eq(ind).attr("id", "browserBSelected")
     if (["#uploads", "#hidden"].includes(hash)) {
         if ($(".privateSel").length == 0) {
-            $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton noMobileResize privateSel" title="Zobrazit soukromé"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
+            $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton noMobileResize privateSel" title="${jsStr["SH_PRIVATE"][LANG]}"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
             $(".privateSel").click(() => switchBrowser("#hidden"))
         }
     }
@@ -438,15 +438,7 @@ function checkCheckbox(changeVal, runFun = null) {
 
 function lockQuotes() {
     let faces = ["04", "05", "07", "08", "15", "12", "10"]
-    let quotes = [
-        "Jestli se nepříhlásíš, nevydám 2.2 :D!",
-        "Ty tři kliknutí trvaly moc dlouho >:(",
-        "Chtěl jsem to potrollit, ale nešlo to :P",
-        "Na co mám ksakru kliknout :|",
-        "jím banán",
-        "Není to žádný bossfight :/",
-        "aaaaaaaaaaaaaaaaaaaa",
-    ]
+    let quotes = jsStr["QUOTES"][LANG]
     let pick = parseInt(Math.random() * faces.length)
 
     $(".loginEmoji").attr("src", `images/emoji/${faces[pick]}.webp`)

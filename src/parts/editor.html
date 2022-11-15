@@ -21,7 +21,7 @@
     <div class="BGsettBG"></div>
     <div style="text-align: center; width: 100%;">
         <img src="./images/smallClose.svg" class="button" style="width: 1.5em; float: right;" onclick="hideBGsettings()">
-        <p style="margin: 0;">Nastavení obrázku</p>
+        <p style="margin: 0;">%%s</p>
     </div>
     <div id="backImageSettings">
         <div id="backDragContainer">
@@ -32,11 +32,11 @@
         </div>
         <div>
             <div>
-                <label>Zakrytí</label>
+                <label>%%s</label>
                 <input type="range" min="25" max="95" value="33" id="bgCoverageSlider">
             </div>
             <div>
-                <label>Zarovnání</label>
+                <label>%%s</label>
                 <div>
                     <img src="images/alignLeft.svg" id="passSubmit" class="button alignButtons">
                     <img src="images/alignCenter.svg" id="passSubmit" class="button alignButtons">
@@ -44,15 +44,15 @@
                 </div>
             </div>
             <div class="gradCheck">
-                <img src="images/modernCheckOn.svg" class="setCheckbox button gradCheckbox">Přechod
+                <img src="images/modernCheckOn.svg" class="setCheckbox button gradCheckbox">%%s
             </div>
         </div>
     </div>
     <div class="bgError bgBadFetch" style="display: none;">
-        <img src="images/close.svg"><div>Nepodařilo se načíst obrázek! URL obrázku velkou většinu času končí <cb>příponou .jpg/.png/.webp/.gif</cb>!</div>
+        <img src="images/close.svg"><div>%%s</div>
     </div>
     <div class="bgError bgNoneEntered" style="display: none; background-color: #00a2ff5e;">
-        <img src="images/info.svg"><div>Zadej <cr>URL</cr> <cy>obrázku</cy> nebo <cy>gif/webp animace</cy> a zde pak budeš moct nastavit jeho vlastnosti!</div>
+        <img src="images/info.svg"><div>%%s</div>
     </div>
 </div>
 
@@ -177,12 +177,12 @@
     <div id="loginHelp" class="uploadBG uploaderDialog uploadText" style="display: none;">
         <div class="quoteContainer">
             <img src="images/emoji/01.webp" style="width: 3em;" class="loginEmoji">
-            <h2 class="quote">Pokud se nepřihlásíš, nedodělám 2.2!</h2>
+            <h2 class="quote"></h2>
         </div>
-        <p>Pro vytvoření seznamu se prosím přihlaš!</p>
+        <p>%%s</p>
         <div class="button eventButton uploadText settingsButton noMobileResize" style="width: max-content;"
             onclick="login(1)">
-            <img src="images/discord.svg">Přihlásit se
+            <img src="images/discord.svg">%%s
         </div>
     </div>
     <form id="levelUpload" class="uploadBG uploaderDialog">
@@ -244,7 +244,7 @@
             </div>
             <div class="setting diffSetting" style="margin-top: 0.5em;">
                 <img src="images/modernCheck.svg" for="transCards" class="setCheckbox button"'>
-                <label for="transCards" class="uploadText setLabel">Průsvitné karty</label>
+                <label for="transCards" class="uploadText setLabel">%%s</label>
             </div>
         </div>
 

@@ -4,7 +4,7 @@ const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
 function onIDCopyClick(id, pos) {
-	$(".box").eq(pos - 1).append(`<div class="uploadText copyPopup"><h2>ID zkopírováno!</h2><h4>- ${id} -</h4></div>`)
+	$(".box").eq(pos - 1).append(`<div class="uploadText copyPopup"><h2>${jsStr["ID_COPIED"]}</h2><h4>- ${id} -</h4></div>`)
 	setTimeout(() => {
 		$(".copyPopup").fadeOut(() => $(".copyPopup").remove())
 	}, 500);
@@ -15,7 +15,7 @@ const clipboardCopy = id => navigator.clipboard.writeText(id)
 
 function hasLocalStorage() {
 	try {
-		localStorage.setItem("gay",1)
+		localStorage.setItem("gay", 1)
 		localStorage.removeItem("gay")
 		return true
 	} catch (error) {
@@ -50,7 +50,7 @@ function listShare() {
 
 	$("#shareContainer").on("mouseover", () => $("#shareContainer")[0].select())
 
-	let cringeText = encodeURIComponent(`${jsStr['CHECKOUT']} - gamingas.wz.cz/?${link}`)
+	let cringeText = encodeURIComponent(`${jsStr['CHECKOUT'][LANG]} - gamingas.wz.cz/?${link}`)
 
 	let shareLinks = ["https://twitter.com/intent/tweet?text=" + cringeText, "https://www.reddit.com/submit?url=" + cringeText]
 
@@ -72,7 +72,7 @@ function showFinishUpload(isUpdating) {
 	$(".clipboardCopy").off()
 	$(".clipboardCopy").click(() => clipboardCopy(window.location.toString()))
 
-	if (isUpdating) $(".finishUpload h1").text("Seznam aktualizován!")
+	if (isUpdating) $(".finishUpload h1").text(jsStr["LIST_UPDATED"][LANG])
 
 	$(".listLink").val(window.location.toString().split("//")[1])
 	sessionStorage.removeItem("listUpload")
@@ -1051,13 +1051,14 @@ async function makeHP() {
 	// cookies are disabled
 	if (!navigator.cookieEnabled) {
 		$(".homeLoginInfo > img").attr("src", "images/disCookies.svg")
-		$(".homeLoginInfo > label").text("Máš zakázané cookies. Nepůjde se přihlásit, připínat a ukládat levely v seznamech!")
+		$(".homeLoginInfo > label").text(jsStr["NO_COCK"][LANG])
 		$(".homeLoginInfo > div").remove()
 		$(".homepageBigButton").eq(0).remove()
 		$(".pinnedLists + li, .uploadedLists + li, .recentlyViewed + li, .savedLists + li").remove()
 		$(".pinnedLists, .uploadedLists, .recentlyViewed, .savedLists").remove()
+		$(".loginBut").remove()
 	}
-	
+
 
 	let hpData = { "recViewed": null, "pinned": null, "favPicks": null, "newest": null };
 
@@ -1067,12 +1068,12 @@ async function makeHP() {
 	let pinned = JSON.parse(decodeURIComponent(getCookie("pinnedLists")))
 	if (pinned !== null && pinned.length > 0) hpData.pinned = pinned
 
-	
+
 	let savedLists = null
 	if (hasLocalStorage()) {
 		savedLists = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")))
 		$(".homeLoginInfo").remove()
-	} 
+	}
 
 	if (savedLists != null && savedLists !== false && savedLists.length > 0) {
 		let randomized = []
@@ -1365,7 +1366,7 @@ async function lists(list) {
 				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
 				if (data[1][0] != undefined && data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
-			
+
 				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
 					<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
@@ -1393,7 +1394,7 @@ async function lists(list) {
 				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
 				if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
-			
+
 				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
 				<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
@@ -1652,8 +1653,8 @@ function login(part) {
 			$("#app").prepend(`
 		<div class="uploadBG uploadText" id="loginPopup">
 			<img id="loginPFP" src="https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png">
-			<h2>Vítej v GD Seznamech, <cy>${loginData[0]}</cy>!</h2>
-			<h4>Nyní můžeš využívat všechny funkce stránky :)</h4>
+			<h2>${jsStr["WELCOME1"][LANG]}<cy>${loginData[0]}</cy>!</h2>
+			<h4>${jsStr["WELCOME2"][LANG]}</h4>
 			<button class="button eventButton uploadText" onclick="hideLoginPopup()">Ok!</button>
 		</div>
 			`)
