@@ -736,7 +736,7 @@ function shareDiffResult() {
 	let double = (boards.diffGuesser[1] && boards.diffGuesser[2]) ? 2 : 1
 	let maxPoints = getListLen(boards) * double
 
-	text = `${LIST_NAME} ${jsStr["BY"][LANG]} ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${maxPoints}\n${jsStr["SCORBET"][LANG]}\ngamingas.wz.cz/lofttop10/?id=${LIST_ID}`
+	text = `${LIST_NAME} ${jsStr["BY"][LANG]} ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${maxPoints}\n${jsStr["SCORBET"][LANG]}\ngamingas.wz.cz/lofttop10/#${LIST_ID}`
 	window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank")
 }
 function replayList() {
