@@ -903,7 +903,7 @@ nav {
   background-image: var(--greenGradient);
   animation-duration: 0.25s;
   position: sticky;
-  width: 100vw;
+  width: auto;
   z-index: 3;
   display: flex;
   justify-content: space-between;
