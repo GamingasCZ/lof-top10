@@ -49,18 +49,18 @@ if (!$checkUser) {
 $retListID = [$_POST["id"]];
 // Private list settings
 if ($_POST["hidden"] == 1 and $_POST["isNowHidden"] == "true") {
-    doRequest($mysqli, "UPDATE `lists` SET `data` = ? WHERE `hidden` = ?", [$_POST["listData"], $_POST["id"]], "ss");
+    doRequest($mysqli, "UPDATE `lists` SET `data` = ? WHERE `hidden` = ?", [$fuckupData[1], $_POST["id"]], "ss");
 }
 elseif ($_POST["hidden"] == 1 and $_POST["isNowHidden"] == "false") {
     $hidden = privateIDGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
     $retListID[0] = $hidden;
-    doRequest($mysqli, "UPDATE `lists` SET `data` = ?, `hidden` = ? WHERE `id` = ?", [$_POST["listData"], $hidden, $_POST["id"]], "sss");
+    doRequest($mysqli, "UPDATE `lists` SET `data` = ?, `hidden` = ? WHERE `id` = ?", [$fuckupData[1], $hidden, $_POST["id"]], "sss");
 }
 elseif ($_POST["hidden"] == 0 and $_POST["isNowHidden"] == "false") {
-    doRequest($mysqli, "UPDATE `lists` SET `data` = ? WHERE `id` = ?", [$_POST["listData"], $_POST["id"]], "ss");
+    doRequest($mysqli, "UPDATE `lists` SET `data` = ? WHERE `id` = ?", [$fuckupData[1], $_POST["id"]], "ss");
 }
 else {
-    doRequest($mysqli, "UPDATE `lists` SET `data` = ?, `hidden`='0' WHERE `hidden` = ?", [$_POST["listData"], $_POST["id"]], "ss");
+    doRequest($mysqli, "UPDATE `lists` SET `data` = ?, `hidden`='0' WHERE `hidden` = ?", [$fuckupData[1], $_POST["id"]], "ss");
     $retListID[0] = $listData["id"];
 }
 

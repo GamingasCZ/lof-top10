@@ -69,6 +69,13 @@
     transform: translateX(-50%);
 }
 
+.mainInpContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    padding: 1.7vh;
+}
+
 .customLists {
     width: 90%;
     margin: auto;
@@ -92,7 +99,7 @@
     align-items: center;
     gap: 1em;
     justify-content: center;
-    margin: -0.3em 0em 1em 3em;
+    margin-left: 3em;
 }
 
 .uploadText {
@@ -209,7 +216,7 @@ tr>td:nth-child(2n) {
 #collabInp {
     display: inline;
     transform: none;
-    width: 45%;
+    width: min(13em, 10vw);;
     margin: 0.5%;
     font-size: var(--smallFont);
     background-color: #FFFFFF50;
@@ -387,9 +394,8 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
     padding: 3px 5px;
     color: white;
     transform: translateY(-20%);
-    width: clamp(5em, 21vw, 14em);
+    width: min(13em, 19vw);;
     font-family: "pusab";
-    /* font-size: var(--bigFont); */
     min-height: 1.5em;
 }
 
@@ -547,6 +553,7 @@ input:disabled {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    line-height: 1.3em;
 }
 
 .inListRating {
@@ -566,7 +573,7 @@ input:disabled {
     font-size: var(--miniFont);
     font-family: pusab;
 }
-.viewContainer img { width: 1.6em; }
+.viewContainer img { width: 1.4em; /*! font-size: 1.4em; */}
 .timeContainer { cursor: help;}
 
 .hostIcon {
@@ -705,7 +712,7 @@ input:disabled {
 .smallPosEdit {
     margin: 1%;
     background-color: darksalmon;
-    border: salmon 5px solid;
+    border: transparent 5px solid;
     border-radius: 8px;
     white-space: nowrap;
     box-shadow: #0000004f 8px 8px 5px;
@@ -1313,11 +1320,15 @@ input:disabled {
     width: max-content;
     background: #00000078;
 }
+.listTag img {
+    width: 1.5em;
+}
 
 .listTagContainer {
 	margin-top: 1em;
 	display: flex;
 	gap: 1em;
+    flex-wrap: wrap;
 }
 
 .tagInUse {background: #ffffff2e !important;}
@@ -1337,6 +1348,12 @@ input:disabled {
     gap: 1em;
     width: 90%;
     margin: auto;
+}
+
+.addTagHelp {
+	display: flex;
+	align-items: center;
+	gap: 0.3em;
 }
 
 .browserButton {

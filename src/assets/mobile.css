@@ -85,6 +85,14 @@ ul > div {
 #backImageSettings {
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 100% ;
 }
+
+.browserContainer { margin-bottom: 1em; }
+.listOptionsContainer { margin-top: 0.4em; }
+#toplevel::before {
+    top: -58px;
+    background-size: 8em;
+}
+
 }

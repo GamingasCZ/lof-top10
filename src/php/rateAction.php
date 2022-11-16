@@ -39,6 +39,8 @@ switch ($method) {
         $fuckupData = intval($_POST["id"]);
         $rating = $_POST["action"] == "1" ? 1 : 0;
 
+        // TODO: check for private lists!!
+
         $checkRate = doRequest($mysqli, "SELECT rate FROM ratings WHERE `uid`=? AND `list_id`=?", [$accountCheck, $fuckupData], "ii");
         $result = ["result" => null, "ratings" => null];
         if (is_null($checkRate)) { // No rating

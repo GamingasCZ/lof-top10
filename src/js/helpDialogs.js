@@ -1,53 +1,53 @@
 
 var help = {
     "upload": {
-        "title": jsStr["UPLOAD_T"][LANG],
-        "content": jsStr["UPLOAD_D"][LANG]
+        "title": jsStr["UPLOAD_T"],
+        "content": jsStr["UPLOAD_D"]
     },
 
     "private": {
-        "title": jsStr["PRIVATE_T"][LANG],
-        "content": jsStr["PRIVATE_D"][LANG]
+        "title": jsStr["PRIVATE_T"],
+        "content": jsStr["PRIVATE_D"]
     },
     "shareCollab": {
-        "title": jsStr["SHARECOLL_T"][LANG],
-        "content": jsStr["SHARECOLL_D"][LANG]
+        "title": jsStr["SHARECOLL_T"],
+        "content": jsStr["SHARECOLL_D"]
     },
     "event": {
         "title": "Event - Lepší seznam",
         "content": `Když necháš tohle <b style="color: tomato">zaškrtlé</b>, tvůj určitě mnohem lepší seznam se zobrazí <b style="color: lime">vedlé mého 2021 seznamu.</b>`
     },
     "humansHelp": {
-        "title": jsStr["HUM_T"][LANG],
-        "content": jsStr["HUM_D"][LANG]
+        "title": jsStr["HUM_T"],
+        "content": jsStr["HUM_D"]
     },
     "lastRoleDelete": {
-        "title": jsStr["RMROLE_T"][LANG],
-        "content": jsStr["RMROLE_D"][LANG]
+        "title": jsStr["RMROLE_T"],
+        "content": jsStr["RMROLE_D"]
     },
     "newSkin": {
-        "title": jsStr["NEWSKIN_T"][LANG],
-        "content": jsStr["NEWSKIN_D"][LANG]
+        "title": jsStr["NEWSKIN_T"],
+        "content": jsStr["NEWSKIN_D"]
     },
     "license": {
-        "title": jsStr["LICENSE"][LANG],
+        "title": jsStr["LICENSE"],
         "content": "Načítání..."
     },
     "pinnedLists": {
-        "title": jsStr["PINNEDLIST_T"][LANG],
-        "content": jsStr["PINNEDLIST_D"][LANG]
+        "title": jsStr["PINNEDLIST_T"],
+        "content": jsStr["PINNEDLIST_D"]
     },
     "officialLists": {
-        "title": jsStr["OFFICIALLIST_T"][LANG],
-        "content": jsStr["OFFICIALLIST_D"][LANG]
+        "title": jsStr["OFFICIALLIST_T"],
+        "content": jsStr["OFFICIALLIST_D"]
     },
     "diffGuesser": {
-        "title": jsStr["DIFFGUESSER_T"][LANG],
-        "content": jsStr["DIFFGUESSER_D"][LANG]
+        "title": jsStr["DIFFGUESSER_T"],
+        "content": jsStr["DIFFGUESSER_D"]
     },
     "oldList": {
-        "title": jsStr["OLDLIST_T"][LANG],
-        "content": jsStr["OLDLIST_D"][LANG]
+        "title": jsStr["OLDLIST_T"],
+        "content": jsStr["OLDLIST_D"]
     },
 }
 
@@ -58,8 +58,8 @@ function closeHelp() {
 async function openHelp(yes) {
     if (yes == "license") await $.get("https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/LICENSE", d => {help[yes]["content"] = d})
 
-    $("#helpTitle").html(help[yes]["title"])
-    $("#helpContent").html(help[yes]["content"])
+    $("#helpTitle").html(help[yes]["title"][LANG])
+    $("#helpContent").html(help[yes]["content"][LANG])
 
     $(".popupHelp").slideDown()
     $(".helpBG").fadeIn();

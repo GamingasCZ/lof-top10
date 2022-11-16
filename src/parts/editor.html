@@ -26,7 +26,7 @@
     <div id="backImageSettings">
         <div id="backDragContainer">
             <div class="cutImage"></div>
-            <svg class="cutBox" height="210" width="400">
+            <svg class="cutBox" height="210" width="400" draggable="true">
                 <path d="M0 0 L400 0 L400 210 L0 210 L0 0" fill=none stroke-width=10>
             </svg>
         </div>
@@ -186,11 +186,12 @@
         </div>
     </div>
     <form id="levelUpload" class="uploadBG uploaderDialog">
-        <br>
-        <input type="text" id="listnm" class="uploadMainInp" placeholder="%%s"><br />
-        <div class="titImageContainer editables">
-            <input type="text" id="listimg" class="uploadMainInp" placeholder="%%s" style="margin: 0;">
-            <img src="./images/gear.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize imgSetButton">
+        <div class="mainInpContainer">
+            <input type="text" id="listnm" class="uploadMainInp" placeholder="%%s">
+            <div class="titImageContainer editables">
+                <input type="text" id="listimg" class="uploadMainInp" placeholder="%%s" style="margin: 0;">
+                <img src="./images/gear.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize imgSetButton">
+            </div>
         </div>
         <div class="listColPicker">
             <div style="display: flex;">

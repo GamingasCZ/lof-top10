@@ -306,7 +306,6 @@ function showBGsettings() {
 }
 
 function updateDragBox() {
-    console.log($("#bgCoverageSlider").val())
     levelList.titleImg[2] = $("#bgCoverageSlider").val()
     let svgWidth = $(".cutImage").width()
     let svgHeight = $(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)
@@ -883,16 +882,21 @@ function tagPopup(lp) {
             </div>
             `)
         }
-        $(".tagClose").click(() => { hideBGdialog(); $(".tagTop").fadeOut(50) })
-        $(".badgeBox").click(e => { clickTag(e, lp) })
     }
+    else {
+        $(".tagClose").off("click")
+        $(".badgeBox").off("click")  
+    }
+
+    $(".tagClose").click(() => { hideBGdialog(); $(".tagTop").fadeOut(50) })
+    $(".badgeBox").click(e => { clickTag(e, lp) })
 
 }
 
 function clickTag(e, lp) {
     let tagName, badgeIndex, linkURL
     let linkHighlight = "none"
-    if ($(".tagViewer > .diffOptions").length == 1) $(".tagViewer").empty()
+    if (levelList[lp]["tags"].length == 0) $(".tagViewer").empty()
     if (typeof e != "number") { // Event details from click, used in tag picker
         $(e.currentTarget).addClass("tagInUse")
         badgeIndex = Object.values($(".badgeBox")).indexOf(e.currentTarget)
@@ -930,8 +934,8 @@ function clickTag(e, lp) {
         levelList[lp]["tags"].splice(index, 1)
         $(e.currentTarget).parents().eq(2).remove()
 
-        if ($(".tagEditBox").length == 0) {
-            $(".tagViewer").append(jsStr["TAGADDHELP"][LANG])
+        if (levelList[lp]["tags"].length == 0) {
+            $(".tagViewer:visible").append(jsStr["TAGADDHELP"][LANG])
         }
     })
     $(".tagLink:last()").click(e => {
@@ -992,12 +996,18 @@ function openTagPicker(lp) {
 
     $('.cardContainer' + lp).append(`
     <div class="difficultyPicker" style="height: 4.7em;">
-        <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;">${jsStr["TAGADDHELP"][LANG]}</div>
-        <div style="display: flex;align-items: center;">
+    <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;"><div class="addTagHelp">${jsStr["TAGADDHELP"][LANG]}</div></div>        <div style="display: flex;align-items: center;">
             <img style="width:2em; margin-right: 0.5em;" src="./images/plus.svg" title="${jsStr["ADDTAG"][LANG]}" class="button diffOptions" onclick="tagPopup(${lp})">
         </div>
     </div>`)
 
+    if (levelList[lp]["tags"] == undefined) {
+        levelList[lp]["tags"] = []
+    }
+
+    if (levelList[lp]["tags"].length > 0) {
+        $(".addTagHelp").remove()
+    }
     let i = 0;
     levelList[lp]["tags"].forEach(tag => {
         clickTag(i, lp)

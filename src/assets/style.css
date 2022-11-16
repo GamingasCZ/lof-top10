@@ -62,6 +62,7 @@
   --siteBackground: #08110b;
   --fontMultiplier: 1;
   --normalColor: #045124;
+  --defaultColor: #045124;
   --tinyFont: calc(0.5em * var(--fontMultiplier));
   --likeGlow: none;
   --dislikeGlow: none;
@@ -325,6 +326,7 @@ ul > div {
   background-repeat: no-repeat;
   background-position-x: center;
   /*! background-position-y: 7.7vw; */
+  z-index: 3;
 }
 
 .boxLinksContainer {
@@ -371,7 +373,7 @@ u {
   top: 4em;
   padding: 0.6em;
   width: max-content;
-  border-radius: 1vw;
+  border-radius: 0.7em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -883,7 +885,7 @@ html, body {
 #cToolTop {
   display: flex;
   align-items: center;
-  gap: 1vw;
+  gap: 0.5em;
   margin: 0 1vw;
 }
 
@@ -1286,30 +1288,11 @@ cb { color: #5fe7ff ;}
 	font-size: var(--smallFont);
 }
 
-#likes:before {
-  content: "";
-  background: url(../images/like.svg);
-  position: absolute;
-  width: 1.5em;
-  height: 1.7em;
-  transform: scale(0.5) translate(-2.5em, -0.3em);
-  filter: brightness(3.5);
-}
 #likes {
-  margin-left: 0.8em;
-}
-
-#dislikes:after {
-  content: "";
-  background: url(../images/dislike.svg);
-  position: absolute;
-  width: 1.5em;
-  height: 1.7em;
-  transform: scale(0.5) translate(-0.5em, -0.3em);
-  filter: brightness(3.5);
+  color: #a6f99b;
 }
 #dislikes {
-  margin-right: 0.8em;
+  color: #f99b9b;
 }
 
 .likeFill {
@@ -1358,7 +1341,7 @@ cb { color: #5fe7ff ;}
  
 .finishUpload::before {
   content: "";
-  background: linear-gradient(0deg, #064b23, transparent);
+  background: linear-gradient(0deg, var(--normalColor), transparent);
   position: absolute;
   width: 100%;
   height: 5em;

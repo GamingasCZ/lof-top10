@@ -64,7 +64,7 @@ function showBGColorPicker() {
         $(".bgcolorContainer").append(makeColorElement(hue, val2))
 
         $(".bgcolorContainer >> input")[0].addEventListener("input", k => {
-            $("body").css("background-color", HSLtoHEX(k.target.value, "37%", val))
+            $(":root").css("--siteBackground", HSLtoHEX(k.target.value, "37%", val))
             hue = k.target.value
             $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
             $("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
@@ -75,7 +75,7 @@ function showBGColorPicker() {
         })
         $(".bgcolorContainer >> input")[1].addEventListener("input", k => {
             let hue = getHueFromHEX(levelList.pageBGcolor)
-            $("body").css("background-color", HSLtoHEX(hue, "37%", (k.target.value * 2) + "%"))
+            $(":root").css("--siteBackground", HSLtoHEX(hue, "37%", (k.target.value * 2) + "%"))
             $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
             $("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
             val = (k.target.value * 2) + "%"

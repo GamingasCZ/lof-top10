@@ -94,7 +94,7 @@ function hideShare() {
 function showJumpTo() {
 	$("#popupBG").show()
 	$("#popupBG").css("opacity", 1)
-	$("#jumpToTools").fadeIn(100);
+	$(".jumpDialog").fadeIn(100);
 	$(".levelPickerContainer").empty();
 
 	// Show nothing if on an unfinished guessing list
@@ -123,7 +123,7 @@ function showJumpTo() {
 	});
 }
 function hideJumpTo() {
-	$("#jumpToTools").fadeOut(100);
+	$(".jumpDialog").fadeOut(100);
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
 }
@@ -551,8 +551,9 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	// Setting page BG from list
 	if (Object.keys(boards).indexOf("pageBGcolor") != -1) {
 		if (boards["pageBGcolor"] != "#020202") {
-			$(":root").css("--siteBackground", boards["pageBGcolor"])
 			let hue = getHueFromHEX(boards["pageBGcolor"])
+			$(":root").css("--normalColor", `hsl(${hue},90.6%,16.7%)`)
+			$(":root").css("--siteBackground", boards["pageBGcolor"])
 			$(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
 			$("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
 		}
@@ -651,7 +652,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 					</div>
 	
 					${boxCreator(boards[bIndex]["creator"], bIndex, false)}
-					<div class="${boards[bIndex]["tags"].length ? "listTagContainer" : ""}"></div>
+					<div class="listTagContainer"></div>
 				</div>
 				`);
 		}
@@ -663,8 +664,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		boards[bIndex]["tags"].forEach(tag => {
 			let tagName = tag[1] == -1 ? jsStr["TAGS"][LANG][tag[0]] : tag[1]
 			tagName = tag[2] == "" ? tagName : `<a class="gamLink" target="_blank" href="${tag[2]}">${tagName}</a>`
-			$(".listTagContainer").append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)
-		});
+			$(".listTagContainer").eq(bIndex-1).append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)		});
 
 		// Only display icons on hover
 		if (typeof boards[bIndex]["creator"] == "object") {
@@ -1146,9 +1146,11 @@ async function loadSite() {
 	let spinning = setInterval(() => { rot += 1; $(".logo").css("transform", `rotate(${rot * 360}deg)`) }, 1000)
 	$("#app").empty()
 
+	$(":root").css("--normalColor", "var(--defaultColor)")
 	$(":root").css("--siteBackground", "var(--defaultBackground)")
 	if ($(":root").css("--greenGradient") != $(":root").css("--defaultGradient")) {
 		$("nav").css("animation-name", "fadeBlack")
+		$("[name='theme-color']").attr("content", $(":root").css("--normalColor"))
 		setTimeout(() => $(":root").css("--greenGradient", "var(--defaultGradient)"), 125);
 		setTimeout(() => $("nav").css("animation-name", "none"), 250);
 	}
@@ -1695,7 +1697,7 @@ function setPFP(userInfo) {
 	$(".logContainer").show()
 	$(".setLoginText").text(userInfo[0])
 	$(".setLoginText").after(`
-	<div onclick="logout()" class="button eventButton uploadText settingsButton noMobileResize"><img src="images/logout.svg">Odhlásit se</div>
+	<div onclick="logout()" class="button eventButton uploadText settingsButton noMobileResize"><img src="images/logout.svg">${jsStr["LOGOUT"][LANG]}</div>
 	`)
 
 	$(".userIcon").attr("id", "userLoggedIn")
