@@ -27,12 +27,6 @@ if (strlen($_POST["lName"]) < 3 || strlen($_POST["lName"]) > 40) {
   exit();
 }
 
-// Invalid listCreator length
-if (strlen($_POST["lCreator"]) < 3 || strlen($_POST["lCreator"]) > 20) {
-  echo "3";
-  exit();
-}
-
 // Check list size
 $len = strlen($_POST["listData"]);
 if ($len > 25000 || $len < 150) {
@@ -40,21 +34,21 @@ if ($len > 25000 || $len < 150) {
   exit();
 }
 
+// TODO: check for cookie
+$user_id = checkAccount()["id"];
+
 // Checking request
 error_reporting($debugMode ? -1 : 0);
-$fuckupData = sanitizeInput(array($_POST["lCreator"],$_POST["lName"],$_POST["listData"]));
+$fuckupData = sanitizeInput(array($_POST["lName"],$_POST["listData"]));
 $timestamp = $time -> getTimestamp();
 
 // Generate id if list private
 if (isset($_POST["hidden"])) { $hidden = privateIDGenerator($fuckupData[1], $fuckupData[0], $timestamp); }
 else { $hidden = "0"; }
 
-// Password for editing
-$pass = passwordGenerator($_POST["lName"], $_POST["lCreator"], $timestamp);
-
 // Send to database
-$teplate = "INSERT INTO `lists`(`creator`,`name`,`data`,`timestamp`,`hidden`) VALUES (?,?,?,?,?)";
-$values = array($fuckupData[0], $fuckupData[1], $fuckupData[2], $timestamp, $hidden);
+$teplate = "INSERT INTO `lists`(`creator`,`name`,`data`,`timestamp`,`hidden`,`uid`) VALUES ('',?,?,?,?,?)";
+$values = array($fuckupData[0], $fuckupData[1], $timestamp, $hidden, $user_id);
 doRequest($mysqli, $teplate, $values, "sssss");
 
 if (isset($_POST["hidden"])) {
@@ -70,6 +64,6 @@ else {
 }
 $mysqli -> close();
 
-echo json_encode([$pass, $listID]);
+echo json_encode([$listID]);
 
 ?>

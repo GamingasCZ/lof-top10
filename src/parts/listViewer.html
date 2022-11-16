@@ -4,16 +4,29 @@
     <p class="uploadText" id="shareText" style="margin-bottom: 0;">%%s</p>
     <input class="uploadText settingsBG" id="shareContainer" readonly></input>
     <div style="display: flex;align-items:flex-start;" class="shareSocials">
-        <img src="images/twitter.webp" class="button" style="width: 3em; margin-right: 0.3em;">
-        <img src="images/reddit.webp" class="button" style="width: 3em;">
+        <img src="images/twitter.webp" class="button" style="width: 3em; margin-right: 0.3em;" loading="lazy">
+        <img src="images/reddit.webp" class="button" style="width: 3em;" loading="lazy">
+    </div>
+</div>
+
+<!-- Upload Popup-->
+<div id="jumpToTools" class="uploadText finishUpload levelPicker" style="display: none;">
+    <div style="display: flex; align-items: center; flex-direction: column; position: relative;">
+        <img src="images/uploading.webp" class="dragonUpload">
+        <h1 style="margin-top: 3em;">%%s</h1>
+        <label style="margin-right: 18em;">%%s</label>
+        <input class="listLink" type="text" readonly value="" style="width: 81%;">
+        <div class="button finishButton noMobileResize clipboardCopy"><img src="images/link.svg">%%s</div>
+        <div class="button finishButton noMobileResize edit" style="margin-top: 3em;"><img src="images/edit.svg">%%s</div>
+        <div class="button finishButton noMobileResize" onclick="hideFinishUpload()"><img src="images/smallClose.svg">%%s</div>
     </div>
 </div>
 
 <!-- Jump To Dialog-->
-<div style="display: none;" id="jumpToTools" class="uploadText levelPicker">
+<div style="display: none;" id="jumpToTools" class="uploadText levelPicker jumpDialog">
     <div style="display: flex; align-items: center;">
         <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">%%s</span>
-        <img onclick="hideJumpTo()" src="./images/smallClose.svg" style="width: 2em;" class="button">
+        <img onclick="hideJumpTo()" src="./images/smallClose.svg" style="width: 2em;" class="button" loading="lazy">
     </div>
     <div style="padding: 0 1em 1em;">
         <div class="levelPickerContainer"></div>
@@ -21,11 +34,11 @@
 </div>
 
 <!-- Collab stats -->
-<div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
-    <div style="display: flex; width: 100%; padding: 1%; align-items: center; height: 4%;">
+<div class="uploadBG uploadText collabViewer" id="collabTools" style="position: fixed; display: none;">
+    <div style="display: flex; padding: 0.1%; align-items: center;">
         <p style="margin: 0 auto;" class="collabTTitle"></p>
-        <img src="./images/smallClose.svg" class="button" style="width: 6%; height: max-content;"
-            onclick="hideCollabStats()">
+        <img src="./images/smallClose.svg" class="button" style="width: 2em; height: max-content;"
+            onclick="hideCollabStats()" loading="lazy">
     </div>
     <div class="collabGraphs" style="min-height: 49%; max-height: 49%; overflow-y: auto;">
 
@@ -34,7 +47,8 @@
         <p class="uploadText colMembers" style="margin: 0.2% 0%;">%%s</p>
     </div>
     <div style="max-height: 48.5%;overflow-y: auto;">
-        <table style="min-height: 48.5%;" class="collabTables statsCreators"></table>
+        <table style="min-height: 48.5%;" class="collabTables statsCreators">
+        </table>
     </div>
 </div>
 
@@ -55,12 +69,25 @@
                 <button onclick="pinList()" class="listHeaderBlue uploadText pin"><img src="images/pin.svg">
                     <div id="pinBut">%%s</div>
                 </button>
-                <button onclick="goToPWD()" class="listHeaderBlue uploadText"><img src="images/edit.svg">
+                <button class="listHeaderBlue uploadText edit"><img src="images/edit.svg">
                     <div id="editBut">%%s</div>
                 </button>
             </div>
         </div>
         <div id="cToolTop">
+            <div class="ratingContainer">
+                <button id="likeBut" title="%%s" class="rateButton button"></button>
+                <div class="rateData">
+                    <div class="likeBar">
+                        <div class="likeFill"></div>
+                    </div>
+                    <div class="likeText uploadText">
+                        <div id="likes"></div>
+                        <div id="dislikes"></div>
+                    </div>
+                </div>
+                <button id="dislikeBut" title="%%s" class="rateButton button"></button>
+            </div>
             <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img
                     src="images/comment.svg" style="width: 2em;">
                 <div id="commButtonText">%%s</div>
@@ -70,24 +97,31 @@
         </div>
     </div>
 
-    <img class="titleImage">
+    <div class="titleImage"></div>
 
     <div class="comments">
-        <div class="positionEdit" id="commentMaker">
-            <div style="display: flex; align-items: center; padding-left: 0em; margin-bottom: 0.5em;">
-                <img src="images/bytost.webp" id="pIcon" style="width: 1.8em;">
-                <input class="cardInput pIconInp" id="posInputBox" type="text" placeholder="%%s" maxlength="20">
-                <img src="./images/searchOpaque.svg" onclick="getPlayerIcon()" class="button passImg" id="passSubmit"
-                    style="height: max-content;">
-                <h5 class="uploadText comUserError"></h5>
+        <div id="loginHelp" class="uploadBG uploaderDialog uploadText" style="display: none;">
+            <div class="quoteContainer">
+                <img src="images/emoji/01.webp" style="width: 3em;" class="loginEmoji" loading="lazy">
+                <h2 class="quote"></h2>
             </div>
+            <p>%%s</p>
+            <div class="button eventButton uploadText settingsButton noMobileResize" style="width: max-content;"
+                onclick="login(1)">
+                <img src="images/discord.svg" loading="lazy">%%s
+            </div>
+        </div>
 
-            <div class="comBox">
-                <div class="uploadText comBoxThings comInpThings" id="comBoxHeader">
-                    <h3>%%s</h3>
-                    <h3 id="charLimit">0/300</h3>
+        <p id="comTest"></p>
+        <div class="positionEdit" id="commentMaker">
+            <div id="cHeader" class="uploadText">
+                <div class="cNameContainer">
+                    <img id="pIcon" src="" loading="lazy">
+                    <div id="commentName"></div>
                 </div>
-
+                <h3 id="charLimit">0/300</h3>
+            </div>
+            <div class="comBox">
                 <div style="display: flex; width: inherit;">
                     <div contenteditable="" class="uploadText comTextArea comInpArea" style="height: 5em;" id="comFont">
                     </div>
@@ -98,11 +132,9 @@
 
         </div>
         <div class="uploadText comBoxThings" id="comBoxFooter">
-            <img class="comFooterButton comInpThings" src="images/emoji.svg" title="%%s"
-                onclick="displayPanel(1)">
-            <img class="comFooterButton comInpThings" src="images/color.svg" title="%%s"
-                onclick="displayPanel(2)">
-            <img class="comFooterButton sendBut" src="images/send.svg" title="%%s" onclick="sendComment()">
+            <img class="comFooterButton comInpThings" src="images/emoji.svg" loading="lazy" title="%%s" onclick="displayPanel(1)">
+            <img class="comFooterButton comInpThings" src="images/color.svg" loading="lazy" title="%%s" onclick="displayPanel(2)">
+            <img class="comFooterButton sendBut" src="images/send.svg" loading="lazy" title="%%s" onclick="sendComment()">
         </div>
 
         <div id="commentList"></div>

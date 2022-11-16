@@ -24,9 +24,17 @@
     <h6>%%s</h6>
   </div>
 </div>
-<img class="button" src="images/settings.svg" style="width: 2em; padding-right: 1.5vw;"
-onclick="$('.settingsMenu').fadeToggle(100)">
+<div class="pfpContainer">
+  <img class="userIcon" style="width: 2em;">
+  <div class="pfpPlaceholder button noMobileResize" onclick="openSettings()"></div>
+</div>
 <div class="settingsMenu" style="display: none;">
+  <div onclick="login(1)" class="button eventButton uploadText settingsButton noMobileResize loginBut">
+    <img src="images/discord.svg">%%s</div>
+  <div class="siteSettingsChild noMobileResize logContainer" style="display: none;">
+    <p class="uploadText setLoginText"></p>
+  </div>
+
   <div class="siteSettingsChild">
     <p class="uploadText langText">%%s</p>
     <select class="uploadText settingsDropdown">
@@ -34,9 +42,8 @@ onclick="$('.settingsMenu').fadeToggle(100)">
       <option id="english">%%s</option>
     </select>
   </div>
-  <!-- <div class="siteSettingsChild">
-      <p class="uploadText skinText">Skin</p>
-      <select class="uploadText settingsDropdown skins">
-      </select>
-    </div> -->
+  <!-- <div class="button eventButton uploadText settingsButton noMobileResize">
+    <img src="images/settings.svg">Nastavení
+  </div> -->
+
 </div>

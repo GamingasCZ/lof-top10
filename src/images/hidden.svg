@@ -1,0 +1,21 @@
+<svg id="svg873" width="32" height="32" version="1.1" viewBox="0 0 8.4667 8.4667" xmlns="http://www.w3.org/2000/svg">
+ <defs id="defs870">
+  <clipPath id="clipPath1846">
+   <circle id="circle1848" cx="4.2333" cy="4.2333" r="1.7418" d="M 5.975144,4.2333331 A 1.7418109,1.7418109 0 0 1 4.2333331,5.975144 1.7418109,1.7418109 0 0 1 2.4915222,4.2333331 1.7418109,1.7418109 0 0 1 4.2333331,2.4915222 1.7418109,1.7418109 0 0 1 5.975144,4.2333331 Z" display="none" style="paint-order:normal"/>
+   <path id="lpe_path-effect1850" class="powerclip" d="m-5-2.9242h18.467v14.385h-18.467zm10.975 7.1576a1.7418 1.7418 0 0 0-1.7418-1.7418 1.7418 1.7418 0 0 0-1.7418 1.7418 1.7418 1.7418 0 0 0 1.7418 1.7418 1.7418 1.7418 0 0 0 1.7418-1.7418z" style="paint-order:normal"/>
+  </clipPath>
+  <clipPath id="clipPath1858">
+   <circle id="circle1860" cx="5.0022" cy="3.2712" r=".65193" d="M 5.6541556,3.2711713 A 0.65192974,0.65192974 0 0 1 5.0022259,3.9231011 0.65192974,0.65192974 0 0 1 4.3502961,3.2711713 0.65192974,0.65192974 0 0 1 5.0022259,2.6192416 0.65192974,0.65192974 0 0 1 5.6541556,3.2711713 Z" display="none" fill="#fff" style="paint-order:normal"/>
+   <path id="lpe_path-effect1862" class="powerclip" d="m-1.9983-1.9983h12.463v12.463h-12.463zm7.6525 5.2695a0.65193 0.65193 0 0 0-0.65193-0.65193 0.65193 0.65193 0 0 0-0.65193 0.65193 0.65193 0.65193 0 0 0 0.65193 0.65193 0.65193 0.65193 0 0 0 0.65193-0.65193z" fill="#fff" style="paint-order:normal"/>
+  </clipPath>
+  <mask id="mask-powermask-path-effect2566" maskUnits="userSpaceOnUse">
+   <path id="mask-powermask-path-effect2566_box" d="m-1 1.0757h10.467v6.385h-10.467z" fill="#fff"/>
+   <rect id="rect2564" transform="matrix(.88595 -.46378 .48631 .87379 0 0)" x="-1.7448" y="5.7339" width="7.1245" height=".88082" ry="0"/>
+  </mask>
+ </defs>
+ <g id="layer1" fill="#fff" mask="url(#mask-powermask-path-effect2566)">
+  <path id="path1718" d="m0 4.2383s1.9152-2.1626 4.2333-2.1626 4.2333 2.1626 4.2333 2.1626-1.2089 2.2224-4.2333 2.2224-4.2333-2.2224-4.2333-2.2224z" clip-path="url(#clipPath1846)" style="paint-order:normal"/>
+  <path id="path1854" d="m5.465 4.2333a1.2316 1.2316 0 0 1-1.2316 1.2316 1.2316 1.2316 0 0 1-1.2316-1.2316 1.2316 1.2316 0 0 1 1.2316-1.2316 1.2316 1.2316 0 0 1 1.2316 1.2316z" clip-path="url(#clipPath1858)" style="paint-order:normal"/>
+ </g>
+ <path id="path1984" d="m0.39688 6.0638 7.6666-3.9881" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".79375"/>
+</svg>

@@ -16,6 +16,46 @@
     <div class="tagContainer"></div>
 </div>
 
+<!-- Background options -->
+<div id="jumpToTools" class="uploadBG uploadText backSett" style="display: none;">
+    <div class="BGsettBG"></div>
+    <div style="text-align: center; width: 100%;">
+        <img src="./images/smallClose.svg" class="button" style="width: 1.5em; float: right;" onclick="hideBGsettings()">
+        <p style="margin: 0;">%%s</p>
+    </div>
+    <div id="backImageSettings">
+        <div id="backDragContainer">
+            <div class="cutImage"></div>
+            <svg class="cutBox" height="210" width="400" draggable="true">
+                <path d="M0 0 L400 0 L400 210 L0 210 L0 0" fill=none stroke-width=10>
+            </svg>
+        </div>
+        <div>
+            <div>
+                <label>%%s</label>
+                <input type="range" min="25" max="95" value="33" id="bgCoverageSlider">
+            </div>
+            <div>
+                <label>%%s</label>
+                <div>
+                    <img src="images/alignLeft.svg" id="passSubmit" class="button alignButtons">
+                    <img src="images/alignCenter.svg" id="passSubmit" class="button alignButtons">
+                    <img src="images/alignRight.svg" id="passSubmit" class="button alignButtons">
+                </div>
+            </div>
+            <div class="gradCheck">
+                <img src="images/modernCheckOn.svg" class="setCheckbox button gradCheckbox">%%s
+            </div>
+        </div>
+    </div>
+    <div class="bgError bgBadFetch" style="display: none;">
+        <img src="images/close.svg"><div>%%s</div>
+    </div>
+    <div class="bgError bgNoneEntered" style="display: none; background-color: #00a2ff5e;">
+        <img src="images/info.svg"><div>%%s</div>
+    </div>
+</div>
+
 <!-- Collab tools -->
 <div class="uploadBG uploadText" id="collabTools" style="position: fixed; display: none;">
     <div style="display: flex; width: 98%; padding: 1%; align-items: center; height: 4%;">
@@ -45,23 +85,26 @@
             <button class="button uploadText eventButton noMobileResize" onclick="addRole(2)">%%s</button>
         </div>
         <div class="collabHButtons">
-            <img class="button" id="rolepaste" onclick="clipboardTask(2, 'roleclip')"
-                style="width: 2em;height: fit-content;" src="images/paste.webp" title="%%s">
+            <img class="button rolepaste disabled" onclick="clipboardTask(2, 'roleclip')"
+                style="width: 1.3em;margin-left: 0.3em;height: fit-content;" id="passSubmit" src="images/paste.svg"
+                title="%%s">
             <img class="button roleAddButton" onclick="addRole()"
-                style="width: 2em;margin-left: 0.3em;height: fit-content;" src="images/add.webp" title="%%s">
+                style="width: 1.3em;margin-left: 0.3em;height: fit-content;" id="passSubmit" src="images/addLevel.svg"
+                title="%%s">
         </div>
     </div>
     <div class="collabBG collabHeader collabDIV roleStuff">
         <table style="display: none;" class="collabTables collabRoles">
-            <p class="uploadText noRolAdded">%%s<img id="plusSign" style="width: 2.2%" src="images/add.webp"></p>
+            <p class="uploadText noRolAdded">%%s<img style="width: 2.2%" id="passSubmit"
+                    src="images/addLevel.svg"></p>
         </table>
     </div>
 
     <div class="editorHeader collabHeader uploadText collabBar memberStuff">
-        <div>
+        <div style="display: flex;">
             <div class="uploadText button humHead" onclick="rollThing(1)">%%s</div>
             <img src="images/help.svg" class="button smallHelp noMobileResize helpButton"
-                onclick="openHelp('humansHelp')">
+                onclick="openHelp('humansHelp')" style="transform: translateY(-0.4em);">
         </div>
 
         <div style="display: flex; align-items: center; opacity: 0;" class="socSettings">
@@ -81,16 +124,18 @@
         </div>
 
         <div class="collabHButtons" style="width: 11vw;">
-            <img class="button" id="humpaste" onclick="clipboardTask(2, 'humclip', 2)"
-                style="width: 3vw; height: fit-content;" src="images/paste.webp" title="%%s">
+            <img class="button disabled humpaste" onclick="clipboardTask(2, 'humclip', 2)"
+                style="width: 1.3em;margin-left: 0.3em;height: fit-content;" id="passSubmit" src="images/paste.svg"
+                title="%%s">
             <img class="button disabled addHumanButton" onclick="addCollabHuman()"
-                style="width: 3vw;margin-left: 0.2vw;height: fit-content;" src="images/add.webp" title="%%s">
+                style="width: 1.3em;margin-left: 0.2vw;height: fit-content;" id="passSubmit" src="images/addLevel.svg"
+                title="%%s">
         </div>
     </div>
     <div class="collabBG collabHeader collabDIV memberStuff" style="height: 125%;;">
         <p class="uploadText noRoles">%%s</p>
-        <p style="display: none;" class="uploadText addRoles">%%s<img style="width: 2.2%" id="plusSign"
-                src="images/add.webp"></p>
+        <p style="display: none;" class="uploadText addRoles">%%s<img style="width: 2.2%" id="passSubmit"
+                src="images/addLevel.svg"></p>
         <table style="display: none;" class="collabTables collabHumans">
             <tr class="collabTables">
                 <th class="collabTables" style="width: 22%;">
@@ -129,31 +174,29 @@
 
 <div class="uploader">
     <p class="titles uploadTitle">%%s</p>
+    <div id="loginHelp" class="uploadBG uploaderDialog uploadText" style="display: none;">
+        <div class="quoteContainer">
+            <img src="images/emoji/01.webp" style="width: 3em;" class="loginEmoji">
+            <h2 class="quote"></h2>
+        </div>
+        <p>%%s</p>
+        <div class="button eventButton uploadText settingsButton noMobileResize" style="width: max-content;"
+            onclick="login(1)">
+            <img src="images/discord.svg">%%s
+        </div>
+    </div>
     <form id="levelUpload" class="uploadBG uploaderDialog">
-        <br>
-        <input name="lName" type="text" id="listnm" class="uploadMainInp" placeholder="%%s"><br />
-        <input name="creator" type="text" id="creatornm" class="uploadMainInp" placeholder="%%s"><br />
-        <div id="passEditor" class="uploadText" style="display: none;">
-            <h3 class="listPassType">%%s</h3>
-            <div style="display: flex; gap: 0.5vw; justify-content: center;">
-                <input name="lPass" type="text" id="lpass" class="uploadMainInp searchWithIcon" placeholder="%%s"><br />
-                <img id="passSubmit" class="button" src="images/searchOpaque.svg" onclick="checkPassword()">
+        <div class="mainInpContainer">
+            <input type="text" id="listnm" class="uploadMainInp" placeholder="%%s">
+            <div class="titImageContainer editables">
+                <input type="text" id="listimg" class="uploadMainInp" placeholder="%%s" style="margin: 0;">
+                <img src="./images/gear.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize imgSetButton">
             </div>
         </div>
-        <div style="display: flex; justify-content: center; margin-right: 1.7vw; align-items: center;">
-            <img src="images/arrow.webp" id="imageArrow" class="button" title="%%s">
-            <input type="text" id="tImgMargin" class="titImgInp uploadMainInp" placeholder="%%s">
-            <img src="images/help.svg" class="button helpButton" onclick="openHelp('upload')">
-        </div>
-        <div class="imgPreview">
-            <img src="" id="imagePrev" class="uploadText" style="width: inherit;">
-            <p id="imgError" class="uploadText" style="color: tomato;"></p>
-        </div>
-        <br />
         <div class="listColPicker">
             <div style="display: flex;">
                 <label align="center" for="bgcolor" class="uploadText colorLabel">%%s</label>
-                <div class="pickerContainer button">
+                <div class="pickerContainer button editables">
                     <img src="./images/color.svg" style="z-index: 1;">
                     <div id="bgcolorPicker"></div>
                 </div>
@@ -161,23 +204,25 @@
             <p class="bgcolorContainer" style="display: none;"></p>
         </div>
 
-        <div class="editorHeader"
+        <div class="editorHeader editables"
             style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
             <p class="headerTitle uploadText">%%s</p>
             <div style="display: flex;">
-                <img src="images/preview.webp" title="%%s" class="button previewButton disabled headerButtons">
-                <img src="images/addfromFaves.webp" title="%%s" onclick="addFromFaves()"
+                <img id="passSubmit" src="images/preview.svg" title="%%s"
+                    class="button previewButton disabled headerButtons">
+                <img id="passSubmit" src="images/addfromFaves.svg" title="%%s" onclick="addFromFaves()"
                     class="button addCardButton headerButtons">
-                <img src="images/add.webp" title="%%s" onclick="addLevel()" class="button addCardButton headerButtons">
+                <img id="passSubmit" src="images/addLevel.svg" title="%%s" onclick="addLevel()"
+                    class="button addCardButton headerButtons">
             </div>
 
         </div>
 
-        <div class="editorHeader uploadText" id="mainContent">
+        <div class="editorHeader uploadText editables" id="mainContent">
         </div>
 
         <p class="uploadText setTitle">%%s</p>
-        <div class="settingsBG">
+        <div class="settingsBG editables">
             <div class="setting">
                 <input type="checkbox" style="display: none;" name="hidden">
                 <img src="images/modernCheck.svg" onclick='checkCheckbox("hidden")' for="hidden"
@@ -198,10 +243,17 @@
                 <button title="%%s" type="button" onclick="guesserOptions(2)" class="diffSelBut"><img
                         src="images/faces/epic.webp" class="button"></button>
             </div>
+            <div class="setting diffSetting" style="margin-top: 0.5em;">
+                <img src="images/modernCheck.svg" for="transCards" class="setCheckbox button"'>
+                <label for="transCards" class="uploadText setLabel">%%s</label>
+            </div>
         </div>
 
         <div id="submitarea">
-            <input onclick="uploadList()" type="button" class="button noMobileResize" id="submitbutton" value="%%s">
+            <div onclick="uploadList()" class="button noMobileResize uploadText" id="submitbutton">
+                <img src="images/upload.svg">
+                <div>%%s</div>
+            </div>
         </div>
 
     </form>

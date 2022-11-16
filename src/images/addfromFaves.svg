@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 8.4666665 8.4666666"
+   version="1.1"
+   id="svg3501"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="addfromFaves.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview3503"
+     pagecolor="#000000"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="28.785198"
+     inkscape:cx="14.104471"
+     inkscape:cy="16.571017"
+     inkscape:window-width="1560"
+     inkscape:window-height="874"
+     inkscape:window-x="40"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs3498">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient6695">
+      <stop
+         style="stop-color:#c49554;stop-opacity:1;"
+         offset="0"
+         id="stop6691" />
+      <stop
+         style="stop-color:#d0cd24;stop-opacity:1;"
+         offset="1"
+         id="stop6693" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="powermask"
+       id="path-effect6407"
+       is_visible="true"
+       lpeversion="1"
+       uri="#mask-powermask-path-effect6407"
+       invert="false"
+       hide_mask="false"
+       background="true"
+       background_color="#ffffffff" />
+    <inkscape:path-effect
+       effect="powermask"
+       id="path-effect4429"
+       is_visible="true"
+       lpeversion="1"
+       uri="#mask-powermask-path-effect4429"
+       invert="false"
+       hide_mask="false"
+       background="true"
+       background_color="#ffffffff" />
+    <filter
+       id="mask-powermask-path-effect4401_inverse"
+       inkscape:label="filtermask-powermask-path-effect4401"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect4401_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect4401_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+    <filter
+       id="mask-powermask-path-effect4415_inverse"
+       inkscape:label="filtermask-powermask-path-effect4415"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect4415_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect4415_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask-powermask-path-effect6407">
+      <g
+         id="g6405"
+         style="fill:#000000"
+         transform="matrix(1.6523679,-0.21881748,0.21881748,1.6523679,-2.9299112,-2.3811615)">
+        <rect
+           style="fill:#000000;stroke-width:0.78;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke markers fill"
+           id="rect6401"
+           width="0.62394959"
+           height="2.2618172"
+           x="1.2543986"
+           y="0.29247636"
+           rx="0.21080469"
+           ry="0.18749917" />
+        <rect
+           style="fill:#000000;stroke-width:0.78;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke markers fill"
+           id="rect6403"
+           width="0.62394959"
+           height="2.2618172"
+           x="-1.7353598"
+           y="0.43546477"
+           rx="0.21080469"
+           ry="0.18749917"
+           transform="rotate(-90)" />
+      </g>
+    </mask>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6695"
+       id="linearGradient6705"
+       x1="-2.6564553"
+       y1="-0.19334704"
+       x2="2.7356546"
+       y2="-0.19334704"
+       gradientUnits="userSpaceOnUse" />
+    <filter
+       id="mask-powermask-path-effect6806_inverse"
+       inkscape:label="filtermask-powermask-path-effect6806"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect6806_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect6806_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+    <filter
+       id="mask-powermask-path-effect6973_inverse"
+       inkscape:label="filtermask-powermask-path-effect6973"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect6973_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect6973_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Vrstva 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="star"
+       style="fill:url(#linearGradient6705);fill-opacity:1;stroke:none;stroke-width:0.78;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke markers fill"
+       id="path6615"
+       inkscape:flatsided="false"
+       sodipodi:sides="5"
+       sodipodi:cx="0"
+       sodipodi:cy="0"
+       sodipodi:r1="2.4284041"
+       sodipodi:r2="1.2142022"
+       sodipodi:arg1="-0.26179939"
+       sodipodi:arg2="0.36651914"
+       inkscape:rounded="0.04"
+       inkscape:randomized="0"
+       d="M 2.3456582,-0.62851723 C 2.3623533,-0.56621041 1.1566718,0.37491074 1.1335554,0.43513114 1.1104389,0.49535153 1.3767019,2.0014992 1.3226037,2.036631 1.2685054,2.0717629 8.6994473e-4,1.2159141 -0.06354643,1.2125381 -0.1279628,1.2091622 -1.4781146,1.9278186 -1.5282442,1.8872244 c -0.05013,-0.040594 0.37211,-1.51065892 0.355415,-1.57296575 -0.016695,-0.0623068 -1.1173978,-1.12430045 -1.0942813,-1.18452084 0.023116,-0.0602204 1.55171035,-0.11292161 1.6058086,-0.14805341 0.0540983,-0.035132 0.72397837,-1.4101364 0.78839475,-1.4067604 0.0644164,0.00338 0.5868997,1.44086952 0.63702933,1.48146369 0.0501296,0.0405942 1.56484102,0.25278825 1.58153602,0.31509508 z"
+       inkscape:transform-center-x="-0.0052336857"
+       inkscape:transform-center-y="-0.40263413"
+       transform="matrix(1.7607182,-0.08527473,0.08527473,1.7607182,4.2287917,4.5784075)" />
+    <g
+       id="g6796"
+       transform="translate(3.5963848,3.9356392)">
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.78;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke markers fill"
+         id="rect6728-9"
+         width="0.83193278"
+         height="2.4957983"
+         x="-0.71366054"
+         y="-0.61095065"
+         rx="0.1"
+         ry="0.1"
+         transform="rotate(-90)" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.78;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke markers fill"
+         id="rect6728-9-1"
+         width="0.83193278"
+         height="2.4957983"
+         x="-1.0529149"
+         y="-1.5455933"
+         rx="0.1"
+         ry="0.1"
+         transform="scale(-1)" />
+    </g>
+  </g>
+</svg>

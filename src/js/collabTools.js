@@ -58,10 +58,10 @@ function showCollabTools(id) {
 
     // Clipboard loading
     if (sessionStorage.getItem("roleclip") == null) {
-        $("#rolepaste").addClass("disabled");
+        $(".rolepaste").addClass("disabled");
     }
     if (sessionStorage.getItem("humclip") == null) {
-        $("#humpaste").addClass("disabled")
+        $(".humpaste").addClass("disabled")
     }
 
     $(".hostIcon").attr("src", "images/bytost.webp")
@@ -95,7 +95,7 @@ function showCollabTools(id) {
         $(".noRoles").show();
         $(".noRolAdded").show();
         $(".addRoles").hide();
-        $("#humpaste").addClass("disabled");
+        $(".humpaste").addClass("disabled");
     }
 }
 
@@ -181,7 +181,7 @@ function refreshRoleList() {
         $(".noRoles").hide();
         $(".noRolAdded").hide();
         $(".addRoles").show();
-        if (sessionStorage.getItem("humclip") != undefined) { $("#humpaste").removeClass("disabled"); }
+        if (sessionStorage.getItem("humclip") != undefined) { $(".humpaste").removeClass("disabled"); }
     }
     else {
         $(".addHumanButton").addClass("disabled");
@@ -194,7 +194,7 @@ function refreshRoleList() {
         $(".noRoles").show();
         $(".noRolAdded").show();
         $(".addRoles").hide();
-        $("#humpaste").addClass("disabled");
+        $(".humpaste").addClass("disabled");
     }
 
     // Roles, but no humans (shocked emoji face yes)
@@ -332,7 +332,7 @@ function addCollabHuman(load = 0) {
            ><img id="passSubmit" class="button noMobileResize socButton" src="images/searchOpaque.svg" onclick="verifyPerson($(this), 1)">
         </td>
         <td>
-            <img class="button noMobileResize socAddButton socButton" src="images/add.webp" onclick="addSocMedia($(this))"
+            <img class="button noMobileResize socAddButton socButton" src="images/addLevel.svg" id="passSubmit" onclick="addSocMedia($(this))"
        ></td>
         <td>
             <select onchange="chRoleValue($(this), 'role', 2)" class="uploadText roleList"></select>
@@ -557,7 +557,7 @@ function clipboardTask(task, data, ind = -1) {
         let dataName = object.constructor.name == "Role" ? "role" : "hum"
 
         sessionStorage.setItem(dataName + "clip", JSON.stringify(object))
-        $(`#${dataName}paste`).removeClass("disabled")
+        $(`.${dataName}paste`).removeClass("disabled")
     }
     else {
         let pasteData = sessionStorage.getItem(data);

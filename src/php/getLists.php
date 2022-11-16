@@ -15,30 +15,40 @@ if ($mysqli->connect_errno) {
 
 function parseResult($rows, $singleList = false)
 {
+  global $mysqli;
   $ind = 0;
   if (!$singleList) {
+    $uid_array = array();
     foreach ($rows as $row) {
-      if (base64_decode($row["data"], true) == true) {
-        $row["data"] = base64_decode($row["data"]);
-      }
+      array_push($uid_array, $row["uid"]);
       $row["data"] = json_decode(htmlspecialchars_decode($row["data"]));
+      $rows[$ind]["data"] = $row["data"];
 
-      if ($singleList) {
-        $rows["data"] = $row["data"];
-      } else {
-        $rows[$ind]["data"] = $row["data"];
-      }
       $ind += 1;
     }
+
+    $query = sprintf("SELECT DISTINCT username,discord_id
+                      FROM users
+                      WHERE discord_id IN ('%s')", join("','", array_unique($uid_array)));
   } else {
     // Single list
-    if (base64_decode($rows["data"], true) == true) {
-      $rows["data"] = base64_decode($rows["data"]);
-    }
     $rows["data"] = json_decode(htmlspecialchars_decode($rows["data"]));
-  }
 
-  echo json_encode($rows);
+    if (isset($_COOKIE["lastViewed"]) && $_COOKIE["lastViewed"] != $rows["id"]) {
+      doRequest($mysqli, "UPDATE lists SET views = views+1 WHERE id=?", [$rows["id"]], "i");
+      $rows["views"] += 1;
+    }
+    setcookie("lastViewed", $rows["id"], time()+300);
+
+    // Fetch comment amount
+    $commAmount = doRequest($mysqli, "SELECT COUNT(*) FROM comments WHERE listID = ?", [list_id($rows)], "s");
+    $rows["commAmount"] = $commAmount["COUNT(*)"];
+    $query = sprintf("SELECT username,discord_id,avatar_hash FROM users WHERE discord_id=%s", $rows["uid"]);                  
+  }
+  
+  $result = $mysqli -> query($query) or die($mysqli -> error);
+  $users = $result -> fetch_all(MYSQLI_ASSOC);
+  echo json_encode(array($rows, $users));
 }
 
 if (count($_GET) == 1) {
@@ -67,6 +77,14 @@ if (count($_GET) == 1) {
     parseResult($getList->fetch_all(MYSQLI_ASSOC));
   } elseif (in_array("homepage", array_keys($_GET))) {
     $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC LIMIT 3 ");
+    parseResult($result->fetch_all(MYSQLI_ASSOC));
+  } elseif (!empty(array_intersect(["user","hidden","homeUser"], array_keys($_GET)))) {
+    $account = checkAccount();
+    if (!$account) die("[]"); // Not logged in
+
+    $showHidden = in_array("hidden", array_keys($_GET)) ? "" : "AND `hidden` LIKE 0";
+    $limit = in_array("homeUser", array_keys($_GET)) ? "LIMIT 3" : "";
+    $result = $mysqli->query(sprintf("SELECT * FROM `lists` WHERE `uid`=%s %s ORDER BY `hidden` DESC, `id` DESC %s", $account["id"], $showHidden, $limit));
     parseResult($result->fetch_all(MYSQLI_ASSOC));
   }
 } elseif (count($_GET) > 1) {

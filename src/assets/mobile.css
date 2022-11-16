@@ -21,19 +21,6 @@
     height: auto !important;
 }
 
-/* Buttons in comment box */
-.comFooterButton { width: 5vw; }
-
-.settingsMenu {
-    top: 13vw;
-}
-
-#shareTools {
-    width: 75%;
-}
-
-#jumpToTools { width: 90%; }
-
 #collabTools {
     border-radius: 0px;
     width: 100%;
@@ -94,4 +81,18 @@ ul > div {
 .browserTools { flex-direction: column; }
 
 .boxLinksContainer { margin: 0;}
+
+#backImageSettings {
+    flex-direction: column;
+    align-items: center;
+    width: 100% ;
+}
+
+.browserContainer { margin-bottom: 1em; }
+.listOptionsContainer { margin-top: 0.4em; }
+#toplevel::before {
+    top: -58px;
+    background-size: 8em;
+}
+
 }

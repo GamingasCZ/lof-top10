@@ -29,7 +29,6 @@ var jsStr = {
     "SH_IMPREV": ["Ukázat náhled obrázku", "Show image preview"],
     "HI_IMPREV": ["Skrýt náhled obrázku", "Hide image preview"],
     "IM_NOTFOUND": ["Obrázek nenalezen :/", "Image not found :/"],
-    "LIST_UPDATED": ["Seznam byl aktualizovan!", "The list has been updated!"],
     "KEEP_PWD": ["<cb>Schovej si heslo</cb>, protože pomocí neho mužeš upravit/smazat seznam!",
         "<cb>Keep the password</cb>, because you can edit/delete the list with it!"],
     "LIST_SUCC_UPL": ["Seznam byl nahrán!", "The list has been uploaded!"],
@@ -47,6 +46,29 @@ var jsStr = {
     "LIST_UPFAIL": ["Seznam se nepodařilo aktualizovat! Zkus to znova později.", "Failed to update the list! Try again later."],
     "DBLCLKTIP": ["Klikni dvakrát k přeskočení kontroly","Double-click to skip check"],
     "CLISTS": ["Komunitní seznamy", "Community Lists"],
+    "UPLOADS": ["Moje", "Uploads"],
+    "SH_PRIVATE": ["Zobrazit soukromé", "Show Private"],
+    "QUOTES": [[
+        "Jestli se nepříhlásíš, nevydám 2.2 :D!",
+        "Tři kliky k přihlášení? Tolik?!",
+        "vskutku vysoce epické >:)",
+        "Je to nějaké složité všecko :|",
+        "jím banán",
+        "Chybí tomu přihlašování bossfight :/",
+        "aaaaaaaaaaaaaaaaaaaa",
+    ],[
+        "yo, login or no 2.2 :D!",
+        "Three clicks to login? Why so much?!",
+        "this is very epic >:)",
+        "how does this work :|",
+        "eating banana",
+        "Wish the logging in had a bossfight :/",
+        "aaaaaaaaaaaaaaaaaaaa",
+    ]],
+    "NO_COCK": ["Máš zakázané cookies. Nepůjde se přihlásit, připínat a ukládat levely v seznamech!", "You have cookies disabled!. You won't be able to login, pin and save levels!"],
+    "WELCOME1": ["Vítej v GD Seznamech, ", "Welcome to GD Lists, "],
+    "WELCOME2": ["Nyní můžeš využívat všechny funkce stránky :)", "You can now use all the site's features :)"],
+    "LOGOUT": ["Odhlásit se", "Log out"],
 
     // generator
     "LEV_NOEXIST": ["Level neexistuje!", "Level doesn't exist!"],
@@ -103,6 +125,7 @@ var jsStr = {
     "PLAY_AGAIN": ["Hrát znova", "Play Again"],
     "TWIT_SHARE": ["Sdílet na Twitteru", "Share on Twitter"],
     "MAKEGUESSES": ["Hádej nebo skipni všechny levely k odemknutí skákání!", "Guess or Skip all levels to unlock jumping!"],
+    "SHORTTIME": [["s","m","h","d","t","r"], ["s","m","h","d","w","y"]],
 
     // helpDialogs
     "LICENSE": ["Licence","License"],
@@ -152,12 +175,15 @@ var jsStr = {
     "DIFFGUESSER_T": ["Hádání obtížností", "Difficulty guesser"],
     "DIFFGUESSER_D": [`Když je hádání zapnuté a někdo přejde na tvůj seznam, uvidí jen <cb>první level</cb>. Levely se <cg>postupně odemykají</cg> dalším hádáním.`,
                       `When guessing is enabled and someone visits your list, they'll only see the <cb>first level</cb>. The rest of levels get unlocked <cg>as you guess them</cg>.`],
+    "OLDLIST_T": ["Starý seznam", "Old list"],
+    "OLDLIST_D": [`Tento seznam byl vydán před updatem z účty a nejde ho upravovat. <a class="gamLink" href="https://twitter.com/g4mingaz">DMni mně</a> pro připsání seznamu na tvůj účet!`,
+                  `This list was uploaded before the account update and can't be edted. <a class="gamLink" href="https://twitter.com/g4mingaz">DM me</a> to have it assigned to your account!`],
 
 
     // graphicEditor
     "UNNAMED": ["Bezejmenný", "Unnamed"],
-    "HELP_TEXT": [`<p class="helpText">Kliknutím na <img width=5% id="plusSign" src="images/add.webp"> přidáš level!</p>`,
-        `<p class="helpText">Click the <img width=5% id="plusSign" src="images/add.webp"> to add a level!</p>`],
+    "HELP_TEXT": [`<p class="helpText">Kliknutím na <img id="passSubmit" src="images/addLevel.svg" style="width:2em; margin: 0 1em"> přidáš level!</p>`,
+        `<p class="helpText">Click <img id="passSubmit" src="images/addLevel.svg" style="width:2em; margin: 0 1em"> to add a level!</p>`],
     "L_MOVE_D": ["Přesunout level níž", "Move level up"],
     "L_MOVE_U": ["Přesunout level výš", "Move level down"],
     "L_LEVID": ["ID levelu", "Level ID"],
@@ -266,6 +292,7 @@ var parts = {
         ["Editor", "Editor"],
         ["Seznamy", "Lists"],
         ["Uložené", "Saved"],
+        ["Přihlásit se", "Log in"],
         ["Jazyk", "Language"],
         ["Čeština", "Czech"],
         ["Angličtina", "English"],
@@ -275,11 +302,16 @@ var parts = {
         ["Hledat seznamy...", "Search for lists..."],
         ["Vytvořit seznam","Create a list"],
         ["Zkusit štestí","Try luck"],
+        ["Vítej v GD Seznamech! Připoj svůj Discord účet pro vytváření seznamů, hodnocení a komentování!", "Welcome to GD Lists! Hook up your Discord account to make lists, rate and comment!"],
+        ["Přihlásit se", "Log in"],
         ["Nejnovější", "Newest"],
         ["Více", "More"],
         ["- Načítání -","- Loading -"],
         ["Připnuté", "Pinned"],
         ["- Zatím jsi nepřipnul žádné seznamy! -", "- You haven't pinned any lists yet! -"],
+        ["Nahrané", "Uploaded"],
+        ["Více", "More"],
+        ["- Zatím jsi nenahrál žádné seznamy! -", "- You haven't uploaded any lists yet! -"],
         ["Navštívené", "Visited"],
         ["Promazat", "Clear"],
         ["- Zatím jsi nenavštívil žádné seznamy! -", "- You haven't looked at any lists yet! -"],
@@ -291,28 +323,39 @@ var parts = {
         ["Top 15 Levelů od Fanoušků 2021","Top 15 Request Levels 2021"]
     ],
     "listBrowser": [
-        ["        Hledání", "        Search"]
+        [" Hledání", " Search"]
     ],
     "listViewer": [
         ["Sdílet", "Share"],
+        ["Seznam byl nahrán!", "List uploaded!"],
+        ["Sdílet", "Share"],
+        ["Kopírovat odkaz", "Copy Link"],
+        ["Upravit seznam", "Edit List"],
+        ["Zavřít", "Close"],
         ["Skočit na", "Jump To"],
         ["Členové", "Members"],
         ["Sdílet", "Share"],
         ["Skočit na", "Jump To"],
         ["Připnout", "Pin"],
         ["Upravit", "Edit"],
+        ["Líbí se mi to!", "I like this!"],
+        ["Nelíbí se mi to!", "I dislike this!"],
         ["Komentáře", "Comments"],
-        ["Jméno", "Username"],
-        ["Komentář", "Comments"],
+        ["Pro komentování se prosím přihlaš!", "Please login to comment!"],
+        ["Přihlásit se", "Log in"],
         ["Emotikony", "Emotes"],
         ["Barva komentáře", "Comment color"],
         ["Odeslat komentář", "Send comment"],
-        ["Strana: ", "Page: "],
-        ["- Žádné komentáře -", "- No comments -"]
     ],
     "editor": [
         ["Jejda!", "Oh no!"],
         ["Štítky", "Tags"],
+        ["Nastavení obrázku", "Background Settings"],
+        ["Zakrytí", "Overlay"],
+        ["Zarovnání", "Alignment"],
+        ["Přechod", "Gradient"],
+        ["Nepodařilo se načíst obrázek! URL obrázku velkou většinu času končí <cb>příponou .jpg/.png/.webp/.gif</cb>!", "Loading the image failed! Image URLs usually end with a <cb>.jpg/.png/.webp/.gif extension</cb>!"],
+        ["Zadej <cr>URL</cr> <cy>obrázku</cy> nebo <cy>gif/webp animace</cy> a zde pak budeš moct nastavit jeho vlastnosti!", "Enter the <cr>URL</cr> of an <cy>image</cy> or a <cy>gif/webp animation</cy> and you'll be able do modify it's properties here!"],
         ["- Nastavení collabu -", "- Collab Settings -"],
         ["Role nahrávatele", "Uploader role"],
         ["Host", "Host"],
@@ -342,12 +385,10 @@ var parts = {
         ["Uložené levely", "Saved Levels"],
         ["        Hledat level...", "        Search levels..."],
         ["Nahrávání", "Upload"],
+        ["Pro vytvoření seznamu se prosím přihlaš!", ""],
+        ["Přihlásit se", ""],
         ["Jméno seznamu", "List Name"],
-        ["Tvůrce", "List Creator"],
-        ["Zadej heslo seznamu", "Enter the list's password"],
-        ["     Heslo", "     Password"],
-        ["Ukázat náhled obrázku", "Show preview"],
-        ["Obrázek seznamu", "List Image"],
+        ["Obrázek seznamu", "Header Image"],
         ["Barva pozadí:", "Background Color:"],
         ["Levely", "Levels"],
         ["Náhled seznamu", "List Preview"],
@@ -359,6 +400,7 @@ var parts = {
         ["Hádat: ", "Guess: "],
         ["Obtížnosti", "Difficulties"],
         ["Rating", "Rating"],
+        ["Průsvitné karty", "Translucent Cards"],
         ["Nahrát", "Upload"]
     ]
 }
@@ -404,7 +446,7 @@ function getCookie(val="") {
     else return finishedCooks;
 }
 
-function makeCookie(val) { // Also works for changing cookies
-    let expireDate = "Sun, 1 Jan 2040 12:00:00 UTC"
+function makeCookie(val,remove = false) { // Also works for changing cookies
+    let expireDate = remove ? "Sat, 1 Jan 2000 12:00:00 UTC" : "Sun, 1 Jan 2040 12:00:00 UTC"
     document.cookie = `${val[0]}=${encodeURIComponent(val[1])}; expires=${expireDate}; SameSite=Lax`
 }

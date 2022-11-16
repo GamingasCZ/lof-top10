@@ -1,0 +1,20 @@
+<svg id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+ <defs id="defs2">
+  <mask id="mask-powermask-path-effect1681" maskUnits="userSpaceOnUse">
+   <path id="mask-powermask-path-effect1681_box" d="m1.7254 1.7254h28.549v28.549h-28.549z" fill="#fff"/>
+   <g id="g1679" style="">
+    <circle id="circle1673" cx="16" cy="16" r="7.6036" d="M 23.603575,16 A 7.6035748,7.6035748 0 0 1 16,23.603575 7.6035748,7.6035748 0 0 1 8.3964252,16 7.6035748,7.6035748 0 0 1 16,8.3964252 7.6035748,7.6035748 0 0 1 23.603575,16 Z"/>
+    <rect id="rect1675" x="12.272" width="7.5035" height="13.12" d="m 12.271758,0 h 7.503463 v 13.120099 h -7.503463 z"/>
+    <rect id="rect1677" transform="rotate(-90)" x="-19.752" y="16.281" width="7.5035" height="13.12" d="m -19.751732,16.281233 h 7.503463 v 13.120099 h -7.503463 z"/>
+   </g>
+  </mask>
+ </defs>
+ <g id="layer1" fill="#fff">
+  <path id="path392" d="m29.275 16a13.275 13.275 0 0 1-13.275 13.275 13.275 13.275 0 0 1-13.275-13.275 13.275 13.275 0 0 1 13.275-13.275 13.275 13.275 0 0 1 13.275 13.275z" mask="url(#mask-powermask-path-effect1681)"/>
+  <g stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+   <circle id="path502" cx="16" cy="16" r="4.7369" stroke-width=".35837"/>
+   <path id="path619" d="m16 16v-13.908" stroke-width="3"/>
+   <path id="path619-3" d="m13.962 16h13.908" stroke-width="3"/>
+  </g>
+ </g>
+</svg>

@@ -20,7 +20,7 @@ if ($mysqli -> connect_errno) {
 }
 
 // Checking request
-$fuckupData = sanitizeInput(array($_POST["id"],$_POST["pwdEntered"],$_POST["listData"],$_POST["isNowHidden"]));
+$fuckupData = sanitizeInput(array($_POST["id"],$_POST["listData"],$_POST["isNowHidden"]));
 
 // Password check
 if (in_array($_POST["hidden"], Array(0,1)) and $_POST["isNowHidden"] == "true") {
@@ -35,35 +35,32 @@ else {
 
 // When no changes are made in the list
 $isBeingHidden = $_POST["hidden"] == 1 and $_POST["isNowHidden"] == "false" && $_POST["hidden"] == 0 and $_POST["isNowHidden"] == "true";
-if ($listData["data"] == $fuckupData[2] && !$isBeingHidden) {
-    echo "4";
-    exit();
+if ($listData["data"] == $fuckupData[1] && !$isBeingHidden) {
+    die("4");
 }
 
-$listPass = passwordGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
-
-// Invalid password
-if ($listPass != $fuckupData[1]) {
-  echo "2";
+// Check ownership (did i just say SHIP?? THAT'S A GD REFERENCE!!)
+$checkUser = checkListOwnership($mysqli, $listData["uid"]);
+if (!$checkUser) {
   $mysqli -> close();
-  exit();
+  die("2");
 }
 
 $retListID = [$_POST["id"]];
 // Private list settings
 if ($_POST["hidden"] == 1 and $_POST["isNowHidden"] == "true") {
-    doRequest($mysqli, "UPDATE `lists` SET `data` = ? WHERE `hidden` = ?", [$fuckupData[2], $_POST["id"]], "ss");
+    doRequest($mysqli, "UPDATE `lists` SET `data` = ? WHERE `hidden` = ?", [$fuckupData[1], $_POST["id"]], "ss");
 }
 elseif ($_POST["hidden"] == 1 and $_POST["isNowHidden"] == "false") {
     $hidden = privateIDGenerator($listData["name"], $listData["creator"], $listData["timestamp"]);
     $retListID[0] = $hidden;
-    doRequest($mysqli, "UPDATE `lists` SET `data` = ?, `hidden` = ? WHERE `id` = ?", [$fuckupData[2], $hidden, $_POST["id"]], "sss");
+    doRequest($mysqli, "UPDATE `lists` SET `data` = ?, `hidden` = ? WHERE `id` = ?", [$fuckupData[1], $hidden, $_POST["id"]], "sss");
 }
 elseif ($_POST["hidden"] == 0 and $_POST["isNowHidden"] == "false") {
-    doRequest($mysqli, "UPDATE `lists` SET `data` = ? WHERE `id` = ?", [$fuckupData[2], $_POST["id"]], "ss");
+    doRequest($mysqli, "UPDATE `lists` SET `data` = ? WHERE `id` = ?", [$fuckupData[1], $_POST["id"]], "ss");
 }
 else {
-    doRequest($mysqli, "UPDATE `lists` SET `data` = ?, `hidden`='0' WHERE `hidden` = ?", [$fuckupData[2], $_POST["id"]], "ss");
+    doRequest($mysqli, "UPDATE `lists` SET `data` = ?, `hidden`='0' WHERE `hidden` = ?", [$fuckupData[1], $_POST["id"]], "ss");
     $retListID[0] = $listData["id"];
 }
 

@@ -8,6 +8,7 @@ function listComments() {
     $(".boards").fadeIn(100);
     $("#commentTool").fadeOut(50)
   } else {
+    setupComments()
     $(".boards").fadeOut(50);
     $(".comments").fadeIn(100);
     $("#commButton").css("box-shadow", "#39c4a95e 0px 0px 28px")
@@ -55,6 +56,8 @@ var commentColor = "";
 function setupComments() {
   // Is on homepage? (do not load)
   if (LIST_ID == -9) return
+  // Is already setup?
+  if ($("#commentList").text() != "") return
 
   var placeholders = [
     jsStr["PHOLD1"][LANG],
@@ -70,39 +73,73 @@ function setupComments() {
   for (let i = 0; i < EMOJI_AM; i++) {
     let em = i + 1 < 10 ? "0" + (i + 1) : i + 1;
     $(".emojiPanel").append(
-      `<img class="listEmoji" src="./images/emoji/${em}.webp" onclick="addEmoji(${i})">`
+      `<img class="listEmoji button" src="./images/emoji/${em}.webp" onclick="addEmoji(${i})">`
     );
+  }
+
+  // Setup name and pfp, check login
+  let userInfo = null
+  if (hasLocalStorage()) userInfo = JSON.parse(localStorage.getItem("userInfo"))
+  if (userInfo != null) {
+    if (userInfo[2] == null) $("#pIcon").attr("src", "images/defaultPFP.webp")
+    else $("#pIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
+    $("#commentName").text(userInfo[0])
+  }
+  else {
+    $("#loginHelp").show()
+    lockQuotes()
+    $("#commentMaker").remove()
+    $("#comBoxFooter").remove()
+    if (!hasLocalStorage()) {
+      $("#loginHelp").remove()
+    }
   }
 
   // Fetch comments
   $.get("./php/getComments.php?listid=" + LIST_ID, function (data) {
-    deeta = data;
     displayComments(data);
   });
 
   // Adds a placeholder to the comment area
   var selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
-  $(".comInpArea").text(selectPholder);
-  $(".comInpArea").css("color", "rgba(255,255,255,0.5) !important");
+  $("#comFont").text(selectPholder);
+  $("#comFont").css("color", "rgba(255,255,255,0.5)");
 
   // Placeholder related stuff
-  $(".comInpArea").on("blur", () => {
-    if (actualText.length == 1) {
-      $(".comInpArea").text(selectPholder);
-      $(".comInpArea").css("color", "rgba(255,255,255,0.5) !important");
+  $("#comFont").on("blur", () => {
+    if ($("#comFont").text() == "") {
+      $("#comFont").text(selectPholder);
+      $("#comFont").css("color", "rgba(255,255,255,0.5)");
     }
   });
 
-  $(".comInpArea").on("click", () => {
-    if (placeholders.indexOf($(".comInpArea")["0"].innerText) != -1) {
-      $(".comInpArea")["0"].innerText = "";
+  $("#comFont").on("focus", () => {
+    if (placeholders.indexOf($("#comFont")["0"].innerText) != -1) {
+      $("#comFont")[0].innerText = "";
+      $("#comFont").css("color", "");
     }
 
-    $(".comInpArea").css("color", "rgba(255,255,255,1) !important");
   });
+
+  // Pick a random comment color
+  commentColor = randomColor(0, 1);
+  hexColor = HSLtoHEX(...commentColor)
+  let darkHexColor = HSLtoHEX(commentColor[0], "100%", "3.7%")
+
+  $(".comInpArea").css("background-color", darkHexColor);
+  $(".comInpArea").css("border", `${hexColor} 3px solid`);
+  $(".comInpArea").css("box-shadow", `${hexColor} 0 0 10px`);
+  $(".comInpThings").css(
+    "background-color",
+    `hsl(${commentColor[0]}, 100%, 3.7%)`
+  );
+  $(".sendBut").css("background-color", hexColor);
+  $(".emojiPanel").css("background-color", darkHexColor);
+  $(".cpicker").val(hexColor);
+  commentColor = HSLtoHEX(...commentColor)
 
   // MAIN comment handling stuff
-  $(".comInpArea").on("keyup keypress", (k) => {
+  $(".comInpArea").on("keyup keydown", (k) => {
     // Only perform stuff once
     if (k.type == "keyup") {
       let text = $(".comInpArea").html();
@@ -131,58 +168,7 @@ function setupComments() {
       updateCharLimit();
     }
   });
-
-  // Pick a random comment color
-  commentColor = randomColor(0, 1);
-  let invCol = [255 - commentColor[0], commentColor[1], commentColor[2]]
-  commentColor = HSLtoHEX(...commentColor)
-
-  let boxColor = HEXtoRGB(commentColor, 30);
-  let darkerBoxColor = HEXtoRGB(commentColor, 50);
-
-  $("#commentMaker").css("background-color", commentColor);
-  $("#commentMaker").css("border-color", "rgb(" + boxColor.join(",") + ")");
-  $(".comInpArea").css("background-color", "rgb(" + boxColor.join(",") + ")");
-  $(".comInpThings").css(
-    "background-color",
-    "rgb(" + darkerBoxColor.join(",") + ")"
-  );
-  $(".sendBut").css("background-color", "hsl(" + invCol.join(",") + ")");
-  $(".emojiPanel").css("background-color", "rgb(" + boxColor.join(",") + ")");
-  $("#verticalLine").css("border-color", commentColor);
-  $(".cpicker").val(commentColor);
-
-  // Page switching
-  $("#pageSwitcher").on("change", function () {
-    commentPage = parseInt($(this).val()) - 1;
-    if (commentPage > maxCommentPage - 1) {
-      commentPage = maxCommentPage - 1;
-      $("#pageSwitcher").val(maxCommentPage);
-    }
-    if (commentPage < 1) {
-      commentPage = 0;
-      $("#pageSwitcher").val(1);
-    }
-    displayComments(deeta);
-  });
 };
-
-function getPlayerIcon() {
-  let player = $(".pIconInp").val();
-  $.get("https://gdbrowser.com/api/profile/" + player, (data, res) => {
-    if (data == "-1") {
-      $(".comUserError").show();
-      $(".comUserError").text(jsStr["GDACC_NOEX"][LANG]);
-      setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-    } else if (res == "success") {
-      $("#pIcon").attr("src", "https://gdbrowser.com/icon/" + player);
-    } else {
-      $(".comUserError").show();
-      $(".comUserError").text(jsStr["GDB_FAIL"][LANG]);
-      setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-    }
-  });
-}
 
 function addEmoji(id) {
   id++;
@@ -191,7 +177,12 @@ function addEmoji(id) {
     midText += `<img class='emojis' src='./images/emoji/${emoji.slice(
       1
     )}.webp'>`;
-    $(".comInpArea").html(midText);
+    if (midText.includes("\n")) {
+      let newText = "<div>"+midText.replace(/\n/g, "</div><div>")+"</div>"
+      newText = newText.replace(/<div><\/div>/g, "<div><br></div>")
+      $(".comInpArea").html(newText);
+    }
+    else $(".comInpArea").html(midText);
 
     actualText += emoji;
     updateCharLimit();
@@ -222,34 +213,17 @@ function displayPanel(what) {
           ? getHueFromHEX(commentColor)
           : k.target.value;
 
-        $("#commentMaker").css(
-          "background-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`
-        );
-        $("#commentMaker").css(
-          "border-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
-        );
-        $(".comInpArea").css(
-          "background-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
-        );
-        $(".comInpThings").css(
-          "background-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 10}%)`
-        );
-        $(".emojiPanel").css(
-          "background-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
-        );
-        $("#verticalLine").css(
-          "border-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
-        );
+        $(".comInpArea").css({"background-color": `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`,
+                              "border-color": `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%)`,
+                              "box-shadow": `hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%) 0 0 10px`});
+
+        $(".comInpThings").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`);
+
+        $(".emojiPanel").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`);
 
         $(".sendBut").css(
           "background-color",
-          `hsl(${255 - hue}, ${DEFAULT_SATURATION}, ${lightness - 5}%)`
+          `hsl(${hue}, ${DEFAULT_SATURATION}, 30%)`
         );
 
         let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");
@@ -275,56 +249,30 @@ function displayPanel(what) {
 
 function sendComment() {
   if ($(".sendBut")["0"].className.match("disabled") == null) {
-    if (actualText.length <= 10) {
-      $(".comUserError").show();
-      $(".comUserError").text(jsStr["COM_L"][LANG]);
-      setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-    } else if ($(".pIconInp").val().length <= 4) {
-      $(".comUserError").show();
-      $(".comUserError").text(jsStr["COMU_L"][LANG]);
-      setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-    } else {
-      $(".sendBut").addClass("disabled");
-      let postData = {
-        creator: $(".pIconInp").val(),
-        comment: actualText,
-        comType: 0, // Change when I eventually add replies,
-        listID: LIST_ID,
-        comColor: commentColor,
-      };
+    $(".sendBut").addClass("disabled");
+    let postData = {
+      comment: actualText,
+      comType: 0, // Change when I eventually add replies,
+      listID: LIST_ID,
+      comColor: commentColor,
+    };
 
-      $.post("./php/sendComment.php", postData, (data) => {
-        if (data == 6) {
-          // Success text
-          $(".comUserError").show();
-          $(".comUserError").css("color", "#5df469 !important");
-          $(".comUserError").text(jsStr["C_SENT"][LANG]);
-          setTimeout(() => {
-            $(".comUserError").fadeOut(3000);
-            $(".comUserError").css("color", "tomato");
-          }, 3000);
+    $.post("./php/sendComment.php", postData, (data) => {
+      if (data == 6) {
+        refreshComments();
 
-          refreshComments();
+        // Resetting comment form
+        actualText = "";
+        midText = "";
+        $(".comInpArea").text("");
+        updateCharLimit();
 
-          // Resetting comment form
-          actualText = "";
-          midText = "";
-          $(".comInpArea").text("");
-          updateCharLimit();
-
-          // 10 second comment rate limit
-          setTimeout(() => {
-            $(".sendBut").removeClass("disabled");
-          }, 10000);
-        } else {
-          // Comment send error
+        // 10 second comment rate limit
+        setTimeout(() => {
           $(".sendBut").removeClass("disabled");
-          $(".comUserError").show();
-          $(".comUserError").text(jsStr["C_ERR"][LANG] + data);
-          setTimeout(() => $(".comUserError").fadeOut(1000), 3000);
-        }
-      })
-    }
+        }, 10000);
+      }
+    })
   }
 }
 
@@ -371,25 +319,16 @@ function chatDate(stamp) {
 
 function comBox(cd, element) {
   let profPic = "";
-  let clickable = ["", ""];
-  let comColor = "#b9efb1";
   let time = chatDate(cd["timestamp"]);
-
-  let dcc = HEXtoRGB(cd["bgcolor"], 40);
-  let edcc = HEXtoRGB(cd["bgcolor"], 40);
 
   if (cd["timestamp"].length == 9) {
     cd["timestamp"] *= 10;
   } // First comment's date is not in milliseconds
   let nT = new Date(cd["timestamp"] * 1000);
 
-  // Is user verified?
-  if (cd["verified"] == 1) {
-    profPic = `<img class="pIcon" style="height: var(--normalFont);" src="https://gdbrowser.com/icon/${cd["username"]}">`;
-    clickable[0] = "clickable";
-    clickable[1] = `onclick="profile('${cd["username"]}')`;
-    comColor = "#f9f99a";
-  }
+  let comGlow = `${cd["bgcolor"]} 0 0 10px`
+  let comBorder = `${cd["bgcolor"]} 3px solid`
+  profPic = `<img id="pIcon" src="${cd.avatar}">`;
 
   // OwO, adding emojis
   while (cd["comment"].match(/&\d+/g) != null) {
@@ -408,6 +347,7 @@ function comBox(cd, element) {
       `<img class="emojis" src="./images/emoji/${emojiID}.webp">` +
       selEnd;
   }
+  cd["comment"] = cd["comment"].replace(/\n/g, "<br>")
 
   // Making links clickable :)
   let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g
@@ -425,25 +365,22 @@ function comBox(cd, element) {
     });
   }
 
+  let darkBG = `hsl(${getHueFromHEX(cd["bgcolor"])}, 100%, 3.7%)`
+  let hoverDate = `title="${nT.toLocaleDateString()} ${nT.toLocaleTimeString()}"`
   $(element).append(`
   <div style="margin: 1em auto; max-width: 70em;">
-  
-  <div class="comBoxThings ${clickable[0]
-    } uploadText" id="comBoxHeader" ${clickable[1]}"
-  style="justify-content: flex-start;
-  background-color: ${"rgb(" + dcc.join(",") + ")"};">
-${profPic}
-            <h5 style="margin: 0 1%; color: ${comColor};">${cd["username"]}</h3>
-            <h5 
-                style="margin: 0 0 0 auto; cursor: help;"
-                title="${nT.getDay() + 1}.${nT.getMonth() + 1
-    }.${nT.getFullYear()} ${nT.getHours()}:${nT.getMinutes()}:${nT.getSeconds()}">${time}</h3>
-        </div>
-    
-        <div class="comTextArea" id="comFont" style="width: 99%; background-color: ${cd["bgcolor"]
-    };">${cd["comment"]}</div>
-    
+    <div class="comBoxThings uploadText" id="comBoxHeader" style="justify-content: flex-start;">
+      ${profPic}
+      <div class="comHeaderText">
+        <h5>${cd["username"]}</h5>
+        <h5 style="font-size: var(--tinyFont); cursor: help;" ${hoverDate}>${time}</h5>
+      </div>
     </div>
+      
+    <div class="comTextArea" id="comFont" style="background-color: ${darkBG}; box-shadow: ${comGlow}; border: ${comBorder};">
+      ${cd["comment"]}
+    </div>
+  </div>
     `);
 }
 
@@ -476,9 +413,7 @@ async function displayComments(data) {
   // Don't do anything on list previews and random lists that haven't replaced LIST_ID
   if ([-8, -11].includes(LIST_ID) || typeof data == "string") return
 
-  $("#commAmount").text(data.length)
-
-  let refreshBut = `<img id="searchLists" class="button refreshBut" onclick="refreshComments()" style="width: 3em;" src="images/replay.svg">`
+  $("#commAmount").text(data[0].length)
 
   if ($("#commentList").children().length == 0) {
     await $.get("./parts/listBrowser.html", d => {
@@ -486,16 +421,24 @@ async function displayComments(data) {
     })
   }
 
-  if (currentListData["#commentList"] == undefined) listViewerDrawer(data, "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
-  
-  currentListData["#commentList"] = data
-  pageSwitch(page["#commentList"][0], currentListData["#commentList"], "#commentList", 6, 1)
+  let ind = 0
+  data[0].forEach(c => {
+    data[0][ind].avatar = `images/oldPFP.png` // Old comments
+    data[1].forEach(u => {
+      if (c.uid == u.id) {
+        data[0][ind].username = u.username
+        if (u.avatar_hash == "") data[0][ind].avatar = "images/defaultPFP.webp" // user is using default dc pfp for some reason
+        else data[0][ind].avatar = `https://cdn.discordapp.com/avatars/${u.discord_id}/${u.avatar_hash}.png`
+      }
+    })
+    ind++
+  })
+
+  let refreshBut = `<img id="searchLists" class="button refreshBut" onclick="refreshComments()" style="width: 3em;" src="images/replay.svg">`
+  listViewerDrawer(data[0], "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
+
   $(".comTextArea .gamLink").click(el => redirectWarn(el))
 
-}
-
-function profile(name) {
-  window.open("https://gdbrowser.com/u/" + name);
 }
 
 function refreshComments() {

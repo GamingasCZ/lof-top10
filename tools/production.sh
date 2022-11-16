@@ -2,13 +2,11 @@
 
 # make production folder
 mkdir ../production
-rsync -aq ../ ../production --exclude production --exclude tools
+rsync -aq ../src/ ../production --exclude production --exclude tools
 
 # remove unneccessary files
 cd ../production
 rm -rf github/
-rm LICENSE
-rm README.md
 
 #minify js, bundle them, move to root and delete js folder
 BUNDLE=$RANDOM

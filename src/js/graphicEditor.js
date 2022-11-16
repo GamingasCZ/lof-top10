@@ -230,34 +230,90 @@ function showBGdialog() {
     $(".boom").animate({ "opacity": 100 }, 200)
 }
 
-function checkPassword() {
-    if (Object.values($("#passSubmit")[0].classList).includes("disabled")) return
+function hideBGsettings() {
+    hideBGdialog()
+    $(".backSett").fadeOut(50)
+}
 
-    if ($("#lpass").val().length == 0) return
+function showBGsettings() {
+    showBGdialog()
+    $(".cutImage").css("background-image", `url("${levelList.titleImg[0]})`)
+    $(".backSett").fadeIn(50)
+    $(".bgError").hide()
 
-    $("#lpass").attr("disabled", true)
-    $("#passSubmit").addClass("disabled")
+    if (levelList.titleImg[0].length == 0) {
+        $("#backImageSettings").hide()
+        $(".bgNoneEntered").show()
+        return
+    }
 
-    let loadProps = JSON.parse(sessionStorage.getItem("listProps"))
-    let postReq = { "pwdEntered": $("#lpass").val() };
+    let image = new Image()
+    image.src = levelList.titleImg[0]
+    image.addEventListener('load', () => {
+        $("#backImageSettings").show()
+        $(".cutImage").css("background-image", `url("${levelList.titleImg[0]}")`)
+        $(".BGsettBG").css("background-image", `url("${levelList.titleImg[0]}")`)
+        let ratio = image.width / image.height
+        $("#backDragContainer").css("width", `192px`)
+        $("#backDragContainer").css("height", `${192 / ratio}px`)
 
-    // Is list private?
-    postReq[!loadProps[2] ? "id" : "pid"] = loadProps[0];
-    $("#passEditor h3").text(jsStr["CHECKING"][LANG])
-    $.post("./php/pwdCheckAction.php", postReq, function (data) {
-        if (typeof data == "object") generateFromJSON(2, data)
-        else {
-            $("#passEditor h3").text(jsStr["TYPEPASS"][LANG])
-            $("#passEditor").css("animation-name", "inputError")
-            setTimeout(() => {
-                $("#lpass").attr("disabled", false)
-                $("#passSubmit").removeClass("disabled")
-                $("#lpass").val()
-                $("#passEditor").css("animation-name", "")
-            }, 500);
+        $("#bgCoverageSlider").on("input", updateDragBox)
+        $(".cutImage").css("background", $("#listimg").val())
 
-        }
+        let svgWidth = $(".cutImage").width()
+        let svgHeight = $(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)
+        $(".cutBox").attr("width", svgWidth)
+        $(".cutBox").attr("height", svgHeight)
+        $(".cutBox > path").attr("d", `M0 0 L${svgWidth} 0 L${svgWidth} ${svgHeight} L0 ${svgHeight} L0 0`)
+
+        $(".alignButtons").css("filter","brightness(0.3)")
+        $(".alignButtons").eq(levelList["titleImg"][3]).css("filter","")
+        $(".alignButtons").off("click")
+        $(".alignButtons").on("click", e => {
+            let pos = Object.values($(".alignButtons")).indexOf(e.target)
+            levelList["titleImg"][3] = pos
+            $(".alignButtons").css("filter", "brightness(0.3)")
+            $(e.target).css("filter", "")
+            $(".BGsettBG").css("background-position-x", ["left", "center", "right"][pos])
+        })
+
+        $(".gradCheckbox").off("click")
+        $(".gradCheckbox").on("click", () => {
+            levelList["titleImg"][4] = !levelList["titleImg"][4]
+            $(".gradCheckbox").attr("src",`images/modernCheck${levelList["titleImg"][4] ? "On" : ""}.svg`)
+        })
+
+        $("#backDragContainer").off("mousemove")
+        $("#backDragContainer").on("mousemove", e => {
+            let dragPos;
+            // Center of the select box = offset from #backDragContainer Y pos + 1/2 of the select box
+            let center = $("#backDragContainer").position().top - e.originalEvent.clientY + $(".backSett").position().top + $(".cutBox").height()/2
+            if (center > 0) dragPos = 0 // Do not use the first half of the select box
+            else dragPos = clamp(Math.abs(center), 0, parseInt($(".cutImage").height() - $(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)))
+
+            if (e.originalEvent.buttons == 1) { // Move only when holding LMB
+                $(".cutBox").css("top", `${dragPos}px`)
+                levelList.titleImg[1] = (dragPos+$(".cutBox").height())/$(".cutImage").height()*100
+                $(".BGsettBG").css("background-position-y", `${levelList.titleImg[1]}%`)
+            }
+        })
+        $("#backDragContainer").one("mouseup", () => levelList.titleImg[1] = parseInt($(".cutBox").css("top").slice(0, -2)))
+    });
+    image.addEventListener('error', () => {
+        $("#backImageSettings").hide()
+        $(".bgBadFetch").show()
     })
+}
+
+function updateDragBox() {
+    levelList.titleImg[2] = $("#bgCoverageSlider").val()
+    let svgWidth = $(".cutImage").width()
+    let svgHeight = $(".cutImage").height() * ($("#bgCoverageSlider").val() / 100)
+    $(".cutBox").attr("width", svgWidth)
+    $(".cutBox").attr("height", svgHeight)
+    $(".cutBox > path").attr("d", `M0 0 L${svgWidth} 0 L${svgWidth} ${svgHeight} L0 ${svgHeight} L0 0`)
+
+    $(".cutBox").css("top", 0)
 }
 
 function generateFromJSON(part, boards) {
@@ -266,21 +322,18 @@ function generateFromJSON(part, boards) {
 
     // Disabling input boxes when editing a list
     $("#listnm").attr("disabled", "true");
-    $("#creatornm").attr("disabled", "true");
-    if (part == 1) {
-        $("#listnm").val(loadProps[3]);
-        $("#creatornm").val(loadProps[4]);
-        $(".uploadBG > *:not(#listnm, #creatornm, br)").hide()
-        $("#passEditor").show()
-        return
-    }
+    $("#listnm").val(loadProps[3]);
 
     $(".uploadBG > *:not(.imgPreview)").show()
-    $("#passEditor").slideUp(50)
-    $("#submitbutton").attr("value", jsStr["L_UPDATE"][LANG])
+    $("#submitbutton > div").text(jsStr["L_UPDATE"][LANG])
     $("#submitbutton").attr("onclick", "updateList()")
 
-    $("#submitarea").append(`<input onclick="removeList()" class="button noMobileResize" type="button" id="removebutton" value="${jsStr["DELETE"][LANG]}">`)
+    $("#submitarea").append(`
+    <div onclick="removeList()" class="button noMobileResize uploadText removeList" id="submitbutton" style="background-color: rgb(255, 100, 100)">
+        <img src="images/del.svg">
+        <div>${jsStr["DELETE"][LANG]}</div>
+    </div>
+    `)
 
     // Is the list hidden?
     if (boards["hidden"] != "0") {
@@ -294,10 +347,28 @@ function generateFromJSON(part, boards) {
     $(".previewButton").removeClass("disabled");
 
     $("#listnm").val(boards["name"])
-    $("#creatornm").val(boards["creator"])
 
     levelList = JSON.parse(boards["data"]);
-    $(".titImgInp").val(levelList["titleImg"])
+
+    if (levelList["translucent"] != undefined && levelList["translucent"]) {
+        $(`img[for="transCards"]`).attr("src", "images/modernCheckOn.svg")
+        $(`input[name="transCards"]`).attr("checked", true)
+    }
+
+    if (typeof levelList["titleImg"] == "string") { // Old lists
+        let link = levelList["titleImg"]
+        levelList["titleImg"] = DEFAULT_LEVELLIST.titleImg
+        levelList["titleImg"][0] = link
+    }
+    $("#listimg").val(levelList["titleImg"][0])
+    $(".cutBox").css("top", `${levelList["titleImg"][1]}%`)
+    
+    $("#bgCoverageSlider").val(levelList["titleImg"][2])
+    
+    $(".alignButtons").css("filter","brightness(0.3)")
+    $(".alignButtons").eq(levelList["titleImg"][3]).css("filter","")
+
+    if (!levelList["titleImg"][4]) $(".gradCheckbox").attr("src",`images/modernCheck.svg`)
 
     // Is it a diff guess list?
     if (levelList["diffGuesser"] != undefined && levelList["diffGuesser"][0]) {
@@ -311,12 +382,13 @@ function generateFromJSON(part, boards) {
     // Change page background, if not default
     if (levelList["pageBGcolor"] != "#020202") {
         $("#bgcolorPicker").css("background", levelList["pageBGcolor"])
-        $("body").css("background-color", levelList["pageBGcolor"])
+        $(":root").css("--siteBackground", levelList["pageBGcolor"])
         let hue = getHueFromHEX(levelList["pageBGcolor"])
         $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
+        
     }
 
-    for (y = 0; y < Object.keys(levelList).length - 1 - ADDIT_VALS; y++) {
+    for (y = 0; y < getListLen(levelList); y++) {
         loadLevel(y + 1)
     }
     updateSmPos()
@@ -338,7 +410,7 @@ function refreshCardDetails(lp) {
     $("#top" + lp).css("background-color", levelList[lp]["color"])
 
     if (levelList[lp]["difficulty"] != undefined) {
-        let rate = ["", "featured", "epic"][levelList[lp]["difficulty"][1]]
+        let rate = ["", "star", "featured", "epic"][levelList[lp]["difficulty"][1]]
 
         $(`.dPick${lp} > .diffMain`).attr("src", `images/faces/${levelList[lp]["difficulty"][0]}.webp`) // change face
         if (rate != "") $(`.dPick${lp} > .diffBack`).attr("src", `images/faces/${rate}.webp`) // change rate glow
@@ -365,8 +437,8 @@ function moveCard(position, currID) {
             listPlacement--
         }
     }
-    else if (position == "down" & currID < getLevelCount()) {
-        if (listPlacement < Object.keys(levelList).length - 1 - ADDIT_VALS) {
+    else if (position == "down" & currID < getListLen(levelList)) {
+        if (listPlacement < getListLen(levelList)) {
             refreshCardDetails(listPlacement)
             $(".card" + (listPlacement + 1)).after($(".card" + (listPlacement)));
 
@@ -388,7 +460,7 @@ function moveCard(position, currID) {
 }
 
 function updateSmPos() {
-    for (i = 1; i < getLevelCount(); i++) {
+    for (i = 1; i < getListLen(levelList) + 1; i++) {
         let chosenColor = $("#top" + i).css("background-color");
         $("#smtop" + i).css("background-color", chosenColor);
         $("#smtop" + i).css("border-color", chosenColor);
@@ -413,7 +485,7 @@ function updateSmPos() {
 }
 
 function displayCard(id) {
-    if (id > 0 & id < getLevelCount()) {
+    if (id > 0 & id < getListLen(levelList) + 1) {
         $(".smallPosEdit").show();
         $("#smtop" + id.toString()).hide();
         $(".positionEdit").hide();
@@ -517,14 +589,16 @@ function searchFaves(data) {
 }
 
 function addFromFaves() {
-    if (getLevelCount() > 50) return
+    if (getListLen(levelList) + 1 > 50) return
 
     $(".levelPickerContainer").text("")
     $(".savedFilter").val("")
 
     if (favesData != null) { favesData = OGfavesData; makeFavesPicker() }
     else {
-        let data = JSON.parse(localStorage.getItem("favorites"))
+        let data = null
+        if (hasLocalStorage()) data = JSON.parse(localStorage.getItem("favorites"))
+        
         if (data != null) {
             favesData = data
             OGfavesData = JSON.parse(JSON.stringify(data))
@@ -560,7 +634,7 @@ function maxAddedDialog() {
 }
 
 function addPicked(ind) {
-    var listLenght = getLevelCount();
+    var listLenght = getListLen(levelList) + 1;
     levelList[listLenght] = {
         "levelName": favesData[ind][0],
         "creator": favesData[ind][1],
@@ -582,7 +656,7 @@ var OGfavesData
 
 function makeFavesPicker() {
     $(".levelPickerContainer").empty()
-    if (getLevelCount() > 50) {
+    if (getListLen(levelList) + 1 > 50) {
         maxAddedDialog()
         return
     }
@@ -625,9 +699,20 @@ function makeFavesPicker() {
     })
 }
 
-const getLevelCount = () => Object.keys(levelList).filter(x => x.match(/\d+/)).length+1
+class Level {
+    constructor(levelName = "", creator = "", levelID = -1, video = "", color = "", difficulty = [0, 0], tags = []) {
+        this.levelName = levelName;
+        this.creator = creator;
+        this.levelID = levelID;
+        this.video = video;
+        this.color = color;
+        this.difficulty = difficulty;
+        this.tags = tags;
+    }
+}
+
 async function addLevel() {
-    var listLenght = getLevelCount();
+    var listLenght = getListLen(levelList) + 1;
     if (listLenght == 1) {
         // Removing tutorial
         $("#mainContent").text("");
@@ -743,7 +828,7 @@ function updateCardData(prevID, newID) {
     $(".removerButton" + prevID).attr("class", "button cardButton removerButton" + newID);
     $("#colorPicker" + prevID).attr("id", "colorPicker" + newID);
     $(".colButton" + prevID).attr("onclick", "showCollabTools(" + newID + ")");
-    $(".colButton" + prevID).attr("class", "button colButton" + newID);
+    $(".colButton" + prevID).attr("class", "button collListBut colButton" + newID);
     $(".cardContainer" + prevID).attr("class", "cardExtrasContainer cardContainer" + newID);
     $(".cPickerBut" + prevID).attr("onclick", "openColorPicker(" + newID + ")");
     $(".cPickerBut" + prevID).attr("class", "button cardButton cPickerBut" + newID);
@@ -792,7 +877,7 @@ function tagPopup(lp) {
         for (let b = 0; b < 17; b++) {
             $(".tagContainer").append(`
             <div class="badgeBox button noMobileResize">
-                <img src="images/badges/${b}.svg" style="width: 50%;">
+                <img src="images/badges/${b}.svg">
                 <div class="uploadText tagName" style="font-size: var(--miniFont)">${tagNames[b]}</div>
             </div>
             `)
@@ -857,8 +942,10 @@ function clickTag(e, lp) {
         let index = Object.values($(".tagEditBox")).indexOf($(e.currentTarget).parents()[2])
         let linkInput = $(e.currentTarget).parents().eq(1).children().eq(2)
         let nameInput = $(e.currentTarget).parents().eq(1).children().eq(1)
-        if (linkInput.css("display") != "none") { linkInput.hide(); nameInput.show();
-            $(e.currentTarget).css("filter", levelList[lp].tags[index][2] == "" ? "none" : "var(--redHighlight)") }
+        if (linkInput.css("display") != "none") {
+            linkInput.hide(); nameInput.show();
+            $(e.currentTarget).css("filter", levelList[lp].tags[index][2] == "" ? "none" : "var(--redHighlight)")
+        }
         else { linkInput.show(); nameInput.hide(); $(e.currentTarget).css("filter", "var(--lightHighlight)") }
     })
 
@@ -909,8 +996,7 @@ function openTagPicker(lp) {
 
     $('.cardContainer' + lp).append(`
     <div class="difficultyPicker" style="height: 4.7em;">
-        <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;"><div class="addTagHelp">${jsStr["TAGADDHELP"][LANG]}</div></div>
-        <div style="display: flex;align-items: center;">
+    <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;"><div class="addTagHelp">${jsStr["TAGADDHELP"][LANG]}</div></div>        <div style="display: flex;align-items: center;">
             <img style="width:2em; margin-right: 0.5em;" src="./images/plus.svg" title="${jsStr["ADDTAG"][LANG]}" class="button diffOptions" onclick="tagPopup(${lp})">
         </div>
     </div>`)
@@ -918,7 +1004,7 @@ function openTagPicker(lp) {
     if (levelList[lp]["tags"] == undefined) {
         levelList[lp]["tags"] = []
     }
-    
+
     if (levelList[lp]["tags"].length > 0) {
         $(".addTagHelp").remove()
     }
@@ -933,18 +1019,18 @@ function removeLevel(id) {
     delete levelList[($(".listPosition" + id.toString()).val())];
 
     // Enables the add button
-    if (getLevelCount() < 51) {
+    if (getListLen(levelList) + 1 < 51) {
         $(".addCardButton").removeClass("disabled");
     }
 
-    for (j = id + 1; j <= getLevelCount(); j++) {
+    for (j = id + 1; j <= getListLen(levelList) + 1; j++) {
         updateCardData(j, j - 1);
-        availFill(0, $(".cardLName" + id), "freedom69", id)
-        availFill(1, $(".cardLCreator" + id), "freedom69", id)
+        availFill(0, $(".cardLName" + id).text(), "freedom69", id)
+        availFill(1, $(".cardLCreator" + id).text(), "freedom69", id)
     }
 
     // Adds the tutorial, when the list is empty
-    if ((Object.keys(levelList)).length - ADDIT_VALS == 1) {
+    if (getListLen(levelList) + 1 == 1) {
         $("#mainContent").html(jsStr["HELP_TEXT"][LANG]);
         $(".previewButton").addClass("disabled");
     }
@@ -1039,6 +1125,7 @@ function card(index) {
 // <img title="Pozadí karty" class="button cardButton cPickerBut${index}" onclick="openBGPicker(${index})" src="./images/bgSelect.webp">
 async function preview(skipCheck = false) {
     if (!checkJson(JSON.stringify(levelList), true) && !skipCheck) return
+    $(".errNotif").fadeOut(10)
     $("#levelUpload").fadeOut(100)
 
     $(".uploadTitle").text(jsStr["PREVIEW_L"][LANG])
@@ -1047,10 +1134,10 @@ async function preview(skipCheck = false) {
 
     if ($(".preview").length == 0) {
         await $.get("./parts/listViewer.html", data => {
-            $("#app").append("<div class='preview'>"+data+"</div>")
+            $("#app").append("<div class='preview'>" + translateDoc(data, "listViewer") + "</div>")
         })
     }
-    else {  $(".preview").fadeIn(100) }
+    else { $(".preview").fadeIn(100) }
 
     LIST_ID = -8
     generateList(levelList, [$("#listnm").val(), $("#creatornm").val()])

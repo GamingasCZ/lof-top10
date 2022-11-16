@@ -1,33 +1,26 @@
 //Holba buenas hyperhackeře :D. Nyní sleduješ můj hrozný kód :).
 
-function checkJson(data, isPreview=false) {
+function checkJson(data, isPreview = false) {
     try {
         // Kontrola názvů atd.
-        let invalidNames = ["Gamingas", "GamingasCZ"];
-
         let listName = $("#listnm").val();
-        let listCreator = $("#creatornm").val();
 
         if (listName.length < 3) { throw (jsStr["LIST_L"][LANG]); }
         if (listName.length > 40) { throw (jsStr["LIST_TOOL"][LANG]); }
-
-        if (listCreator.length < 3) { throw (jsStr["CREA_L"][LANG]); }
-        if (listCreator.length > 20) { throw (jsStr["CREA_TOOL"][LANG]); }
-        if (listCreator.toLowerCase().includes("gamingas")) { throw (jsStr["GG_NEVER"][LANG]); }
 
         // 1/3 Je to vůbec JSON?
         var parsedData = JSON.parse(data);
         $(".errorBox").text(jsStr["SUCC_UPL"][LANG]);
 
         // 1.5/3 Je seznam prázdný?
-        if (Object.keys(parsedData).length - ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
+        if (getListLen(parsedData) == 0) { throw (jsStr["EMPT_L"][LANG]) }
 
         if (data.length > 25000) {
             throw (`${jsStr["TOOBIG1"][LANG]} (${(data.length / 25000).toFixed(2)}% ${jsStr["TOOBIG2"][LANG]}).${jsStr["TOOBIG3"][LANG]}`)
         }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
-        for (i = 1; i < Object.keys(parsedData).length - ADDIT_VALS; i++) {
+        for (i = 1; i < getListLen(parsedData) + 1; i++) {
             if (parsedData[i] == undefined) {
                 throw (i + ". místo neexistuje. Bug mi nahlaš (nebo si nehrej s JSONem :D).")
             }
@@ -47,7 +40,7 @@ function checkJson(data, isPreview=false) {
             $(".errorBox").html(jsStr["NO_JSON"][LANG]);
         }
         else {
-            if (isPreview) error += "<br><br><cy>Tip: "+jsStr["DBLCLKTIP"][LANG]+".</cy>"
+            if (isPreview) error += "<br><br><cy>Tip: " + jsStr["DBLCLKTIP"][LANG] + ".</cy>"
             $(".errorBox").html(error);
         }
 
@@ -71,7 +64,7 @@ function showBGColorPicker() {
         $(".bgcolorContainer").append(makeColorElement(hue, val2))
 
         $(".bgcolorContainer >> input")[0].addEventListener("input", k => {
-            $("body").css("background-color", HSLtoHEX(k.target.value, "37%", val))
+            $(":root").css("--siteBackground", HSLtoHEX(k.target.value, "37%", val))
             hue = k.target.value
             $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
             $("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
@@ -82,7 +75,7 @@ function showBGColorPicker() {
         })
         $(".bgcolorContainer >> input")[1].addEventListener("input", k => {
             let hue = getHueFromHEX(levelList.pageBGcolor)
-            $("body").css("background-color", HSLtoHEX(hue, "37%", (k.target.value * 2) + "%"))
+            $(":root").css("--siteBackground", HSLtoHEX(hue, "37%", (k.target.value * 2) + "%"))
             $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
             $("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
             val = (k.target.value * 2) + "%"
@@ -99,11 +92,18 @@ function showBGColorPicker() {
 }
 
 function uploadList() {
+    if ($("#submitbutton").hasClass("disabled")) return
+
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
         $("#listData").attr("value", JSON.stringify(levelList));
 
-        $("#submitbutton").replaceWith($("<img class='loading' style='animation-name: loading;' src='images/loading.webp'>"))
+        $("#submitbutton").prepend("<img class='loading' src='images/loading.webp'>")
+        $("#submitbutton").addClass("disabled")
+        $(".editables").addClass("disabled")
+        $(".editables").css("pointer-events", "none")
+        $("#listnm").addClass("disabled")
+        $("#listnm").css("pointer-events", "none")
 
         // Is the "hidden" checkbox checked?
         if ($("input[name='hidden']").attr("checked") == "checked") { var listHidden = "1" }
@@ -112,40 +112,43 @@ function uploadList() {
         let postData = {
             "listData": JSON.stringify(levelList),
             "lName": $("#listnm").val(),
-            "lCreator": $("#creatornm").val(),
         }
         if (listHidden == "1") postData["hidden"] = listHidden
 
         $.post("./php/sendList.php", postData, function (data) {
             //0 - password, 1 - listID
             // Change depending on your website
-            let error = data.length != 2
-
-            let currWebsite
-            let pstr
-            if (!error) {
-                currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[1]}`;
-                pstr = `<br>${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${data[0]}</b>`;
+            if (typeof data == "object") {
+                sessionStorage.setItem("listUpload",JSON.stringify([data[0], 0]))
+                switchLoFList(data[0])
+                return
             }
-            let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
 
-            $(".uploaderDialog").html(`
-                <img style="padding-left: 3%" src=./images/${!error ? "check" : "error"}.webp >
-                <p class="uploadText" style="padding: 0 3% 0 3%">${sendMess}</p>
+            let error = data.length != 1
+            if (!error) {
+                currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[0]}`;
+            }
+            let sendMess = !error ? "" : jsStr["LIST_FAIL_UPL"][LANG] + data
 
-                <div style="display:flex; flex-direction: column${error ? ';display: none;' : ';'}">
-                    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
-                    <div class="uploadText shareContainer">
-                        <p class="shareBG uploadText">${currWebsite}</p>
-                        <img class="button shareBut" src="./images/openList.webp" onclick="window.open('${currWebsite}','_blank')">
-                    </div>
-                </div >
+            if (error) {
+                $(".errorBox").html(sendMess); // List fart
 
-            `);
+                $(".errNotif").fadeIn(100);
+                setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
+            }
+
+            $("#submitbutton").removeClass("disabled")
+            $(".editables").removeClass("disabled")
+            $(".editables").css("pointer-events", "")
+            $("#listnm").removeClass("disabled")
+            $("#listnm").css("pointer-events", "")
+            $(".loading").remove()
         })
     }
 }
 function updateList() {
+    if ($("#submitbutton").hasClass("disabled")) return
+
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
         // Is the "hidden" checkbox checked?
@@ -164,43 +167,29 @@ function updateList() {
 
         $("#submitbutton").prepend("<img class='loading' src='images/loading.webp'>")
         $("#submitbutton").addClass("disabled")
-        $("#removebutton").addClass("disabled")
+        $(".editables").addClass("disabled")
+        $(".editables").css("pointer-events", "none")
+        $(".removeList").hide()
 
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
             if (typeof data == "object") {
-                let currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[0]}`;
-                $(".uploaderDialog").html(`
-                <div style="padding: 3%">
-                    <img src="./images/check.webp" style="width:7%;">
-                    <p class="uploadText">${jsStr["LIST_UPDATED"][LANG]}</p>
-                </div>
-
-                <div style="display:flex; flex-direction: column;">
-                    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
-                    <div class="uploadText shareContainer">
-                        <p class="shareBG uploadText">${currWebsite}</p>
-                        <img class="button shareBut" src="./images/openList.webp" onclick="window.open('${currWebsite}','_blank')">
-                    </div>
-                 </div >
-                `)
+                sessionStorage.setItem("listUpload",JSON.stringify([data[0], 1]))
+                switchLoFList(data[0])
                 return
             }
 
-            // List is unchanged
-            else if (data == 4) {
-                $(".errNotif").fadeIn(100);
-                $(".errorBox").html(jsStr["LIST_UNCHANGED"][LANG]);
-                setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
-            }
+            else if (data == 4) $(".errorBox").html(jsStr["LIST_UNCHANGED"][LANG]); // List is unchanged
+            else $(".errorBox").html(jsStr["LIST_UPFAIL"][LANG]); // List fart
 
-            else {
-                $(".errNotif").fadeIn(100);
-                $(".errorBox").html(jsStr["LIST_UPFAIL"][LANG]);
-                setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
-            }
+            $(".errNotif").fadeIn(100);
+            setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
+
             $("#submitbutton").removeClass("disabled")
-            $("#removebutton").removeClass("disabled")
+            $(".editables").removeClass("disabled")
+            $(".editables").css("pointer-events", "")
+            $(".loading").remove()
+            $(".removeList").show()
         })
     }
 }
@@ -208,12 +197,23 @@ function updateList() {
 var deeta = '';
 var ogDeeta = '';
 const DEFAULT_LEVELLIST = {
-    "titleImg": "",
+    "titleImg": ["", 0, 33, 1, true], // URL, position, coverage, halign, gradient
     "pageBGcolor": "#020202",
-    "diffGuesser": [false, true, true]
+    "diffGuesser": [false, true, true], // enabled, diff, rating
+    "translucent": false
 }
 
 function makeEditor(update) {
+    // Check login
+    if (hasLocalStorage() && localStorage.getItem("userInfo") == null) {
+        $("#levelUpload").remove()
+        $("#loginHelp").show()
+        lockQuotes()
+    }
+    else {
+        $("#loginHelp").remove()
+    }
+
     // Do nothing if in editor
     $(".pickerContainer").on("click", showBGColorPicker)
     if (window.location.search.includes("edit")) $(".uploader").show()
@@ -222,85 +222,146 @@ function makeEditor(update) {
     $(".previewButton").on("click", () => preview(false))
     $(".previewButton").on("dblclick", () => preview(true))
 
-    // List image preview action
-    $("#imageArrow").on("click", function () {
-        $("#imgError").text("")
-        if ($(this).css("transform").match("-1")) {
-            // Hide preview
-            $("#imageArrow").css("transform", "scaleY(1)");
-            $("#imageArrow").attr("title", jsStr["SH_IMPREV"][LANG])
-            $(".imgPreview").slideUp(200)
-        }
-        else {
-            // Show preview
-            $("#imageArrow").css("transform", "scaleY(-1)");
-            $("#imageArrow").attr("title", jsStr["HI_IMPREV"][LANG])
-            $("#imagePrev").css("width", "40vw")
-            $("#imagePrev").attr("src", $(".titImgInp").val())
-            $(".imgPreview").slideDown(200)
-        }
-    })
-    // When the image failed to load (sad crying emoji)
-    $("#imagePrev").on("error", function () {
-        $("#imagePrev").css("width", "10%")
-        $("#imagePrev").attr("src", "./images/error.webp")
-        $("#imgError").text(jsStr["IM_NOTFOUND"][LANG])
-    })
-    // Change preview image on URL change
-    $(".titImgInp").on("change", function () {
-        if ($("#imageArrow").css("transform").match("-1")) {
-            $("#imgError").text("")
-            $("#imagePrev").css("width", "40vw")
-            $("#imagePrev").attr("src", $(".titImgInp").val())
-        }
-    })
-    // Showing color picker
-    if (update) {
-        $("#passEditor").show()
-        generateFromJSON(1)
-        isHidden = $("input[name='hidden']").attr("checked") == "checked";
-    }
-
     $("img[for='diffGuesser']").click(() => {
         $(".settingSubbox").slideToggle(50);
         checkCheckbox("diffGuesser");
         $(".diffSelBut img").removeClass("disabled")
-        levelList.diffGuesser = [$("input[name='diffGuesser']").prop("checked"),true,true]
+        levelList.diffGuesser = [$("input[name='diffGuesser']").prop("checked"), true, true]
     })
+
+    // TODO: fix for old lists!!
+    $("#listimg").on("change", () => levelList.titleImg[0] = $("#listimg").val())
+    $(".imgSetButton").click(showBGsettings)
+
+    $("img[for=transCards]").click(() => { checkCheckbox("transCards", (x, y) => levelList.translucent = y) })
 
     // Show alert if creating list
     window.addEventListener('beforeunload', pageExit);
 
     $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
     $(".savedFilter").on("keyup", searchFaves)
+
+    if (update) {
+        let info = JSON.parse(sessionStorage.getItem("listProps"))
+        if (info == null) return
+
+        let id = info[2] ? "pid" : "id"
+        let postArray = {}
+        postArray[id] = info[0] // (id/pid): listID
+
+        $.post("./php/pwdCheckAction.php", postArray, check => {
+            if (typeof check == "object") generateFromJSON(2, check)
+            else generateFromJSON(1)
+        })
+        isHidden = $("input[name='hidden']").attr("checked") == "checked";
+    }
 }
 
 const pageExit = exit => {
-    if (Object.keys(levelList).length > ADDIT_VALS+1) exit.preventDefault();
+    if (getListLen(boards)) exit.preventDefault();
 }
 
-function makeBrowser(search) {
+function makeBrowser() {
     let isSearching = false
     $.get("./parts/listBrowser.html", dt => {
+        hash = window.location.hash
+        let search = hash.includes("!") ? hash.split("!")[1] : ""
         if (search != "") {
             $("#searchBar").val(decodeURIComponent(search))
             isSearching = true
         }
 
+        // Add switch buttons
+        if (hasLocalStorage() && localStorage.getItem("userInfo") != null) {
+            $(".titleTools").after(`<div class="browserContainer">
+                <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#browse')">${jsStr["NEWEST"][LANG]}</button>
+                <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#uploads')">${jsStr["UPLOADS"][LANG]}</button>
+            </div>`)
+            $(".browserButton").eq(hash == "#uploads").attr("id", "browserBSelected")
+        }
+
         // Generates stuff
-        $.get("./php/getLists.php", data => {
-            if (typeof data != "object") { $("#communityContainer").text(jsStr["NO_RES"][LANG]); return; }
-            listViewerDrawer(data, "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
+        if (hash == "#uploads") browser = 1
+
+        let req = ["", "?user", "?hidden"][browser]
+        $(".browserButton").attr("id", "")
+        if (browser > 0) {
+            if ($(".privateSel").length == 0) {
+                $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton noMobileResize privateSel" title="${jsStr["SH_PRIVATE"][LANG]}"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
+                $(".privateSel").click(() => switchBrowser("#hidden"))
+            }
+        }
+        $(".browserButton").eq(browser).attr("id", "browserBSelected")
+
+        $.get("./php/getLists.php" + req, data => {
+            // Change usernames
+            changeUsernames(data)
+
+            listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
             if (isSearching) $("#app .doSearch").click()
         });
     })
 }
 
+function changeUsernames(data) {
+    let ind = 0
+    data[0].forEach(c => {
+        data[1].forEach(u => {
+            // Old comments
+            if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+        })
+        ind++
+    })
+}
+
+let browser = 0
+function switchBrowser(hash) {
+    let req = ""
+    let ind = 0
+    switch (hash) {
+        case "#uploads":
+            req = "?user"; ind = 1; break;
+        case "#hidden":
+            req = "?hidden"; ind = 2; break;
+        default:
+            break;
+    }
+    if (browser == ind) return
+    browser = ind
+
+    $(".browserButton").attr("id", "")
+    $(".browserButton").eq(ind).attr("id", "browserBSelected")
+    if (["#uploads", "#hidden"].includes(hash)) {
+        if ($(".privateSel").length == 0) {
+            $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton noMobileResize privateSel" title="${jsStr["SH_PRIVATE"][LANG]}"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
+            $(".privateSel").click(() => switchBrowser("#hidden"))
+        }
+    }
+    else $(".privateSel").remove()
+
+    $.get("./php/getLists.php" + req, data => {
+        // Change usernames
+        let ind = 0
+        data[0].forEach(c => {
+            data[1].forEach(u => {
+                // Old comments
+                if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+            })
+            ind++
+        })
+
+        page["#communityContainer"][0] = 0
+        currentListData["#communityContainer"] = data[0]
+        originalListData["#communityContainer"] = data[0]
+        listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
+    });
+}
+
 function closeRmScreen() {
     $(".removeScreen").fadeOut(100)
-    $(".boom").animate({ "opacity": 0 }, 500, function () {
-        $(".boom").css("background-color", "white")
-        $(".boom").css("display", "none")
+    $("#app > .boom").animate({ "opacity": 0 }, 500, function () {
+        $("#app > .boom").css("background-color", "white")
+        $("#app > .boom").css("display", "none")
         $(".removeScreen").remove()
     })
 }
@@ -321,7 +382,7 @@ function confirmDelete() {
 
 function removeList() {
     // Confirm remove
-    $(".boom").append(`<div class="uploadText removeScreen">
+    $("#app > .boom").append(`<div class="uploadText removeScreen">
     <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.webp"><br />
     <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -5.4vw;" src="./images/szn1.webp">
     <p id="removeText" style="text-align: center; font-size: var(--bigFont)">${jsStr["CONF_DEL"][LANG]}</p>
@@ -331,9 +392,9 @@ function removeList() {
     <div>
     </div>`);
 
-    $(".boom").css("background-color", "black");
-    $(".boom").css("display", "initial");
-    $(".boom").animate({ "opacity": 1 }, 500, function () {
+    $("#app > .boom").css("background-color", "black");
+    $("#app > .boom").css("display", "block");
+    $("#app > .boom").animate({ "opacity": 1 }, 500, function () {
         $("#removeText").fadeIn(2000);
         $(".rmButSet").animate({ "opacity": 1 }, 2000);
     })
@@ -341,30 +402,46 @@ function removeList() {
     $("#rmbutton").on("mouseover", function () {
         $("#rmimg1").css("transform", "translateY(-5%)");
         $("#rmimg2").css("transform", "translateY(5%)");
-        $(".boom").css("background-color", "rgb(11, 0, 0)");
+        $("#app > .boom").css("background-color", "rgb(11, 0, 0)");
     })
     $("#rmbutton").on("mouseout", function () {
         $("#rmimg1").css("transform", "translateY(0%)");
         $("#rmimg2").css("transform", "translateY(0%)");
-        $(".boom").css("background-color", "rgb(0, 0, 0)");
+        $("#app > .boom").css("background-color", "rgb(0, 0, 0)");
     })
 }
 function murderList() {
-    $(".boom").css("display", "initial");
+    $("#app").before("<div class='boom boomReal'></div>")
 
-    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.hash = "#editor");
+    $(".boomReal").css("display", "block")
+    $(".boomReal").animate({ "opacity": 1 }, 2000, () => {
+        window.location.hash = "#editor"
+        $(".boomReal").animate({ "opacity": 0 }, 100, () => {
+            $(".boomReal").remove()
+        });
+    });
     $("#levelUpload").addClass("killList");
 }
 
 function checkCheckbox(changeVal, runFun = null) {
-	if ($(`img[for="${changeVal}"]`).attr("src").match("On") != null) {
-		$(`img[for="${changeVal}"]`).attr("src", "images/modernCheck.svg")
-		$(`input[name="${changeVal}"]`).attr("checked", false)
-		if (runFun != null) runFun(changeVal, false)
-	}
-	else {
-		$(`img[for="${changeVal}"]`).attr("src", "images/modernCheckOn.svg")
-		$(`input[name="${changeVal}"]`).attr("checked", true)
-		if (runFun != null) runFun(changeVal, true)
-	}
+    if ($(`img[for="${changeVal}"]`).attr("src").match("On") != null) {
+        $(`img[for="${changeVal}"]`).attr("src", "images/modernCheck.svg")
+        $(`input[name="${changeVal}"]`).attr("checked", false)
+        if (runFun != null) runFun(changeVal, false)
+    }
+    else {
+        $(`img[for="${changeVal}"]`).attr("src", "images/modernCheckOn.svg")
+        $(`input[name="${changeVal}"]`).attr("checked", true)
+        if (runFun != null) runFun(changeVal, true)
+    }
+}
+
+function lockQuotes() {
+    let faces = ["04", "05", "07", "08", "15", "12", "10"]
+    let quotes = jsStr["QUOTES"][LANG]
+    let pick = parseInt(Math.random() * faces.length)
+
+    $(".loginEmoji").attr("src", `images/emoji/${faces[pick]}.webp`)
+    $(".quote").text(quotes[pick])
+
 }

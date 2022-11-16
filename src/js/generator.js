@@ -1,9 +1,27 @@
-const ADDIT_VALS = 2;
+const getListLen = b => Object.keys(b).filter(x => x.match(/\d+/)).length
 const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
-const isInEditor = window.location.pathname.includes("upload");
 
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
+function onIDCopyClick(id, pos) {
+	$(".box").eq(pos - 1).append(`<div class="uploadText copyPopup"><h2>${jsStr["ID_COPIED"]}</h2><h4>- ${id} -</h4></div>`)
+	setTimeout(() => {
+		$(".copyPopup").fadeOut(() => $(".copyPopup").remove())
+	}, 500);
+	clipboardCopy(id)
+
+}
+const clipboardCopy = id => navigator.clipboard.writeText(id)
+
+function hasLocalStorage() {
+	try {
+		localStorage.setItem("gay", 1)
+		localStorage.removeItem("gay")
+		return true
+	} catch (error) {
+		return false
+	}
+}
 
 function listShare() {
 	$("#popupBG").show()
@@ -32,7 +50,7 @@ function listShare() {
 
 	$("#shareContainer").on("mouseover", () => $("#shareContainer")[0].select())
 
-	let cringeText = encodeURIComponent(`${jsStr['CHECKOUT']} - gamingas.wz.cz/?${link}`)
+	let cringeText = encodeURIComponent(`${jsStr['CHECKOUT'][LANG]} - gamingas.wz.cz/?${link}`)
 
 	let shareLinks = ["https://twitter.com/intent/tweet?text=" + cringeText, "https://www.reddit.com/submit?url=" + cringeText]
 
@@ -46,6 +64,27 @@ function listShare() {
 	$("#shareContainer").val("gamingas.wz.cz/?" + link);
 }
 
+function showFinishUpload(isUpdating) {
+	$(".finishUpload").fadeIn(50);
+	$("#popupBG").css("opacity", 1)
+	$("#popupBG").show();
+
+	$(".clipboardCopy").off()
+	$(".clipboardCopy").click(() => clipboardCopy(window.location.toString()))
+
+	if (isUpdating) $(".finishUpload h1").text(jsStr["LIST_UPDATED"][LANG])
+
+	$(".listLink").val(window.location.toString().split("//")[1])
+	sessionStorage.removeItem("listUpload")
+}
+
+function hideFinishUpload() {
+	$(".dragonUpload").css("top", "-50em")
+	$(".finishUpload").fadeOut(100);
+	$("#popupBG").css("opacity", 0)
+	setTimeout(() => { $("#popupBG").hide() }, 100);
+}
+
 function hideShare() {
 	$("#shareTools").fadeOut(100);
 	$("#popupBG").css("opacity", 0)
@@ -55,11 +94,11 @@ function hideShare() {
 function showJumpTo() {
 	$("#popupBG").show()
 	$("#popupBG").css("opacity", 1)
-	$("#jumpToTools").fadeIn(100);
+	$(".jumpDialog").fadeIn(100);
 	$(".levelPickerContainer").empty();
 
 	// Show nothing if on an unfinished guessing list
-	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && $(".box").length != Object.keys(boards).length - ADDIT_VALS -1) {
+	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && $(".box").length != getListLen(boards)) {
 		$(".levelPickerContainer").append(`
 		<div class="noSaves">
 			<img src="./images/guessSkip.svg">
@@ -70,7 +109,7 @@ function showJumpTo() {
 	}
 
 	let ind = 1;
-	Object.values(boards).slice(0, Object.keys(boards).length - ADDIT_VALS - 1).forEach(pos => {
+	Object.values(boards).slice(0, getListLen(boards)).forEach(pos => {
 		let creator = pos.creator;
 		if (typeof creator == "object") creator = "(Collab)"
 
@@ -78,13 +117,13 @@ function showJumpTo() {
 		$(".levelPickerContainer:last-child").on("click", (k) => {
 			hideJumpTo();
 			if ($(".boards").css("display") == "none") listList()
-			$(".box")[$(k.target).attr("for")  - 2].scrollIntoView();
+			$(".box")[$(k.target).attr("for") - 2].scrollIntoView();
 		})
 		ind++
 	});
 }
 function hideJumpTo() {
-	$("#jumpToTools").fadeOut(100);
+	$(".jumpDialog").fadeOut(100);
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
 }
@@ -117,6 +156,8 @@ async function getProfileStats(k, ind) {
 }
 
 function showCollabStats(id) {
+	if (window.location.hash == "#editor") boards = levelList
+	$("#popupBG").css("background", "#00000087")
 	$("#popupBG").css("opacity", 1)
 	setTimeout(() => { $("#popupBG").show() }, 100);
 
@@ -124,21 +165,21 @@ function showCollabStats(id) {
 	let names = [jsStr["YT_CHAN"][LANG], jsStr["TW_PROF"][LANG], jsStr["TW_CHAN"][LANG], jsStr["DC_SERV"][LANG], jsStr["CUST_LINK"][LANG]];
 	let imgs = ["youtube", "twitter", "twitch", "discord", "cust"];
 
-	let cardCol = $($(".box")[id - 1]).css("background-color");
-	let cardGradient = $($(".box")[id - 1]).css("background-image");
-	let dark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))), 40)
-	let extraDark = HEXtoRGB(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))), 80)
+	let cardCol = boards[id]["color"];
+	let cardGradient = $(".box").eq(id - 1).css("background-image");
+	let dark = HEXtoRGB(cardCol, 40)
+	let extraDark = HEXtoRGB(cardCol, 80)
 
-	$(".collabTTitle").text(`- ${boards[id].levelName} -`);
-	$("#collabTools").css("background-image", cardGradient);
-	$(".editorHeader").css("background-color", `rgb(${dark.join(",")})`)
-	$("#collabTools").css("border-color", `rgb(${dark.join(",")})`)
-	$(".collabHeader").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))))},40.7%,54%)`)
-	$(".collabDIV").css("background-color", `hsl(${getHueFromHEX(RGBtoHEX((cardCol.match(/\d+/g).splice(-3)).map(x => parseInt(x))))},40.7%,34%)`)
+	$(".collabViewer .collabTTitle").text(`- ${boards[id].levelName} -`);
+	$(".collabViewer").css("background-image", cardGradient);
+	$(".collabViewer .collabHead").css("background-color", `rgb(${dark.join(",")})`)
+	$(".collabViewer").css("border-color", `rgb(${dark.join(",")})`)
+	$(".collabViewer .collabHead").css("background-color", `hsl(${getHueFromHEX(cardCol)},40.7%,54%)`)
+	$(".collabViewer .collabDIV").css("background-color", `hsl(${getHueFromHEX(cardCol)},40.7%,34%)`)
 
-	$("#collabTools").fadeIn(50);
+	$(".collabViewer").fadeIn(50);
 
-	$(".statsCreators").text("") // Reset table
+	$(".statsCreators").html("<tr style='visibility: collapse;'><th style='width: 35%'></th><th style='width: 20%'></th><th></th></tr>") // Reset table
 	$(".collabGraphs").text("") // Reset table
 
 	let humanRoles = [];
@@ -164,7 +205,7 @@ function showCollabStats(id) {
 			let discordTag = "";
 			for (let soc = 0; soc < creators.socials.length; soc++) {
 				if (names[creators.socials[soc][0]] == jsStr["DC_SERV"][LANG] && creators.socials[soc][1].includes("#"))
-					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin-right: 0.2em;"> - ${creators.socials[soc][1]}</p>`
+					discordTag = `<p class="uploadText" style="color:#7ABFC5;margin:0 0.7em; font-size: var(--miniFont)">${creators.socials[soc][1]}</p>`
 				else {
 					socialTags += `<img onclick="openSocLink('${creators.socials[soc][1]}')" title="${names[creators.socials[soc][0]]}"
 									style="width: 2em;" class="button" src="images/${imgs[creators.socials[soc][0]]}.webp">`
@@ -172,14 +213,19 @@ function showCollabStats(id) {
 			}
 
 			let icon = `icon=${creators.verified[0]}&col1=${creators.verified[1]}&col2=${creators.verified[2]}&glow=${creators.verified[3]}&noUser=true`
-			$(".statsCreators").append(`<tr class='tableRow'>
+			$(".statsCreators").append(`<tr class='tableRow' style="background: #0000002e;">
 			<td style="display: flex; justify-content: left; align-items: center">
 				<img style="width: 2.5em;margin: 0.2em;" src="${DISABLE_GDB}ttps://gdbrowser.com/icon/freedom69?${icon}">
-				<p class="memberName" style="margin:0 0.5em 0; color: ${creators.color}">${creators.name}</p>${discordTag}
-				${socialTags}
-				<hr class="verticalSplitter">
+				<div style="text-align:left">
+					<p class="memberName" style="margin:0 0.5em; color: ${creators.color}">${creators.name}</p>
+					${discordTag}
+				</div>
+				
+			</td>
+			<td>${socialTags}</td>
+			<td>
 				<div class="pStatsContainer">
-				<img style="width: 2em;margin: 0.4vw;" src="images/gdbrowser.webp" class="getProfile button" title="${jsStr["SHOW_PROFILE"][LANG]}">
+					<img style="width: 2em;margin: 0.4vw;" src="images/gdbrowser.webp" class="getProfile button" title="${jsStr["SHOW_PROFILE"][LANG]}">
 				</div>
 			</td>
 		</tr>`)
@@ -212,10 +258,10 @@ function showCollabStats(id) {
 			}
 			else { randIcon = "ghostCube"; }
 
-			$(".statsCreators").append(`<tr class='tableRow'>
-			<td style="display: flex; justify-content: left; align-items: center">
-				<img style="width: 4vw;margin: 0.4vw;" src="images/emoji/${randIcon}.webp">
-				<p class="memberName" style="color: ${creators.color}; margin: 0 1vw 0;">${creators.name}</p>${discordTag}
+			$(".statsCreators").append(`<tr class='tableRow' style="background: #0000002e;">
+			<td colspan="3" style="text-align: left;">
+				<img style="width: 2.5em;margin: 0.2em;" src="images/emoji/${randIcon}.webp">
+				<p class="memberName" style="color: ${creators.color}; margin: 0 0.5em; display: inline;">${creators.name}</p>${discordTag}
 				${socialTags}
 			</td>
 		</tr>`)
@@ -300,7 +346,7 @@ function showCollabStats(id) {
 }
 
 function hideCollabStats() {
-	$("#collabTools").fadeOut(50);
+	$(".collabViewer").fadeOut(50);
 
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
@@ -499,21 +545,31 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 	// Todo remove ! from line below and somewhere next in the code or whatever
 	if (boards.diffGuesser != undefined && boards.diffGuesser[0] && singleLevel == -1) singleLevel = 1
 
-	let amount = singleLevel == -1 ? Object.keys(boards).length - ADDIT_VALS : singleLevel + 1
+	let amount = singleLevel == -1 ? getListLen(boards) + 1 : singleLevel + 1
 	let start = singleLevel == -1 ? 1 : singleLevel
 
 	// Setting page BG from list
 	if (Object.keys(boards).indexOf("pageBGcolor") != -1) {
 		if (boards["pageBGcolor"] != "#020202") {
-			$("body").css("background-color", boards["pageBGcolor"])
 			let hue = getHueFromHEX(boards["pageBGcolor"])
+			$(":root").css("--normalColor", `hsl(${hue},90.6%,16.7%)`)
+			$(":root").css("--siteBackground", boards["pageBGcolor"])
 			$(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
 			$("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
 		}
 	}
 	// Setting title image
-	$(".titleImage").attr("src", boards["titleImg"]);
+	$(":root").css("--listBGgradient", "linear-gradient(0deg, var(--siteBackground), transparent)")
+	if (typeof boards["titleImg"] == "string" && boards["titleImg"] != "") $(".titleImage").css("background-image", `url("${boards["titleImg"]}")`);
+	else {
+		if (!boards["titleImg"][4]) $(":root").css("--listBGgradient", "transparent")
+		$(".titleImage").css("background-image", `url("${boards["titleImg"][0]}")`);
+		$(".titleImage").css("background-position-y", `${boards["titleImg"][1]}%`);
+		$(".titleImage").css("background-position-x", `${["left", "center", "right"][boards["titleImg"][3]]}`);
+		$(".titleImage").css("height", `${boards["titleImg"][2]}%`);
+	}
 
+	if (!hasLocalStorage()) $(".pin, .edit").remove()
 	for (let i = start; i < amount; i++) {
 		let bIndex = (i).toString()
 
@@ -524,20 +580,26 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		// Removing card buttons
 		if (boards[bIndex]["levelID"] == null || !boards[bIndex]["levelID"].match(/^\d+$/g)) { var ID = ["", ""]; }
 		else {
-			var ID = [`<img src="./images/gdbrowser.webp" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
-			`<img src="./images/copyID.webp" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`]
+			var ID = [`<img src="./images/modGDB.svg" class="button boxLink" onclick="onGDBClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["GDB_DISP"][LANG]}">`,
+			`<img src="./images/modID.svg" class="button boxLink" onclick="onIDCopyClick(${boards[bIndex]["levelID"]},${bIndex})" title="${jsStr["COPY_ID"][LANG]}">`]
 		}
 
 		if (boards[bIndex]["video"] == null || boards[bIndex]["video"] == "") { var video = ``; }
-		else { var video = `<img src="./images/yticon.webp" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">`; }
+		else { var video = `<img src="./images/modYT.svg" class="button boxLink" onclick="onYTClick('${boards[bIndex]["video"]}',${bIndex})" title="${jsStr["DISP_EP"][LANG]}">`; }
 
 		// Shit fix. Colors break sometimes
 		let boardFix = fixHEX(boards[bIndex]["color"])
 		if (!boardFix) boardFix = randomColor()
 		let gradientLighter = HEXtoRGB(boardFix, -60)
 
+		let translucent
+		if (boards["translucent"] != undefined && boards["translucent"]) {
+			translucent = ["66", ",0.4"]
+		}
+		else translucent = ["", ""]
+
 		// Glow depending on level position
-		var cardBG = `background: linear-gradient(39deg, ${boardFix}, rgb(${gradientLighter.join(",")}));`;
+		var cardBG = `background: linear-gradient(39deg, ${boardFix}${translucent[0]}, rgb(${gradientLighter.join(",")}${translucent[1]}));`;
 		if (i == 1) { cardBG += `;box-shadow: 2px 2px 60px ${boardFix};`; }
 		if (i == 2) { cardBG += `;box-shadow: 2px 2px 30px ${boardFix};`; }
 		if (i == 3) { cardBG += `;box-shadow: 2px 2px 20px ${boardFix};`; }
@@ -560,10 +622,15 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		if (boards[bIndex]["tags"] == undefined) boards[bIndex]["tags"] = [] // Old list - no tags
 
 		let hasID = boards[bIndex]["levelID"] == null || boards[bIndex]["levelID"].match(/^\d+$/g) == null
-		let preview = LIST_ID == -8
+		let preview = LIST_ID == -8 || !hasLocalStorage()
 
 		let favoriteCheck = preview ? false : (hasID ? false : true)
-		let currentlyFavedIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
+		let currentlyFavedIDs = []
+
+		if (hasLocalStorage()) {
+			currentlyFavedIDs = localStorage.getItem("favoriteIDs") == null ? [] : JSON.parse(localStorage.getItem("favoriteIDs"))
+		}
+
 		let disableStar = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? "disabled" : ""
 		let starTitle = currentlyFavedIDs.includes(boards[bIndex]["levelID"]) ? jsStr["FAV_REM"][LANG] : jsStr["FAV_ADD"][LANG]
 		let diffIndent = diff == "" ? "0" : "0.5"
@@ -597,8 +664,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		boards[bIndex]["tags"].forEach(tag => {
 			let tagName = tag[1] == -1 ? jsStr["TAGS"][LANG][tag[0]] : tag[1]
 			tagName = tag[2] == "" ? tagName : `<a class="gamLink" target="_blank" href="${tag[2]}">${tagName}</a>`
-			$(".listTagContainer").eq(bIndex-1).append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)
-		});
+			$(".listTagContainer").eq(bIndex-1).append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)		});
 
 		// Only display icons on hover
 		if (typeof boards[bIndex]["creator"] == "object") {
@@ -628,12 +694,7 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		}
 
 	};
-	// Removing stuff if list is empty
-	if ($(".box").length == 0 & location.pathname.match(/(upload)/g) == null) {
-		$(".titles").append(jsStr["LLOAD_FAIL"][LANG]);
-	}
-
-	sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, listData[2] == "pid", LIST_NAME, LIST_CREATOR]))
+	if (LIST_NAME != null) sessionStorage.setItem("listProps", JSON.stringify([LIST_ID, null, listData[2] == "pid", LIST_NAME, LIST_CREATOR]))
 
 	// Saving viewed list
 	let viewed = getCookie("recentlyViewed");
@@ -654,17 +715,26 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		makeCookie(["recentlyViewed", JSON.stringify(parsed)])
 	}
 
+	$(".box").css("backdrop-filter", "blur(8px)")
+
 	// When clicking a level in saved, scroll to card
 	if (window.location.hash.match(/!\d+/g) != null) {
 		let gotoHash = parseInt(window.location.hash.slice(1).split("!")[1])
 		if ($(".box")[gotoHash - 1] != undefined) $(".box")[gotoHash - 1].scrollIntoView()
 	}
+
+	// sadly disable editing old lists :/
+	if ($(".listPFP").length > 0) {
+		if ($(".listPFP").attr("src").includes("oldPFP")) $(".edit").click(() => openHelp("oldList"))
+		else $(".edit").click(() => goToPWD())
+	}
+
 	return true
 }
 
 function shareDiffResult() {
 	let double = (boards.diffGuesser[1] && boards.diffGuesser[2]) ? 2 : 1
-	let maxPoints = (Object.keys(boards).length - ADDIT_VALS - 1) * double
+	let maxPoints = getListLen(boards) * double
 
 	text = `${LIST_NAME} ${jsStr["BY"][LANG]} ${LIST_CREATOR}\n${diffGuesses.join("")} ${points}/${maxPoints}\n${jsStr["SCORBET"][LANG]}\ngamingas.wz.cz/lofttop10/?id=${LIST_ID}`
 	window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank")
@@ -709,7 +779,7 @@ function skipGuess(face) { // face = [diff, rating]
 	$(".skipBut").remove()
 	$(".box:last()").remove()
 
-	let isLastLevel = $(".box").length + 1 == Object.keys(boards).length - ADDIT_VALS - 1
+	let isLastLevel = $(".box").length + 1 == getListLen(boards)
 	generateList(boards, [LIST_ID, LIST_CREATOR], $(".box").length + 1, true)
 	if (!isLastLevel) generateList(boards, [LIST_ID, LIST_CREATOR], $(".box").length + 1, false)
 
@@ -751,8 +821,8 @@ function skipGuess(face) { // face = [diff, rating]
 	if (isLastLevel) {
 		$(".favoriteStar").show()
 		let double = (boards.diffGuesser[1] && boards.diffGuesser[2]) ? 2 : 1
-		let maxPoints = (Object.keys(boards).length - ADDIT_VALS - 1) * double
-		let perc = Math.round((points / (Object.keys(boards).length - ADDIT_VALS - 1)) * 100 / double)
+		let maxPoints = getListLen(boards) * double
+		let perc = Math.round((points / getListLen(boards)) * 100 / double)
 
 		$(".boards").after(`
 		<div class="uploadText uploadBG finishDiffList">
@@ -805,7 +875,7 @@ function pinList(rem = null, isOnHomepage = false) {
 	makeCookie(["pinnedLists", JSON.stringify(pinnedLists)])
 
 	if (isOnHomepage !== false) {
-		$("#unpinCard").parents().eq(2).attr("href","#")
+		$("#unpinCard").parents().eq(2).attr("href", "#")
 		isOnHomepage.parents().eq(2).remove()
 		if ($(".pinnedLists > div").length == 0) {
 			$(".pinnedLists").html(`<div class="uploadText" style="color: #f9e582">${jsStr["NOPINNED"][LANG]}</div>`)
@@ -869,18 +939,7 @@ function removeFave(remID) {
 	listViewerDrawer(currentListData["#favoritesContainer"], "#favoritesContainer", 1, [0, 0], jsStr["SAVEDLONG"][LANG])
 }
 
-function switchLoFList(hash, goto = null) {
-
-	window.location.hash = hash
-	/*
-	if (window.location.hash == hash) {
-		// HOW DOES THIS WORK??!! You shouldn't have to subtract 4
-		if (goto != null) $(".box")[goto - 4].scrollIntoView();
-
-	}
-	else window.location.assign(goto == null ? hash : hash + `&goto=${goto}`)
-	*/
-}
+const switchLoFList = hash => window.location.hash = hash
 
 // const MAX_ON_PAGE = 4;
 function homeCards(obj, custElement = ".listContainer", previewType = 1, overwriteMax = false, custPagination = 0, reverseList = false) {
@@ -924,17 +983,22 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				if (object[5] != undefined) {
 					dGuesserBadge = object[5] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
 				}
+
+				let uploadDate = new Date(object[4])
+				let preciseTime = `title="${uploadDate.toLocaleDateString()} ${uploadDate.toLocaleTimeString()}"`
 				$(custElement).append(`
 					<a id="listPreview" class="noMobileResize" href="#${object[0]}" 
 						style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${object[3]}, rgb(${lightCol.join(",")}));
 								border-color: rgb(${darkCol.join(",")}); flex-grow: 1;">
-						<div class="boxHeader" style="flex-direction: row !important;">
-							<div>
+						<div class="listHeader">
+						<div class="cInfoContainer">
+							<div ${preciseTime} class="viewContainer timeContainer"><img src="images/time.svg"><div>${parseElapsed(Date.now() / 1000 - object[4] / 1000)}</div></div>
+						</div>
+							<div style="flex-grow: 1;">
 								<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object[1]}</p>
 								<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object[2]} -</p>
 							</div>
 							<div id="pinContainer">
-								<p class="uploadText" style="margin: 0; font-size: var(--miniFont);">${window.parent.window.chatDate(object[4] / 1000)}</p>
 								${previewType == 5 ? `<img src="images/unpin.svg" onclick="pinList('${object[0]}',$(this))" class="button" id="unpinCard">` : ''}
 							</div>
 						</div>
@@ -950,12 +1014,28 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				let level1col = object["data"][1].color
 				let lightCol = HEXtoRGB(level1col, -60)
 				let darkCol = HEXtoRGB(level1col, 40)
+
+				let uploadDate = new Date(object["timestamp"] * 1000)
+				let preciseTime = `title="${uploadDate.toLocaleDateString()} ${uploadDate.toLocaleTimeString()}"`
+				let privateBorder = object["hidden"] == 0 ? "" : "border-color: rgba(255, 255, 255, 0.25); border-style: dotted;"
+				let link = object["hidden"] == 0 ? object["id"] : object["hidden"]
+				let disliked = object["rate_ratio"] < 0 ? ["flex-direction: column-reverse;", "transform: rotate(180deg);"] : ["", ""]
 				$(custElement).append(`
-				<a id="listPreview" class="noMobileResize" href="#${object["id"]}"
-					 style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${level1col}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")})">
-					<div style="width: 100%">
-						<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object["name"]}</p>
-						<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object["creator"]} -</p>
+				<a id="listPreview" class="noMobileResize" href="#${link}"
+					 style="background-image: linear-gradient(39deg, rgb(${darkCol.join(",")}), ${level1col}, rgb(${lightCol.join(",")})); border-color: rgb(${darkCol.join(",")});${privateBorder}">
+					<div style="display: flex;gap: 0.7em;">
+						<div class="inListRating" style="${disliked[0]}">
+							<img src="images/genericRate.svg" style="${disliked[1]}">
+							<p class="uploadText" style="margin:-0.1em">${object["rate_ratio"]}</p>
+						</div>
+						<div class="cInfoContainer">
+							<div class="viewContainer"><img src="images/view.svg"><div>${object["views"]}</div></div>
+							<div ${preciseTime} class="viewContainer timeContainer"><img src="images/time.svg"><div>${parseElapsed(Date.now() / 1000 - object["timestamp"])}</div></div>
+						</div>
+						<div>
+							<p class="uploadText" style="margin: 0;">${dGuesserBadge}${object["name"]}</p>
+							<p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- ${object["creator"]} -</p>
+						</div>
 					</div>
 				</div>
 				`);
@@ -968,6 +1048,18 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 }
 
 async function makeHP() {
+	// cookies are disabled
+	if (!navigator.cookieEnabled) {
+		$(".homeLoginInfo > img").attr("src", "images/disCookies.svg")
+		$(".homeLoginInfo > label").text(jsStr["NO_COCK"][LANG])
+		$(".homeLoginInfo > div").remove()
+		$(".homepageBigButton").eq(0).remove()
+		$(".pinnedLists + li, .uploadedLists + li, .recentlyViewed + li, .savedLists + li").remove()
+		$(".pinnedLists, .uploadedLists, .recentlyViewed, .savedLists").remove()
+		$(".loginBut").remove()
+	}
+
+
 	let hpData = { "recViewed": null, "pinned": null, "favPicks": null, "newest": null };
 
 	let recentlyViewed = JSON.parse(decodeURIComponent(getCookie("recentlyViewed")))
@@ -976,7 +1068,13 @@ async function makeHP() {
 	let pinned = JSON.parse(decodeURIComponent(getCookie("pinnedLists")))
 	if (pinned !== null && pinned.length > 0) hpData.pinned = pinned
 
-	let savedLists = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")))
+
+	let savedLists = null
+	if (hasLocalStorage()) {
+		savedLists = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")))
+		$(".homeLoginInfo").remove()
+	}
+
 	if (savedLists != null && savedLists !== false && savedLists.length > 0) {
 		let randomized = []
 		let randIndexes = []
@@ -994,25 +1092,38 @@ async function makeHP() {
 		hpData.favPicks = randomized
 	}
 
-	await $.get("./php/getLists.php?homepage=1", data => {
-		hpData.newest = data
+	homeCards(hpData.recViewed, ".recentlyViewed", 2)
+	homeCards(hpData.pinned, ".pinnedLists", 5, 5, 0, true)
+	homeCards(hpData.favPicks, ".savedLists", 3)
+
+	$.get("./php/getLists.php?homepage=1", data => {
+		changeUsernames(data)
+		homeCards(data[0], ".newestLists", 4)
+	})
+	$.get("./php/getLists.php?homeUser", data => {
+		changeUsernames(data)
+		homeCards(data[0], ".uploadedLists", 4)
 	})
 
 	$(".hpSearchButton").click(e => {
 		switchLoFList('#browse!' + $("#homepageSearch").val())
 	})
+}
 
-	homeCards(hpData.recViewed, ".recentlyViewed", 2)
-	homeCards(hpData.pinned, ".pinnedLists", 5, 5, 0, true)
-	homeCards(hpData.favPicks, ".savedLists", 3)
-	homeCards(hpData.newest, ".newestLists", 4)
+function parseElapsed(secs) {
+	if (secs < 60) return Math.round(secs) + jsStr["SHORTTIME"][LANG][0]; //s - seconds
+	else if (secs < 3600) return Math.round(secs / 60) + jsStr["SHORTTIME"][LANG][1]; //m - minutes
+	else if (secs < 86400) return Math.round(secs / 3600) + jsStr["SHORTTIME"][LANG][2]; //h - hours
+	else if (secs < 604800) return Math.round(secs / 86400) + jsStr["SHORTTIME"][LANG][3]; //d - days
+	else if (secs < 1892160000) return Math.round(secs / 604800) + jsStr["SHORTTIME"][LANG][4]; //w - weeks
+	else return Math.round(secs / 1892160000) + jsStr["SHORTTIME"][LANG][5]; //y - years
 }
 
 function clearViewed() {
 	if ($(".recentlyViewed").length == 0) return
 	$(".recentlyViewed").empty()
 	makeCookie(["recentlyViewed", "[]"])
-	$(".recentlyViewed").html(`<div class="uploadText" style="color: #f9e582; margin-left: 5vw;">${jsStr["NOVIEWED"][LANG]}</div>`)
+	$(".recentlyViewed").html(`<div class="uploadText" style="color: #f9e582">${jsStr["NOVIEWED"][LANG]}</div>`)
 }
 
 var listData = "";
@@ -1027,16 +1138,19 @@ async function loadSite() {
 	LIST_NAME = null
 	LIST_ID = null
 	originalListData = []
+	currentListData = []
+	page = {}
 	levelList = JSON.parse(JSON.stringify(DEFAULT_LEVELLIST))
 
 	$(".logo").css("transform", `rotate(360deg)`)
 	let spinning = setInterval(() => { rot += 1; $(".logo").css("transform", `rotate(${rot * 360}deg)`) }, 1000)
 	$("#app").empty()
 
-	$("body").css("background-color", "var(--siteBackground)")
+	$(":root").css("--normalColor", "var(--defaultColor)")
+	$(":root").css("--siteBackground", "var(--defaultBackground)")
 	if ($(":root").css("--greenGradient") != $(":root").css("--defaultGradient")) {
 		$("nav").css("animation-name", "fadeBlack")
-		$("[name='theme-color']").attr("content", $(":root").css("--defaultGradient"))
+		$("[name='theme-color']").attr("content", $(":root").css("--normalColor"))
 		setTimeout(() => $(":root").css("--greenGradient", "var(--defaultGradient)"), 125);
 		setTimeout(() => $("nav").css("animation-name", "none"), 250);
 	}
@@ -1046,7 +1160,6 @@ async function loadSite() {
 		await $.get("./parts/homepage.html", site => {
 			$("#app").html(translateDoc(site, "homepage"))
 		})
-		$("iframe").attr("src", "packs.html?type=homepage")
 	}
 
 	switch (true) {
@@ -1066,17 +1179,29 @@ async function loadSite() {
 			await $.get("./parts/listBrowser.html", data => {
 				$("#favoritesContainer").append(translateDoc(data, "listBrowser"))
 			})
-			favesData = JSON.parse(localStorage.getItem("favorites"))
+			let favesData = null
+			if (hasLocalStorage()) favesData = JSON.parse(localStorage.getItem("favorites"))
+
+			if (favesData == null) favesData = []
 			listViewerDrawer(favesData, "#favoritesContainer", 1, [0, 0], jsStr["SAVEDLONG"][LANG])
 
 			break;
 
-		case /browse/.test(hash):
+		case /browse|uploads/.test(hash):
 			$("title").text(`${jsStr["COMMUNITY"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 			await $.get("./parts/listBrowser.html", site => {
 				$("#app").append("<div id='communityContainer'></div>")
 				$("#communityContainer").html(translateDoc(site, "listBrowser"))
-				makeBrowser(hash.includes("!") ? hash.split("!")[1] : "")
+				makeBrowser()
+			})
+			break;
+		case /login/.test(hash):
+			login(2)
+			$("title").text(`${jsStr["GDLISTS"][LANG]}`)
+			await $.get("./parts/homepage.html", site => {
+				$("#app").append(translateDoc(site, "homepage"))
+				makeHP();
+				makeCookie(["logindata", ""], 1)
 			})
 			break;
 
@@ -1085,15 +1210,12 @@ async function loadSite() {
 			await $.get("./parts/listViewer.html", data => {
 				$("#app").html(translateDoc(data, "listViewer"))
 				let listObject;
-				if (hash.match(/y\d+/)) listObject = { "type": "year", "id": hash == "y2019" ? -2 : -3 }
-				else if (hash.startsWith("-2") || hash.startsWith("-3")) listObject = { "type": "year", "id": hash.includes("-2") ? -2 : -3 }
-				else if (hash.match(/[A-z]/) == null) listObject = { "type": "id", "id": hash.match(/\d+/)[0] }
+				if (hash.match(/[A-z]/) == null) listObject = { "type": "id", "id": hash.match(/\d+/)[0] }
 				else if (hash == "random") listObject = { "type": "random", "id": -10 }
 				else listObject = { "type": "pid", "id": hash }
 
 				LIST_ID = listObject.id
 				lists(listObject)
-				setupComments()
 			})
 			break;
 	}
@@ -1103,16 +1225,59 @@ async function loadSite() {
 }
 
 $(async function () {
+	$.get("./parts/navbar.html", navbar => {
+		$("nav").html(translateDoc(navbar, "navbar"))
+
+		try {
+			let userInfo = null
+			if (hasLocalStorage()) userInfo = JSON.parse(localStorage.getItem("userInfo"))
+			else {
+				$(".loginBut").remove()
+				$(".menuPicker").children().eq(0).remove()
+				$(".menuPicker").children().eq(1).remove()
+				$(".mobilePicker").children().eq(0).remove()
+				$(".mobilePicker").children().eq(1).remove()
+			}
+
+			if (userInfo != null) {
+				setPFP(userInfo)
+			}
+			else {
+				$(".pfpPlaceholder").remove()
+				$(".userIcon").attr("src", "images/user.svg") // smazat placeholder, dat kliknuti
+				$(".userIcon").addClass("button")
+				$(".userIcon").click(openSettings)
+			}
+		} catch (error) {
+			localStorage.removeItem("userInfo")
+			$(".userIcon").addClass("button")
+			$(".userIcon").attr("src", "images/user.svg")
+		}
+
+		// Setting mobile picker in navbar to curr site name
+		if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
+		if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
+
+		$($(".settingsDropdown > option")[LANG]).attr("selected", true)
+
+		$(".settingsDropdown").on("change", () => {
+			let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
+			makeCookie(["lang", switchLang])
+			window.location.reload();
+		})
+
+	})
+
 	var currLang = getCookie("lang");
-    if (currLang == null) {
-        let getLang = navigator.language;
-        if (["cs", "sk"].includes(getLang)) { currLang = 0; }
-        else { currLang = 1; }
-        
-        makeCookie(["lang", currLang])
-    }
-    LANG = currLang;
-    $($(".settingsDropdown").children()[currLang]).attr("selected", true)
+	if (!currLang) {
+		let getLang = navigator.language;
+		if (["cs", "sk"].includes(getLang)) { currLang = 0; }
+		else { currLang = 1; }
+
+		makeCookie(["lang", currLang])
+	}
+	LANG = currLang;
+	$($(".settingsDropdown").children()[currLang]).attr("selected", true)
 
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
 
@@ -1124,27 +1289,15 @@ $(async function () {
 		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
 		else $(".scrollToTop").css("opacity", 0)
 	})
-
-	// hide click blocking dumb ad container from webzdarma :D
-	$('body > div:not([class], [id])').eq(0).hide()
 })
 
-$.get("./parts/navbar.html", navbar => {
-	$("nav").html(translateDoc(navbar, "navbar"))
 
-	// Setting mobile picker in navbar to curr site name
-	if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
-	if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
-
-	$($(".settingsDropdown > option")[LANG]).attr("selected", true)
-
-	$(".settingsDropdown").on("change", () => {
-		let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
-		makeCookie(["lang", switchLang])
-		window.location.reload();
-	})
-
-})
+function logout() {
+	localStorage.removeItem("userInfo")
+	makeCookie(["accessToken", ""], true)
+	makeCookie(["cA", ""], true)
+	window.location.reload()
+}
 
 async function lists(list) {
 	$(".listInfo").show()
@@ -1167,7 +1320,6 @@ async function lists(list) {
 		}
 		boards = JSON.parse(decodedData);
 
-		$(".titleImage").attr("src", boards["titleImg"]);
 		$("title").html(`${jsStr["PREVIEW_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
 		LIST_NAME = null
 		LIST_CREATOR = "person"
@@ -1178,69 +1330,55 @@ async function lists(list) {
 	}
 	else if (list.type == "random") {
 		$.get("php/getLists.php?random=1", data => {
+			LIST_NAME = data[0][0]["name"]
+			LIST_CREATOR = data[0][0]["creator"].length == 0 ? data[1][0]["username"] : data[0][0]["creator"]
+
 			data = data[0]
-			boards = data["data"];
-			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-			<p style="font-size: var(--miniFont);margin: 0;">${data["creator"]}</p></div>`);
-			$(".titleImage").attr("src", boards["titleImg"]);
-			$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+			boards = data[0]["data"];
+			let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
+			let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
+			if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
 
-			LIST_ID = parseInt(data["id"])
+			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
+			<p class="listUsername">${profilePic}${listCreator}</p></div>`);
+			$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
-			LIST_NAME = data["name"]
-			LIST_CREATOR = data["creator"]
+			LIST_ID = parseInt(data[0]["id"])
 
-			generateList(boards, [encodeURIComponent(data["id"]), data["name"], "id"]);
+			$("#commAmount").text(data[0]["commAmount"])
+
+			generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
 
 			refreshComments()
 		})
 	}
-	else if (list.type == "id" || list.type == "year") {
-		if ([-2, -3].includes(list.id)) {
-			let listName = `Top ${list.id == -2 ? 10 : 15} LoF ${list.id == -2 ? 2019 : 2021}`
-
-			if (LIST_ID == -2 || window.location.pathname.match("upload") == -1) {
-				await $.get("./assets/2019.json", json => boards = json)
+	else if (list.type == "id") {
+		$.get("./php/getLists.php?id=" + list.id, function (data) {
+			if ([1, 2].includes(data)) {
+				$(".boards").append("<h2 class='titles'><img src='images/listError.svg' class='listErrors'>" + jsStr["DEADLIST"][LANG] + "</h2>")
+				$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
+				$(".listInfo").remove();
+				return
 			}
-			else if (LIST_ID == -3 || window.location.pathname.match("upload") != -1) {
-				await $.get("./assets/2021.json", json => boards = json)
+			else {
+				LIST_NAME = data[0]["name"]
+				LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
+
+				boards = data[0]["data"];
+				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
+				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
+				if (data[1][0] != undefined && data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
+
+				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
+					<p class="listUsername">${profilePic}${listCreator}</p></div>`);
+				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+
+				$("#commAmount").text(data[0]["commAmount"])
+
+				generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
 			}
-
-			$("#editBut").parent().remove()
-			$("title").html(`${listName} | ${jsStr["GDLISTS"][LANG]}`)
-
-			LIST_NAME = listName
-			LIST_CREATOR = "GamingasCZ"
-			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${LIST_NAME}</p>
-			<p style="font-size: var(--miniFont);margin: 0;">${LIST_CREATOR}</p></div>`);
-
-			generateList(boards, [list.id, listName, "id"]);
 		}
-
-		else {
-			$.get("./php/getLists.php?id=" + list.id, function (data) {
-				if ([1, 2].includes(data)) {
-					$(".boards").append("<h2 class='titles'><img src='images/listError.svg' class='listErrors'>" + jsStr["DEADLIST"][LANG] + "</h2>")
-					$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-					$(".listInfo").remove();
-					return
-				}
-				else {
-					boards = data["data"];
-					$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-					<p style="font-size: var(--miniFont);margin: 0;">${data["creator"]}</p></div>`);
-					$(".titleImage").attr("src", boards["titleImg"]);
-					$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
-
-					LIST_NAME = data["name"]
-					LIST_CREATOR = data["creator"]
-
-					generateList(boards, [encodeURIComponent(data["id"]), data["name"], "id"]);
-				}
-			}
-			)
-		}
-
+		)
 	}
 	else if (list.type == "pid") {
 		await $.get("./php/getLists.php?pid=" + list.id, function (data) {
@@ -1251,17 +1389,22 @@ async function lists(list) {
 				return
 			}
 			else {
-				boards = data["data"];
-				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data["name"]}</p>
-				<p style="font-size: var(--miniFont);margin: 0;">${data["creator"]}</p></div>`);
-				$(".titleImage").attr("src", boards["titleImg"]);
-				$("title").html(`${data["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+				LIST_NAME = data[0]["name"]
+				LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
 
-				LIST_ID = data["hidden"]
-				LIST_NAME = data["name"]
-				LIST_CREATOR = data["creator"]
+				boards = data[0]["data"];
+				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
+				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
+				if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
 
-				generateList(boards, [encodeURIComponent(data["hidden"]), data["name"], "pid"]);
+				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
+				<p class="listUsername">${profilePic}${listCreator}</p></div>`);
+				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
+
+				LIST_ID = data[0]["hidden"]
+				$("#commAmount").text(data[0]["commAmount"])
+
+				generateList(boards, [encodeURIComponent(data[0]["hidden"]), data[0]["name"], "pid"]);
 			}
 		}
 		)
@@ -1288,14 +1431,37 @@ async function lists(list) {
 	if (boards != undefined) {
 		let index = 0
 		let boxAppear = setInterval(() => {
-			if (index == Object.keys(boards).length - ADDIT_VALS - 2) { clearInterval(boxAppear) }
+			if (index == getListLen(boards)) { clearInterval(boxAppear) }
 			if ($(".box")[index] != undefined) $(".box")[index].style.transform = "none"
 			index++
 		}, 100);
 	}
+
+	// Show upload finish dialog
+	let uploadFinish = sessionStorage.getItem("listUpload")
+	if (uploadFinish != null) {
+		showFinishUpload(JSON.parse(uploadFinish)[1])
+	}
+
+	// Load ratings
+	$.get("php/rateAction.php", { "id": LIST_ID }, rates => {
+		// 0 - likes, 1 - dislikes
+		$("#likes").text(rates[0])
+		$("#dislikes").text(rates[1])
+
+		$("#likeBut").click(rateList)
+		$("#dislikeBut").click(rateList)
+
+		if (rates[2] == -2) { // Not logged in
+			return $(".rateButton").remove()
+		}
+
+		discolorRatings(rates[0], rates[1])
+		if (rates[2] >= 0) colorRatings(rates[2]) // colorize if has rated
+	})
 }
 
-function goToPWD() { window.location.hash = `#update` }
+function goToPWD() { hideFinishUpload(); window.location.hash = `#update` }
 
 let page = {} // [page, maxPage]
 function pageSwitch(num, data, parent, ctype) {
@@ -1379,7 +1545,8 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 	let reversed = JSON.parse(JSON.stringify(data)).reverse();
 
 	// Set max page text
-	let listAmount = Object.keys(reversed).length;
+	let revLen = Object.keys(reversed).length
+	let listAmount = revLen == 0 ? 1 : revLen
 	page[parent][1] = Math.ceil(listAmount / LIST_ONPAGE);
 
 	if (originalListData[parent].init) {
@@ -1395,7 +1562,10 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 			}
 		})
 
-		if (page[parent][1] == 0) $(`${parent} .page`).remove()
+		if (originalListData[parent].length == 0) {
+			$(`${parent} .page`).hide()
+			$(`${parent} .search`).hide()
+		}
 		else {
 			// Page -1 (left) action
 			$(`${parent} .pageBut`).eq(0).click(() => {
@@ -1416,16 +1586,18 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 
 		// Adds additional elements
 		addElements.forEach(el => {
-			$(`${parent} .browserTools`).append(el)
+			$(`${parent} .titleTools`).append(el)
 		});
 
 		delete originalListData[parent].init
 	}
 
 	// Draw pages
-	if (page[parent][1] > 0) {
+	if (Object.keys(data).length > 0) {
+		$(`${parent} .page`).show()
+		$(`${parent} .search`).show()
 		$(".page > *:not(.pageBut)").remove()
-		let keepSize = ( page[parent][0] < 3 || page[parent][1]-page[parent][0] < 4 ) ? 6 : 5
+		let keepSize = (page[parent][0] < 3 || page[parent][1] - page[parent][0] < 4) ? 6 : 5
 		for (let i = 0; i < clamp(page[parent][1], 0, keepSize); i++) {
 			$(".pageYes:last()").click(() => pageSwitch(i - 1, currentListData[parent], parent, cardType, 1))
 			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i + 1}</div>`)
@@ -1445,7 +1617,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 			$(".pageFirst").after(`<hr class="verticalSplitter">`)
 			$(".pageFirst").click(() => pageSwitch(0, currentListData[parent], parent, cardType, 1))
 		}
-		$(`.pageYes:contains(${page[parent][0]+1})`).attr("id", "pgSelected")
+		$(`.pageYes:contains(${page[parent][0] + 1})`).attr("id", "pgSelected")
 	}
 
 	// Draw Cards
@@ -1466,4 +1638,116 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 
 function doSearch(e) {
 	e.preventDefault()
+}
+
+function login(part) {
+	if (part == 1) { // Discord popup
+		window.location.replace(`https://discord.com/api/oauth2/authorize?client_id=989511463360139264&redirect_uri=${encodeURIComponent(window.location.origin+window.location.pathname+"php/accounts.php")}&response_type=code&scope=identify`)
+	}
+	else if (part == 2) {
+		let loginData = getCookie("logindata")
+		if (loginData) {
+			$("#popupBG").show()
+			$("#popupBG").css("opacity", 1)
+
+			loginData = JSON.parse(decodeURIComponent(loginData))
+			setPFP(loginData)
+			$("#app").prepend(`
+		<div class="uploadBG uploadText" id="loginPopup">
+			<img id="loginPFP" src="https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png">
+			<h2>${jsStr["WELCOME1"][LANG]}<cy>${loginData[0]}</cy>!</h2>
+			<h4>${jsStr["WELCOME2"][LANG]}</h4>
+			<button class="button eventButton uploadText" onclick="hideLoginPopup()">Ok!</button>
+		</div>
+			`)
+			localStorage.setItem("userInfo", JSON.stringify(loginData))
+		}
+	}
+}
+
+function hideLoginPopup() {
+	$("#popupBG").css("opacity", 0)
+	setTimeout(() => { $("#popupBG").hide() }, 100);
+	$("#loginPopup").fadeOut(100, () => $("#loginPopup").remove())
+}
+
+let setOpened = false
+function openSettings() {
+	$('.settingsMenu').fadeToggle(100)
+	if (!setOpened) {
+		let sPos = $(".settingsMenu").position()
+		let sWidth = $(".settingsMenu").width()
+		$("#userLoggedIn").css("top", `calc(${sPos.top}px - 1em)`)
+		$("#userLoggedIn").css("right", `calc(${sWidth / 2}px + 0.75em - 1em)`)
+		$("#userLoggedIn").css("transform", "scale(2)")
+		$("#userLoggedIn").css("border", "var(--siteBackground) 2px solid")
+	}
+	else {
+		$("#userLoggedIn").css("top", `0`)
+		$("#userLoggedIn").css("right", `0`)
+		$("#userLoggedIn").css("transform", "scale(1)")
+		$("#userLoggedIn").css("border", "")
+	}
+	// $("#userLoggedIn").toggleClass("button")
+	setOpened = !setOpened
+}
+
+function setPFP(userInfo) {
+	$(".loginBut").remove()
+	$(".logContainer").show()
+	$(".setLoginText").text(userInfo[0])
+	$(".setLoginText").after(`
+	<div onclick="logout()" class="button eventButton uploadText settingsButton noMobileResize"><img src="images/logout.svg">${jsStr["LOGOUT"][LANG]}</div>
+	`)
+
+	$(".userIcon").attr("id", "userLoggedIn")
+	if (userInfo[2] == null) {
+		$(".userIcon").attr("src", "images/defaultPFP.webp")
+	}
+	else {
+		$(".userIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
+	}
+}
+
+function colorRatings(like) {
+	if (like) {
+		$("#likeBut").css("background", "radial-gradient(#20c68f, rgb(23, 81, 35))")
+		$("#likeBut").css("box-shadow", "#20c68f80 0px 0px 29px")
+
+		$(":root").css("--likeGlow", "brightness(6)")
+
+		$("#dislikeBut").css("background", "#1c0505")
+	}
+	else {
+		$("#dislikeBut").css("background", "radial-gradient(rgb(72, 0, 24), rgb(179, 7, 7))")
+		$("#dislikeBut").css("box-shadow", "#ff0c00c9 0px 0px 29px")
+		$(":root").css("--dislikeGlow", "brightness(6)")
+
+		$("#likeBut").css("background", "#051c0c")
+	}
+
+}
+function discolorRatings(l, d) {
+	$("#likeBut").css("background", "")
+	$("#likeBut").css("box-shadow", "")
+	$("#dislikeBut").css("background", "")
+	$("#dislikeBut").css("box-shadow", "")
+	$(":root").css("--likeGlow", "none")
+	$(":root").css("--dislikeGlow", "none")
+
+	// make like bar
+	if (l + d == 0) $(".likeFill").css("width", "") // reset bar, this would result in dividing by zero :O
+	$(".likeFill").css("width", `${l / (l + d) * 100}%`)
+}
+
+function rateList(el) {
+	let smashedLike = 0 | el.target.id == "likeBut"
+	let postArray = { "id": LIST_ID, "action": smashedLike }
+	$.post("php/rateAction.php", postArray, data => {
+		$("#likes").text(data.ratings[0])
+		$("#dislikes").text(data.ratings[1])
+		discolorRatings(data.ratings[0], data.ratings[1])
+		if (data.result == "deleted") return
+		else colorRatings(smashedLike)
+	})
 }

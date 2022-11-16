@@ -31,6 +31,8 @@ It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Lev
 - [X] Languages
 - [X] Saving lists
 - [X] Responsive layout
+- [X] Badges (2P, high obj.)
+- [X] Using PFP's from Twitter/Youtube
 #### Todo:
 
 - [ ] Comment replies
@@ -38,6 +40,4 @@ It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Lev
 - [ ] Tick off finished levels
 - [ ] Linking your GD account
 - [ ] Card backgrounds
-- [ ] Badges (2P, high obj.)
-- [ ] Using PFP's from Twitter/Youtube
 - [ ] Tournaments
