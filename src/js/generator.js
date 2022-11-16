@@ -1642,7 +1642,7 @@ function doSearch(e) {
 
 function login(part) {
 	if (part == 1) { // Discord popup
-		window.location.replace("https://discord.com/api/oauth2/authorize?client_id=989511463360139264&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fphp%2Faccounts.php&response_type=code&scope=identify")
+		window.location.replace(`https://discord.com/api/oauth2/authorize?client_id=989511463360139264&redirect_uri=${encodeURIComponent(window.location.origin+window.location.pathname+"php/accounts.php")}&response_type=code&scope=identify`)
 	}
 	else if (part == 2) {
 		let loginData = getCookie("logindata")

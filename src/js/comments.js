@@ -423,13 +423,8 @@ async function displayComments(data) {
 
   let ind = 0
   data[0].forEach(c => {
+    data[0][ind].avatar = `images/oldPFP.png` // Old comments
     data[1].forEach(u => {
-      // Old comments
-      if (c.uid == -1) {
-        data[0][ind].avatar = `images/oldPFP.png`
-        return
-      }
-
       if (c.uid == u.id) {
         data[0][ind].username = u.username
         if (u.avatar_hash == "") data[0][ind].avatar = "images/defaultPFP.webp" // user is using default dc pfp for some reason

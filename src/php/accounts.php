@@ -29,7 +29,7 @@ if (sizeof($_GET) == 1) {
     setcookie("logindata", $userInfo, time()+30, "/");
 
     // Encrypt and save access token into a cookie
-    setcookie("access_token", encrypt($accessInfo["access_token"]."|".time()-$accessInfo["expires_in"]."|".$ok["id"]), time()+$accessInfo["expires_in"], "/");
+    setcookie("access_token", encrypt(($accessInfo["access_token"])."|".(time()-$accessInfo["expires_in"])."|".($ok["id"])), time()+$accessInfo["expires_in"], "/");
 
     // Save data to database
     $mysqli = new mysqli($hostname, $username, $password, $database);
