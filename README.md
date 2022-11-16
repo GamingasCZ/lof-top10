@@ -6,8 +6,8 @@ It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Lev
 ### Check it out [here](http://gamingas.wz.cz/lofttop10/)
 
 # Screenshots
-![list](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/Screenshot_20220710_215138.png)
-![editor](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/Screenshot_20220710_215236.png)
+![list](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/list.png)
+![editor](https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/github/editor.png)
 
 
 # Features
@@ -41,10 +41,3 @@ It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Lev
 - [ ] Linking your GD account
 - [ ] Card backgrounds
 - [ ] Tournaments
-
-# Assets
-Most of the assest belong to [RobTop Games](http://robtopgames.com)
-
-Pusab ([License](https://www.fontsquirrel.com/license/Pusab))
-
-Oxygene ([License](http://pizzadude.dk/site/))

@@ -437,8 +437,13 @@ function moveCard(position, currID) {
             listPlacement--
         }
     }
+<<<<<<< HEAD
     else if (position == "down" & currID < getListLen(levelList)) {
         if (listPlacement < getListLen(levelList)) {
+=======
+    else if (position == "down" & currID < getLevelCount()) {
+        if (listPlacement < Object.keys(levelList).length - 1 - ADDIT_VALS) {
+>>>>>>> master
             refreshCardDetails(listPlacement)
             $(".card" + (listPlacement + 1)).after($(".card" + (listPlacement)));
 
@@ -460,7 +465,11 @@ function moveCard(position, currID) {
 }
 
 function updateSmPos() {
+<<<<<<< HEAD
     for (i = 1; i < getListLen(levelList) + 1; i++) {
+=======
+    for (i = 1; i < getLevelCount(); i++) {
+>>>>>>> master
         let chosenColor = $("#top" + i).css("background-color");
         $("#smtop" + i).css("background-color", chosenColor);
         $("#smtop" + i).css("border-color", chosenColor);
@@ -485,7 +494,11 @@ function updateSmPos() {
 }
 
 function displayCard(id) {
+<<<<<<< HEAD
     if (id > 0 & id < getListLen(levelList) + 1) {
+=======
+    if (id > 0 & id < getLevelCount()) {
+>>>>>>> master
         $(".smallPosEdit").show();
         $("#smtop" + id.toString()).hide();
         $(".positionEdit").hide();
@@ -589,7 +602,11 @@ function searchFaves(data) {
 }
 
 function addFromFaves() {
+<<<<<<< HEAD
     if (getListLen(levelList) + 1 > 50) return
+=======
+    if (getLevelCount() > 50) return
+>>>>>>> master
 
     $(".levelPickerContainer").text("")
     $(".savedFilter").val("")
@@ -634,7 +651,11 @@ function maxAddedDialog() {
 }
 
 function addPicked(ind) {
+<<<<<<< HEAD
     var listLenght = getListLen(levelList) + 1;
+=======
+    var listLenght = getLevelCount();
+>>>>>>> master
     levelList[listLenght] = {
         "levelName": favesData[ind][0],
         "creator": favesData[ind][1],
@@ -656,7 +677,11 @@ var OGfavesData
 
 function makeFavesPicker() {
     $(".levelPickerContainer").empty()
+<<<<<<< HEAD
     if (getListLen(levelList) + 1 > 50) {
+=======
+    if (getLevelCount() > 50) {
+>>>>>>> master
         maxAddedDialog()
         return
     }
@@ -699,6 +724,7 @@ function makeFavesPicker() {
     })
 }
 
+<<<<<<< HEAD
 class Level {
     constructor(levelName = "", creator = "", levelID = -1, video = "", color = "", difficulty = [0, 0], tags = []) {
         this.levelName = levelName;
@@ -713,6 +739,11 @@ class Level {
 
 async function addLevel() {
     var listLenght = getListLen(levelList) + 1;
+=======
+const getLevelCount = () => Object.keys(levelList).filter(x => x.match(/\d+/)).length+1
+async function addLevel() {
+    var listLenght = getLevelCount();
+>>>>>>> master
     if (listLenght == 1) {
         // Removing tutorial
         $("#mainContent").text("");
@@ -996,7 +1027,12 @@ function openTagPicker(lp) {
 
     $('.cardContainer' + lp).append(`
     <div class="difficultyPicker" style="height: 4.7em;">
+<<<<<<< HEAD
     <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;"><div class="addTagHelp">${jsStr["TAGADDHELP"][LANG]}</div></div>        <div style="display: flex;align-items: center;">
+=======
+        <div class="tagViewer" style="display: flex; gap: 1em; overflow: auto; align-items: center;"><div class="addTagHelp">${jsStr["TAGADDHELP"][LANG]}</div></div>
+        <div style="display: flex;align-items: center;">
+>>>>>>> master
             <img style="width:2em; margin-right: 0.5em;" src="./images/plus.svg" title="${jsStr["ADDTAG"][LANG]}" class="button diffOptions" onclick="tagPopup(${lp})">
         </div>
     </div>`)
@@ -1004,7 +1040,11 @@ function openTagPicker(lp) {
     if (levelList[lp]["tags"] == undefined) {
         levelList[lp]["tags"] = []
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> master
     if (levelList[lp]["tags"].length > 0) {
         $(".addTagHelp").remove()
     }
@@ -1019,11 +1059,19 @@ function removeLevel(id) {
     delete levelList[($(".listPosition" + id.toString()).val())];
 
     // Enables the add button
+<<<<<<< HEAD
     if (getListLen(levelList) + 1 < 51) {
         $(".addCardButton").removeClass("disabled");
     }
 
     for (j = id + 1; j <= getListLen(levelList) + 1; j++) {
+=======
+    if (getLevelCount() < 51) {
+        $(".addCardButton").removeClass("disabled");
+    }
+
+    for (j = id + 1; j <= getLevelCount(); j++) {
+>>>>>>> master
         updateCardData(j, j - 1);
         availFill(0, $(".cardLName" + id).text(), "freedom69", id)
         availFill(1, $(".cardLCreator" + id).text(), "freedom69", id)

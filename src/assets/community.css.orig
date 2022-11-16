@@ -1354,6 +1354,7 @@ input:disabled {
 	display: flex;
 	align-items: center;
 	gap: 0.3em;
+<<<<<<< HEAD
 }
 
 .browserButton {
@@ -1370,4 +1371,6 @@ input:disabled {
     display: flex;
     gap: 1.5em;
     width: max-content;
+=======
+>>>>>>> master
 }

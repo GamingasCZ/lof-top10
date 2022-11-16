@@ -1,26 +1,51 @@
 //Holba buenas hyperhackeře :D. Nyní sleduješ můj hrozný kód :).
 
+<<<<<<< HEAD
 function checkJson(data, isPreview = false) {
     try {
         // Kontrola názvů atd.
         let listName = $("#listnm").val();
+=======
+function checkJson(data, isPreview=false) {
+    try {
+        // Kontrola názvů atd.
+        let invalidNames = ["Gamingas", "GamingasCZ"];
+
+        let listName = $("#listnm").val();
+        let listCreator = $("#creatornm").val();
+>>>>>>> master
 
         if (listName.length < 3) { throw (jsStr["LIST_L"][LANG]); }
         if (listName.length > 40) { throw (jsStr["LIST_TOOL"][LANG]); }
 
+<<<<<<< HEAD
+=======
+        if (listCreator.length < 3) { throw (jsStr["CREA_L"][LANG]); }
+        if (listCreator.length > 20) { throw (jsStr["CREA_TOOL"][LANG]); }
+        if (listCreator.toLowerCase().includes("gamingas")) { throw (jsStr["GG_NEVER"][LANG]); }
+
+>>>>>>> master
         // 1/3 Je to vůbec JSON?
         var parsedData = JSON.parse(data);
         $(".errorBox").text(jsStr["SUCC_UPL"][LANG]);
 
         // 1.5/3 Je seznam prázdný?
+<<<<<<< HEAD
         if (getListLen(parsedData) == 0) { throw (jsStr["EMPT_L"][LANG]) }
+=======
+        if (Object.keys(parsedData).length - ADDIT_VALS < 2) { throw (jsStr["EMPT_L"][LANG]) }
+>>>>>>> master
 
         if (data.length > 25000) {
             throw (`${jsStr["TOOBIG1"][LANG]} (${(data.length / 25000).toFixed(2)}% ${jsStr["TOOBIG2"][LANG]}).${jsStr["TOOBIG3"][LANG]}`)
         }
 
         // 2/3 Neobsahuje prázdné jméno/tvůrce
+<<<<<<< HEAD
         for (i = 1; i < getListLen(parsedData) + 1; i++) {
+=======
+        for (i = 1; i < Object.keys(parsedData).length - ADDIT_VALS; i++) {
+>>>>>>> master
             if (parsedData[i] == undefined) {
                 throw (i + ". místo neexistuje. Bug mi nahlaš (nebo si nehrej s JSONem :D).")
             }
@@ -40,7 +65,11 @@ function checkJson(data, isPreview = false) {
             $(".errorBox").html(jsStr["NO_JSON"][LANG]);
         }
         else {
+<<<<<<< HEAD
             if (isPreview) error += "<br><br><cy>Tip: " + jsStr["DBLCLKTIP"][LANG] + ".</cy>"
+=======
+            if (isPreview) error += "<br><br><cy>Tip: "+jsStr["DBLCLKTIP"][LANG]+".</cy>"
+>>>>>>> master
             $(".errorBox").html(error);
         }
 
@@ -64,7 +93,11 @@ function showBGColorPicker() {
         $(".bgcolorContainer").append(makeColorElement(hue, val2))
 
         $(".bgcolorContainer >> input")[0].addEventListener("input", k => {
+<<<<<<< HEAD
             $(":root").css("--siteBackground", HSLtoHEX(k.target.value, "37%", val))
+=======
+            $("body").css("background-color", HSLtoHEX(k.target.value, "37%", val))
+>>>>>>> master
             hue = k.target.value
             $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
             $("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
@@ -75,7 +108,11 @@ function showBGColorPicker() {
         })
         $(".bgcolorContainer >> input")[1].addEventListener("input", k => {
             let hue = getHueFromHEX(levelList.pageBGcolor)
+<<<<<<< HEAD
             $(":root").css("--siteBackground", HSLtoHEX(hue, "37%", (k.target.value * 2) + "%"))
+=======
+            $("body").css("background-color", HSLtoHEX(hue, "37%", (k.target.value * 2) + "%"))
+>>>>>>> master
             $(":root").css("--greenGradient", `linear-gradient(9deg, hsl(${hue},23.1%,10.2%), hsl(${hue},90.6%,16.7%))`)
             $("[name='theme-color']").attr("content", HSLtoHEX(hue, "91%", "13%"))
             val = (k.target.value * 2) + "%"
@@ -92,18 +129,25 @@ function showBGColorPicker() {
 }
 
 function uploadList() {
+<<<<<<< HEAD
     if ($("#submitbutton").hasClass("disabled")) return
 
+=======
+>>>>>>> master
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
         $("#listData").attr("value", JSON.stringify(levelList));
 
+<<<<<<< HEAD
         $("#submitbutton").prepend("<img class='loading' src='images/loading.webp'>")
         $("#submitbutton").addClass("disabled")
         $(".editables").addClass("disabled")
         $(".editables").css("pointer-events", "none")
         $("#listnm").addClass("disabled")
         $("#listnm").css("pointer-events", "none")
+=======
+        $("#submitbutton").replaceWith($("<img class='loading' style='animation-name: loading;' src='images/loading.webp'>"))
+>>>>>>> master
 
         // Is the "hidden" checkbox checked?
         if ($("input[name='hidden']").attr("checked") == "checked") { var listHidden = "1" }
@@ -112,12 +156,17 @@ function uploadList() {
         let postData = {
             "listData": JSON.stringify(levelList),
             "lName": $("#listnm").val(),
+<<<<<<< HEAD
+=======
+            "lCreator": $("#creatornm").val(),
+>>>>>>> master
         }
         if (listHidden == "1") postData["hidden"] = listHidden
 
         $.post("./php/sendList.php", postData, function (data) {
             //0 - password, 1 - listID
             // Change depending on your website
+<<<<<<< HEAD
             if (typeof data == "object") {
                 sessionStorage.setItem("listUpload",JSON.stringify([data[0], 0]))
                 switchLoFList(data[0])
@@ -143,12 +192,40 @@ function uploadList() {
             $("#listnm").removeClass("disabled")
             $("#listnm").css("pointer-events", "")
             $(".loading").remove()
+=======
+            let error = data.length != 2
+
+            let currWebsite
+            let pstr
+            if (!error) {
+                currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[1]}`;
+                pstr = `<br>${jsStr["KEEP_PWD"][LANG]}: <b style="color: lime;">${data[0]}</b>`;
+            }
+            let sendMess = !error ? jsStr["LIST_SUCC_UPL"][LANG] + " " + pstr : jsStr["LIST_FAIL_UPL"][LANG] + data
+
+            $(".uploaderDialog").html(`
+                <img style="padding-left: 3%" src=./images/${!error ? "check" : "error"}.webp >
+                <p class="uploadText" style="padding: 0 3% 0 3%">${sendMess}</p>
+
+                <div style="display:flex; flex-direction: column${error ? ';display: none;' : ';'}">
+                    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
+                    <div class="uploadText shareContainer">
+                        <p class="shareBG uploadText">${currWebsite}</p>
+                        <img class="button shareBut" src="./images/openList.webp" onclick="window.open('${currWebsite}','_blank')">
+                    </div>
+                </div >
+
+            `);
+>>>>>>> master
         })
     }
 }
 function updateList() {
+<<<<<<< HEAD
     if ($("#submitbutton").hasClass("disabled")) return
 
+=======
+>>>>>>> master
     let isValid = checkJson(JSON.stringify(levelList));
     if (isValid) {
         // Is the "hidden" checkbox checked?
@@ -167,13 +244,18 @@ function updateList() {
 
         $("#submitbutton").prepend("<img class='loading' src='images/loading.webp'>")
         $("#submitbutton").addClass("disabled")
+<<<<<<< HEAD
         $(".editables").addClass("disabled")
         $(".editables").css("pointer-events", "none")
         $(".removeList").hide()
+=======
+        $("#removebutton").addClass("disabled")
+>>>>>>> master
 
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
             if (typeof data == "object") {
+<<<<<<< HEAD
                 sessionStorage.setItem("listUpload",JSON.stringify([data[0], 1]))
                 switchLoFList(data[0])
                 return
@@ -190,6 +272,40 @@ function updateList() {
             $(".editables").css("pointer-events", "")
             $(".loading").remove()
             $(".removeList").show()
+=======
+                let currWebsite = `${window.location.href.split(window.location.hash)[0]}#${data[0]}`;
+                $(".uploaderDialog").html(`
+                <div style="padding: 3%">
+                    <img src="./images/check.webp" style="width:7%;">
+                    <p class="uploadText">${jsStr["LIST_UPDATED"][LANG]}</p>
+                </div>
+
+                <div style="display:flex; flex-direction: column;">
+                    <h6 class="shareTitle uploadText">${jsStr["SHARE"][LANG]}</h6>
+                    <div class="uploadText shareContainer">
+                        <p class="shareBG uploadText">${currWebsite}</p>
+                        <img class="button shareBut" src="./images/openList.webp" onclick="window.open('${currWebsite}','_blank')">
+                    </div>
+                 </div >
+                `)
+                return
+            }
+
+            // List is unchanged
+            else if (data == 4) {
+                $(".errNotif").fadeIn(100);
+                $(".errorBox").html(jsStr["LIST_UNCHANGED"][LANG]);
+                setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
+            }
+
+            else {
+                $(".errNotif").fadeIn(100);
+                $(".errorBox").html(jsStr["LIST_UPFAIL"][LANG]);
+                setTimeout(() => { $(".errNotif").fadeOut(200) }, 2000);
+            }
+            $("#submitbutton").removeClass("disabled")
+            $("#removebutton").removeClass("disabled")
+>>>>>>> master
         })
     }
 }
@@ -197,6 +313,7 @@ function updateList() {
 var deeta = '';
 var ogDeeta = '';
 const DEFAULT_LEVELLIST = {
+<<<<<<< HEAD
     "titleImg": ["", 0, 33, 1, true], // URL, position, coverage, halign, gradient
     "pageBGcolor": "#020202",
     "diffGuesser": [false, true, true], // enabled, diff, rating
@@ -214,6 +331,14 @@ function makeEditor(update) {
         $("#loginHelp").remove()
     }
 
+=======
+    "titleImg": "",
+    "pageBGcolor": "#020202",
+    "diffGuesser": [false, true, true]
+}
+
+function makeEditor(update) {
+>>>>>>> master
     // Do nothing if in editor
     $(".pickerContainer").on("click", showBGColorPicker)
     if (window.location.search.includes("edit")) $(".uploader").show()
@@ -222,10 +347,53 @@ function makeEditor(update) {
     $(".previewButton").on("click", () => preview(false))
     $(".previewButton").on("dblclick", () => preview(true))
 
+<<<<<<< HEAD
+=======
+    // List image preview action
+    $("#imageArrow").on("click", function () {
+        $("#imgError").text("")
+        if ($(this).css("transform").match("-1")) {
+            // Hide preview
+            $("#imageArrow").css("transform", "scaleY(1)");
+            $("#imageArrow").attr("title", jsStr["SH_IMPREV"][LANG])
+            $(".imgPreview").slideUp(200)
+        }
+        else {
+            // Show preview
+            $("#imageArrow").css("transform", "scaleY(-1)");
+            $("#imageArrow").attr("title", jsStr["HI_IMPREV"][LANG])
+            $("#imagePrev").css("width", "40vw")
+            $("#imagePrev").attr("src", $(".titImgInp").val())
+            $(".imgPreview").slideDown(200)
+        }
+    })
+    // When the image failed to load (sad crying emoji)
+    $("#imagePrev").on("error", function () {
+        $("#imagePrev").css("width", "10%")
+        $("#imagePrev").attr("src", "./images/error.webp")
+        $("#imgError").text(jsStr["IM_NOTFOUND"][LANG])
+    })
+    // Change preview image on URL change
+    $(".titImgInp").on("change", function () {
+        if ($("#imageArrow").css("transform").match("-1")) {
+            $("#imgError").text("")
+            $("#imagePrev").css("width", "40vw")
+            $("#imagePrev").attr("src", $(".titImgInp").val())
+        }
+    })
+    // Showing color picker
+    if (update) {
+        $("#passEditor").show()
+        generateFromJSON(1)
+        isHidden = $("input[name='hidden']").attr("checked") == "checked";
+    }
+
+>>>>>>> master
     $("img[for='diffGuesser']").click(() => {
         $(".settingSubbox").slideToggle(50);
         checkCheckbox("diffGuesser");
         $(".diffSelBut img").removeClass("disabled")
+<<<<<<< HEAD
         levelList.diffGuesser = [$("input[name='diffGuesser']").prop("checked"), true, true]
     })
 
@@ -235,11 +403,17 @@ function makeEditor(update) {
 
     $("img[for=transCards]").click(() => { checkCheckbox("transCards", (x, y) => levelList.translucent = y) })
 
+=======
+        levelList.diffGuesser = [$("input[name='diffGuesser']").prop("checked"),true,true]
+    })
+
+>>>>>>> master
     // Show alert if creating list
     window.addEventListener('beforeunload', pageExit);
 
     $("#mainContent").append(jsStr["HELP_TEXT"][LANG]);
     $(".savedFilter").on("keyup", searchFaves)
+<<<<<<< HEAD
 
     if (update) {
         let info = JSON.parse(sessionStorage.getItem("listProps"))
@@ -266,11 +440,23 @@ function makeBrowser() {
     $.get("./parts/listBrowser.html", dt => {
         hash = window.location.hash
         let search = hash.includes("!") ? hash.split("!")[1] : ""
+=======
+}
+
+const pageExit = exit => {
+    if (Object.keys(levelList).length > ADDIT_VALS+1) exit.preventDefault();
+}
+
+function makeBrowser(search) {
+    let isSearching = false
+    $.get("./parts/listBrowser.html", dt => {
+>>>>>>> master
         if (search != "") {
             $("#searchBar").val(decodeURIComponent(search))
             isSearching = true
         }
 
+<<<<<<< HEAD
         // Add switch buttons
         if (hasLocalStorage() && localStorage.getItem("userInfo") != null) {
             $(".titleTools").after(`<div class="browserContainer">
@@ -298,11 +484,18 @@ function makeBrowser() {
             changeUsernames(data)
 
             listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
+=======
+        // Generates stuff
+        $.get("./php/getLists.php", data => {
+            if (typeof data != "object") { $("#communityContainer").text(jsStr["NO_RES"][LANG]); return; }
+            listViewerDrawer(data, "#communityContainer", 4, [0,0], jsStr["CLISTS"][LANG])
+>>>>>>> master
             if (isSearching) $("#app .doSearch").click()
         });
     })
 }
 
+<<<<<<< HEAD
 function changeUsernames(data) {
     let ind = 0
     data[0].forEach(c => {
@@ -362,6 +555,13 @@ function closeRmScreen() {
     $("#app > .boom").animate({ "opacity": 0 }, 500, function () {
         $("#app > .boom").css("background-color", "white")
         $("#app > .boom").css("display", "none")
+=======
+function closeRmScreen() {
+    $(".removeScreen").fadeOut(100)
+    $(".boom").animate({ "opacity": 0 }, 500, function () {
+        $(".boom").css("background-color", "white")
+        $(".boom").css("display", "none")
+>>>>>>> master
         $(".removeScreen").remove()
     })
 }
@@ -382,7 +582,11 @@ function confirmDelete() {
 
 function removeList() {
     // Confirm remove
+<<<<<<< HEAD
     $("#app > .boom").append(`<div class="uploadText removeScreen">
+=======
+    $(".boom").append(`<div class="uploadText removeScreen">
+>>>>>>> master
     <img id="rmimg1" class="removeImg" style="width: 23%;" src="./images/szn2.webp"><br />
     <img id="rmimg2" class="removeImg" style="width: 23%; margin-top: -5.4vw;" src="./images/szn1.webp">
     <p id="removeText" style="text-align: center; font-size: var(--bigFont)">${jsStr["CONF_DEL"][LANG]}</p>
@@ -392,9 +596,15 @@ function removeList() {
     <div>
     </div>`);
 
+<<<<<<< HEAD
     $("#app > .boom").css("background-color", "black");
     $("#app > .boom").css("display", "block");
     $("#app > .boom").animate({ "opacity": 1 }, 500, function () {
+=======
+    $(".boom").css("background-color", "black");
+    $(".boom").css("display", "initial");
+    $(".boom").animate({ "opacity": 1 }, 500, function () {
+>>>>>>> master
         $("#removeText").fadeIn(2000);
         $(".rmButSet").animate({ "opacity": 1 }, 2000);
     })
@@ -402,11 +612,16 @@ function removeList() {
     $("#rmbutton").on("mouseover", function () {
         $("#rmimg1").css("transform", "translateY(-5%)");
         $("#rmimg2").css("transform", "translateY(5%)");
+<<<<<<< HEAD
         $("#app > .boom").css("background-color", "rgb(11, 0, 0)");
+=======
+        $(".boom").css("background-color", "rgb(11, 0, 0)");
+>>>>>>> master
     })
     $("#rmbutton").on("mouseout", function () {
         $("#rmimg1").css("transform", "translateY(0%)");
         $("#rmimg2").css("transform", "translateY(0%)");
+<<<<<<< HEAD
         $("#app > .boom").css("background-color", "rgb(0, 0, 0)");
     })
 }
@@ -420,10 +635,20 @@ function murderList() {
             $(".boomReal").remove()
         });
     });
+=======
+        $(".boom").css("background-color", "rgb(0, 0, 0)");
+    })
+}
+function murderList() {
+    $(".boom").css("display", "initial");
+
+    $(".boom").animate({ "opacity": 1 }, 2000, () => window.location.hash = "#editor");
+>>>>>>> master
     $("#levelUpload").addClass("killList");
 }
 
 function checkCheckbox(changeVal, runFun = null) {
+<<<<<<< HEAD
     if ($(`img[for="${changeVal}"]`).attr("src").match("On") != null) {
         $(`img[for="${changeVal}"]`).attr("src", "images/modernCheck.svg")
         $(`input[name="${changeVal}"]`).attr("checked", false)
@@ -444,4 +669,16 @@ function lockQuotes() {
     $(".loginEmoji").attr("src", `images/emoji/${faces[pick]}.webp`)
     $(".quote").text(quotes[pick])
 
+=======
+	if ($(`img[for="${changeVal}"]`).attr("src").match("On") != null) {
+		$(`img[for="${changeVal}"]`).attr("src", "images/modernCheck.svg")
+		$(`input[name="${changeVal}"]`).attr("checked", false)
+		if (runFun != null) runFun(changeVal, false)
+	}
+	else {
+		$(`img[for="${changeVal}"]`).attr("src", "images/modernCheckOn.svg")
+		$(`input[name="${changeVal}"]`).attr("checked", true)
+		if (runFun != null) runFun(changeVal, true)
+	}
+>>>>>>> master
 }
