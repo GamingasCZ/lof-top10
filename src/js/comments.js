@@ -195,7 +195,8 @@ function displayPanel(what) {
     // Emoji
     $(".colorPicker").hide();
     $(".listEmoji").show();
-  } else {
+  }
+  else if (what == 2) {
     // Color picker
     if ($(".colorPicker").length < 1) {
       let color = makeColorElement(
@@ -235,6 +236,10 @@ function displayPanel(what) {
 
     $(".colorPicker").show();
     $(".listEmoji").hide();
+  }
+  else {
+    // Polls
+    
   }
 
   if (lastOpenedPanel == what || $(".emojiPanel").css("display") == "none") {
