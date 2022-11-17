@@ -1072,7 +1072,7 @@ async function makeHP() {
 	let savedLists = null
 	if (hasLocalStorage()) {
 		savedLists = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")))
-		$(".homeLoginInfo").remove()
+		if (localStorage.getItem("userInfo") != null) $(".homeLoginInfo").remove()
 	}
 
 	if (savedLists != null && savedLists !== false && savedLists.length > 0) {
