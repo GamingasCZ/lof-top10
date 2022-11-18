@@ -1500,6 +1500,39 @@ function pageSwitch(num, data, parent, ctype) {
 	})
 }
 
+async function onlinePageSwitch(num, online, parent, ctype) {
+	online.page = clamp(num, 0, page[parent][1]-1)
+
+	// Without redrawing, only page scrollbar is set
+	await listOnlineViewerDrawer(online, parent, ctype)
+
+	if (page[parent][0] < 3) { // Sets first 4 page numbers
+		for (let i = 0; i < 5; i++) {
+			$(".pageYes").eq(i).text(clamp(i + 1, 0, page[parent][1]))
+		}
+	}
+	else if (page[parent][0] + 4 > page[parent][1]) { // Sets final pages
+		for (let i = 0; i < 6; i++) {
+			$(".pageYes").eq(5 - i).text(clamp(page[parent][1] - i, 0, page[parent][1]))
+		}
+	}
+	else if (page[parent][0]) {
+		for (let i = 0; i < 5; i++) {
+			$(".pageYes").eq(i).text(clamp(num - 1 + i, 0, page[parent][1]))
+		}
+	}
+	$(".pageYes").off("click")
+	Object.values($(".pageYes")).slice(0, -2).forEach(el => {
+		$(el).click(() => onlinePageSwitch($(el).text() - 1, online, parent, ctype))
+	})
+
+
+	$(".pageYes").attr("id", "")
+	Object.values($(".pageYes")).slice(0, -2).forEach(x => {
+		if ($(x).text() == page[parent][0] + 1) $(x).attr("id", "pgSelected")
+	})
+}
+
 function search(data, parent, ctype) {
 	let query = $(`${parent} #searchBar`).val();
 	if (query == "") {
@@ -1626,6 +1659,92 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 	// Draw Cards
 	if (Object.keys(data).length > 0) {
 		homeCards(data, `${parent} .customLists`, cardType, LIST_ONPAGE, page[parent][0])
+	}
+	else {
+		// No favorites
+		if (cardType == 1) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center; color: #f9e582">${jsStr["NOFAVED"][LANG]}</p>`);
+		// No comments
+		else if (cardType == 6) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center;">${jsStr["NOCOMM"][LANG]}</p>`);
+		// Object is empty
+		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
+	}
+}
+
+async function listOnlineViewerDrawer(online, parent, cardType, disableControls = [0, 0], title = "", addElements = []) {
+	let data = [];
+	let init = 0;
+	await $.get("php/"+online["path"].match(/[A-z]*\.php/), online, response => {
+		originalListData[parent] = response; currentListData[parent] = response;
+		page[parent] = [parseInt(response[2].page), response[2].maxPage]
+		data = response
+		if (online.startID == 999999) {init = 1; online.startID = response[2].startID}
+	})
+
+	// Clear old cards
+	$(`${parent} .customLists`).empty();
+
+	// List search button action
+	$(`${parent} .doSearch`).one("click", () => {
+		online.searchQuery = $(`${parent} #searchBar`).val()
+		listOnlineViewerDrawer(online, parent, cardType, disableControls, title, addElements)
+		
+	})
+
+	$(`${parent} .pageBut`).off("click")
+	$(`${parent} .pageBut`).eq(0).one("click", () => onlinePageSwitch(online.page-1, online, parent, cardType)) // Page -1 (left) action
+	$(`${parent} .pageBut`).eq(1).one("click", () => onlinePageSwitch(online.page+1, online, parent, cardType)) // Page +1 (right) action
+
+	if (init) {
+		if (originalListData[parent].length == 0) {
+			$(`${parent} .page`).hide()
+			$(`${parent} .search`).hide()
+		}
+
+		// Remove disabled controls
+		for (let i = 0; i < disableControls.length; i++) { if (disableControls[i]) $(`${parent} .browserTools`).children().eq(i).remove() }
+
+		// Sets title for browser
+		if (title == "") $(`${parent} .titles`).remove()
+		else $(`${parent} .titles`).text(title)
+
+		// Adds additional elements
+		addElements.forEach(el => {
+			$(`${parent} .titleTools`).append(el)
+		});
+	}
+
+	// Draw pages
+	if (currentListData[parent].length > 0) {
+		$(`${parent} .page`).show()
+		$(`${parent} .search`).show()
+		$(".page > *:not(.pageBut)").remove()
+		let keepSize = (page[parent][0] < 3 || page[parent][1] - page[parent][0] < 4) ? 6 : 5
+		for (let i = 0; i < clamp(page[parent][1], 0, keepSize); i++) {
+			$(".pageYes:last()").click(() => onlinePageSwitch(i-1, online, parent, cardType))
+			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i + 1}</div>`)
+		}
+		$(".pageYes:last()").click(() => onlinePageSwitch(page[parent][1] - 1, online, parent, cardType))
+
+		// Add jump to last page
+		if (page[parent][1] > 6 && page[parent][0] + 3 < page[parent][1]) {
+			$(".pageBut").eq(1).before(`<hr class="verticalSplitter">`)
+			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${page[parent][1]}</div>`)
+			$(".pageYes:last()").click(() => onlinePageSwitch(page[parent][1] - 1, online, parent, cardType))
+		}
+
+		// Add jump to first page
+		if (page[parent][0] > 2 && page[parent][1] > 6) {
+			$(".pageBut").eq(0).after(`<div class="uploadText pageFirst button">1</div>`)
+			$(".pageFirst").after(`<hr class="verticalSplitter">`)
+			$(".pageFirst").click(() => onlinePageSwitch(0, online, parent, cardType))
+		}
+		$(`.pageYes:contains(${page[parent][0] + 1})`).attr("id", "pgSelected")
+	}
+
+	// Draw Cards
+	if (currentListData[parent].length > 0) {
+		changeUsernames(data)
+		homeCards(data[0], `${parent} .customLists`, cardType, 8)
 	}
 	else {
 		// No favorites

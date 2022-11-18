@@ -119,7 +119,7 @@ function uploadList() {
             //0 - password, 1 - listID
             // Change depending on your website
             if (typeof data == "object") {
-                sessionStorage.setItem("listUpload",JSON.stringify([data[0], 0]))
+                sessionStorage.setItem("listUpload", JSON.stringify([data[0], 0]))
                 switchLoFList(data[0])
                 return
             }
@@ -174,7 +174,7 @@ function updateList() {
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
             if (typeof data == "object") {
-                sessionStorage.setItem("listUpload",JSON.stringify([data[0], 1]))
+                sessionStorage.setItem("listUpload", JSON.stringify([data[0], 1]))
                 switchLoFList(data[0])
                 return
             }
@@ -293,13 +293,9 @@ function makeBrowser() {
         }
         $(".browserButton").eq(browser).attr("id", "browserBSelected")
 
-        $.get("./php/getLists.php" + req, data => {
-            // Change usernames
-            changeUsernames(data)
-
-            listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
-            if (isSearching) $("#app .doSearch").click()
-        });
+        listOnlineViewerDrawer(
+            {maxPage: 2, startID: 999999, searchQuery: null, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0},
+            "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
     })
 }
 
@@ -339,22 +335,25 @@ function switchBrowser(hash) {
     }
     else $(".privateSel").remove()
 
-    $.get("./php/getLists.php" + req, data => {
-        // Change usernames
-        let ind = 0
-        data[0].forEach(c => {
-            data[1].forEach(u => {
-                // Old comments
-                if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
-            })
-            ind++
-        })
+    // $.get("./php/getLists.php" + req, data => {
+    //     // Change usernames
+    //     let ind = 0
+    //     data[0].forEach(c => {
+    //         data[1].forEach(u => {
+    //             // Old comments
+    //             if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+    //         })
+    //         ind++
+    //     })
 
-        page["#communityContainer"][0] = 0
-        currentListData["#communityContainer"] = data[0]
-        originalListData["#communityContainer"] = data[0]
-        listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
-    });
+    //     page["#communityContainer"][0] = 0
+    //     currentListData["#communityContainer"] = data[0]
+    //     originalListData["#communityContainer"] = data[0]
+    //     listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
+    // });
+    listOnlineViewerDrawer([],
+        { "maxPage": 2, "startID": "145", "searchQuery": null, "page": "0", "path": "/php/getLists.php" },
+        "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
 }
 
 function closeRmScreen() {
