@@ -1097,11 +1097,11 @@ async function makeHP() {
 	homeCards(hpData.favPicks, ".savedLists", 3)
 
 	$.get("./php/getLists.php?homepage=1", data => {
-		changeUsernames(data)
+		changeUsernames(data, 4)
 		homeCards(data[0], ".newestLists", 4)
 	})
 	$.get("./php/getLists.php?homeUser", data => {
-		changeUsernames(data)
+		changeUsernames(data, 4)
 		homeCards(data[0], ".uploadedLists", 4)
 	})
 
@@ -1684,6 +1684,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	$(`${parent} .customLists`).empty();
 
 	// List search button action
+	$(`${parent} .doSearch`).off("click")
 	$(`${parent} .doSearch`).one("click", () => {
 		online.searchQuery = $(`${parent} #searchBar`).val()
 		listOnlineViewerDrawer(online, parent, cardType, disableControls, title, addElements)

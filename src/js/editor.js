@@ -283,7 +283,6 @@ function makeBrowser() {
         // Generates stuff
         if (hash == "#uploads") browser = 1
 
-        let req = ["", "?user", "?hidden"][browser]
         $(".browserButton").attr("id", "")
         if (browser > 0) {
             if ($(".privateSel").length == 0) {
@@ -330,9 +329,9 @@ function switchBrowser(hash) {
     let ind = 0
     switch (hash) {
         case "#uploads":
-            req = "?user"; ind = 1; break;
+            req = "user"; ind = 1; break;
         case "#hidden":
-            req = "?hidden"; ind = 2; break;
+            req = "hidden"; ind = 2; break;
         default:
             break;
     }
@@ -349,25 +348,9 @@ function switchBrowser(hash) {
     }
     else $(".privateSel").remove()
 
-    // $.get("./php/getLists.php" + req, data => {
-    //     // Change usernames
-    //     let ind = 0
-    //     data[0].forEach(c => {
-    //         data[1].forEach(u => {
-    //             // Old comments
-    //             if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
-    //         })
-    //         ind++
-    //     })
-
-    //     page["#communityContainer"][0] = 0
-    //     currentListData["#communityContainer"] = data[0]
-    //     originalListData["#communityContainer"] = data[0]
-    //     listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
-    // });
-    listOnlineViewerDrawer([],
-        { "maxPage": 2, "startID": "145", "searchQuery": null, "page": "0", "path": "/php/getLists.php" },
-        "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
+    online = {startID: 999999, searchQuery: null, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0}
+    online[req] = 1
+    listOnlineViewerDrawer(online, "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
 }
 
 function closeRmScreen() {
