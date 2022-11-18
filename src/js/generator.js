@@ -1696,7 +1696,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	$(`${parent} .pageBut`).eq(1).one("click", () => onlinePageSwitch(online.page+1, online, parent, cardType)) // Page +1 (right) action
 
 	if (init) {
-		if (originalListData[parent].length == 0) {
+		if (data[0].length == 0) {
 			$(`${parent} .page`).hide()
 			$(`${parent} .search`).hide()
 		}
@@ -1715,7 +1715,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	}
 
 	// Draw pages
-	if (currentListData[parent].length > 0) {
+	if (data[0].length > 0) {
 		$(`${parent} .page`).show()
 		$(`${parent} .search`).show()
 		$(".page > *:not(.pageBut)").remove()
@@ -1743,7 +1743,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	}
 
 	// Draw Cards
-	if (currentListData[parent].length > 0) {
+	if (data[0].length > 0) {
 		changeUsernames(data, cardType)
 		homeCards(data[0], `${parent} .customLists`, cardType, online.fetchAmount)
 	}
