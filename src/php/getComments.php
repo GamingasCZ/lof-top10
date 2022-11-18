@@ -8,17 +8,9 @@
 require("secrets.php");
 header('Content-type: application/json'); // Return as JSON
 
-// Does the request have an id?
-if (count($_GET) != 1 || isset($_GET["listid"]) === FALSE) {
-    echo "1";
-    exit();
-}
-
 if (!preg_match('/[A-z]/', $_GET["listid"])) {
     $fuckupID = preg_match("/-?\d+/", $_GET["listid"], $match);
     $fuckupID = $match[0];
-    // Is the ID valid?
-    if ($_GET["listid"] == "-1") die("3");
 }
 
 // Fetching comments
@@ -33,14 +25,36 @@ if (preg_match('/[A-z]/', $_GET["listid"])) {
     $fuckupID = $hiddenID->fetch_all(MYSQLI_ASSOC)[0]["id"];
 }
 
-$query = sprintf("SELECT * FROM `comments` WHERE `listID`='%s' ORDER BY `comID` DESC", $fuckupID);
-$result = $mysqli -> query($query) or die($mysqli -> error);
+// Are values numbers?
+if (!is_numeric($_GET["page"]) &&
+    !is_numeric($_GET["startID"]) &&
+    !is_numeric($_GET["fetchAmount"])) {
+    die("1");
+}
 
+// How many comments should be fetched and the offset (page)
+$dbSlice = clamp(intval($_GET["fetchAmount"]), 2, 15) * intval($_GET["page"]);
+
+$query = sprintf("SELECT * FROM `comments`
+            WHERE `comID`<=%d AND `listID`=%d
+            ORDER BY `comID` DESC
+            LIMIT %d 
+            OFFSET %s", $_GET["startID"], $fuckupID, clamp(intval($_GET["fetchAmount"]), 2, 15), $dbSlice);
+
+$maxpageQuery = $mysqli->query(sprintf("SELECT COUNT(*) from `comments` WHERE `listID`=%d", $_GET["listid"]));
+$maxpage = ceil($maxpageQuery->fetch_array()[0] / clamp(intval($_GET["fetchAmount"]), 2, 15));
+
+$result = $mysqli->query($query) or die($mysqli -> error);
 $comments = $result -> fetch_all(MYSQLI_ASSOC);
+
+$dbInfo["maxPage"] = $maxpage;
+$dbInfo["startID"] = $comments[0]["comID"];
+$dbInfo["page"] = $_GET["page"];
+$dbInfo["path"] = $_SERVER["SCRIPT_NAME"];
 
 // No comments
 if (count($comments) == 0) {
-    exit(json_encode(array([],[])));
+    exit(json_encode(array([],[],$dbInfo)));
 }
 
 $uid_array = array();
@@ -59,7 +73,7 @@ $result = $mysqli -> query($query) or die($mysqli -> error);
 
 $users = $result -> fetch_all(MYSQLI_ASSOC);
 
-echo json_encode(array($comments, $users));
+echo json_encode(array($comments, $users, $dbInfo));
 $mysqli -> close();
 
 ?>

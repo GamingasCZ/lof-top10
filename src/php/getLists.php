@@ -17,10 +17,6 @@ if ($mysqli->connect_errno) {
   exit();
 }
 
-function clamp($current, $min, $max) {
-  return max($min, min($max, $current));
-}
-
 function parseResult($rows, $singleList = false, $maxpage = -1, $search = "", $page = 0) {
   global $mysqli;
   $ind = 0;

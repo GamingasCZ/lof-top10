@@ -1743,7 +1743,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 
 	// Draw Cards
 	if (currentListData[parent].length > 0) {
-		changeUsernames(data)
+		changeUsernames(data, cardType)
 		homeCards(data[0], `${parent} .customLists`, cardType, 8)
 	}
 	else {
@@ -1754,7 +1754,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 		// Object is empty
 		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}
-
+	return online
 	// Draw pages
 }
 

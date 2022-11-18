@@ -294,20 +294,34 @@ function makeBrowser() {
         $(".browserButton").eq(browser).attr("id", "browserBSelected")
 
         listOnlineViewerDrawer(
-            {maxPage: 2, startID: 999999, searchQuery: null, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0},
+            {startID: 999999, searchQuery: null, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0},
             "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
     })
 }
 
-function changeUsernames(data) {
+function changeUsernames(data, type) {
     let ind = 0
-    data[0].forEach(c => {
-        data[1].forEach(u => {
-            // Old comments
-            if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+    if (type != 4) {        
+        data[0].forEach(c => {
+          data[0][ind].avatar = `images/oldPFP.png` // Old comments
+          data[1].forEach(u => {
+            if (c.uid == u.id) {
+              data[0][ind].username = u.username
+              if (u.avatar_hash == "") data[0][ind].avatar = "images/defaultPFP.webp" // user is using default dc pfp for some reason
+              else data[0][ind].avatar = `https://cdn.discordapp.com/avatars/${u.discord_id}/${u.avatar_hash}.png`
+            }
+          })
+          ind++
         })
-        ind++
-    })
+    } else {
+        data[0].forEach(c => {
+            data[1].forEach(u => {
+                // Old comments
+                if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+            })
+            ind++
+        })
+    }
 }
 
 let browser = 0
