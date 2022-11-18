@@ -189,10 +189,12 @@ function addEmoji(id) {
   }
 }
 
+// e.clipboardData.getData("Text")
 var lastOpenedPanel = -1;
 function displayPanel(what) {
   if (what == 1) {
     // Emoji
+    $(".pollDialog").hide();
     $(".colorPicker").hide();
     $(".listEmoji").show();
   }
@@ -235,11 +237,14 @@ function displayPanel(what) {
     }
 
     $(".colorPicker").show();
+    $(".pollDialog").hide();
     $(".listEmoji").hide();
   }
   else {
     // Polls
-    
+    $(".pollDialog").show();
+    $(".colorPicker").hide();
+    $(".listEmoji").hide();
   }
 
   if (lastOpenedPanel == what || $(".emojiPanel").css("display") == "none") {

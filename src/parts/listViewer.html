@@ -128,7 +128,34 @@
                 </div>
             </div>
 
-            <div class="emojiPanel"></div>
+            <div class="emojiPanel">
+                <div style="display: none;" class="pollDialog">
+                    <div class="pollInput"><input type="text" placeholder="Otázka">
+                        <div class="setting">
+                            <img src="images/modernCheck.svg" onclick='checkCheckbox("hidden")' for="hidden"
+                                class="setCheckbox button">
+                            <label for="private" class="uploadText setLabel">Použít komentář</label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="pollInput"><input type="text" placeholder="Volba 1"><img src="images/close.svg" id="passSubmit" class="button"></div>
+                    <div class="pollInput"><input type="text" placeholder="Volba 1"><img src="images/close.svg" id="passSubmit" class="button"></div>
+                    <div class="pollInput"><input type="text" placeholder="Volba 1"><img src="images/close.svg" id="passSubmit" class="button"></div>
+                    <div class="setting">
+                        <img src="images/modernCheck.svg" onclick='checkCheckbox("hidden")' for="hidden"
+                            class="setCheckbox button">
+                        <label for="private" class="uploadText setLabel">Připnout k seznamu</label>
+                        <img src="images/help.svg" class="button setHelp" onclick="openHelp('private')">
+                    </div>
+                    <div class="setting">
+                        <input type="checkbox" style="display: none;" name="hidden">
+                        <img src="images/modernCheck.svg" onclick='checkCheckbox("hidden")' for="hidden"
+                            class="setCheckbox button">
+                        <label for="private" class="uploadText setLabel">Zobrazovat na domovské stránce</label>
+                        <img src="images/help.svg" class="button setHelp" onclick="openHelp('private')">
+                    </div>
+                </div>
+            </div>
 
         </div>
         <div class="uploadText comBoxThings" id="comBoxFooter">

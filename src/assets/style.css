@@ -822,6 +822,23 @@ html, body {
   padding: 0.3em;
 }
 
+.pollInput {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 1em 0;
+}
+.pollInput img {
+  width: 1em;
+}
+.pollInput input {
+  margin: 0;
+}
+.pollDialog {
+  padding: 1em;
+  box-sizing: border-box;
+}
+
 #verticalLine {
   margin: 0.5% 2%;
   height: auto;
