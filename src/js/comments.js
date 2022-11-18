@@ -398,7 +398,7 @@ function redirectWarn(el) {
 
   let clPopup = () => { $("#popupBG").fadeOut(100, () => $("#popupBG").css("opacity", 0)); $(".linkWarn").remove() }
 
-  $("#linkYes").click(() => { window.open("https://" + el.target.innerText, "_blank"); clPopup() })
+  $("#linkYes").click(() => { window.open(el.target.innerText, "_blank"); clPopup() })
   $("#linkNo").click(clPopup)
 }
 

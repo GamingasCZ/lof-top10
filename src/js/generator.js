@@ -1744,7 +1744,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	// Draw Cards
 	if (currentListData[parent].length > 0) {
 		changeUsernames(data, cardType)
-		homeCards(data[0], `${parent} .customLists`, cardType, 8)
+		homeCards(data[0], `${parent} .customLists`, cardType, online.fetchAmount)
 	}
 	else {
 		// No favorites
