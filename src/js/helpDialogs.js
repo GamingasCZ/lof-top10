@@ -49,6 +49,10 @@ var help = {
         "title": jsStr["OLDLIST_T"],
         "content": jsStr["OLDLIST_D"]
     },
+    "pinPoll": {
+        "title": "Připínání hlasování",
+        "content": "Připlá hlasování budou zviditelněná tím, že se zobrazí nad seznamem. Nad seznamem mohou být maximálně 3 hlasování! "
+    }
 }
 
 function closeHelp() {
