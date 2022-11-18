@@ -4,7 +4,7 @@ const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
 function onIDCopyClick(id, pos) {
-	$(".box").eq(pos - 1).append(`<div class="uploadText copyPopup"><h2>${jsStr["ID_COPIED"]}</h2><h4>- ${id} -</h4></div>`)
+	$(".box").eq(pos - 1).append(`<div class="uploadText copyPopup"><h2>${jsStr["ID_COPIED"][LANG]}</h2><h4>- ${id} -</h4></div>`)
 	setTimeout(() => {
 		$(".copyPopup").fadeOut(() => $(".copyPopup").remove())
 	}, 500);
