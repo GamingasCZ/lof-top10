@@ -1330,14 +1330,17 @@ async function lists(list) {
 	}
 	else if (list.type == "random") {
 		$.get("php/getLists.php?random=1", data => {
-			LIST_NAME = data[0][0]["name"]
-			LIST_CREATOR = data[0][0]["creator"].length == 0 ? data[1][0]["username"] : data[0][0]["creator"]
+			LIST_NAME = data[0]["name"]
+			LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
+			
+			let profilePic;
+			if (data[0].uid != -1) {
+				profilePic = `<img class="listPFP" src="https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png">`
+				if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
+			} else profilePic = '<img class="listPFP" src="images/oldPFP.png">'
 
-			data = data[0]
-			boards = data[0]["data"];
 			let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
-			let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
-			if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
+			boards = data[0]["data"];
 
 			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
 			<p class="listUsername">${profilePic}${listCreator}</p></div>`);

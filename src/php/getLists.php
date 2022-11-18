@@ -73,8 +73,8 @@ if (count($_GET) == 1) {
     }
   } elseif (in_array("random", array_keys($_GET))) {
     // Picking a random list
-    $getList = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` LIKE 0 ORDER BY RAND() LIMIT 1");
-    parseResult($getList->fetch_all(MYSQLI_ASSOC));
+    $result = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden` LIKE 0 ORDER BY RAND() LIMIT ?", [1], "i");
+    parseResult($result, true);
   } elseif (in_array("homepage", array_keys($_GET))) {
     $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC LIMIT 3 ");
     parseResult($result->fetch_all(MYSQLI_ASSOC));
