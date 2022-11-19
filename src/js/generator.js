@@ -4,7 +4,7 @@ const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
 function onIDCopyClick(id, pos) {
-	$(".box").eq(pos - 1).append(`<div class="uploadText copyPopup"><h2>${jsStr["ID_COPIED"]}</h2><h4>- ${id} -</h4></div>`)
+	$(".box").eq(pos - 1).append(`<div class="uploadText copyPopup"><h2>${jsStr["ID_COPIED"][LANG]}</h2><h4>- ${id} -</h4></div>`)
 	setTimeout(() => {
 		$(".copyPopup").fadeOut(() => $(".copyPopup").remove())
 	}, 500);
@@ -1072,7 +1072,7 @@ async function makeHP() {
 	let savedLists = null
 	if (hasLocalStorage()) {
 		savedLists = JSON.parse(decodeURIComponent(localStorage.getItem("favorites")))
-		$(".homeLoginInfo").remove()
+		if (localStorage.getItem("userInfo") != null) $(".homeLoginInfo").remove()
 	}
 
 	if (savedLists != null && savedLists !== false && savedLists.length > 0) {
@@ -1097,11 +1097,11 @@ async function makeHP() {
 	homeCards(hpData.favPicks, ".savedLists", 3)
 
 	$.get("./php/getLists.php?homepage=1", data => {
-		changeUsernames(data)
+		changeUsernames(data, 4)
 		homeCards(data[0], ".newestLists", 4)
 	})
 	$.get("./php/getLists.php?homeUser", data => {
-		changeUsernames(data)
+		changeUsernames(data, 4)
 		homeCards(data[0], ".uploadedLists", 4)
 	})
 
@@ -1330,14 +1330,17 @@ async function lists(list) {
 	}
 	else if (list.type == "random") {
 		$.get("php/getLists.php?random=1", data => {
-			LIST_NAME = data[0][0]["name"]
-			LIST_CREATOR = data[0][0]["creator"].length == 0 ? data[1][0]["username"] : data[0][0]["creator"]
+			LIST_NAME = data[0]["name"]
+			LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
+			
+			let profilePic;
+			if (data[0].uid != -1) {
+				profilePic = `<img class="listPFP" src="https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png">`
+				if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
+			} else profilePic = '<img class="listPFP" src="images/oldPFP.png">'
 
-			data = data[0]
-			boards = data[0]["data"];
 			let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
-			let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
-			if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
+			boards = data[0]["data"];
 
 			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
 			<p class="listUsername">${profilePic}${listCreator}</p></div>`);
@@ -1497,6 +1500,39 @@ function pageSwitch(num, data, parent, ctype) {
 	})
 }
 
+async function onlinePageSwitch(num, online, parent, ctype) {
+	online.page = clamp(num, 0, page[parent][1]-1)
+
+	// Without redrawing, only page scrollbar is set
+	await listOnlineViewerDrawer(online, parent, ctype)
+
+	if (page[parent][0] < 3) { // Sets first 4 page numbers
+		for (let i = 0; i < 5; i++) {
+			$(".pageYes").eq(i).text(clamp(i + 1, 0, page[parent][1]))
+		}
+	}
+	else if (page[parent][0] + 4 > page[parent][1]) { // Sets final pages
+		for (let i = 0; i < 6; i++) {
+			$(".pageYes").eq(5 - i).text(clamp(page[parent][1] - i, 0, page[parent][1]))
+		}
+	}
+	else if (page[parent][0]) {
+		for (let i = 0; i < 5; i++) {
+			$(".pageYes").eq(i).text(clamp(num - 1 + i, 0, page[parent][1]))
+		}
+	}
+	$(".pageYes").off("click")
+	Object.values($(".pageYes")).slice(0, -2).forEach(el => {
+		$(el).click(() => onlinePageSwitch($(el).text() - 1, online, parent, ctype))
+	})
+
+
+	$(".pageYes").attr("id", "")
+	Object.values($(".pageYes")).slice(0, -2).forEach(x => {
+		if ($(x).text() == page[parent][0] + 1) $(x).attr("id", "pgSelected")
+	})
+}
+
 function search(data, parent, ctype) {
 	let query = $(`${parent} #searchBar`).val();
 	if (query == "") {
@@ -1632,7 +1668,94 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 		// Object is empty
 		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}
+}
 
+async function listOnlineViewerDrawer(online, parent, cardType, disableControls = [0, 0], title = "", addElements = []) {
+	let data = [];
+	let init = 0;
+	await $.get("php/"+online["path"].match(/[A-z]*\.php/), online, response => {
+		originalListData[parent] = response; currentListData[parent] = response;
+		page[parent] = [parseInt(response[2].page), response[2].maxPage]
+		data = response
+		if (online.startID == 999999) {init = 1; online.startID = response[2].startID}
+	})
+
+	// Clear old cards
+	$(`${parent} .customLists`).empty();
+
+	// List search button action
+	$(`${parent} .doSearch`).off("click")
+	$(`${parent} .doSearch`).one("click", () => {
+		online.searchQuery = $(`${parent} #searchBar`).val()
+		listOnlineViewerDrawer(online, parent, cardType, disableControls, title, addElements)
+		
+	})
+
+	$(`${parent} .pageBut`).off("click")
+	$(`${parent} .pageBut`).eq(0).one("click", () => onlinePageSwitch(online.page-1, online, parent, cardType)) // Page -1 (left) action
+	$(`${parent} .pageBut`).eq(1).one("click", () => onlinePageSwitch(online.page+1, online, parent, cardType)) // Page +1 (right) action
+
+	if (init) {
+		if (data[0].length == 0) {
+			$(`${parent} .page`).hide()
+			$(`${parent} .search`).hide()
+		}
+
+		// Remove disabled controls
+		for (let i = 0; i < disableControls.length; i++) { if (disableControls[i]) $(`${parent} .browserTools`).children().eq(i).remove() }
+
+		// Sets title for browser
+		if (title == "") $(`${parent} .titles`).remove()
+		else $(`${parent} .titles`).text(title)
+
+		// Adds additional elements
+		addElements.forEach(el => {
+			$(`${parent} .titleTools`).append(el)
+		});
+	}
+
+	// Draw pages
+	if (data[0].length > 0) {
+		$(`${parent} .page`).show()
+		$(`${parent} .search`).show()
+		$(".page > *:not(.pageBut)").remove()
+		let keepSize = (page[parent][0] < 3 || page[parent][1] - page[parent][0] < 4) ? 6 : 5
+		for (let i = 0; i < clamp(page[parent][1], 0, keepSize); i++) {
+			$(".pageYes:last()").click(() => onlinePageSwitch(i-1, online, parent, cardType))
+			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i + 1}</div>`)
+		}
+		$(".pageYes:last()").click(() => onlinePageSwitch(page[parent][1] - 1, online, parent, cardType))
+
+		// Add jump to last page
+		if (page[parent][1] > 6 && page[parent][0] + 3 < page[parent][1]) {
+			$(".pageBut").eq(1).before(`<hr class="verticalSplitter">`)
+			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${page[parent][1]}</div>`)
+			$(".pageYes:last()").click(() => onlinePageSwitch(page[parent][1] - 1, online, parent, cardType))
+		}
+
+		// Add jump to first page
+		if (page[parent][0] > 2 && page[parent][1] > 6) {
+			$(".pageBut").eq(0).after(`<div class="uploadText pageFirst button">1</div>`)
+			$(".pageFirst").after(`<hr class="verticalSplitter">`)
+			$(".pageFirst").click(() => onlinePageSwitch(0, online, parent, cardType))
+		}
+		$(`.pageYes:contains(${page[parent][0] + 1})`).attr("id", "pgSelected")
+	}
+
+	// Draw Cards
+	if (data[0].length > 0) {
+		changeUsernames(data, cardType)
+		homeCards(data[0], `${parent} .customLists`, cardType, online.fetchAmount)
+	}
+	else {
+		// No favorites
+		if (cardType == 1) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center; color: #f9e582">${jsStr["NOFAVED"][LANG]}</p>`);
+		// No comments
+		else if (cardType == 6) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center;">${jsStr["NOCOMM"][LANG]}</p>`);
+		// Object is empty
+		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
+	}
+	return online
 	// Draw pages
 }
 
