@@ -42,7 +42,8 @@ $query = sprintf("SELECT * FROM `comments`
             OFFSET %s", $_GET["startID"], $fuckupID, clamp(intval($_GET["fetchAmount"]), 2, 15), $dbSlice);
 
 $maxpageQuery = $mysqli->query(sprintf("SELECT COUNT(*) from `comments` WHERE `listID`=%d", $_GET["listid"]));
-$maxpage = ceil($maxpageQuery->fetch_array()[0] / clamp(intval($_GET["fetchAmount"]), 2, 15));
+$commAmount = $maxpageQuery->fetch_array()[0];
+$maxpage = ceil($commAmount / clamp(intval($_GET["fetchAmount"]), 2, 15));
 
 $result = $mysqli->query($query) or die($mysqli -> error);
 $comments = $result -> fetch_all(MYSQLI_ASSOC);
@@ -51,6 +52,7 @@ $dbInfo["maxPage"] = $maxpage;
 $dbInfo["startID"] = $comments[0]["comID"];
 $dbInfo["page"] = $_GET["page"];
 $dbInfo["path"] = $_SERVER["SCRIPT_NAME"];
+$dbInfo["commAmount"] = $commAmount;
 
 // No comments
 if (count($comments) == 0) {

@@ -300,7 +300,8 @@ function makeBrowser() {
 
 function changeUsernames(data, type) {
     let ind = 0
-    if (type != 4) {        
+    if (type != 4) {
+        $("#commAmount").text(data[2].commAmount)  
         data[0].forEach(c => {
           data[0][ind].avatar = `images/oldPFP.png` // Old comments
           data[1].forEach(u => {

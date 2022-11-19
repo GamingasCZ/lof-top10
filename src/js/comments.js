@@ -423,7 +423,6 @@ async function displayComments(online = null) {
   $(".refreshBut").one("click", () => refreshComments(online))
 
   data = currentListData["#commentList"]
-  $("#commAmount").text(Object.keys(originalListData["#commentList"]).length)
   $(".comTextArea .gamLink").click(el => redirectWarn(el))
 
 }
