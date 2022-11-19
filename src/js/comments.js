@@ -95,10 +95,7 @@ function setupComments() {
     }
   }
 
-  // Fetch comments
-  $.get("./php/getComments.php?listid=" + LIST_ID, function (data) {
-    displayComments(data);
-  });
+  displayComments();
 
   // Adds a placeholder to the comment area
   var selectPholder = placeholders[parseInt(Math.random() * placeholders.length)];
@@ -259,7 +256,7 @@ function sendComment() {
 
     $.post("./php/sendComment.php", postData, (data) => {
       if (data == 6) {
-        refreshComments();
+        $(".refreshBut").click()
 
         // Resetting comment form
         actualText = "";
@@ -350,17 +347,13 @@ function comBox(cd, element) {
   cd["comment"] = cd["comment"].replace(/\n/g, "<br>")
 
   // Making links clickable :)
-  let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g
+  let urlRegex = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/g
   let links = cd["comment"].match(urlRegex)
   if (links != null) {
-    cd["comment"] = cd["comment"].replaceAll(/(http|https):\/\//g, "")
-    links = cd["comment"].match(urlRegex)
-
     links.forEach(link => {
       if (!cd["comment"].includes(`class="gamLink"`)
         && link.match(/\d+.webp/) == null) { // emoji check, so they don't get treated as link, hope it doesn't break stuff
-        // i mean... http sites won't work, but who cares lmao
-        cd["comment"] = cd["comment"].replaceAll(link, `<a href="https://${link}" class="gamLink">${link}</a>`)
+        cd["comment"] = cd["comment"].replaceAll(link, `<a href="${link}" class="gamLink">${link}</a>`)
       }
     });
   }
@@ -405,48 +398,40 @@ function redirectWarn(el) {
 
   let clPopup = () => { $("#popupBG").fadeOut(100, () => $("#popupBG").css("opacity", 0)); $(".linkWarn").remove() }
 
-  $("#linkYes").click(() => { window.open("https://" + el.target.innerText, "_blank"); clPopup() })
+  $("#linkYes").click(() => { window.open(el.target.innerText, "_blank"); clPopup() })
   $("#linkNo").click(clPopup)
 }
 
-async function displayComments(data) {
+async function displayComments(online = null) {
   // Don't do anything on list previews and random lists that haven't replaced LIST_ID
-  if ([-8, -11].includes(LIST_ID) || typeof data == "string") return
-
-  $("#commAmount").text(data[0].length)
+  if ([-8, -11].includes(LIST_ID)) return
 
   if ($("#commentList").children().length == 0) {
     await $.get("./parts/listBrowser.html", d => {
       $("#commentList").append(translateDoc(d, "listBrowser"))
     })
   }
+  let refreshBut = `<img id="searchLists" class="button refreshBut" style="width: 3em;" src="images/replay.svg">`
+  if (online == null) {
+    online = await listOnlineViewerDrawer(
+      {startID: 999999, searchQuery: null, page: 0, path: "/php/getComments.php", fetchAmount: 8, sort: 0, listid: LIST_ID},
+      "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
+  }
+  else {
+    online = await listOnlineViewerDrawer(online, "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
+  }
+  $(".refreshBut").one("click", () => refreshComments(online))
 
-  let ind = 0
-  data[0].forEach(c => {
-    data[0][ind].avatar = `images/oldPFP.png` // Old comments
-    data[1].forEach(u => {
-      if (c.uid == u.id) {
-        data[0][ind].username = u.username
-        if (u.avatar_hash == "") data[0][ind].avatar = "images/defaultPFP.webp" // user is using default dc pfp for some reason
-        else data[0][ind].avatar = `https://cdn.discordapp.com/avatars/${u.discord_id}/${u.avatar_hash}.png`
-      }
-    })
-    ind++
-  })
-
-  let refreshBut = `<img id="searchLists" class="button refreshBut" onclick="refreshComments()" style="width: 3em;" src="images/replay.svg">`
-  listViewerDrawer(data[0], "#commentList", 6, [1, 0], jsStr["COMM"][LANG], [refreshBut])
-
+  data = currentListData["#commentList"]
   $(".comTextArea .gamLink").click(el => redirectWarn(el))
 
 }
 
-function refreshComments() {
+function refreshComments(online) {
   if ($(".refreshBut")["0"].className.match("disabled") == null) {
-    $(".refreshBut").addClass("disabled");
-    $.get("./php/getComments.php?listid=" + LIST_ID, function (data) {
-      displayComments(data);
-    });
+    $(".refreshBut").addClass("disabled")
+    online.startID = 9999999
+    displayComments(online);
     setTimeout(() => {
       $(".refreshBut").removeClass("disabled");
     }, 3000);

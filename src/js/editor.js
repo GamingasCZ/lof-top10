@@ -119,7 +119,7 @@ function uploadList() {
             //0 - password, 1 - listID
             // Change depending on your website
             if (typeof data == "object") {
-                sessionStorage.setItem("listUpload",JSON.stringify([data[0], 0]))
+                sessionStorage.setItem("listUpload", JSON.stringify([data[0], 0]))
                 switchLoFList(data[0])
                 return
             }
@@ -174,7 +174,7 @@ function updateList() {
         $.post("./php/updateList.php", postData, function (data) {
             // Update success
             if (typeof data == "object") {
-                sessionStorage.setItem("listUpload",JSON.stringify([data[0], 1]))
+                sessionStorage.setItem("listUpload", JSON.stringify([data[0], 1]))
                 switchLoFList(data[0])
                 return
             }
@@ -283,7 +283,6 @@ function makeBrowser() {
         // Generates stuff
         if (hash == "#uploads") browser = 1
 
-        let req = ["", "?user", "?hidden"][browser]
         $(".browserButton").attr("id", "")
         if (browser > 0) {
             if ($(".privateSel").length == 0) {
@@ -293,25 +292,36 @@ function makeBrowser() {
         }
         $(".browserButton").eq(browser).attr("id", "browserBSelected")
 
-        $.get("./php/getLists.php" + req, data => {
-            // Change usernames
-            changeUsernames(data)
-
-            listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
-            if (isSearching) $("#app .doSearch").click()
-        });
+        listOnlineViewerDrawer(
+            {startID: 999999, searchQuery: null, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0},
+            "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
     })
 }
 
-function changeUsernames(data) {
+function changeUsernames(data, type) {
     let ind = 0
-    data[0].forEach(c => {
-        data[1].forEach(u => {
-            // Old comments
-            if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+    if (type != 4) {
+        $("#commAmount").text(data[2].commAmount)  
+        data[0].forEach(c => {
+          data[0][ind].avatar = `images/oldPFP.png` // Old comments
+          data[1].forEach(u => {
+            if (c.uid == u.id) {
+              data[0][ind].username = u.username
+              if (u.avatar_hash == "") data[0][ind].avatar = "images/defaultPFP.webp" // user is using default dc pfp for some reason
+              else data[0][ind].avatar = `https://cdn.discordapp.com/avatars/${u.discord_id}/${u.avatar_hash}.png`
+            }
+          })
+          ind++
         })
-        ind++
-    })
+    } else {
+        data[0].forEach(c => {
+            data[1].forEach(u => {
+                // Old comments
+                if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
+            })
+            ind++
+        })
+    }
 }
 
 let browser = 0
@@ -320,9 +330,9 @@ function switchBrowser(hash) {
     let ind = 0
     switch (hash) {
         case "#uploads":
-            req = "?user"; ind = 1; break;
+            req = "user"; ind = 1; break;
         case "#hidden":
-            req = "?hidden"; ind = 2; break;
+            req = "hidden"; ind = 2; break;
         default:
             break;
     }
@@ -339,22 +349,9 @@ function switchBrowser(hash) {
     }
     else $(".privateSel").remove()
 
-    $.get("./php/getLists.php" + req, data => {
-        // Change usernames
-        let ind = 0
-        data[0].forEach(c => {
-            data[1].forEach(u => {
-                // Old comments
-                if (c.uid != -1 && c.uid == u.discord_id) data[0][ind].creator = u.username
-            })
-            ind++
-        })
-
-        page["#communityContainer"][0] = 0
-        currentListData["#communityContainer"] = data[0]
-        originalListData["#communityContainer"] = data[0]
-        listViewerDrawer(data[0], "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
-    });
+    online = {startID: 999999, searchQuery: null, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0}
+    online[req] = 1
+    listOnlineViewerDrawer(online, "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
 }
 
 function closeRmScreen() {
