@@ -122,7 +122,7 @@ function saveDifficulty(difficulty, cp, listPos) {
     // cp (gdbrowser cp): -1: keep old rate, 0: norate, 1: star rate, 2: featured, 3: epic
 
     // bad gdbrowser response
-    let stringDiffs = ["NA", "Easy", "Normal", "Hard", "Harder", "Insane", "Easy Demon", "Medium Demon", "Hard Demon", "Insane Demon", "Extreme Demon", "Auto"]
+    let stringDiffs = ["Unrated", "Easy", "Normal", "Hard", "Harder", "Insane", "Easy Demon", "Medium Demon", "Hard Demon", "Insane Demon", "Extreme Demon", "Auto"]
     if (typeof difficulty == "string") difficulty = stringDiffs.indexOf(difficulty)
     // If not string, I passed it in as an integer (hopefully :P), corresponds to prev. line
 
