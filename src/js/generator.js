@@ -1,5 +1,7 @@
 const getListLen = b => Object.keys(b).filter(x => x.match(/\d+/)).length
 const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
+var settings = Array(2)
+
 
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
@@ -948,7 +950,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 
 	if (reverseList) obj = JSON.parse(JSON.stringify(obj)).reverse()
 
-	$(custElement).text("");
+	//$(custElement).empty();
 
 	let MAX_ON_PAGE = overwriteMax ? overwriteMax : 4
 
@@ -1288,10 +1290,19 @@ $(async function () {
 	$("body").on("scroll", () => {
 		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
 		else $(".scrollToTop").css("opacity", 0)
+
+		if (document.body.scrollTop/document.body.scrollTopMax > 0.9 && !loadingLists) {
+			let pages = page[`#${$(".customLists").parent().attr("id")}`]
+			if (pages[1] - 1 > pages[0]) $(".pageBut").eq(1).click()
+			else {
+				loadingLists = true
+				$(".customLists").append(`<p class="uploadText" style="text-align: center; color: #f9e582">Dostal jsi se na konec!</p>`)
+			}
+		}
 	})
 })
 
-
+let loadingLists = false
 function logout() {
 	localStorage.removeItem("userInfo")
 	makeCookie(["accessToken", ""], true)
@@ -1501,6 +1512,7 @@ function pageSwitch(num, data, parent, ctype) {
 }
 
 async function onlinePageSwitch(num, online, parent, ctype) {
+	loadingLists = true
 	online.page = clamp(num, 0, page[parent][1]-1)
 
 	// Without redrawing, only page scrollbar is set
@@ -1531,6 +1543,7 @@ async function onlinePageSwitch(num, online, parent, ctype) {
 	Object.values($(".pageYes")).slice(0, -2).forEach(x => {
 		if ($(x).text() == page[parent][0] + 1) $(x).attr("id", "pgSelected")
 	})
+	loadingLists = false
 }
 
 function search(data, parent, ctype) {
@@ -1681,7 +1694,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	})
 
 	// Clear old cards
-	$(`${parent} .customLists`).empty();
+
 
 	// List search button action
 	$(`${parent} .doSearch`).off("click")
