@@ -17,8 +17,10 @@
         <label style="margin-right: 18em;">%%s</label>
         <input class="listLink" type="text" readonly value="" style="width: 81%;">
         <div class="button finishButton noMobileResize clipboardCopy"><img src="images/link.svg">%%s</div>
-        <div class="button finishButton noMobileResize edit" style="margin-top: 3em;"><img src="images/edit.svg">%%s</div>
-        <div class="button finishButton noMobileResize" onclick="hideFinishUpload()"><img src="images/smallClose.svg">%%s</div>
+        <div class="button finishButton noMobileResize edit" style="margin-top: 3em;"><img src="images/edit.svg">%%s
+        </div>
+        <div class="button finishButton noMobileResize" onclick="hideFinishUpload()"><img
+                src="images/smallClose.svg">%%s</div>
     </div>
 </div>
 
@@ -94,6 +96,13 @@
                 <div id="commAmount"></div>
             </button>
             <hr class="lineSplitGeneral">
+            <button onclick="rollExtras()" class="listHeaderBlue uploadText listMore" style="display: none;" id="commButton"><img style="width: 2em;" src="images/more.svg"></button>
+            <div class="mobileExtras uploadText" style="display: none;">
+                <button onclick="listShare()" class="button noMobileResize"><img src="images/share.svg"></button>
+                <button onclick="showJumpTo()" class="button noMobileResize"><img src="images/jumpto.svg"></button>
+                <button onclick="pinList()" class="button noMobileResize pin"><img src="images/pin.svg"></button>
+                <button class="button noMobileResize edit"><img src="images/edit.svg"></button>
+            </div>
         </div>
     </div>
 
@@ -112,57 +121,66 @@
             </div>
         </div>
 
-        <p id="comTest"></p>
         <div class="positionEdit" id="commentMaker">
-            <div id="cHeader" class="uploadText">
-                <div class="cNameContainer">
-                    <img id="pIcon" src="" loading="lazy">
-                    <div id="commentName"></div>
-                </div>
-                <h3 id="charLimit">0/300</h3>
-            </div>
             <div class="comBox">
                 <div style="display: flex; width: inherit;">
-                    <div contenteditable="" class="uploadText comTextArea comInpArea" style="height: 5em;" id="comFont">
-                    </div>
+                    <div contenteditable="" class="uploadText comTextArea comInpArea" style="min-height: 2em;"
+                        id="comFont"></div>
                 </div>
             </div>
 
             <div class="emojiPanel">
                 <div style="display: none;" class="pollDialog">
-                    <div class="pollInput"><input type="text" placeholder="Otázka">
+                    <div class="pollContainer">
+                        <div class="pollInput">
+                            <input class="pollQuestion" type="text" maxlength="20" placeholder="Otázka"><img src="images/close.svg" id="passSubmit" class="button pollDelete"></div>
+                        <hr>
+                    </div>
+                    <div>
                         <div class="setting">
-                            <img src="images/modernCheck.svg" onclick='checkCheckbox("hidden")' for="hidden"
+                            <img src="images/modernCheck.svg" onclick='checkCheckbox("pinToList", chPollSetting)' for="pinToList"
                                 class="setCheckbox button">
-                            <label for="private" class="uploadText setLabel">Použít komentář</label>
+                            <label for="private" class="uploadText setLabel">Připnout k seznamu</label>
+                            <img src="images/help.svg" class="button setHelp" onclick="openHelp('pinPoll')">
+                        </div>
+                        <div class="setting">
+                            <img src="images/modernCheckOn.svg" onclick='checkCheckbox("showOnHP", chPollSetting)' for="showOnHP"
+                                class="setCheckbox button">
+                            <label for="private" class="uploadText setLabel">Zobrazovat na domovské stránce</label>
+                            <img src="images/help.svg" class="button setHelp" onclick="openHelp('private')">
+                        </div>
+                        <div class="button uploadText pollAdd" onclick="addPollOption()">
+                            <img src="images/plus.svg">Přidat
                         </div>
                     </div>
-                    <hr>
-                    <div class="pollInput"><input type="text" placeholder="Volba 1"><img src="images/close.svg" id="passSubmit" class="button"></div>
-                    <div class="pollInput"><input type="text" placeholder="Volba 1"><img src="images/close.svg" id="passSubmit" class="button"></div>
-                    <div class="pollInput"><input type="text" placeholder="Volba 1"><img src="images/close.svg" id="passSubmit" class="button"></div>
-                    <div class="setting">
-                        <img src="images/modernCheck.svg" onclick='checkCheckbox("hidden")' for="hidden"
-                            class="setCheckbox button">
-                        <label for="private" class="uploadText setLabel">Připnout k seznamu</label>
-                        <img src="images/help.svg" class="button setHelp" onclick="openHelp('private')">
-                    </div>
-                    <div class="setting">
-                        <input type="checkbox" style="display: none;" name="hidden">
-                        <img src="images/modernCheck.svg" onclick='checkCheckbox("hidden")' for="hidden"
-                            class="setCheckbox button">
-                        <label for="private" class="uploadText setLabel">Zobrazovat na domovské stránce</label>
-                        <img src="images/help.svg" class="button setHelp" onclick="openHelp('private')">
+                </div>
+                <div style="display: none;" class="mediaDialog">
+                    <div>
+                        <input class="pollQuestion" type="text" placeholder="Zadej URL obrázku, YouTube videa, Twitch streamu, seznamu, či jinou adresu!">
                     </div>
                 </div>
             </div>
 
-        </div>
-        <div class="uploadText comBoxThings" id="comBoxFooter">
-            <img class="comFooterButton comInpThings" src="images/emoji.svg" loading="lazy" title="%%s" onclick="displayPanel(1)">
-            <img class="comFooterButton comInpThings" src="images/color.svg" loading="lazy" title="%%s" onclick="displayPanel(2)">
-            <img class="comFooterButton comInpThings" src="images/poll.svg" loading="lazy" title="%%s" onclick="displayPanel(3)">
-            <img class="comFooterButton sendBut" src="images/send.svg" loading="lazy" title="%%s" onclick="sendComment()">
+            <div class="uploadText comBoxThings" id="comBoxFooter">
+                <div>
+                    <div class="cNameContainer">
+                        <img id="pIcon" style="width: 1.5em;" loading="lazy">
+                        <div id="commentName"></div>
+                    </div>
+                </div>
+                <div>
+                    <img class="comFooterButton comInpThings" src="images/color.svg" loading="lazy" title="%%s"
+                        onclick="displayPanel(2)">
+                    <img class="comFooterButton comInpThings" src="images/emoji.svg" loading="lazy" title="%%s"
+                        onclick="displayPanel(1)">
+                    <img class="comFooterButton comInpThings" src="images/poll.svg" loading="lazy" title="%%s"
+                        onclick="displayPanel(3)">
+                    <img class="comFooterButton comInpThings" src="images/media.svg" loading="lazy" title="%%s"
+                        onclick="displayPanel(4)">
+                    <img class="comFooterButton sendBut" src="images/send.svg" loading="lazy" title="%%s"
+                        onclick="sendComment()">
+                </div>
+            </div>
         </div>
 
         <div id="commentList"></div>

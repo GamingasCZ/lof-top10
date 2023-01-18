@@ -861,12 +861,12 @@ function pinList(rem = null, isOnHomepage = false) {
 	$(".pin").empty()
 	if (indToRemove[1]) {
 		$(".pin").append("<img src='images/pin.svg'>")
-		$(".pin").append(jsStr["PIN_LIST"][LANG])
+		$(".listOptionsContainer .pin").append(jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
 	}
 	else {
 		$(".pin").append("<img src='images/unpin.svg'>")
-		$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+		$(".listOptionsContainer .pin").append(jsStr["UNPIN_LIST"][LANG])
 		// [listID, listName, listCreator, listColor, currTime, isGuess]
 		let isGuess = boards.diffGuesser != undefined ? boards.diffGuesser[0] : 0
 		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime(), isGuess])
@@ -951,6 +951,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 	if (reverseList) obj = JSON.parse(JSON.stringify(obj)).reverse()
 
 	//$(custElement).empty();
+	$(".page").hide()
 
 	let MAX_ON_PAGE = overwriteMax ? overwriteMax : 4
 
@@ -1291,7 +1292,7 @@ $(async function () {
 		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
 		else $(".scrollToTop").css("opacity", 0)
 
-		if (document.body.scrollTop/document.body.scrollTopMax > 0.9 && !loadingLists) {
+		if ($("body").scrollTop()/($("body")[0].scrollHeight - $("body").outerHeight()) > 0.9 && !loadingLists) {
 			let pages = page[`#${$(".customLists").parent().attr("id")}`]
 			if (pages[1] - 1 > pages[0]) $(".pageBut").eq(1).click()
 			else {
@@ -1432,7 +1433,7 @@ async function lists(list) {
 			if (arr[0] == LIST_ID) {
 				$(".pin").empty()
 				$(".pin").append("<img src='images/unpin.svg'>")
-				$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+				$(".listOptionsContainer .pin").append(jsStr["UNPIN_LIST"][LANG])
 				$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
 			}
 		});

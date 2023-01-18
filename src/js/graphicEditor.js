@@ -1060,7 +1060,7 @@ function card(index) {
         <div style="display: flex; justify-content: space-between;">
             <div style="display: flex; align-items: center;">
                 <img id="posInputPics" src="./images/star.webp">
-                <input autocomplete="off" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text">
+                <input autocomplete="off" maxlength="8" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text">
                 <img id="passSubmit" src="images/searchOpaque.svg" onclick="getDetailsFromID(${index})" class="fillID button disabled idDetailGetter${index}" style="margin-left: 1em;">
             </div>
 
@@ -1082,7 +1082,7 @@ function card(index) {
         <div style="display: flex; flex-wrap: wrap;">
             <div style="display: flex; flex-wrap: wrap; width: 100%; align-items: center;">
                 <img id="posInputPics" src="./images/island.webp">
-                <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr['L_NAME'][LANG]}">
+                <input id="posInputBox" maxlength="25" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr['L_NAME'][LANG]}">
 
                 <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
 
@@ -1090,14 +1090,14 @@ function card(index) {
 
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
-                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="display: inline-flex;"><br />
+                <input id="posInputBox" maxlength="25" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="display: inline-flex;"><br />
                 <img class="collListBut button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.webp" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
                 <div style="display: flex; align-items: center;">
                     <img id="posInputPics" src="./images/yticon.webp">
-                    <input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr['L_VIDEO'][LANG]}">
+                    <input class="cardLVideo${index} cardInput" maxlength="50" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr['L_VIDEO'][LANG]}">
                 </div>
                 
                 <div class="cardButtonsContainer">

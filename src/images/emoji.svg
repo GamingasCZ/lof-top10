@@ -1,141 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="64mm"
-   height="64mm"
-   viewBox="0 0 64 64"
-   version="1.1"
-   id="svg2306"
-   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   sodipodi:docname="emoji.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview2308"
-     pagecolor="#ce2121"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     showgrid="false"
-     inkscape:zoom="1.272138"
-     inkscape:cx="41.269106"
-     inkscape:cy="46.378614"
-     inkscape:window-width="1560"
-     inkscape:window-height="874"
-     inkscape:window-x="40"
-     inkscape:window-y="26"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
-  <defs
-     id="defs2303">
-    <inkscape:path-effect
-       effect="powerclip"
-       id="path-effect3619"
-       is_visible="true"
-       lpeversion="1"
-       inverse="true"
-       flatten="false"
-       hide_clip="false"
-       message="Use fill-rule evenodd on &lt;b&gt;fill and stroke&lt;/b&gt; dialog if no flatten result after convert clip to paths." />
-    <inkscape:path-effect
-       effect="powermask"
-       id="path-effect3593"
-       is_visible="true"
-       lpeversion="1"
-       uri="#mask-powermask-path-effect3593"
-       invert="false"
-       hide_mask="false"
-       background="true"
-       background_color="#ffffffff" />
-    <mask
-       maskUnits="userSpaceOnUse"
-       id="mask-powermask-path-effect3593">
-      <path
-         id="mask-powermask-path-effect3593_box"
-         style="fill:#ffffff;fill-opacity:1"
-         d="M -1,-1 H 65 V 65 H -1 Z" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:3.99632;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
-         d="m 16.346321,41.835501 c 0,0 5.95671,4.413274 15.653678,4.29437 8.569183,-0.105071 14.524467,-4.29437 14.524467,-4.29437 v 0"
-         id="path3591"
-         sodipodi:nodetypes="cscc" />
-    </mask>
-    <filter
-       id="mask-powermask-path-effect3593_inverse"
-       inkscape:label="filtermask-powermask-path-effect3593"
-       style="color-interpolation-filters:sRGB"
-       height="100"
-       width="100"
-       x="-50"
-       y="-50">
-      <feColorMatrix
-         id="mask-powermask-path-effect3593_primitive1"
-         values="1"
-         type="saturate"
-         result="fbSourceGraphic" />
-      <feColorMatrix
-         id="mask-powermask-path-effect3593_primitive2"
-         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
-         in="fbSourceGraphic" />
-    </filter>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath3611">
-      <g
-         id="g3617"
-         style="display:none">
-        <rect
-           style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.72991;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
-           id="rect3613"
-           width="12.190478"
-           height="12.190478"
-           x="10.713497"
-           y="19.948053"
-           ry="3.9963269"
-           rx="3.9963269" />
-        <rect
-           style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.72991;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
-           id="rect3615"
-           width="12.190478"
-           height="12.190478"
-           x="39.672951"
-           y="19.948053"
-           ry="3.9963269"
-           rx="3.9963269" />
-      </g>
-      <path
-         id="lpe_path-effect3619"
-         class="powerclip"
-         d="M -5,-5 H 69 V 69 H -5 Z m 19.709824,24.948053 c -2.213965,0 -3.996327,1.782362 -3.996327,3.996327 v 4.197825 c 0,2.213965 1.782362,3.996327 3.996327,3.996327 h 4.197825 c 2.213965,0 3.996326,-1.782362 3.996326,-3.996327 V 23.94438 c 0,-2.213965 -1.782361,-3.996327 -3.996326,-3.996327 z m 28.959454,0 c -2.213965,0 -3.996327,1.782362 -3.996327,3.996327 v 4.197825 c 0,2.213965 1.782362,3.996327 3.996327,3.996327 h 4.197824 c 2.213965,0 3.996327,-1.782362 3.996327,-3.996327 V 23.94438 c 0,-2.213965 -1.782362,-3.996327 -3.996327,-3.996327 z" />
-    </clipPath>
-  </defs>
-  <g
-     inkscape:label="Vrstva 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <g
-       id="g3609"
-       clip-path="url(#clipPath3611)"
-       inkscape:path-effect="#path-effect3619"
-       transform="matrix(0.8960084,0,0,0.8960084,3.3277311,3.3277311)">
-      <path
-         style="fill:#ffffff;fill-opacity:1;stroke-width:3.70076e-08;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
-         id="path2427"
-         mask="url(#mask-powermask-path-effect3593)"
-         inkscape:path-effect="#path-effect3593"
-         sodipodi:type="arc"
-         sodipodi:cx="32"
-         sodipodi:cy="32"
-         sodipodi:rx="32"
-         sodipodi:ry="32"
-         d="M 64,32 A 32,32 0 0 1 32,64 32,32 0 0 1 0,32 32,32 0 0 1 32,0 32,32 0 0 1 64,32 Z" />
-    </g>
+<svg id="svg2306" width="64mm" height="64mm" version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+ <defs id="defs2303">
+  <mask id="mask-powermask-path-effect3593" maskUnits="userSpaceOnUse">
+   <path id="mask-powermask-path-effect3593_box" d="m-1-1h66v66h-66z" fill="#fff"/>
+   <path id="path3591" d="m16.346 41.836s5.9567 4.4133 15.654 4.2944c8.5692-0.10507 14.524-4.2944 14.524-4.2944v0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.9963" style="paint-order:markers fill stroke"/>
+  </mask>
+  <clipPath id="clipPath3611">
+   <g id="g3617" display="none">
+    <rect id="rect3613" x="10.713" y="19.948" width="12.19" height="12.19" rx="3.9963" ry="3.9963" style="paint-order:markers fill stroke"/>
+    <rect id="rect3615" x="39.673" y="19.948" width="12.19" height="12.19" rx="3.9963" ry="3.9963" style="paint-order:markers fill stroke"/>
+   </g>
+   <path id="lpe_path-effect3619" class="powerclip" d="m-5-5h74v74h-74zm19.71 24.948c-2.214 0-3.9963 1.7824-3.9963 3.9963v4.1978c0 2.214 1.7824 3.9963 3.9963 3.9963h4.1978c2.214 0 3.9963-1.7824 3.9963-3.9963v-4.1978c0-2.214-1.7824-3.9963-3.9963-3.9963zm28.959 0c-2.214 0-3.9963 1.7824-3.9963 3.9963v4.1978c0 2.214 1.7824 3.9963 3.9963 3.9963h4.1978c2.214 0 3.9963-1.7824 3.9963-3.9963v-4.1978c0-2.214-1.7824-3.9963-3.9963-3.9963z"/>
+  </clipPath>
+ </defs>
+ <g id="layer1">
+  <g id="g3609" clip-path="url(#clipPath3611)">
+   <path id="path2427" d="m64 32a32 32 0 0 1-32 32 32 32 0 0 1-32-32 32 32 0 0 1 32-32 32 32 0 0 1 32 32z" fill="#fff" mask="url(#mask-powermask-path-effect3593)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.7008e-8" style="paint-order:markers fill stroke"/>
   </g>
+ </g>
 </svg>
