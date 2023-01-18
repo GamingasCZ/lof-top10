@@ -1266,6 +1266,7 @@ $(async function () {
 			window.location.reload();
 		})
 
+		$("footer").css("opacity", 1)
 	})
 
 	var currLang = getCookie("lang");
