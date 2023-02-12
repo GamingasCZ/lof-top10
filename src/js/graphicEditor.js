@@ -15,12 +15,16 @@ function getDetailsFromID(id) {
             return false
         }
 
-        $.get("https://gdbrowser.com/api/level/" + givenID, function (data) {
+        $.get("../php/rubLevelData.php", {"id": givenID}, function (data) {
             if (data != -1) {
-                $(".cardLName" + id).val(data["name"]);
-                levelList[id]["levelName"] = data["name"];
-                $(".cardLCreator" + id).val(data["author"]);
-                levelList[id]["creator"] = data["author"];
+                levelData = data.split(":")
+                name = levelData[1]
+                author = 
+
+                $(".cardLName" + id).val(name);
+                levelList[id]["levelName"] = name;
+                $(".cardLCreator" + id).val(author);
+                levelList[id]["creator"] = author;
             }
             else {
                 $(".idbox" + id).addClass("inputErr");
