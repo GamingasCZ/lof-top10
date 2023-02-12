@@ -453,7 +453,9 @@ function moveCard(position, currID) {
     else { return false; }
 
     updateSmPos();
+    $("body").css("scroll-behavior","initial")
     document.getElementById("top" + listPlacement).scrollIntoView();
+    $("body").css("scroll-behavior","smooth")
     $(".cardExtrasContainer").text('')
     $(".cardExtrasContainer").hide()
     return true;

@@ -727,6 +727,7 @@ input:disabled {
 .positionEdit {
     transform: scaleY(1);
     transition-duration: 0.1s;
+    scroll-margin-top: 50vh;
 }
 
 #posInputBox {
