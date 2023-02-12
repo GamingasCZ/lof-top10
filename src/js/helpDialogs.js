@@ -56,7 +56,7 @@ function closeHelp() {
     $(".helpBG").fadeOut();
 }
 async function openHelp(yes) {
-    if (yes == "license") await $.get("https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/LICENSE", d => {help[yes]["content"] = d})
+    if (yes == "license") await $.get("https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/LICENSE", d => {help[yes]["content"] = [d,d]})
 
     $("#helpTitle").html(help[yes]["title"][LANG])
     $("#helpContent").html(help[yes]["content"][LANG])
