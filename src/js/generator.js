@@ -1349,6 +1349,7 @@ async function lists(list) {
 
 			LIST_ID = parseInt(data[0]["id"])
 
+			$("#viewCount").text(data[0]["views"])
 			$("#commAmount").text(data[0]["commAmount"])
 
 			generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
@@ -1377,6 +1378,7 @@ async function lists(list) {
 					<p class="listUsername">${profilePic}${listCreator}</p></div>`);
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
+				$("#viewCount").text(data[0]["views"])
 				$("#commAmount").text(data[0]["commAmount"])
 
 				generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
@@ -1406,6 +1408,7 @@ async function lists(list) {
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
 				LIST_ID = data[0]["hidden"]
+				$("#viewCount").text(data[0]["views"])
 				$("#commAmount").text(data[0]["commAmount"])
 
 				generateList(boards, [encodeURIComponent(data[0]["hidden"]), data[0]["name"], "pid"]);
