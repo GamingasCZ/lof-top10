@@ -1142,7 +1142,8 @@ async function preview(skipCheck = false) {
     else { $(".preview").fadeIn(100) }
 
     LIST_ID = -8
-    generateList(levelList, [$("#listnm").val(), $("#creatornm").val()])
+    let previewList = JSON.parse(JSON.stringify(levelList))
+    generateList(previewList, [$("#listnm").val(), $("#creatornm").val()])
 }
 
 function editorBack() {
