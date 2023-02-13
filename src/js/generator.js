@@ -942,7 +942,7 @@ function removeFave(remID) {
 const switchLoFList = hash => window.location.hash = hash
 
 // const MAX_ON_PAGE = 4;
-function homeCards(obj, custElement = ".listContainer", previewType = 1, overwriteMax = false, custPagination = 0, reverseList = false) {
+async function homeCards(obj, custElement = ".listContainer", previewType = 1, overwriteMax = false, custPagination = 0, reverseList = false) {
 	// Do nothing if empty
 	if (obj == null || obj == false) return
 
@@ -953,7 +953,7 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 	let MAX_ON_PAGE = overwriteMax ? overwriteMax : 4
 
 	obj.slice(MAX_ON_PAGE * custPagination, MAX_ON_PAGE * custPagination + MAX_ON_PAGE)
-		.forEach((object) => {
+		.forEach(async object => {
 			if ([1, 3].includes(previewType)) { // Favorite level
 				let darkCol = HEXtoRGB(object[3], 40);
 				let priv = object[4].toString().match(/[A-z]/) != null ? "pid" : "id"
@@ -1041,10 +1041,20 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				`);
 			}
 			else if (previewType == 6) { // Comment
+				await getProfilePicture(object.avatar).then(link => object.avatar = link)
 				comBox(object, custElement)
 			}
 
 		});
+}
+
+function getProfilePicture(link) {
+	return new Promise(loaded => {
+		let loadPFP = new Image()
+		loadPFP.src = link
+		loadPFP.addEventListener("error", () => loaded(`images/defaultPFP.webp`))
+		loadPFP.addEventListener("load", () => loaded(link))
+	})
 }
 
 async function makeHP() {
@@ -1211,7 +1221,7 @@ async function loadSite() {
 				$("#app").html(translateDoc(data, "listViewer"))
 				let listObject;
 				if (hash.match(/[A-z]/) == null) listObject = { "type": "id", "id": hash.match(/\d+/)[0] }
-				else if (hash == "random") listObject = { "type": "random", "id": -10 }
+				else if (hash == "random") listObject = { "type": "random", "id": 1 }
 				else listObject = { "type": "pid", "id": hash }
 
 				LIST_ID = listObject.id
@@ -1329,36 +1339,8 @@ async function lists(list) {
 		}
 		return
 	}
-	else if (list.type == "random") {
-		$.get("php/getLists.php?random=1", data => {
-			LIST_NAME = data[0]["name"]
-			LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
-			
-			let profilePic;
-			if (data[0].uid != -1) {
-				profilePic = `<img class="listPFP" src="https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png">`
-				if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
-			} else profilePic = '<img class="listPFP" src="images/oldPFP.png">'
-
-			let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
-			boards = data[0]["data"];
-
-			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
-			<p class="listUsername">${profilePic}${listCreator}</p></div>`);
-			$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
-
-			LIST_ID = parseInt(data[0]["id"])
-
-			$("#viewCount").text(data[0]["views"])
-			$("#commAmount").text(data[0]["commAmount"])
-
-			generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
-
-			refreshComments()
-		})
-	}
-	else if (list.type == "id") {
-		$.get("./php/getLists.php?id=" + list.id, function (data) {
+	else {
+		$.get(`./php/getLists.php?${list.type}=${list.id}`, async data => {
 			if ([1, 2].includes(data)) {
 				$(".boards").append("<h2 class='titles'><img src='images/listError.svg' class='listErrors'>" + jsStr["DEADLIST"][LANG] + "</h2>")
 				$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
@@ -1370,48 +1352,24 @@ async function lists(list) {
 				LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
 
 				boards = data[0]["data"];
-				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
-				if (data[1][0] != undefined && data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
+				let profilePic = "images/oldPFP.png"
+				if (data[1].length > 0) { // Old user, no user data
+					let pfpLink = `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`
+					await getProfilePicture(pfpLink).then(link => profilePic = link)
+				}
+
 
 				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
-					<p class="listUsername">${profilePic}${listCreator}</p></div>`);
+					<p class="listUsername"><img class="listPFP" src="${profilePic}">${listCreator}</p></div>`);
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
+				let isHidden = data[0]["hidden"] == 0
+				LIST_ID = isHidden ? parseInt(data[0]["id"]) : data[0]["hidden"]
 				$("#viewCount").text(data[0]["views"])
 				$("#commAmount").text(data[0]["commAmount"])
 
-				generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
-			}
-		}
-		)
-	}
-	else if (list.type == "pid") {
-		await $.get("./php/getLists.php?pid=" + list.id, function (data) {
-			if ([1, 2].includes(data)) {
-				$(".boards").append("<h2 class='titles'><img src='images/listError.svg' class='listErrors'>" + jsStr["DEADLIST"][LANG] + "</h2>")
-				$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-				$(".listInfo").remove();
-				return
-			}
-			else {
-				LIST_NAME = data[0]["name"]
-				LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
-
-				boards = data[0]["data"];
-				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
-				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
-				if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
-
-				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
-				<p class="listUsername">${profilePic}${listCreator}</p></div>`);
-				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
-
-				LIST_ID = data[0]["hidden"]
-				$("#viewCount").text(data[0]["views"])
-				$("#commAmount").text(data[0]["commAmount"])
-
-				generateList(boards, [encodeURIComponent(data[0]["hidden"]), data[0]["name"], "pid"]);
+				generateList(boards, [encodeURIComponent(LIST_ID, data[0]["name"], isHidden ? "pid" : "id")]);
 			}
 		}
 		)
@@ -1767,7 +1725,7 @@ function doSearch(e) {
 	e.preventDefault()
 }
 
-function login(part) {
+async function login(part) {
 	if (part == 1) { // Discord popup
 		window.location.replace(`https://discord.com/api/oauth2/authorize?client_id=989511463360139264&redirect_uri=${encodeURIComponent(window.location.origin+window.location.pathname+"php/accounts.php")}&response_type=code&scope=identify`)
 	}
@@ -1781,12 +1739,14 @@ function login(part) {
 			setPFP(loginData)
 			$("#app").prepend(`
 		<div class="uploadBG uploadText" id="loginPopup">
-			<img id="loginPFP" src="https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png">
+			<img id="loginPFP">
 			<h2>${jsStr["WELCOME1"][LANG]}<cy>${loginData[0]}</cy>!</h2>
 			<h4>${jsStr["WELCOME2"][LANG]}</h4>
 			<button class="button eventButton uploadText" onclick="hideLoginPopup()">Ok!</button>
 		</div>
 			`)
+			
+			await getProfilePicture(`https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png`).then(link => $("#loginPFP").attr("src", link))
 			localStorage.setItem("userInfo", JSON.stringify(loginData))
 		}
 	}
@@ -1819,7 +1779,7 @@ function openSettings() {
 	setOpened = !setOpened
 }
 
-function setPFP(userInfo) {
+async function setPFP(userInfo) {
 	$(".loginBut").remove()
 	$(".logContainer").show()
 	$(".setLoginText").text(userInfo[0])
@@ -1828,12 +1788,7 @@ function setPFP(userInfo) {
 	`)
 
 	$(".userIcon").attr("id", "userLoggedIn")
-	if (userInfo[2] == null) {
-		$(".userIcon").attr("src", "images/defaultPFP.webp")
-	}
-	else {
-		$(".userIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
-	}
+	await getProfilePicture(`https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`).then(link => $(".userIcon").attr("src", link))
 }
 
 function colorRatings(like) {

@@ -315,7 +315,6 @@ function chatDate(stamp) {
 }
 
 function comBox(cd, element) {
-  let profPic = "";
   let time = chatDate(cd["timestamp"]);
 
   if (cd["timestamp"].length == 9) {
@@ -325,7 +324,6 @@ function comBox(cd, element) {
 
   let comGlow = `${cd["bgcolor"]} 0 0 10px`
   let comBorder = `${cd["bgcolor"]} 3px solid`
-  profPic = `<img id="pIcon" src="${cd.avatar}">`;
 
   // OwO, adding emojis
   while (cd["comment"].match(/&\d+/g) != null) {
@@ -363,7 +361,7 @@ function comBox(cd, element) {
   $(element).append(`
   <div style="margin: 1em auto; max-width: 70em;">
     <div class="comBoxThings uploadText" id="comBoxHeader" style="justify-content: flex-start;">
-      ${profPic}
+      <img id="pIcon" src="${cd.avatar}">
       <div class="comHeaderText">
         <h5>${cd["username"]}</h5>
         <h5 style="font-size: var(--tinyFont); cursor: help;" ${hoverDate}>${time}</h5>
@@ -375,6 +373,7 @@ function comBox(cd, element) {
     </div>
   </div>
     `);
+
 }
 
 function redirectWarn(el) {
