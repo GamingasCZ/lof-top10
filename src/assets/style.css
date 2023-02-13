@@ -311,7 +311,7 @@ ul > div {
   max-width: clamp(73em, 75%, 80em);
 }
 
-#viewCount { font-size: var(--smallFont); };
+#viewCount { font-size: var(--smallFont); }
 .listViewContainer {
   display: flex;
   align-items: center;
