@@ -876,7 +876,7 @@ function tagPopup(lp) {
 
     if ($(".tagContainer").children().length == 0) {
         let tagNames = jsStr["TAGS"][LANG]
-        for (let b = 0; b < 17; b++) {
+        for (let b = 0; b < 27; b++) {
             $(".tagContainer").append(`
             <div class="badgeBox button noMobileResize">
                 <img src="images/badges/${b}.svg">
