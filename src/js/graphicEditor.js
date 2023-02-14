@@ -92,8 +92,8 @@ async function getDetailsFromName(id) {
     if ($(".idbox" + id).val() != "") { $(".idDetailGetter" + id).removeClass("disabled") }
     else { $(".idDetailGetter" + id).addClass("disabled") }
 
-    availFill(0, $(".cardLName" + id), "freedom69", id)
-    availFill(1, $(".cardLCreator" + id), "freedom69", id)
+    availFill(0, $(".cardLName" + id).val(), "freedom69", id)
+    availFill(1, $(".cardLCreator" + id).val(), "freedom69", id)
 
     updateSmPos()
 }
@@ -419,35 +419,33 @@ function refreshCardDetails(lp) {
         else $(`.dPick${lp} > .diffBack`).attr("id", "epicGlow")
     }
 
-    availFill(0, $(".cardLName" + lp), "freedom69", lp)
-    availFill(1, $(".cardLCreator" + lp), "freedom69", lp)
+    availFill(0, $(".cardLName" + lp).val(), "freedom69", lp)
+    availFill(1, $(".cardLCreator" + lp).val(), "freedom69", lp)
 }
 function moveCard(position, currID) {
     let listPlacement = parseInt($(".listPosition" + currID.toString()).val());
     if (position == "up" & currID >= 0) {
         if (listPlacement > 1) {
-            refreshCardDetails(listPlacement)
             $(".card" + (listPlacement - 1)).before($(".card" + (listPlacement)));
 
             updateCardData(listPlacement - 1, -1);
             updateCardData(listPlacement, listPlacement - 1);
             updateCardData(-1, listPlacement)
 
-            refreshCardDetails(listPlacement)
             listPlacement--
+            refreshCardDetails(listPlacement)
         }
     }
     else if (position == "down" & currID < getListLen(levelList)) {
         if (listPlacement < getListLen(levelList)) {
-            refreshCardDetails(listPlacement)
             $(".card" + (listPlacement + 1)).after($(".card" + (listPlacement)));
 
             updateCardData(listPlacement + 1, -1);
             updateCardData(listPlacement, listPlacement + 1);
             updateCardData(-1, listPlacement);
 
-            refreshCardDetails(listPlacement)
             listPlacement++
+            refreshCardDetails(listPlacement)
         }
     }
     else { return false; }
@@ -498,14 +496,14 @@ function displayCard(id) {
         $(".cardExtrasContainer").hide()
         updateSmPos()
 
-        // Disable/Enable search buttons depending on if there's text in them
-        if ($(".idbox" + id).val().length != 0) { $(".idDetailGetter" + id).removeClass("disabled") }
-        else { $(".idDetailGetter" + id).addClass("disabled") }
+        availFill(0, $(".cardLName" + id).val(), "freedom69", id)
+        availFill(1, $(".cardLCreator" + id).val(), "freedom69", id)
     }
 }
 
 function availFill(type, sel, key, pos) {
     // Shows/hides those white rectangles in the card
+    $(".positionEdit:visible .button").css("transition-duration", "0s")
     if (sel.length < 1) {
         $(".availFill:visible")[type].style.opacity = 0.3
         if ($(".availFill:visible")[0].style.opacity == 0.3 && $(".availFill:visible")[1].style.opacity == 0.3) {
@@ -516,6 +514,10 @@ function availFill(type, sel, key, pos) {
         $(".availFill:visible")[type].style.opacity = 1
         $(".nameDetailGetter" + pos).removeClass("disabled")
     }
+
+    if ($(".idbox" + pos).val() == "") $(".idDetailGetter"+pos).addClass("disabled")
+    else $(".idDetailGetter"+pos).removeClass("disabled")
+    $(".positionEdit:visible .button").css("transition-duration", "")
 }
 
 async function changeColPicker(chosenColor, target, isChangingValue) {
