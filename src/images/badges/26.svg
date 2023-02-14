@@ -1,0 +1,19 @@
+<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <linearGradient id="b" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#ff4adf" offset="0"/>
+   <stop stop-color="#0f0fff" offset="1"/>
+  </linearGradient>
+  <mask id="a" maskUnits="userSpaceOnUse">
+   <path id="c" d="m5.922 4.936h19.439v20.113h-19.439z" fill="#fff"/>
+   <path d="m15.641 14.634v6.3857m-7.395-9.8151 7.395 3.4294 7.395-3.4294" fill="none" stroke="#000" stroke-dashoffset="25.618" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2" stroke-width="1.049"/>
+  </mask>
+ </defs>
+ <circle transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#b)" stroke-linecap="round" stroke-width="10.519"/>
+ <g fill="#fff" stroke="#fff" stroke-dashoffset="25.618" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2">
+  <rect x="7.7377" y="23.335" width="16.524" height="2.765" rx=".78446" ry=".65633" stroke-width="1.9008"/>
+  <path d="m12.325 22.724-4.0784-11.52 7.7533-3.944 7.0366 3.944-3.6303 11.52" mask="url(#a)" stroke-width="2.649"/>
+  <path transform="translate(.56957 .095073)" d="m11.124 4.936c0 0.2256-1.1318 0.44151-1.2644 0.62402-0.13261 0.18252 0.011803 1.3256-0.20276 1.3954s-0.76964-0.93997-0.9842-1.0097c-0.21456-0.069715-1.2571 0.42087-1.3897 0.23836-0.13261-0.18252 0.65614-1.0224 0.65614-1.248s-0.78874-1.0655-0.65614-1.248c0.13261-0.18252 1.1752 0.30807 1.3897 0.23836 0.21456-0.069715 0.76964-1.0794 0.9842-1.0097 0.21456 0.069715 0.070152 1.2128 0.20276 1.3954 0.13261 0.18252 1.2644 0.39842 1.2644 0.62402z" stroke-width="1.049"/>
+  <path transform="rotate(34.053 15.229 26.301)" d="m11.124 4.936c0 0.2256-1.1318 0.44151-1.2644 0.62402-0.13261 0.18252 0.011803 1.3256-0.20276 1.3954s-0.76964-0.93997-0.9842-1.0097c-0.21456-0.069715-1.2571 0.42087-1.3897 0.23836-0.13261-0.18252 0.65614-1.0224 0.65614-1.248s-0.78874-1.0655-0.65614-1.248c0.13261-0.18252 1.1752 0.30807 1.3897 0.23836 0.21456-0.069715 0.76964-1.0794 0.9842-1.0097 0.21456 0.069715 0.070152 1.2128 0.20276 1.3954 0.13261 0.18252 1.2644 0.39842 1.2644 0.62402z" stroke-width="1.049"/>
+ </g>
+</svg>

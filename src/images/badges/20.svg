@@ -1,0 +1,18 @@
+<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <linearGradient id="a" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#7a2223" offset="0"/>
+   <stop stop-color="#0e0004" offset="1"/>
+  </linearGradient>
+ </defs>
+ <circle transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#a)" stroke-linecap="round" stroke-width="10.519"/>
+ <g fill="#fff">
+  <circle cx="9.4428" cy="15.33" r="3.6303"/>
+  <path d="m5.8126 8.7744 7.2605 3.7395" stroke="#fff" stroke-dashoffset="25.618" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2" stroke-width="3.049"/>
+ </g>
+ <g transform="matrix(-1 0 0 1 32.514 0)" fill="#fff">
+  <circle cx="9.4428" cy="15.33" r="3.6303"/>
+  <path d="m5.8126 8.7744 7.2605 3.7395" stroke="#fff" stroke-dashoffset="25.618" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2" stroke-width="3.049"/>
+ </g>
+ <path d="m9.4428 25.381c4.4623-4.1018 8.997-4.514 13.628 0" fill="none" stroke="#fff" stroke-dashoffset="25.618" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2" stroke-width="3.049"/>
+</svg>

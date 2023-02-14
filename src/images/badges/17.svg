@@ -1,0 +1,14 @@
+<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <linearGradient id="a" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#7a2238" offset="0"/>
+   <stop stop-color="#7038f0" offset="1"/>
+  </linearGradient>
+ </defs>
+ <circle transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#a)" stroke-linecap="round" stroke-width="10.519"/>
+ <g fill="#fff" stroke="#fff" stroke-dashoffset="25.618" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2">
+  <circle cx="16" cy="16" r="10.438" opacity=".24802" stroke-width="1.0576"/>
+  <circle cx="16" cy="16" r="7.3809" opacity=".35884" stroke-width="1.0576"/>
+  <circle cx="16" cy="16" r="4.2898" stroke-width="1.1541"/>
+ </g>
+</svg>
