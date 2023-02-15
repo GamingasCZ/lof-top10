@@ -16,23 +16,13 @@ function getDetailsFromID(id) {
         }
 
         $.get("../php/rubLevelData.php", {"id": givenID}, function (data) {
-            if (data != -1) {
-                levelData = data.split(":")
-                name = levelData[1]
-                author = 
-
-                $(".cardLName" + id).val(name);
-                levelList[id]["levelName"] = name;
-                $(".cardLCreator" + id).val(author);
-                levelList[id]["creator"] = author;
-            }
+            if (data != -1) saveGDBresult(id, data)
             else {
                 $(".idbox" + id).addClass("inputErr");
                 setTimeout(() => { $(".idbox" + id).removeClass("inputErr") }, 500);
                 // TODO: Add flickering or something....
             }
         })
-        updateSmPos()
     }
 }
 
@@ -45,15 +35,15 @@ async function getDetailsFromName(id) {
     let givenMaker = $(".cardLCreator" + id).val();
 
     // Only level name passed in (most liked with that name)
-    if (givenName != "" && givenMaker == "") url = `https://gdbrowser.com/api/search/${givenName}?count=1`
+    if (givenName != "" && givenMaker == "") url = `../php/rubLevelData.php/?levelName=${givenName}`
     // Only creator passed in (newest level from user)
-    else if (givenName == "" && givenMaker != "") url = `https://gdbrowser.com/api/search/${givenMaker}?count=1&user`
+    else if (givenName == "" && givenMaker != "") url = `../php/rubLevelData.php/?levelMaker=${givenMaker}`
     // Both passed in (newest level from passed in used with the passed in name)
     else {
         for (let pages = 0; pages < MAX_GDB_SCROLL; pages++) {
             if (!succ) {
                 await $.ajax({
-                    url: `https://gdbrowser.com/api/search/${givenMaker}?page=${pages}&user`, timeout: 1000, "Access-Control-Allow-Origin": "*",
+                    url: `../php/rubLevelData.php/?userSearch=${givenMaker}&page=${pages}`, timeout: 1000, "Access-Control-Allow-Origin": "*",
                     success: data => {
                         Object.values(data).forEach(level => {
                             if (level.name.toLowerCase().includes(givenName.toLowerCase()) && level.author.toLowerCase().includes(givenMaker.toLowerCase())) {
@@ -70,17 +60,17 @@ async function getDetailsFromName(id) {
                             setTimeout(() => { $(".cardLCreator" + id).removeClass("inputErr") }, 500);
                         }
                     }
-                }).then(() => { }, () => { })
+                })
             }
         }
-        return null
+        return
     }
 
     // Hledání nejlikovanějšího levelu
     await $.ajax({
         url: url, timeout: 1000, "Access-Control-Allow-Origin": "*",
         success: data => {
-            if (data.length > 0) {
+            if (Object.values(data).length > 0) {
                 saveGDBresult(id, data)
             }
         },
@@ -96,10 +86,7 @@ async function getDetailsFromName(id) {
     if ($(".idbox" + id).val() != "") { $(".idDetailGetter" + id).removeClass("disabled") }
     else { $(".idDetailGetter" + id).addClass("disabled") }
 
-    availFill(0, $(".cardLName" + id), "freedom69", id)
-    availFill(1, $(".cardLCreator" + id), "freedom69", id)
-
-    updateSmPos()
+    
 }
 
 function saveGDBresult(id, data) {
@@ -120,17 +107,23 @@ function saveGDBresult(id, data) {
 
     $(".idbox" + id).val(jsonData["id"]);
     levelList[id]["levelID"] = jsonData["id"]
+
+    availFill(0, $(".cardLName" + id), "freedom69", id)
+    availFill(1, $(".cardLCreator" + id), "freedom69", id)
+
+    updateSmPos()
 }
 
 function saveDifficulty(difficulty, cp, listPos) {
     // cp (gdbrowser cp): -1: keep old rate, 0: norate, 1: star rate, 2: featured, 3: epic
 
     // bad gdbrowser response
-    let stringDiffs = ["Unrated", "Easy", "Normal", "Hard", "Harder", "Insane", "Easy Demon", "Medium Demon", "Hard Demon", "Insane Demon", "Extreme Demon", "Auto"]
-    if (typeof difficulty == "string") difficulty = stringDiffs.indexOf(difficulty)
+    //let stringDiffs = ["Unrated", "Easy", "Normal", "Hard", "Harder", "Insane", "Easy Demon", "Medium Demon", "Hard Demon", "Insane Demon", "Extreme Demon", "Auto"]
+    //if (typeof difficulty == "string") difficulty = stringDiffs.indexOf(difficulty)
     // If not string, I passed it in as an integer (hopefully :P), corresponds to prev. line
 
-    if (difficulty == 0) cp = 0
+    //if (difficulty == 0) cp = 0
+
 
     $($(".diffMain")[listPos - 1]).attr("src", `images/faces/${difficulty}.webp`)
     $(".faceSelected").removeClass("faceSelected")
