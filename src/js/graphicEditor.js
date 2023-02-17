@@ -43,13 +43,12 @@ async function getDetailsFromName(id) {
         for (let pages = 0; pages < MAX_GDB_SCROLL; pages++) {
             if (!succ) {
                 await $.ajax({
-                    url: `../php/rubLevelData.php/?userSearch=${givenMaker}&page=${pages}`, timeout: 1000, "Access-Control-Allow-Origin": "*",
+                    url: `../php/rubLevelData.php/?userSearch=${givenMaker}&name=${givenName}&page=${pages}`, timeout: 1000, "Access-Control-Allow-Origin": "*",
                     success: data => {
-                        Object.values(data).forEach(level => {
-                            if (level.name.toLowerCase().includes(givenName.toLowerCase()) && level.author.toLowerCase().includes(givenMaker.toLowerCase())) {
-                                saveGDBresult(id, level)
-                            }
-                        })
+                        if (data.name != undefined) {
+                            saveGDBresult(id, data)
+                            succ = true
+                        }
                     },
                     error: () => {
                         if (pages == MAX_GDB_SCROLL - 1) {

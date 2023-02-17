@@ -7,6 +7,11 @@ $returnData = [];
 switch (array_keys($_GET)[0]) {
     case "id": {
         $levelDataReq = post("https://www.boomlings.com/database/getGJLevels21.php", ["secret"=>"Wmfd2893gb7","type"=>0,"str"=>$_GET["id"]], []);
+        if ($levelDataReq == -1) { // No levels found
+            http_response_code(404);
+            die(-1);
+        }
+
         $levelData = explode(":", $levelDataReq);
         
         $returnData["id"] = $levelData[1];
@@ -17,7 +22,7 @@ switch (array_keys($_GET)[0]) {
         break;
     }
     case "levelName": {
-        $levelDataReq = post("https://www.boomlings.com/database/getGJLevels21.php", ["secret"=>"Wmfd2893gb7","type"=>0,"str"=>$_GET["levelName"]], []);
+        $levelDataReq = post("https://www.boomlings.com/database/getGJLevels21.php", ["secret"=>"Wmfd2893gb7","type"=>0,"str"=>$_GET["name"]], [], $noEncodeKeys = ["str"]);
         if ($levelDataReq == -1) { // No levels found
             http_response_code(404);
             die(-1);
@@ -62,7 +67,28 @@ switch (array_keys($_GET)[0]) {
         break;
     }
     case "userSearch": {
+        $userReq = post("https://www.boomlings.com/database/getGJUsers20.php", ["secret"=>"Wmfd2893gb7","str"=>$_GET["userSearch"]], []);
+        $playerID = explode(":", $userReq)[3];
 
+        $levelDataReq = post("https://www.boomlings.com/database/getGJLevels21.php", ["secret"=>"Wmfd2893gb7","type"=>5,"str"=>$playerID,"page"=>$_GET["page"]], []);
+        if ($levelDataReq == -1) { // No levels found
+            http_response_code(404);
+            die(-1);
+        }
+        
+        $pageLevels = explode("|", explode("#", $levelDataReq)[0]);
+        foreach ($pageLevels as $level) {
+            // echo $level;
+            if (preg_match(sprintf("/%s/i", $_GET["name"]), $level)) {
+                $returnData["author"] = $_GET["userSearch"];
+                
+                $levelData = explode(":", $level);
+                $returnData["id"] = $levelData[1];
+                $returnData["name"] = $levelData[3];
+                $returnData["difficulty"] = ((int) $levelData[21])*5 + $levelData[11]/10; // isDemon*10 + weird ass rubrub difficulty thingy/10
+                $returnData["cp"] = ((int) $levelData[27] > 0) + ((int) $levelData[29] > 0) + ((int) $levelData[31] > 0);
+            }
+        }
         break;
     }
 }
