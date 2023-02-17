@@ -1372,12 +1372,12 @@ async function lists(list) {
 					<p class="listUsername"><img class="listPFP" src="${profilePic}">${listCreator}</p></div>`);
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
-				let isHidden = data[0]["hidden"] == 0
-				LIST_ID = isHidden ? parseInt(data[0]["id"]) : data[0]["hidden"]
+				let isHidden = data[0]["hidden"] != 0
+				LIST_ID = !isHidden ? parseInt(data[0]["id"]) : data[0]["hidden"]
 				$("#viewCount").text(data[0]["views"])
 				$("#commAmount").text(data[0]["commAmount"])
 
-				generateList(boards, [encodeURIComponent(LIST_ID, data[0]["name"], isHidden ? "pid" : "id")]);
+				generateList(boards, [LIST_ID, data[0]["name"], isHidden ? "pid" : "id"]);
 			}
 		}
 		)
