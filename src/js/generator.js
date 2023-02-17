@@ -1306,7 +1306,7 @@ $(async function () {
 
 
 function checkAccount() {
-	$.get("../php/accounts.php?check", loginValid => {
+	$.get("./php/accounts.php?check", loginValid => {
 		if (loginValid != -1 && !loginValid) {
 			logout()
 		}
