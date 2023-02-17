@@ -1293,7 +1293,9 @@ $(async function () {
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
 
 	window.addEventListener("hashchange", loadSite)
+	checkAccount()
 	loadSite()
+
 
 	// Hiding header and showing scroll to top button
 	$("body").on("scroll", () => {
@@ -1303,10 +1305,16 @@ $(async function () {
 })
 
 
+function checkAccount() {
+	$.get("../php/accounts.php?check", loginValid => {
+		if (loginValid != -1 && !loginValid) {
+			logout()
+		}
+	})
+}
+
 function logout() {
 	localStorage.removeItem("userInfo")
-	makeCookie(["accessToken", ""], true)
-	makeCookie(["cA", ""], true)
 	window.location.reload()
 }
 
