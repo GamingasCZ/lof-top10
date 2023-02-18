@@ -34,8 +34,8 @@ if ($len > 25000 || $len < 150) {
   exit();
 }
 
-// TODO: check for cookie
 $user_id = checkAccount()["id"];
+$diffGuess = $_POST["diffGuesser"] == 1 ? 1 : 0;
 
 // Checking request
 error_reporting($debugMode ? -1 : 0);
@@ -47,9 +47,9 @@ if (isset($_POST["hidden"])) { $hidden = privateIDGenerator($fuckupData[1], $fuc
 else { $hidden = "0"; }
 
 // Send to database
-$teplate = "INSERT INTO `lists`(`creator`,`name`,`data`,`timestamp`,`hidden`,`uid`) VALUES ('',?,?,?,?,?)";
-$values = array($fuckupData[0], $fuckupData[1], $timestamp, $hidden, $user_id);
-doRequest($mysqli, $teplate, $values, "sssss");
+$teplate = "INSERT INTO `lists`(`creator`,`name`,`data`,`timestamp`,`hidden`,`uid`,`diffGuesser`) VALUES ('',?,?,?,?,?,?)";
+$values = array($fuckupData[0], $fuckupData[1], $timestamp, $hidden, $user_id, $diffGuess);
+doRequest($mysqli, $teplate, $values, "ssssss");
 
 if (isset($_POST["hidden"])) {
     // Hidden lists

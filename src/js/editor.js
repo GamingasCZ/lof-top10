@@ -112,6 +112,7 @@ function uploadList() {
         let postData = {
             "listData": JSON.stringify(levelList),
             "lName": $("#listnm").val(),
+            "diffGuesser": levelList.diffGuesser[0] | 0
         }
         if (listHidden == "1") postData["hidden"] = listHidden
 
@@ -160,6 +161,7 @@ function updateList() {
         let postData = {
             "listData": JSON.stringify(levelList),
             "id": param[0],
+            "diffGuesser": levelList.diffGuesser[0] | 0,
             "pwdEntered": $("#lpass").val(),
             "hidden": listHidden,
             "isNowHidden": param[2]

@@ -664,7 +664,8 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		boards[bIndex]["tags"].forEach(tag => {
 			let tagName = tag[1] == -1 ? jsStr["TAGS"][LANG][tag[0]] : tag[1]
 			tagName = tag[2] == "" ? tagName : `<a class="gamLink" target="_blank" href="${tag[2]}">${tagName}</a>`
-			$(".listTagContainer").eq(bIndex-1).append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)		});
+			$(".listTagContainer").eq(bIndex - 1).append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)
+		});
 
 		// Only display icons on hover
 		if (typeof boards[bIndex]["creator"] == "object") {
@@ -1007,11 +1008,11 @@ async function homeCards(obj, custElement = ".listContainer", previewType = 1, o
 			}
 			else if (previewType == 4) { // Newest lists
 				let dGuesserBadge = "";
-				if (object.data.diffGuesser != undefined) {
-					dGuesserBadge = object.data.diffGuesser[0] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
+				if (object.diffGuesser != 0) {
+					dGuesserBadge = "<img src='images/diffGuessSign.svg' class='guessBadge'>"
 				}
 
-				let level1col = object["data"][1].color
+				let level1col = colorFromText(object["name"], [0, 0], [360, 42])
 				let lightCol = HEXtoRGB(level1col, -60)
 				let darkCol = HEXtoRGB(level1col, 40)
 
@@ -1471,7 +1472,7 @@ function pageSwitch(num, data, parent, ctype) {
 }
 
 async function onlinePageSwitch(num, online, parent, ctype) {
-	online.page = clamp(num, 0, page[parent][1]-1)
+	online.page = clamp(num, 0, page[parent][1] - 1)
 
 	// Without redrawing, only page scrollbar is set
 	await listOnlineViewerDrawer(online, parent, ctype)
@@ -1643,11 +1644,11 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 async function listOnlineViewerDrawer(online, parent, cardType, disableControls = [0, 0], title = "", addElements = []) {
 	let data = [];
 	let init = 0;
-	await $.get("php/"+online["path"].match(/[A-z]*\.php/), online, response => {
+	await $.get("php/" + online["path"].match(/[A-z]*\.php/), online, response => {
 		originalListData[parent] = response; currentListData[parent] = response;
 		page[parent] = [parseInt(response[2].page), response[2].maxPage]
 		data = response
-		if (online.startID == 999999) {init = 1; online.startID = response[2].startID}
+		if (online.startID == 999999) { init = 1; online.startID = response[2].startID }
 	})
 
 	// Clear old cards
@@ -1658,12 +1659,12 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	$(`${parent} .doSearch`).one("click", () => {
 		online.searchQuery = $(`${parent} #searchBar`).val()
 		listOnlineViewerDrawer(online, parent, cardType, disableControls, title, addElements)
-		
+
 	})
 
 	$(`${parent} .pageBut`).off("click")
-	$(`${parent} .pageBut`).eq(0).one("click", () => onlinePageSwitch(online.page-1, online, parent, cardType)) // Page -1 (left) action
-	$(`${parent} .pageBut`).eq(1).one("click", () => onlinePageSwitch(online.page+1, online, parent, cardType)) // Page +1 (right) action
+	$(`${parent} .pageBut`).eq(0).one("click", () => onlinePageSwitch(online.page - 1, online, parent, cardType)) // Page -1 (left) action
+	$(`${parent} .pageBut`).eq(1).one("click", () => onlinePageSwitch(online.page + 1, online, parent, cardType)) // Page +1 (right) action
 
 	if (init) {
 		if (data[0].length == 0) {
@@ -1691,7 +1692,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 		$(".page > *:not(.pageBut)").remove()
 		let keepSize = (page[parent][0] < 3 || page[parent][1] - page[parent][0] < 4) ? 6 : 5
 		for (let i = 0; i < clamp(page[parent][1], 0, keepSize); i++) {
-			$(".pageYes:last()").click(() => onlinePageSwitch(i-1, online, parent, cardType))
+			$(".pageYes:last()").click(() => onlinePageSwitch(i - 1, online, parent, cardType))
 			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i + 1}</div>`)
 		}
 		$(".pageYes:last()").click(() => onlinePageSwitch(page[parent][1] - 1, online, parent, cardType))
@@ -1735,7 +1736,7 @@ function doSearch(e) {
 
 async function login(part) {
 	if (part == 1) { // Discord popup
-		window.location.replace(`https://discord.com/api/oauth2/authorize?client_id=989511463360139264&redirect_uri=${encodeURIComponent(window.location.origin+window.location.pathname+"php/accounts.php")}&response_type=code&scope=identify`)
+		window.location.replace(`https://discord.com/api/oauth2/authorize?client_id=989511463360139264&redirect_uri=${encodeURIComponent(window.location.origin + window.location.pathname + "php/accounts.php")}&response_type=code&scope=identify`)
 	}
 	else if (part == 2) {
 		let loginData = getCookie("logindata")
@@ -1753,7 +1754,7 @@ async function login(part) {
 			<button class="button eventButton uploadText" onclick="hideLoginPopup()">Ok!</button>
 		</div>
 			`)
-			
+
 			await getProfilePicture(`https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png`).then(link => $("#loginPFP").attr("src", link))
 			localStorage.setItem("userInfo", JSON.stringify(loginData))
 		}

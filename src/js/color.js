@@ -136,3 +136,12 @@ function makeColorElement(startHue, startVal) {
   </div>
     `);
 }
+
+function colorFromText(text, min, max) {
+  let charSum = text.split("").map(x => x.charCodeAt()).reduce((x, a) => x+a,0)
+  
+  let color = []
+  color.push((charSum + min[0]) % (max[0] - min[0])) // Hue
+  color.push(Math.abs(charSum*3 + min[1]) % (max[1] - min[1])) // Value
+  return HSLtoHEX(color[0], DEFAULT_SATURATION, color[1]+"%")
+}

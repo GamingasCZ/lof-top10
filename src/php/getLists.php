@@ -17,6 +17,7 @@ if ($mysqli->connect_errno) {
   exit();
 }
 
+$selRange = "creator, name, id, timestamp, hidden, uid, rate_ratio, views, diffGuesser";
 function parseResult($rows, $singleList = false, $maxpage = -1, $search = "", $page = 0) {
   global $mysqli;
   $ind = 0;
@@ -30,8 +31,6 @@ function parseResult($rows, $singleList = false, $maxpage = -1, $search = "", $p
     $uid_array = array();
     foreach ($rows as $row) {
       array_push($uid_array, $row["uid"]);
-      $row["data"] = json_decode(htmlspecialchars_decode($row["data"]));
-      $rows[$ind]["data"] = $row["data"];
 
       $ind += 1;
     }
@@ -91,12 +90,12 @@ if (count($_GET) == 1) {
     $result = doRequest($mysqli, "SELECT * FROM `lists` WHERE `hidden` LIKE 0 ORDER BY RAND() LIMIT ?", [1], "i");
     parseResult($result, true);
   } elseif (in_array("homepage", array_keys($_GET))) {
-    $result = $mysqli->query("SELECT * FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC LIMIT 3 ");
+    $result = $mysqli->query("SELECT " . $selRange . " FROM `lists` WHERE `hidden` = '0' ORDER BY `lists`.`id` DESC LIMIT 3 ");
     parseResult($result->fetch_all(MYSQLI_ASSOC));
   } elseif (!empty(array_intersect(["homeUser"], array_keys($_GET)))) {
     $account = checkAccount();
     if (!$account) die("[]"); // Not logged in
-    $result = $mysqli->query(sprintf("SELECT * FROM `lists` WHERE `uid`=%s AND `hidden` LIKE 0 ORDER BY `id` DESC LIMIT 3", $account["id"]));
+    $result = $mysqli->query(sprintf("SELECT %s FROM `lists` WHERE `uid`=%s AND `hidden` LIKE 0 ORDER BY `id` DESC LIMIT 3", $selRange, $account["id"]));
     parseResult($result->fetch_all(MYSQLI_ASSOC));
   }
 } else {
@@ -128,11 +127,11 @@ if (count($_GET) == 1) {
   // 0 = descending, 1 = ascending
   $sorting = intval($_GET["sort"]) == 0 ? "DESC" : "ASC";
 
-  $query = sprintf("SELECT * FROM `lists`
+  $query = sprintf("SELECT %s FROM `lists`
             WHERE %s `id`<=%d AND `name` LIKE '%%%s%%' %s
             ORDER BY `hidden` DESC, `id` DESC
             LIMIT %d 
-            OFFSET %s", $showHidden, $_GET["startID"], $_GET["searchQuery"], $addReq, clamp(intval($_GET["fetchAmount"]), 2, 15), $dbSlice);
+            OFFSET %s", $selRange, $showHidden, $_GET["startID"], $_GET["searchQuery"], $addReq, clamp(intval($_GET["fetchAmount"]), 2, 15), $dbSlice);
 
   $maxpageQuery = $mysqli->query(sprintf("SELECT COUNT(*) from `lists` WHERE `hidden` = '0' AND `name` LIKE '%%%s%%' AND `id`<=%d %s", $_GET["searchQuery"], $_GET["startID"], $addReq));
   $maxpage = ceil($maxpageQuery->fetch_array()[0] / clamp(intval($_GET["fetchAmount"]), 2, 15));
