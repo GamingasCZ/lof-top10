@@ -55,11 +55,12 @@
 </div>
 
 <div class="listMaster">
+    <div id="shade"></div>
     <div class="listInfo" style="display: none;">
         <div class="ratingContainer">
-            <button id="likeBut" title="%%s" class="rateButton button"></button>
-            <div id="likes" class="uploadText"></div>
-            <button id="dislikeBut" title="%%s" class="rateButton button"></button>
+            <button id="likeBut" title="%%s" class="rateButton button"><div id="likes" style="opacity: 0;">1</div></button>
+            <div id="rateRatio" class="uploadText"></div>
+            <button id="dislikeBut" title="%%s" class="rateButton button"><div id="dislikes" style="opacity: 0;">2</div></button>
         </div>
         <div id="descriptionContainer">
             <header id="listName" class="uploadText"></header>

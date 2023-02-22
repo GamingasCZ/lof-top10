@@ -355,7 +355,7 @@ function comBox(cd, element) {
       }
     });
   }
-
+  
   let darkBG = `hsl(${getHueFromHEX(cd["bgcolor"])}, 100%, 3.7%)`
   let hoverDate = `title="${nT.toLocaleDateString()} ${nT.toLocaleTimeString()}"`
   $(element).append(`
@@ -365,19 +365,18 @@ function comBox(cd, element) {
       <div class="comHeaderText">
         <h5>${cd["username"]}</h5>
         <h5 style="font-size: var(--tinyFont); cursor: help;" ${hoverDate}>${time}</h5>
-      </div>
-    </div>
-      
-    <div class="comTextArea" id="comFont" style="background-color: ${darkBG}; box-shadow: ${comGlow}; border: ${comBorder};">
-      ${cd["comment"]}
-    </div>
-  </div>
-    `);
-
+        </div>
+        </div>
+        
+        <div class="comTextArea" id="comFont" style="background-color: ${darkBG}; box-shadow: ${comGlow}; border: ${comBorder};">
+        ${cd["comment"]}
+        </div>
+        </div>
+  `);   
 }
 
 function redirectWarn(el) {
-  el.preventDefault()
+  window.event.preventDefault()
   $("#popupBG").show()
   $("#popupBG").css("opacity", 1)
   $("#popupBG").fadeIn(100)
@@ -422,7 +421,6 @@ async function displayComments(online = null) {
   $(".refreshBut").one("click", () => refreshComments(online))
 
   data = currentListData["#commentList"]
-  $(".comTextArea .gamLink").click(el => redirectWarn(el))
 
 }
 

@@ -1059,6 +1059,7 @@ async function homeCards(obj, custElement = ".listContainer", previewType = 1, o
 			else if (previewType == 6) { // Comment
 				await getProfilePicture(object.avatar).then(link => object.avatar = link)
 				comBox(object, custElement)
+				$(".comTextArea .gamLink:last").click(redirectWarn)
 			}
 
 		});
@@ -1391,9 +1392,20 @@ async function lists(list) {
 
 				let isHidden = data[0]["hidden"] != 0
 				LIST_ID = !isHidden ? parseInt(data[0]["id"]) : data[0]["hidden"]
-				$("#viewCount").text(data[0]["views"])
+				$("#listViews").text(data[0]["views"] + jsStr["VIEWS"][LANG])
+				let nT = new Date(data[0]["timestamp"] * 1000);
+				$("#listDate").text(`${nT.toLocaleDateString()}`)
+				
 				$("#commAmount").text(data[0]["commAmount"])
-				$("#listDescription").html(parseFormatting(boards.description ?? ""))
+				$("#listDescription").html(parseFormatting(boards.description ?? `<div id="noDesc">Seznam nemá popisek</div>`))
+				$("#listDescription a").click(redirectWarn)
+				if ($("#listDescription")[0].clientHeight == $("#listDescription")[0].scrollHeight) { // No scroll
+					$("#listDescription").css("--gradEnabled", "none")
+					$("#showMore").hide()
+				}
+
+				$("#rateRatio").on("mouseover", () => $(".rateButton > div").css("opacity", "0.7"))
+				$("#rateRatio").on("mouseout", () => $(".rateButton > div").css("opacity", "0"))
 
 				generateList(boards, [LIST_ID, data[0]["name"], isHidden ? "pid" : "id"]);
 			}
@@ -1437,6 +1449,7 @@ async function lists(list) {
 	// Load ratings
 	$.get("php/rateAction.php", { "id": LIST_ID }, rates => {
 		// 0 - likes, 1 - dislikes
+		$("#rateRatio").text(rates[0]-rates[1])
 		$("#likes").text(rates[0])
 		$("#dislikes").text(rates[1])
 
@@ -1854,6 +1867,8 @@ function rateList(el) {
 	$.post("php/rateAction.php", postArray, data => {
 		$("#likes").text(data.ratings[0])
 		$("#dislikes").text(data.ratings[1])
+		$("#rateRatio").text(data.ratings[0] - data.ratings[1])
+
 		discolorRatings(data.ratings[0], data.ratings[1])
 		if (data.result == "deleted") return
 		else colorRatings(smashedLike)

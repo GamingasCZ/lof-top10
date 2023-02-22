@@ -488,6 +488,11 @@ input:disabled {
 	padding: 0.2em 1em;
     box-sizing: border-box;
 }
+
+#listDesc::placeholder {
+    font-size: var(--normalFont);
+}
+
 .fullscreenDescription {
     z-index: 4;
     width: clamp(13em, 90%, 90em);
@@ -512,15 +517,41 @@ input:disabled {
 
 .formattingContainer > hr {
 	display: inline;
+    background: #ffffff12;
+    height: 1em;
 }
 
+#descPreviewButton {
+    display: inline-flex;
+    gap: 0.4em;
+    width: max-content;
+}
+
+#descriptionPreview {
+    height: calc(25em + 3px);
+    border: #ffffff26 3px solid;
+    border-radius: 10px;
+    padding: 0.2em 1em;
+    box-sizing: border-box;
+    margin: 0;
+    font-size: var(--smallFont) !important;
+}
+
+.formattingContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+    margin-bottom: 0.3em;
+}
+  
 .header {
 	font-size: var(--bigFont);
-    line-height: 0%;
+    line-height: 50%;
     margin-top: 0.6em;
 }
 .descList {
     margin-left: 1.5em;
+    line-height: 0;
 }
 
 .listColPicker {

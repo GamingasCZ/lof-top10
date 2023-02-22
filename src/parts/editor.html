@@ -178,9 +178,10 @@
             <hr class="verticalSplitter">
             <img class="button formattingButton" onclick="formatText(5)" title="Body" src="./images/formatting/list.webp">
             <hr class="verticalSplitter">
-            <div class="button formattingButton" onclick="previewDescription()"><img src="./images/view.svg" style="width: 1em;"></div>
+            <div class="button formattingButton" id="descPreviewButton" data-on="0" onclick="previewDescription()"><img src="./images/view.svg" style="width: 1em;">Náhled</div>
         </div>
         <textarea id="listDesc" class="uploadText fsDescriptionArea descriptionThing" placeholder="Popis seznamu" maxlength="3000"></textarea>
+        <pre id="descriptionPreview" class="uploadText" style="display: none;"></pre>
     </div>
 </div>
 

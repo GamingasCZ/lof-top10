@@ -71,6 +71,7 @@ var jsStr = {
     "LOGOUT": ["Odhlásit se", "Log out"],
 
     // generator
+    "VIEWS": [" zhlédnutí", " views"],
     "LEV_NOEXIST": ["Level neexistuje!", "Level doesn't exist!"],
     "VID_NOEXIST": ["Video neexistuje!", "Video hasn't been set!"],
     "DISP_EP": ["Zobrazit epizodu", "Play on YouTube"],

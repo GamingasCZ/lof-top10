@@ -148,6 +148,15 @@ ul > div {
   box-sizing: border-box;
 }
 
+#shade {
+	width: 100%;
+	height: 33%;
+	background: linear-gradient(180deg, #00000082, transparent);
+	position: absolute;
+	top: 2em;
+	z-index: -1;
+}
+
 .placeholderName {
   height: 9vh;
   background: #cececeb3;
@@ -192,11 +201,14 @@ ul > div {
   align-items: center;
   height: 2em;
   background: #ffffff17;
- }
- 
+  border-radius: 0.5em 0.5em 0 0;
+}
 
+#rateRatio {
+  cursor: help;
+}
+ 
 .listInfo {
-  background: linear-gradient(180deg, #00000082, transparent);
   display: flex;
   align-items: center;
   padding: 0 1.5em;
@@ -380,7 +392,14 @@ ul > div {
 	width: 100%;
 	height: 1em;
 	position: absolute;
-	bottom: 0px;
+  left: 0;
+  bottom: 0;
+  border-radius: 2em;
+}
+
+#noDesc {
+	opacity: 0.2;
+	margin: 0.5em;
 }
 
 #showMore {
@@ -1369,11 +1388,21 @@ cb { color: #5fe7ff ;}
 	font-size: var(--smallFont);
 }
 
+.rateButton > div {
+  transition: opacity 0.1s linear;
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 #likes {
   color: #a6f99b;
+  top: -16px;
 }
 #dislikes {
   color: #f99b9b;
+  top: 32px;
 }
 
 .likeFill {

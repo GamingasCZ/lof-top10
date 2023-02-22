@@ -244,6 +244,8 @@ function showDescriptionDialog() {
 }
 
 function formatText(type) {
+    if ($("#descPreviewButton").attr("data-on") == "1") return
+
     let chars = ["**", "//", "__", "--"][type]
     let textbox = $(".fsDescriptionArea")
     let selStart = textbox[0].selectionStart
@@ -266,10 +268,11 @@ function formatText(type) {
             break;
             case [4,5].includes(type):
                 let format = type == 4 ? "#" : "*"
-                let startLF = textbox.val().length == 0 ? "" : "\n"
+                let startLF = [undefined, "\n"].includes(textbox.val()[selStart-1]) ? "" : "\n"
                 textbox.val(textbox.val().slice(0, selStart) + `${startLF}${format}` + textbox.val().slice(selStart))
                 textbox.focus()
                 textbox.prop("selectionStart", selStart+2)
+                textbox.prop("selectionEnd", selStart+2)
                 break;
                 
             default:
@@ -279,8 +282,21 @@ function formatText(type) {
 }
 
 function previewDescription() {
-    $(".fsDescriptionArea").hide()
-    $(".fsDescriptionArea").after(`<pre class="uploadText">${parseFormatting($(".fsDescriptionArea").val())}</pre>`)
+    if ($("#descPreviewButton").attr("data-on") == "0") {
+        $(".formattingButton:not(#descPreviewButton)").addClass("disabled")
+        $(".fsDescriptionArea").hide()
+        $("#descriptionPreview").html(parseFormatting(levelList.description))
+        $("#descriptionPreview").show()
+        $("#descPreviewButton").css("background", "#ffffff4a")
+        $("#descPreviewButton").attr("data-on", "1")
+    }
+    else {
+        $(".formattingButton:not(#descPreviewButton)").removeClass("disabled")
+        $(".fsDescriptionArea").show()
+        $("#descriptionPreview").hide()
+        $("#descPreviewButton").css("background", "")
+        $("#descPreviewButton").attr("data-on", "0")
+    }
 }
 
 function parseFormatting(text) {
