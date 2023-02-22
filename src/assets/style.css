@@ -162,8 +162,48 @@ ul > div {
   border-radius: 0.7vw;
 }
 
+
+#listDescriptionContainer {
+  background: #00000085;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 0.5em;
+}
+#descriptionContainer {
+  width: 100%;
+}
+#listName {
+  margin-left: 3em;
+  font-weight: bolder;
+  font-size: var(--bigFont);
+  line-height: 1.1;
+}
+#listHeaderInfo {
+  font-size: var(--smallFont);
+}
+#listButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5em;
+}
+
+#listHeader {
+  display: flex;
+  align-items: center;
+  height: 2em;
+  background: #ffffff17;
+ }
+ 
+
 .listInfo {
   background: linear-gradient(180deg, #00000082, transparent);
+  display: flex;
+  align-items: center;
+  padding: 0 1.5em;
+  width: clamp(13em, 90%, 90em);
+  margin: auto;
+  gap: 0.5em;
+  padding-top: 1em;
 }
 
 .listUsername {
@@ -174,10 +214,15 @@ ul > div {
   gap: 0.5em;
 }
 .listPFP {
-  width: 2em;
+  width: 3.5em;
   border-radius: 10em;
   border: white 2px solid;
   box-sizing: border-box;
+  /*! position: absolute; */
+  bottom: 5.2em;
+  margin: 0 0.7em;
+  transform: translateY(-25%);
+  height: 3.5em;
 }
 
 .listHeaderBlue {
@@ -200,10 +245,8 @@ ul > div {
 }
 
 .listOptionsContainer {
-  display: grid;
-  grid-template-columns: 50% 50%;
+  display: flex;
   gap: 0.2em 0.4em;
-  padding-right: 1vw;
   align-items: center;
 }
 #listOptionsID {
@@ -318,6 +361,41 @@ ul > div {
   gap: 0.4em;
 }
 
+#listDescription {
+  --gradEnabled: linear-gradient(0deg, black, transparent);
+  font-size: var(--smallFont);
+  padding: 0.1em 0.4em;
+  text-shadow: none;
+  margin: 0;
+  min-height: 6em;
+  height: 6em;
+  transition: height 0.2s ease-in-out;
+  overflow: hidden;
+  line-height: 130%;
+}
+
+#listDescription::before {
+	content: "";
+	background: var(--gradEnabled);
+	width: 100%;
+	height: 1em;
+	position: absolute;
+	bottom: 0px;
+}
+
+#showMore {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	border: none;
+	width: 3em;
+	border-radius: 1em 1em 0em 0em;
+	background: var(--normalColor);
+	filter: brightness(2.5);
+	cursor: pointer;
+}
+
 /* Crown */
 #toplevel::before {
   content: "";
@@ -332,8 +410,8 @@ ul > div {
   background-size: 12em;
   background-repeat: no-repeat;
   background-position-x: center;
-  /*! background-position-y: 7.7vw; */
   z-index: 3;
+  pointer-events: none;
 }
 
 .boxLinksContainer {
@@ -364,12 +442,6 @@ ul > div {
 
 .siteSettingsChild > p {
   margin: 0;
-}
-
-u {
-  color: rgb(131, 181, 255);
-  text-decoration-thickness: 0.1vw;
-  cursor: pointer;
 }
 
 .settingsMenu {
@@ -1243,6 +1315,8 @@ cb { color: #5fe7ff ;}
 
 .ratingContainer {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .rateButton {
   padding: 1.2em;

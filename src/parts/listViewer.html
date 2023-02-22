@@ -17,8 +17,10 @@
         <label style="margin-right: 18em;">%%s</label>
         <input class="listLink" type="text" readonly value="" style="width: 81%;">
         <div class="button finishButton noMobileResize clipboardCopy"><img src="images/link.svg">%%s</div>
-        <div class="button finishButton noMobileResize edit" style="margin-top: 3em;"><img src="images/edit.svg">%%s</div>
-        <div class="button finishButton noMobileResize" onclick="hideFinishUpload()"><img src="images/smallClose.svg">%%s</div>
+        <div class="button finishButton noMobileResize edit" style="margin-top: 3em;"><img src="images/edit.svg">%%s
+        </div>
+        <div class="button finishButton noMobileResize" onclick="hideFinishUpload()"><img
+                src="images/smallClose.svg">%%s</div>
     </div>
 </div>
 
@@ -54,47 +56,46 @@
 
 <div class="listMaster">
     <div class="listInfo" style="display: none;">
-        <div class="titles listInfoContainer" id="listOptionsID">
-            <div class="loadPlaceholder">
-                <div class="placeholderName"></div>
-                <div class="placeholderCreator"></div>
-            </div>
-            <div class="listOptionsContainer">
-                <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg">
-                    <div id="shareBut">%%s</div>
-                </button>
-                <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg">
-                    <div id="jumpToBut">%%s</div>
-                </button>
-                <button onclick="pinList()" class="listHeaderBlue uploadText pin"><img src="images/pin.svg">
-                    <div id="pinBut">%%s</div>
-                </button>
-                <button class="listHeaderBlue uploadText edit"><img src="images/edit.svg">
-                    <div id="editBut">%%s</div>
-                </button>
-            </div>
+        <div class="ratingContainer">
+            <button id="likeBut" title="%%s" class="rateButton button"></button>
+            <div id="likes" class="uploadText"></div>
+            <button id="dislikeBut" title="%%s" class="rateButton button"></button>
         </div>
-        <div id="cToolTop">
-            <div class="ratingContainer">
-                <button id="likeBut" title="%%s" class="rateButton button"></button>
-                <div class="rateData">
-                    <div class="likeBar">
-                        <div class="likeFill"></div>
-                    </div>
-                    <div class="likeText uploadText">
-                        <div id="likes"></div>
-                        <div id="dislikes"></div>
+        <div id="descriptionContainer">
+            <header id="listName" class="uploadText"></header>
+            <div id="listDescriptionContainer">
+                <div id="listHeader">
+                    <img src="" class="listPFP">
+                    <div id="listHeaderInfo" class="uploadText">
+                        <label id="listCreator"></label> ●
+                        <label id="listViews">2 zhlédnutí</label> ●
+                        <label id="listDate">4.2.1998</label>
                     </div>
                 </div>
-                <button id="dislikeBut" title="%%s" class="rateButton button"></button>
+                <pre id="listDescription" class="uploadText" data-open="0"></pre>
+                <button id="showMore" onclick="descriptionShowAll()"><img src="./images/descMore.svg"></button>
             </div>
-            <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img
-                    src="images/comment.svg" style="width: 2em;">
-                <div id="commButtonText">%%s</div>
-                <div id="commAmount"></div>
-            </button>
-            <hr class="lineSplitGeneral">
-            <div class="listViewContainer"><img src="images/view.svg" style="width: 1.5em;"><div class="uploadText" id="viewCount"></div></div>
+            <div id="listButtonContainer">
+                <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img
+                        src="images/comment.svg" style="width: 2em;">
+                    <div id="commButtonText">%%s</div>
+                    <div id="commAmount"></div>
+                </button>
+                <div class="listOptionsContainer">
+                    <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg">
+                        <div id="shareBut">%%s</div>
+                    </button>
+                    <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg">
+                        <div id="jumpToBut">%%s</div>
+                    </button>
+                    <button onclick="pinList()" class="listHeaderBlue uploadText pin"><img src="images/pin.svg">
+                        <div id="pinBut">%%s</div>
+                    </button>
+                    <button class="listHeaderBlue uploadText edit"><img src="images/edit.svg">
+                        <div id="editBut">%%s</div>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -133,9 +134,12 @@
 
         </div>
         <div class="uploadText comBoxThings" id="comBoxFooter">
-            <img class="comFooterButton comInpThings" src="images/emoji.svg" loading="lazy" title="%%s" onclick="displayPanel(1)">
-            <img class="comFooterButton comInpThings" src="images/color.svg" loading="lazy" title="%%s" onclick="displayPanel(2)">
-            <img class="comFooterButton sendBut" src="images/send.svg" loading="lazy" title="%%s" onclick="sendComment()">
+            <img class="comFooterButton comInpThings" src="images/emoji.svg" loading="lazy" title="%%s"
+                onclick="displayPanel(1)">
+            <img class="comFooterButton comInpThings" src="images/color.svg" loading="lazy" title="%%s"
+                onclick="displayPanel(2)">
+            <img class="comFooterButton sendBut" src="images/send.svg" loading="lazy" title="%%s"
+                onclick="sendComment()">
         </div>
 
         <div id="commentList"></div>

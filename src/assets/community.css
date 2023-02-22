@@ -478,6 +478,51 @@ input:disabled {
     opacity: 0.5;
 }
 
+#listDesc {
+	background: rgba(255, 255, 255, 0.08);
+	border: none;
+	border-radius: 10px;
+	resize: none;
+	width: 26em;
+	font-size: var(--smallFont);
+	padding: 0.2em 1em;
+    box-sizing: border-box;
+}
+.fullscreenDescription {
+    z-index: 4;
+    width: clamp(13em, 90%, 90em);
+}
+
+.fsDescriptionArea {
+    width: 100% !important;
+    height: 25em;   
+}
+
+.descContainer {
+    padding: 1em;
+    padding-top: 0;
+}
+
+.formattingButton {
+    background: rgba(255, 255, 255, 0.08);
+    width: 1.2em;
+    padding: 0.2em 0.4em;
+    border-radius: 0.4em;
+}
+
+.formattingContainer > hr {
+	display: inline;
+}
+
+.header {
+	font-size: var(--bigFont);
+    line-height: 0%;
+    margin-top: 0.6em;
+}
+.descList {
+    margin-left: 1.5em;
+}
+
 .listColPicker {
     display: flex;
     justify-content: center;

@@ -161,6 +161,30 @@
 
 </div>
 
+<!-- Description popup -->
+<div style="display: none;" id="centeredPopup" class="uploadText fullscreenDescription uploadBG">
+    <div style="display: flex; align-items: center;">
+        <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">Editor popisku</span>
+        <img onclick="hideDescriptionDialog()" src="./images/smallClose.svg" style="width: 2em;" class="button">
+    </div>
+    <div class="descContainer">
+        <div class="formattingContainer">
+            <img class="button formattingButton" onclick="formatText(0)" title="Tučně" src="./images/formatting/bold.webp">
+            <img class="button formattingButton" onclick="formatText(1)" title="Kurzíva" src="./images/formatting/italics.webp">
+            <img class="button formattingButton" onclick="formatText(2)" title="Podtrhnout" src="./images/formatting/underline.webp">
+            <img class="button formattingButton" onclick="formatText(3)" title="Přeškrtnout" src="./images/formatting/strikethrough.webp">
+            <hr class="verticalSplitter">
+            <img class="button formattingButton" onclick="formatText(4)" title="Nadpis" src="./images/formatting/header.webp">
+            <hr class="verticalSplitter">
+            <img class="button formattingButton" onclick="formatText(5)" title="Body" src="./images/formatting/list.webp">
+            <hr class="verticalSplitter">
+            <div class="button formattingButton" onclick="previewDescription()"><img src="./images/view.svg" style="width: 1em;"></div>
+        </div>
+        <textarea id="listDesc" class="uploadText fsDescriptionArea descriptionThing" placeholder="Popis seznamu" maxlength="3000"></textarea>
+    </div>
+</div>
+
+<!-- Favorites picker -->
 <div style="display: none;" id="centeredPopup" class="uploadText levelPicker">
     <div style="display: flex; align-items: center;">
         <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">%%s</span>
@@ -188,6 +212,12 @@
     <form id="levelUpload" class="uploadBG uploaderDialog">
         <div class="mainInpContainer">
             <input type="text" id="listnm" class="uploadMainInp" placeholder="%%s">
+            
+            <div class="titImageContainer">
+                <textarea id="listDesc" class="uploadText descriptionThing" placeholder="%%s" maxlength="3000"></textarea>
+                <img src="./images/fullscreen.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize descFSbutton">
+            </div>
+            
             <div class="titImageContainer editables">
                 <input type="text" id="listimg" class="uploadMainInp" placeholder="%%s" style="margin: 0;">
                 <img src="./images/gear.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize imgSetButton">

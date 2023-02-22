@@ -202,7 +202,8 @@ const DEFAULT_LEVELLIST = {
     "titleImg": ["", 0, 33, 1, true], // URL, position, coverage, halign, gradient
     "pageBGcolor": "#020202",
     "diffGuesser": [false, true, true], // enabled, diff, rating
-    "translucent": false
+    "translucent": false,
+    "description": ""
 }
 
 function makeEditor(update) {
@@ -234,8 +235,13 @@ function makeEditor(update) {
     // TODO: fix for old lists!!
     $("#listimg").on("change", () => levelList.titleImg[0] = $("#listimg").val())
     $(".imgSetButton").click(showBGsettings)
-
     $("img[for=transCards]").click(() => { checkCheckbox("transCards", (x, y) => levelList.translucent = y) })
+    
+    // List description
+    $(".descFSbutton").click(showDescriptionDialog)
+    $(".descriptionThing").keyup(e => {
+        levelList.description = e.currentTarget.value
+    })
 
     // Show alert if creating list
     window.addEventListener('beforeunload', pageExit);

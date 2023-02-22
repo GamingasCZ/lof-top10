@@ -128,6 +128,21 @@ function hideJumpTo() {
 	setTimeout(() => { $("#popupBG").hide() }, 100);
 }
 
+function descriptionShowAll() {
+	if ($("#listDescription").attr("data-open") == "0") {
+		$("#listDescription").css("--gradEnabled", "none")
+		$("#listDescription").css("height", $("#listDescription")[0].scrollHeight+10+"px")
+		$("#showMore > img").css("transform", "scaleY(-1)")
+		$("#listDescription").attr("data-open", "1")
+	}
+	else {		
+		$("#listDescription").css("--gradEnabled", "")
+		$("#listDescription").css("height", "")
+		$("#showMore > img").css("transform", "scaleY(1)")
+		$("#listDescription").attr("data-open", "0")
+	}
+}
+
 const openSocLink = link => { window.open(link) }
 const openProfileOnGDB = name => { window.open("https://gdbrowser.com/profile/" + name) }
 
@@ -1368,15 +1383,17 @@ async function lists(list) {
 					await getProfilePicture(pfpLink).then(link => profilePic = link)
 				}
 
+				$("#listName").text(data[0]["name"])
+				$("#listCreator").text(listCreator)
+				$(".listPFP").attr("src", profilePic)
 
-				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
-					<p class="listUsername"><img class="listPFP" src="${profilePic}">${listCreator}</p></div>`);
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
 				let isHidden = data[0]["hidden"] != 0
 				LIST_ID = !isHidden ? parseInt(data[0]["id"]) : data[0]["hidden"]
 				$("#viewCount").text(data[0]["views"])
 				$("#commAmount").text(data[0]["commAmount"])
+				$("#listDescription").html(parseFormatting(boards.description ?? ""))
 
 				generateList(boards, [LIST_ID, data[0]["name"], isHidden ? "pid" : "id"]);
 			}
