@@ -1734,7 +1734,7 @@ function doSearch(e) {
 	e.preventDefault()
 }
 
-async function login(part) {
+function login(part) {
 	if (part == 1) { // Discord popup
 		window.location.replace(`https://discord.com/api/oauth2/authorize?client_id=989511463360139264&redirect_uri=${encodeURIComponent(window.location.origin + window.location.pathname + "php/accounts.php")}&response_type=code&scope=identify`)
 	}
@@ -1755,7 +1755,7 @@ async function login(part) {
 		</div>
 			`)
 
-			await getProfilePicture(`https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png`).then(link => $("#loginPFP").attr("src", link))
+			getProfilePicture(`https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png`).then(link => $("#loginPFP").attr("src", link))
 			localStorage.setItem("userInfo", JSON.stringify(loginData))
 		}
 	}
