@@ -1316,7 +1316,9 @@ function checkAccount() {
 
 function logout() {
 	localStorage.removeItem("userInfo")
-	window.location.reload()
+	$.get("./php/accounts.php?logout", e =>{
+		if (e == 1) window.location.reload()
+	})
 }
 
 async function lists(list) {

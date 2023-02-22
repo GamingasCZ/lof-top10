@@ -14,6 +14,10 @@ if (sizeof($_GET) == 1) {
         echo checkAccount() ? 1 : 0;
         return true;
     }
+    if (array_keys($_GET)[0] == "logout") { // Check login validity
+        removeCookie("access_token");
+        echo "1";
+    }
 
     // Get the access token from the authorization code
     $tokenUrl =  array(
