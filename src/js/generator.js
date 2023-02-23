@@ -1,5 +1,7 @@
 const getListLen = b => Object.keys(b).filter(x => x.match(/\d+/)).length
 const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
+var settings = Array(2)
+
 
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
@@ -875,12 +877,12 @@ function pinList(rem = null, isOnHomepage = false) {
 	$(".pin").empty()
 	if (indToRemove[1]) {
 		$(".pin").append("<img src='images/pin.svg'>")
-		$(".pin").append(jsStr["PIN_LIST"][LANG])
+		$(".listOptionsContainer .pin").append(jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
 	}
 	else {
 		$(".pin").append("<img src='images/unpin.svg'>")
-		$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+		$(".listOptionsContainer .pin").append(jsStr["UNPIN_LIST"][LANG])
 		// [listID, listName, listCreator, listColor, currTime, isGuess]
 		let isGuess = boards.diffGuesser != undefined ? boards.diffGuesser[0] : 0
 		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime(), isGuess])
@@ -964,7 +966,8 @@ async function homeCards(obj, custElement = ".listContainer", previewType = 1, o
 
 	if (reverseList) obj = JSON.parse(JSON.stringify(obj)).reverse()
 
-	$(custElement).text("");
+	//$(custElement).empty();
+	$(".page").hide()
 
 	let MAX_ON_PAGE = overwriteMax ? overwriteMax : 4
 
@@ -1318,6 +1321,15 @@ $(async function () {
 	$("body").on("scroll", () => {
 		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
 		else $(".scrollToTop").css("opacity", 0)
+
+		if ($("body").scrollTop()/($("body")[0].scrollHeight - $("body").outerHeight()) > 0.9 && !loadingLists) {
+			let pages = page[`#${$(".customLists").parent().attr("id")}`]
+			if (pages[1] - 1 > pages[0]) $(".pageBut").eq(1).click()
+			else {
+				loadingLists = true
+				$(".customLists").append(`<p class="uploadText" style="text-align: center; color: #f9e582">Dostal jsi se na konec!</p>`)
+			}
+		}
 	})
 })
 
@@ -1329,7 +1341,7 @@ function checkAccount() {
 		}
 	})
 }
-
+let loadingLists = false
 function logout() {
 	localStorage.removeItem("userInfo")
 	window.location.reload()
@@ -1421,7 +1433,7 @@ async function lists(list) {
 			if (arr[0] == LIST_ID) {
 				$(".pin").empty()
 				$(".pin").append("<img src='images/unpin.svg'>")
-				$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+				$(".listOptionsContainer .pin").append(jsStr["UNPIN_LIST"][LANG])
 				$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
 			}
 		});
@@ -1504,6 +1516,7 @@ function pageSwitch(num, data, parent, ctype) {
 }
 
 async function onlinePageSwitch(num, online, parent, ctype) {
+	loadingLists = true
 	online.page = clamp(num, 0, page[parent][1] - 1)
 
 	// Without redrawing, only page scrollbar is set
@@ -1534,6 +1547,7 @@ async function onlinePageSwitch(num, online, parent, ctype) {
 	Object.values($(".pageYes")).slice(0, -2).forEach(x => {
 		if ($(x).text() == page[parent][0] + 1) $(x).attr("id", "pgSelected")
 	})
+	loadingLists = false
 }
 
 function search(data, parent, ctype) {
@@ -1684,7 +1698,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	})
 
 	// Clear old cards
-	$(`${parent} .customLists`).empty();
+
 
 	// List search button action
 	$(`${parent} .doSearch`).off("click")

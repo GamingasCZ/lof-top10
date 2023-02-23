@@ -246,6 +246,7 @@ ul > div {
 	min-width: 7em;
 	cursor: pointer;
 	font-size: var(--miniFont) !important;
+  outline: none;
 }
 
 .listHeaderBlue img {
@@ -272,7 +273,9 @@ ul > div {
   transition: box-shadow 0.2s;
 	gap: 0.8em;
 	height: 100% !important;
+  position: relative;
 }
+#commButton.listMore {background: linear-gradient(9deg, #141f20, #044a51) !important}
 
 .guessBadge {
   vertical-align: sub;
@@ -451,7 +454,6 @@ ul > div {
   border-radius: 1em;
   align-items: center;
   padding: 0.6em;
-  /*! margin-bottom: 0.6em; */
   width: 100%;
   box-sizing: border-box;
 }
@@ -462,7 +464,6 @@ ul > div {
 
 .settingsMenu {
   position: absolute;
-  /*! float: right; */
   background: var(--greenGradient);
   right: 0.75em;
   top: 4em;
@@ -481,7 +482,6 @@ ul > div {
   left: 0.5em;
   width: 3em;
   float: right;
-  /*! padding-left: 4vw; */
 }
 
 .scrollToTop {
@@ -541,7 +541,6 @@ ul > div {
   margin: 0.4em;
   display: flex;
   align-items: center;
-  /*! max-height: 3vw; */
 }
 
 .memberName {
@@ -707,6 +706,7 @@ html, body {
   transform: scale(1.0);
   transition-duration: 0.2s;
   border: none;
+  outline: none;
 }
 
 .button:active:not(#categoryBut) {
@@ -801,10 +801,11 @@ html, body {
 	font-size: var(--normalFont);
 	padding: 0.1vw;
 	border-radius: 20%;
-	/*! margin-left: 1vh; */
 	min-width: var(--miniFont);
 	text-align: center;
 }
+
+#commentList .savedTitle { padding: 0;}
 
 /* Entire comment box, including user input box */
 #commentMaker {
@@ -814,6 +815,9 @@ html, body {
   background: none;
   border: none;
   box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
 }
 
 /* Comment text area */
@@ -826,10 +830,9 @@ html, body {
   width: 102%;
   padding: 0.5%;
   overflow: auto;
-  /*! word-wrap: anywhere; */
   margin: 0.3em 0 0;
   min-height: 2em;
-  /*! word-break: break-all; */
+  word-break: break-all;
   white-space: normal;
 }
 
@@ -858,7 +861,7 @@ html, body {
 }
 .cNameContainer {
   display: flex;
-  align-items: end;
+  align-items: center;
   gap: 0.5em;
 }
 
@@ -874,9 +877,19 @@ html, body {
 
 /* Specific stuff relating to the cbox footer and header */
 #comBoxFooter {
-  justify-content: flex-end !important;
+  justify-content: space-between;
+  margin-top: 0.5em;
+  display: flex;
   gap: 0.5em;
-  max-width: clamp(70.6em, 67%, 132em);
+  height: 1.7em;
+  align-items: center;
+}
+
+.sendBut {
+  border: 2px solid;
+  border-color: #ff00004a;
+  transition: border-color 0.2s;
+  background-repeat: no-repeat !important;
 }
 
 .comHeaderText {
@@ -911,10 +924,28 @@ html, body {
 .comFooterButton {
   background: none;
   cursor: pointer;
-  height: min-content;
   border-radius: 10em;
   width: 1.3em;
   padding: 0.3em;
+}
+
+.pollInput {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 1em 0;
+}
+.pollInput img {
+  width: 1em;
+}
+.pollInput input {
+  margin: 0;
+}
+.pollDialog {
+  padding: 1em;
+  box-sizing: border-box;
+  display: flex;
+  gap: 2em;
 }
 
 #verticalLine {
@@ -982,16 +1013,24 @@ html, body {
   align-items: center;
   gap: 0.5em;
   margin: 0 1vw;
+  transition: transform 0.2s ease-in-out;
 }
 
-.password {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
+.mobileExtras {
+  display: flex;
+  gap: 0.7em;
+  margin-left: 1em;
+ }
 
-.passInput::placeholder {
-  background-image: url(../images/edit.svg) !important;
+ .mobileExtras > button > div {display: none;}
+.mobileExtras > button {
+  background: linear-gradient(9deg, #141f20, #044a51) !important;
+  display: inline;
+  border-radius: 0.4em;
+}
+.mobileExtras > button > img {
+  width: 1.6em;
+  vertical-align: sub;
 }
 
 nav {
@@ -1018,11 +1057,12 @@ nav {
   gap: 30%;
 }
 
-.mobilePicker > div > h6 {
+.mobilePicker > a > h6 {
   margin: 0;
   font-size: var(--miniFont);
+  color: white;
 }
-.mobilePicker > div > img, object {
+.mobilePicker > a > img, object {
   width: 1.6em;
   padding-top: 0.2em;
 }
@@ -1068,7 +1108,6 @@ footer {
   font-size: var(--bigFont);
   color: white;
   border-radius: 1vw;
-  /*! max-height: 3em; */
   max-width: 61%;
 }
 
@@ -1465,4 +1504,36 @@ cb { color: #5fe7ff ;}
   width: 100%;
   height: 5em;
   top: -5em;
+}
+
+#pollStyle {
+  border: white 3px solid;
+  border-radius: 1em;
+  width: 2em;
+  box-sizing: border-box;
+}
+
+.pollAdd > img {
+  width: 1.5em;
+}
+.pollAdd {
+  display: flex;
+  padding: 0.4em;
+  gap: 0.6em;
+  width: fit-content;
+  margin-top: 0.7em;
+  border-radius: 0.4em;
+}
+
+.commentContainer {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 0.5em;
+}
+
+.commentRatings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
