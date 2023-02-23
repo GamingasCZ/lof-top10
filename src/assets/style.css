@@ -182,11 +182,20 @@ ul > div {
   width: 100%;
 }
 #listName {
-  margin-left: 3em;
+  margin-left: 4.8rem;
   font-weight: bolder;
   font-size: var(--bigFont);
   line-height: 1.1;
 }
+
+#viewImg {
+  width: 1em;
+  margin-right: 0.3em;
+  transform: translateY(0.1em);
+  display: none;
+}
+#viewText {display: inline;}
+
 #listHeaderInfo {
   font-size: var(--smallFont);
 }
@@ -210,8 +219,7 @@ ul > div {
  
 .listInfo {
   display: flex;
-  padding: 0 1.5em;
-  width: clamp(13em, 90%, 90em);
+  width: clamp(13em, 95%, 90em);
   margin: auto;
   gap: 0.5em;
   padding-top: 1em;
@@ -240,8 +248,8 @@ ul > div {
 	display: flex;
 	align-items: center;
 	background: linear-gradient(9deg, #141f20, #044a51) !important;
-	border-radius: 1em;
-	gap: 0.2em;
+	border-radius: 0.3em;
+	gap: 0.4em;
 	border: none;
 	min-width: 7em;
 	cursor: pointer;
@@ -249,15 +257,18 @@ ul > div {
   outline: none;
 }
 
-.listHeaderBlue img {
-  width: var(--smallFont);
-  padding-left: 0.4vw;
+.listOptionsContainer img {
+  width: var(--normalFont);
+}
+.listOptionsContainer button {
+  padding: 0 0.3em;
 }
 
 .listOptionsContainer {
   display: flex;
-  gap: 0.2em 0.4em;
+  gap: 0 0.5em;
   align-items: center;
+  font-size: var(--normalFont);
 }
 #listOptionsID {
   display: flex;
@@ -707,6 +718,7 @@ html, body {
   transition-duration: 0.2s;
   border: none;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .button:active:not(#categoryBut) {
@@ -1014,23 +1026,6 @@ html, body {
   gap: 0.5em;
   margin: 0 1vw;
   transition: transform 0.2s ease-in-out;
-}
-
-.mobileExtras {
-  display: flex;
-  gap: 0.7em;
-  margin-left: 1em;
- }
-
- .mobileExtras > button > div {display: none;}
-.mobileExtras > button {
-  background: linear-gradient(9deg, #141f20, #044a51) !important;
-  display: inline;
-  border-radius: 0.4em;
-}
-.mobileExtras > button > img {
-  width: 1.6em;
-  vertical-align: sub;
 }
 
 nav {

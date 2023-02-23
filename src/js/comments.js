@@ -20,7 +20,8 @@ function updateCharLimit() {
   // I finally got to use the switch statement!!! (so exciting) - just removed it, sorry past gamingas
   let comLen = Math.floor(actualText.length/300*100)
   $(".sendBut").css("background", `conic-gradient(${commentColor} ${comLen}%, ${$(".comInpArea").css("background-color")} ${comLen+3}%)`);
-  
+  $(".sendBut").css("background-color", $(".comInpArea").css("background-color"))
+
   if (actualText.length > 10) $(".sendBut").css("border-color", $(".comInpArea").css("background-color"))
   else $(".sendBut").css("border-color", "")
 
@@ -110,7 +111,8 @@ function setupComments() {
   );
   $(".sendBut").css(
     "background", `conic-gradient(${hexColor} ${Math.floor(actualText.length/300*100)}%, ${darkHexColor} 0%)`
-  );
+    );
+  $(".sendBut").css("background-color", darkHexColor)
   $(".emojiPanel").css("background-color", darkHexColor);
   $(".pollAdd").css("background", hexColor);
   commentColor = HSLtoHEX(...commentColor)
@@ -205,6 +207,7 @@ function displayPanel(what) {
         $(".sendBut").css(
           "background", `conic-gradient(hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%) ${Math.floor(actualText.length/300*100)}%, hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%) 0%)`
         );
+        $(".sendBut").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`)
         $(".pollAdd").css("background", commentColor);
 
         let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");

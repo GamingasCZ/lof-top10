@@ -164,23 +164,23 @@
 <!-- Description popup -->
 <div style="display: none;" id="centeredPopup" class="uploadText fullscreenDescription uploadBG">
     <div style="display: flex; align-items: center;">
-        <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">Editor popisku</span>
+        <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">%%s</span>
         <img onclick="hideDescriptionDialog()" src="./images/smallClose.svg" style="width: 2em;" class="button">
     </div>
     <div class="descContainer">
         <div class="formattingContainer">
-            <img class="button formattingButton noMobileResize" onclick="formatText(0)" title="Tučně" src="./images/formatting/bold.webp">
-            <img class="button formattingButton noMobileResize" onclick="formatText(1)" title="Kurzíva" src="./images/formatting/italics.webp">
-            <img class="button formattingButton noMobileResize" onclick="formatText(2)" title="Podtrhnout" src="./images/formatting/underline.webp">
-            <img class="button formattingButton noMobileResize" onclick="formatText(3)" title="Přeškrtnout" src="./images/formatting/strikethrough.webp">
+            <img class="button formattingButton noMobileResize" onclick="formatText(0)" title="%%s" src="./images/formatting/bold.webp">
+            <img class="button formattingButton noMobileResize" onclick="formatText(1)" title="%%s" src="./images/formatting/italics.webp">
+            <img class="button formattingButton noMobileResize" onclick="formatText(2)" title="%%s" src="./images/formatting/underline.webp">
+            <img class="button formattingButton noMobileResize" onclick="formatText(3)" title="%%s" src="./images/formatting/strikethrough.webp">
             <hr class="verticalSplitter">
-            <img class="button formattingButton noMobileResize" onclick="formatText(4)" title="Nadpis" src="./images/formatting/header.webp">
+            <img class="button formattingButton noMobileResize" onclick="formatText(4)" title="%%s" src="./images/formatting/header.webp">
             <hr class="verticalSplitter">
-            <img class="button formattingButton noMobileResize" onclick="formatText(5)" title="Body" src="./images/formatting/list.webp">
+            <img class="button formattingButton noMobileResize" onclick="formatText(5)" title="%%s" src="./images/formatting/list.webp">
             <hr class="verticalSplitter">
-            <div class="button formattingButton noMobileResize" id="descPreviewButton" data-on="0" onclick="previewDescription()"><img src="./images/view.svg" style="width: 1em;">Náhled</div>
+            <div class="button formattingButton noMobileResize" id="descPreviewButton" data-on="0" onclick="previewDescription()"><img src="./images/view.svg" style="width: 1em;"><div>%%s</div></div>
         </div>
-        <textarea id="listDesc" class="uploadText fsDescriptionArea descriptionThing" placeholder="Popis seznamu" maxlength="3000"></textarea>
+        <textarea id="listDesc" class="uploadText fsDescriptionArea descriptionThing" placeholder="%%s" maxlength="3000"></textarea>
         <pre id="descriptionPreview" class="uploadText" style="display: none;"></pre>
     </div>
 </div>

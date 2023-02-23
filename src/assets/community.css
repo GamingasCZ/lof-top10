@@ -550,8 +550,7 @@ input:disabled {
     margin-top: 0.6em;
 }
 .descList {
-    margin-left: 1.5em;
-    line-height: 0;
+    display: inline list-item;
 }
 
 .listColPicker {

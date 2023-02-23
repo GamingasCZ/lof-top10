@@ -874,15 +874,14 @@ function pinList(rem = null, isOnHomepage = false) {
 		if (!indToRemove[1]) indToRemove[0]++
 	});
 
-	$(".pin").empty()
 	if (indToRemove[1]) {
-		$(".pin").append("<img src='images/pin.svg'>")
-		$(".listOptionsContainer .pin").append(jsStr["PIN_LIST"][LANG])
+		$(".pin > img").attr("src", "images/pin.svg")
+		$("#pinBut").text(jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
 	}
 	else {
-		$(".pin").append("<img src='images/unpin.svg'>")
-		$(".listOptionsContainer .pin").append(jsStr["UNPIN_LIST"][LANG])
+		$(".pin > img").attr("src", "images/unpin.svg")
+		$("#pinBut").text(jsStr["UNPIN_LIST"][LANG])
 		// [listID, listName, listCreator, listColor, currTime, isGuess]
 		let isGuess = boards.diffGuesser != undefined ? boards.diffGuesser[0] : 0
 		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime(), isGuess])
@@ -966,8 +965,8 @@ async function homeCards(obj, custElement = ".listContainer", previewType = 1, o
 
 	if (reverseList) obj = JSON.parse(JSON.stringify(obj)).reverse()
 
-	//$(custElement).empty();
-	$(".page").hide()
+	if ($(`${custElement} > #listPreview,#comBoxHeader`).length == 0 || !SCROLLTYPE) $(custElement).empty();
+	if (SCROLLTYPE) $(".page").hide()
 
 	let MAX_ON_PAGE = overwriteMax ? overwriteMax : 4
 
@@ -1062,7 +1061,6 @@ async function homeCards(obj, custElement = ".listContainer", previewType = 1, o
 			else if (previewType == 6) { // Comment
 				await getProfilePicture(object.avatar).then(link => object.avatar = link)
 				comBox(object, custElement)
-				$(".comTextArea .gamLink:last").click(redirectWarn)
 			}
 
 		});
@@ -1171,6 +1169,8 @@ async function loadSite() {
 	currentListData = []
 	page = {}
 	levelList = JSON.parse(JSON.stringify(DEFAULT_LEVELLIST))
+	$("window").off("beforeunload")
+	loadingLists = false
 
 	$(".logo").css("transform", `rotate(360deg)`)
 	let spinning = setInterval(() => { rot += 1; $(".logo").css("transform", `rotate(${rot * 360}deg)`) }, 1000)
@@ -1285,31 +1285,38 @@ $(async function () {
 		}
 
 		// Setting mobile picker in navbar to curr site name
-		if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
-		if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
+		if (window.location.href.includes("browse")) $(".mobilePicker > a")[1].style.filter = "var(--lightHighlight)"
+		if (window.location.href.includes("editor")) $(".mobilePicker > a")[0].style.filter = "var(--lightHighlight)"
 
-		$($(".settingsDropdown > option")[LANG]).attr("selected", true)
-
-		$(".settingsDropdown").on("change", () => {
-			let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
+		
+		$(".settingsDropdown:eq(0)").on("change", () => {
+			let scrollType = $(".settingsDropdown:eq(0)")[0].selectedIndex ? 1 : 0
+			makeCookie(["scrolling", scrollType])
+			window.location.reload();
+		})
+		if (!getCookie("scrolling")) makeCookie(["scrolling", 0])
+		$($(".settingsDropdown:eq(0) > option")[parseInt(getCookie("scrolling"))]).attr("selected", true)
+		
+		$(".settingsDropdown:eq(1)").on("change", () => {
+			let switchLang = $(".settingsDropdown:eq(1)").val() == jsStr["CZECH"][LANG] ? 0 : 1
 			makeCookie(["lang", switchLang])
 			window.location.reload();
 		})
-
+		var currLang = getCookie("lang");
+		if (!currLang) {
+			let getLang = navigator.language;
+			if (["cs", "sk"].includes(getLang)) { currLang = 0; }
+			else { currLang = 1; }
+			
+			makeCookie(["lang", currLang])
+		}
+		$($(".settingsDropdown:eq(1) > option")[LANG]).attr("selected", true)
+		
 		$("footer").css("opacity", 1)
 	})
-
-	var currLang = getCookie("lang");
-	if (!currLang) {
-		let getLang = navigator.language;
-		if (["cs", "sk"].includes(getLang)) { currLang = 0; }
-		else { currLang = 1; }
-
-		makeCookie(["lang", currLang])
-	}
-	LANG = currLang;
-	$($(".settingsDropdown").children()[currLang]).attr("selected", true)
-
+	
+	SCROLLTYPE = parseInt(getCookie("scrolling"))
+	LANG = parseInt(getCookie("lang"));
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
 
 	window.addEventListener("hashchange", loadSite)
@@ -1322,7 +1329,7 @@ $(async function () {
 		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
 		else $(".scrollToTop").css("opacity", 0)
 
-		if ($("body").scrollTop()/($("body")[0].scrollHeight - $("body").outerHeight()) > 0.9 && !loadingLists) {
+		if ($("body").scrollTop()/($("body")[0].scrollHeight - $("body").outerHeight()) > 0.9 && !loadingLists && SCROLLTYPE) {
 			let pages = page[`#${$(".customLists").parent().attr("id")}`]
 			if (pages[1] - 1 > pages[0]) $(".pageBut").eq(1).click()
 			else {
@@ -1404,7 +1411,7 @@ async function lists(list) {
 
 				let isHidden = data[0]["hidden"] != 0
 				LIST_ID = !isHidden ? parseInt(data[0]["id"]) : data[0]["hidden"]
-				$("#listViews").text(data[0]["views"] + jsStr["VIEWS"][LANG])
+				$("#listViews").text(data[0]["views"])
 				let nT = new Date(data[0]["timestamp"] * 1000);
 				$("#listDate").text(`${nT.toLocaleDateString()}`)
 				
@@ -1433,7 +1440,7 @@ async function lists(list) {
 			if (arr[0] == LIST_ID) {
 				$(".pin").empty()
 				$(".pin").append("<img src='images/unpin.svg'>")
-				$(".listOptionsContainer .pin").append(jsStr["UNPIN_LIST"][LANG])
+				$(".listOptionsContainer .pin div").text(jsStr["UNPIN_LIST"][LANG])
 				$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
 			}
 		});
@@ -1513,6 +1520,7 @@ function pageSwitch(num, data, parent, ctype) {
 	Object.values($(".pageYes")).slice(0, -2).forEach(x => {
 		if ($(x).text() == page[parent][0] + 1) $(x).attr("id", "pgSelected")
 	})
+	loadingLists = false
 }
 
 async function onlinePageSwitch(num, online, parent, ctype) {
@@ -1551,6 +1559,7 @@ async function onlinePageSwitch(num, online, parent, ctype) {
 }
 
 function search(data, parent, ctype) {
+	loadingLists = false
 	let query = $(`${parent} #searchBar`).val();
 	if (query == "") {
 		// Reset stuff
@@ -1592,7 +1601,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 	}
 
 	// Clear old cards
-	$(`${parent} .customLists`).empty();
+	if (!SCROLLTYPE) $(`${parent} .customLists`).empty();
 
 	// We want to sort from newest to oldest by default
 	let reversed = JSON.parse(JSON.stringify(data)).reverse();
@@ -1696,9 +1705,6 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 		data = response
 		if (online.startID == 999999) { init = 1; online.startID = response[2].startID }
 	})
-
-	// Clear old cards
-
 
 	// List search button action
 	$(`${parent} .doSearch`).off("click")

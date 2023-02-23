@@ -89,7 +89,6 @@ ul > div {
 }
 
 .browserContainer { margin-bottom: 1em; }
-.listOptionsContainer { display: none; }
 #toplevel::before {
     top: -58px;
     background-size: 8em;
@@ -102,6 +101,7 @@ ul > div {
     bottom: 0;
     width: 96.8%;
     background: #000000e8;
+    border-radius: 0;
 }
 
 #commAmount {
@@ -111,5 +111,13 @@ ul > div {
 }
 #commButtonText { display: none;}
 .listMore {display: block !important;}
-
+.listOptionsContainer > button > div { display: none;}
+.listOptionsContainer button { min-width: max-content; }
+.listOptionsContainer button > img {
+    width: 2em;
+    padding: 0.5em;
+}
+#viewImg {display: inline;}
+#viewText {display: none;}
+#descPreviewButton > div { display: none; }
 }

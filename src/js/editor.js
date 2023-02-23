@@ -347,6 +347,8 @@ function switchBrowser(hash) {
     if (browser == ind) return
     browser = ind
 
+    loadingLists = false
+    $(".customLists").empty()
     $(".browserButton").attr("id", "")
     $(".browserButton").eq(ind).attr("id", "browserBSelected")
     if (["#uploads", "#hidden"].includes(hash)) {
