@@ -1449,6 +1449,8 @@ async function lists(list) {
 	// Load ratings
 	$.get("php/rateAction.php", { "id": LIST_ID }, rates => {
 		// 0 - likes, 1 - dislikes
+
+		$("#rateRatio").removeClass("unloadedRate")
 		$("#rateRatio").text(rates[0]-rates[1])
 		$("#likes").text(rates[0])
 		$("#dislikes").text(rates[1])

@@ -210,7 +210,6 @@ ul > div {
  
 .listInfo {
   display: flex;
-  align-items: center;
   padding: 0 1.5em;
   width: clamp(13em, 90%, 90em);
   margin: auto;
@@ -243,12 +242,10 @@ ul > div {
 	background: linear-gradient(9deg, #141f20, #044a51) !important;
 	border-radius: 1em;
 	gap: 0.2em;
-	/*! max-width: fit-content; */
 	border: none;
 	min-width: 7em;
 	cursor: pointer;
 	font-size: var(--miniFont) !important;
-  /*! max-width: 100%; */
 }
 
 .listHeaderBlue img {
@@ -1223,6 +1220,7 @@ cb { color: #5fe7ff ;}
   left: 50%;
   padding: 1em;
   text-align: center;
+  width: clamp(10em, 85%, 25em);
 }
 
 #loginPFP {
@@ -1336,12 +1334,23 @@ cb { color: #5fe7ff ;}
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 1.8em;
 }
 .rateButton {
   padding: 1.2em;
   position: relative;
   border-radius: 0.8em;
 }
+
+.unloadedRate {
+  background:  #ffffff57;
+  box-sizing: border-box;
+  height: calc(var(--normalFont) - 0.7em);
+  width: 0.7em;
+  border-radius: 0.2em;
+  margin: 0.5em 0;
+}
+
 #likeBut:after {
   background: url(../images/like.svg) no-repeat;
   content: "";
