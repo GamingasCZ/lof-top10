@@ -775,7 +775,7 @@ html, body {
 }
 
 .github {
-  width: 4vw;
+  width: 4em;
 }
 
 .github:hover {
@@ -1065,6 +1065,12 @@ nav {
 footer {
   opacity: 0;
   transition: opacity 1s ease-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--tinyFont);
+  opacity: 1;
+  margin-top: 10em;
 }
 
 .eventButton {
