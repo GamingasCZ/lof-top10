@@ -1334,7 +1334,6 @@ $(async function () {
 			if (pages[1] - 1 > pages[0]) $(".pageBut").eq(1).click()
 			else {
 				loadingLists = true
-				$(".customLists").append(`<p class="uploadText" style="text-align: center; color: #f9e582">Dostal jsi se na konec!</p>`)
 			}
 		}
 	})
@@ -1692,7 +1691,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 		// No comments
 		else if (cardType == 6) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center;">${jsStr["NOCOMM"][LANG]}</p>`);
 		// Object is empty
-		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
+		else $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}
 }
 
@@ -1700,6 +1699,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	let data = [];
 	let init = 0;
 	await $.get("php/" + online["path"].match(/[A-z]*\.php/), online, response => {
+		if (response == 3) response = [[], [], online]
 		originalListData[parent] = response; currentListData[parent] = response;
 		page[parent] = [parseInt(response[2].page), response[2].maxPage]
 		data = response
@@ -1709,9 +1709,11 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	// List search button action
 	$(`${parent} .doSearch`).off("click")
 	$(`${parent} .doSearch`).one("click", () => {
-		online.searchQuery = $(`${parent} #searchBar`).val()
+		online.searchQuery = $(`${parent} #searchBar`).val() // TODO: FIX SEARCHING!!!!!!!!
+		online.startID = 999998
+		online.page = 0
+		$(`${parent} > .customLists`).empty()
 		listOnlineViewerDrawer(online, parent, cardType, disableControls, title, addElements)
-
 	})
 
 	$(`${parent} .pageBut`).off("click")
@@ -1776,7 +1778,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 		// No comments
 		else if (cardType == 6) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center;">${jsStr["NOCOMM"][LANG]}</p>`);
 		// Object is empty
-		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
+		else $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}
 	return online
 	// Draw pages

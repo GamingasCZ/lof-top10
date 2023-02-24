@@ -480,8 +480,11 @@ async function displayComments(online = null) {
 
 function refreshComments(online) {
   if ($(".refreshBut")["0"].className.match("disabled") == null) {
+    $("#commentList > .customLists").empty()
     $(".refreshBut").addClass("disabled")
     online.startID = 9999999
+    online.page = 0
+    loadingLists = false
     displayComments(online);
     setTimeout(() => {
       $(".refreshBut").removeClass("disabled");

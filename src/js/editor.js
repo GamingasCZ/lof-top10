@@ -270,13 +270,14 @@ const pageExit = exit => {
 }
 
 function makeBrowser() {
-    let isSearching = false
+    let isSearching = null
     $.get("./parts/listBrowser.html", dt => {
         hash = window.location.hash
         let search = hash.includes("!") ? hash.split("!")[1] : ""
         if (search != "") {
-            $("#searchBar").val(decodeURIComponent(search))
-            isSearching = true
+        
+            $("#searchBar").val(search)
+            isSearching = decodeURIComponent(search)
         }
 
         // Add switch buttons
@@ -301,7 +302,7 @@ function makeBrowser() {
         $(".browserButton").eq(browser).attr("id", "browserBSelected")
 
         listOnlineViewerDrawer(
-            {startID: 999999, searchQuery: null, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0},
+            {startID: 999999, searchQuery: isSearching, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0},
             "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
     })
 }
