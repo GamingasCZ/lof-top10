@@ -148,6 +148,15 @@ ul > div {
   box-sizing: border-box;
 }
 
+#shade {
+	width: 100%;
+	height: 33%;
+	background: linear-gradient(180deg, #00000082, transparent);
+	position: absolute;
+	top: 2em;
+	z-index: -1;
+}
+
 .placeholderName {
   height: 9vh;
   background: #cececeb3;
@@ -162,8 +171,58 @@ ul > div {
   border-radius: 0.7vw;
 }
 
+
+#listDescriptionContainer {
+  background: #00000085;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 0.5em;
+}
+#descriptionContainer {
+  width: 100%;
+}
+#listName {
+  margin-left: 4.8rem;
+  font-weight: bolder;
+  font-size: var(--bigFont);
+  line-height: 1.1;
+}
+
+#viewImg {
+  width: 1em;
+  margin-right: 0.3em;
+  transform: translateY(0.1em);
+  display: none;
+}
+#viewText {display: inline;}
+
+#listHeaderInfo {
+  font-size: var(--smallFont);
+}
+#listButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5em;
+}
+
+#listHeader {
+  display: flex;
+  align-items: center;
+  height: 2em;
+  background: #ffffff17;
+  border-radius: 0.5em 0.5em 0 0;
+}
+
+#rateRatio {
+  cursor: help;
+}
+ 
 .listInfo {
-  background: linear-gradient(180deg, #00000082, transparent);
+  display: flex;
+  width: clamp(13em, 95%, 90em);
+  margin: auto;
+  gap: 0.5em;
+  padding-top: 1em;
 }
 
 .listUsername {
@@ -174,37 +233,42 @@ ul > div {
   gap: 0.5em;
 }
 .listPFP {
-  width: 2em;
+  width: 3.5em;
   border-radius: 10em;
   border: white 2px solid;
   box-sizing: border-box;
+  /*! position: absolute; */
+  bottom: 5.2em;
+  margin: 0 0.7em;
+  transform: translateY(-25%);
+  height: 3.5em;
 }
 
 .listHeaderBlue {
 	display: flex;
 	align-items: center;
 	background: linear-gradient(9deg, #141f20, #044a51) !important;
-	border-radius: 1em;
-	gap: 0.2em;
-	/*! max-width: fit-content; */
+	border-radius: 0.3em;
+	gap: 0.4em;
 	border: none;
 	min-width: 7em;
 	cursor: pointer;
 	font-size: var(--miniFont) !important;
-  /*! max-width: 100%; */
+  outline: none;
 }
 
-.listHeaderBlue img {
-  width: var(--smallFont);
-  padding-left: 0.4vw;
+.listOptionsContainer img {
+  width: var(--normalFont);
+}
+.listOptionsContainer button {
+  padding: 0 0.3em;
 }
 
 .listOptionsContainer {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  gap: 0.2em 0.4em;
-  padding-right: 1vw;
+  display: flex;
+  gap: 0 0.5em;
   align-items: center;
+  font-size: var(--normalFont);
 }
 #listOptionsID {
   display: flex;
@@ -220,7 +284,9 @@ ul > div {
   transition: box-shadow 0.2s;
 	gap: 0.8em;
 	height: 100% !important;
+  position: relative;
 }
+#commButton.listMore {background: linear-gradient(9deg, #141f20, #044a51) !important}
 
 .guessBadge {
   vertical-align: sub;
@@ -318,6 +384,48 @@ ul > div {
   gap: 0.4em;
 }
 
+#listDescription {
+  --gradEnabled: linear-gradient(0deg, black, transparent);
+  font-size: var(--smallFont);
+  padding: 0.1em 0.4em;
+  text-shadow: none;
+  margin: 0;
+  min-height: 6em;
+  height: 6em;
+  transition: height 0.2s ease-in-out;
+  overflow: hidden;
+  line-height: 130%;
+}
+
+#listDescription::before {
+	content: "";
+	background: var(--gradEnabled);
+	width: 100%;
+	height: 1em;
+	position: absolute;
+  left: 0;
+  bottom: 0;
+  border-radius: 2em;
+}
+
+#noDesc {
+	opacity: 0.2;
+	margin: 0.5em;
+}
+
+#showMore {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	border: none;
+	width: 3em;
+	border-radius: 1em 1em 0em 0em;
+	background: var(--normalColor);
+	filter: brightness(2.5);
+	cursor: pointer;
+}
+
 /* Crown */
 #toplevel::before {
   content: "";
@@ -332,8 +440,8 @@ ul > div {
   background-size: 12em;
   background-repeat: no-repeat;
   background-position-x: center;
-  /*! background-position-y: 7.7vw; */
   z-index: 3;
+  pointer-events: none;
 }
 
 .boxLinksContainer {
@@ -357,7 +465,6 @@ ul > div {
   border-radius: 1em;
   align-items: center;
   padding: 0.6em;
-  /*! margin-bottom: 0.6em; */
   width: 100%;
   box-sizing: border-box;
 }
@@ -366,15 +473,8 @@ ul > div {
   margin: 0;
 }
 
-u {
-  color: rgb(131, 181, 255);
-  text-decoration-thickness: 0.1vw;
-  cursor: pointer;
-}
-
 .settingsMenu {
   position: absolute;
-  /*! float: right; */
   background: var(--greenGradient);
   right: 0.75em;
   top: 4em;
@@ -393,7 +493,6 @@ u {
   left: 0.5em;
   width: 3em;
   float: right;
-  /*! padding-left: 4vw; */
 }
 
 .scrollToTop {
@@ -453,7 +552,6 @@ u {
   margin: 0.4em;
   display: flex;
   align-items: center;
-  /*! max-height: 3vw; */
 }
 
 .memberName {
@@ -619,6 +717,8 @@ html, body {
   transform: scale(1.0);
   transition-duration: 0.2s;
   border: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .button:active:not(#categoryBut) {
@@ -713,10 +813,11 @@ html, body {
 	font-size: var(--normalFont);
 	padding: 0.1vw;
 	border-radius: 20%;
-	/*! margin-left: 1vh; */
 	min-width: var(--miniFont);
 	text-align: center;
 }
+
+#commentList .savedTitle { padding: 0;}
 
 /* Entire comment box, including user input box */
 #commentMaker {
@@ -726,6 +827,9 @@ html, body {
   background: none;
   border: none;
   box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
 }
 
 /* Comment text area */
@@ -738,10 +842,9 @@ html, body {
   width: 102%;
   padding: 0.5%;
   overflow: auto;
-  /*! word-wrap: anywhere; */
   margin: 0.3em 0 0;
   min-height: 2em;
-  /*! word-break: break-all; */
+  word-break: break-all;
   white-space: normal;
 }
 
@@ -770,7 +873,7 @@ html, body {
 }
 .cNameContainer {
   display: flex;
-  align-items: end;
+  align-items: center;
   gap: 0.5em;
 }
 
@@ -786,9 +889,19 @@ html, body {
 
 /* Specific stuff relating to the cbox footer and header */
 #comBoxFooter {
-  justify-content: flex-end !important;
+  justify-content: space-between;
+  margin-top: 0.5em;
+  display: flex;
   gap: 0.5em;
-  max-width: clamp(70.6em, 67%, 132em);
+  height: 1.7em;
+  align-items: center;
+}
+
+.sendBut {
+  border: 2px solid;
+  border-color: #ff00004a;
+  transition: border-color 0.2s;
+  background-repeat: no-repeat !important;
 }
 
 .comHeaderText {
@@ -823,10 +936,28 @@ html, body {
 .comFooterButton {
   background: none;
   cursor: pointer;
-  height: min-content;
   border-radius: 10em;
   width: 1.3em;
   padding: 0.3em;
+}
+
+.pollInput {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 1em 0;
+}
+.pollInput img {
+  width: 1em;
+}
+.pollInput input {
+  margin: 0;
+}
+.pollDialog {
+  padding: 1em;
+  box-sizing: border-box;
+  display: flex;
+  gap: 2em;
 }
 
 #verticalLine {
@@ -894,16 +1025,7 @@ html, body {
   align-items: center;
   gap: 0.5em;
   margin: 0 1vw;
-}
-
-.password {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.passInput::placeholder {
-  background-image: url(../images/edit.svg) !important;
+  transition: transform 0.2s ease-in-out;
 }
 
 nav {
@@ -930,11 +1052,12 @@ nav {
   gap: 30%;
 }
 
-.mobilePicker > div > h6 {
+.mobilePicker > a > h6 {
   margin: 0;
   font-size: var(--miniFont);
+  color: white;
 }
-.mobilePicker > div > img, object {
+.mobilePicker > a > img, object {
   width: 1.6em;
   padding-top: 0.2em;
 }
@@ -980,7 +1103,6 @@ footer {
   font-size: var(--bigFont);
   color: white;
   border-radius: 1vw;
-  /*! max-height: 3em; */
   max-width: 61%;
 }
 
@@ -1132,6 +1254,7 @@ cb { color: #5fe7ff ;}
   left: 50%;
   padding: 1em;
   text-align: center;
+  width: clamp(10em, 85%, 25em);
 }
 
 #loginPFP {
@@ -1243,12 +1366,25 @@ cb { color: #5fe7ff ;}
 
 .ratingContainer {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.8em;
 }
 .rateButton {
   padding: 1.2em;
   position: relative;
   border-radius: 0.8em;
 }
+
+.unloadedRate {
+  background:  #ffffff57;
+  box-sizing: border-box;
+  height: calc(var(--normalFont) - 0.7em);
+  width: 0.7em;
+  border-radius: 0.2em;
+  margin: 0.5em 0;
+}
+
 #likeBut:after {
   background: url(../images/like.svg) no-repeat;
   content: "";
@@ -1295,11 +1431,21 @@ cb { color: #5fe7ff ;}
 	font-size: var(--smallFont);
 }
 
+.rateButton > div {
+  transition: opacity 0.1s linear;
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 #likes {
   color: #a6f99b;
+  top: -16px;
 }
 #dislikes {
   color: #f99b9b;
+  top: 32px;
 }
 
 .likeFill {
@@ -1353,4 +1499,36 @@ cb { color: #5fe7ff ;}
   width: 100%;
   height: 5em;
   top: -5em;
+}
+
+#pollStyle {
+  border: white 3px solid;
+  border-radius: 1em;
+  width: 2em;
+  box-sizing: border-box;
+}
+
+.pollAdd > img {
+  width: 1.5em;
+}
+.pollAdd {
+  display: flex;
+  padding: 0.4em;
+  gap: 0.6em;
+  width: fit-content;
+  margin-top: 0.7em;
+  border-radius: 0.4em;
+}
+
+.commentContainer {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 0.5em;
+}
+
+.commentRatings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

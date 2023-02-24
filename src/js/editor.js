@@ -202,7 +202,8 @@ const DEFAULT_LEVELLIST = {
     "titleImg": ["", 0, 33, 1, true], // URL, position, coverage, halign, gradient
     "pageBGcolor": "#020202",
     "diffGuesser": [false, true, true], // enabled, diff, rating
-    "translucent": false
+    "translucent": false,
+    "description": ""
 }
 
 function makeEditor(update) {
@@ -234,8 +235,13 @@ function makeEditor(update) {
     // TODO: fix for old lists!!
     $("#listimg").on("change", () => levelList.titleImg[0] = $("#listimg").val())
     $(".imgSetButton").click(showBGsettings)
-
     $("img[for=transCards]").click(() => { checkCheckbox("transCards", (x, y) => levelList.translucent = y) })
+    
+    // List description
+    $(".descFSbutton").click(showDescriptionDialog)
+    $(".descriptionThing").keyup(e => {
+        levelList.description = e.currentTarget.value
+    })
 
     // Show alert if creating list
     window.addEventListener('beforeunload', pageExit);
@@ -264,13 +270,14 @@ const pageExit = exit => {
 }
 
 function makeBrowser() {
-    let isSearching = false
+    let isSearching = null
     $.get("./parts/listBrowser.html", dt => {
         hash = window.location.hash
         let search = hash.includes("!") ? hash.split("!")[1] : ""
         if (search != "") {
-            $("#searchBar").val(decodeURIComponent(search))
-            isSearching = true
+        
+            $("#searchBar").val(search)
+            isSearching = decodeURIComponent(search)
         }
 
         // Add switch buttons
@@ -295,7 +302,7 @@ function makeBrowser() {
         $(".browserButton").eq(browser).attr("id", "browserBSelected")
 
         listOnlineViewerDrawer(
-            {startID: 999999, searchQuery: null, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0},
+            {startID: 999999, searchQuery: isSearching, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0},
             "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
     })
 }
@@ -341,6 +348,8 @@ function switchBrowser(hash) {
     if (browser == ind) return
     browser = ind
 
+    loadingLists = false
+    $(".customLists").empty()
     $(".browserButton").attr("id", "")
     $(".browserButton").eq(ind).attr("id", "browserBSelected")
     if (["#uploads", "#hidden"].includes(hash)) {

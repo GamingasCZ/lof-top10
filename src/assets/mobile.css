@@ -89,10 +89,35 @@ ul > div {
 }
 
 .browserContainer { margin-bottom: 1em; }
-.listOptionsContainer { margin-top: 0.4em; }
 #toplevel::before {
     top: -58px;
     background-size: 8em;
 }
 
+#commentMaker {
+    flex-direction: column-reverse;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 96.8%;
+    background: #000000e8;
+    border-radius: 0;
+}
+
+#commAmount {
+	position: absolute;
+	right: 3px;
+	bottom: 3px;
+}
+#commButtonText { display: none;}
+.listMore {display: block !important;}
+.listOptionsContainer > button > div { display: none;}
+.listOptionsContainer button { min-width: max-content; }
+.listOptionsContainer button > img {
+    width: 2em;
+    padding: 0.5em;
+}
+#viewImg {display: inline;}
+#viewText {display: none;}
+#descPreviewButton > div { display: none; }
 }

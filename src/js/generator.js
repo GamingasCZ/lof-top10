@@ -1,5 +1,7 @@
 const getListLen = b => Object.keys(b).filter(x => x.match(/\d+/)).length
 const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
+var settings = Array(2)
+
 
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
@@ -126,6 +128,21 @@ function hideJumpTo() {
 	$(".jumpDialog").fadeOut(100);
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
+}
+
+function descriptionShowAll() {
+	if ($("#listDescription").attr("data-open") == "0") {
+		$("#listDescription").css("--gradEnabled", "none")
+		$("#listDescription").css("height", $("#listDescription")[0].scrollHeight+10+"px")
+		$("#showMore > img").css("transform", "scaleY(-1)")
+		$("#listDescription").attr("data-open", "1")
+	}
+	else {		
+		$("#listDescription").css("--gradEnabled", "")
+		$("#listDescription").css("height", "")
+		$("#showMore > img").css("transform", "scaleY(1)")
+		$("#listDescription").attr("data-open", "0")
+	}
 }
 
 const openSocLink = link => { window.open(link) }
@@ -857,15 +874,14 @@ function pinList(rem = null, isOnHomepage = false) {
 		if (!indToRemove[1]) indToRemove[0]++
 	});
 
-	$(".pin").empty()
 	if (indToRemove[1]) {
-		$(".pin").append("<img src='images/pin.svg'>")
-		$(".pin").append(jsStr["PIN_LIST"][LANG])
+		$(".pin > img").attr("src", "images/pin.svg")
+		$("#pinBut").text(jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
 	}
 	else {
-		$(".pin").append("<img src='images/unpin.svg'>")
-		$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+		$(".pin > img").attr("src", "images/unpin.svg")
+		$("#pinBut").text(jsStr["UNPIN_LIST"][LANG])
 		// [listID, listName, listCreator, listColor, currTime, isGuess]
 		let isGuess = boards.diffGuesser != undefined ? boards.diffGuesser[0] : 0
 		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime(), isGuess])
@@ -949,7 +965,8 @@ async function homeCards(obj, custElement = ".listContainer", previewType = 1, o
 
 	if (reverseList) obj = JSON.parse(JSON.stringify(obj)).reverse()
 
-	$(custElement).text("");
+	if ($(`${custElement} > #listPreview,#comBoxHeader`).length == 0 || !SCROLLTYPE) $(custElement).empty();
+	if (SCROLLTYPE) $(".page").hide()
 
 	let MAX_ON_PAGE = overwriteMax ? overwriteMax : 4
 
@@ -1152,6 +1169,8 @@ async function loadSite() {
 	currentListData = []
 	page = {}
 	levelList = JSON.parse(JSON.stringify(DEFAULT_LEVELLIST))
+	$("window").off("beforeunload")
+	loadingLists = false
 
 	$(".logo").css("transform", `rotate(360deg)`)
 	let spinning = setInterval(() => { rot += 1; $(".logo").css("transform", `rotate(${rot * 360}deg)`) }, 1000)
@@ -1266,31 +1285,38 @@ $(async function () {
 		}
 
 		// Setting mobile picker in navbar to curr site name
-		if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
-		if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
+		if (window.location.href.includes("browse")) $(".mobilePicker > a")[1].style.filter = "var(--lightHighlight)"
+		if (window.location.href.includes("editor")) $(".mobilePicker > a")[0].style.filter = "var(--lightHighlight)"
 
-		$($(".settingsDropdown > option")[LANG]).attr("selected", true)
-
-		$(".settingsDropdown").on("change", () => {
-			let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
+		
+		$(".settingsDropdown:eq(0)").on("change", () => {
+			let scrollType = $(".settingsDropdown:eq(0)")[0].selectedIndex ? 1 : 0
+			makeCookie(["scrolling", scrollType])
+			window.location.reload();
+		})
+		if (!getCookie("scrolling")) makeCookie(["scrolling", 0])
+		$($(".settingsDropdown:eq(0) > option")[parseInt(getCookie("scrolling"))]).attr("selected", true)
+		
+		$(".settingsDropdown:eq(1)").on("change", () => {
+			let switchLang = $(".settingsDropdown:eq(1)").val() == jsStr["CZECH"][LANG] ? 0 : 1
 			makeCookie(["lang", switchLang])
 			window.location.reload();
 		})
-
+		var currLang = getCookie("lang");
+		if (!currLang) {
+			let getLang = navigator.language;
+			if (["cs", "sk"].includes(getLang)) { currLang = 0; }
+			else { currLang = 1; }
+			
+			makeCookie(["lang", currLang])
+		}
+		$($(".settingsDropdown:eq(1) > option")[LANG]).attr("selected", true)
+		
 		$("footer").css("opacity", 1)
 	})
-
-	var currLang = getCookie("lang");
-	if (!currLang) {
-		let getLang = navigator.language;
-		if (["cs", "sk"].includes(getLang)) { currLang = 0; }
-		else { currLang = 1; }
-
-		makeCookie(["lang", currLang])
-	}
-	LANG = currLang;
-	$($(".settingsDropdown").children()[currLang]).attr("selected", true)
-
+	
+	SCROLLTYPE = parseInt(getCookie("scrolling"))
+	LANG = parseInt(getCookie("lang"));
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
 
 	window.addEventListener("hashchange", loadSite)
@@ -1302,6 +1328,14 @@ $(async function () {
 	$("body").on("scroll", () => {
 		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
 		else $(".scrollToTop").css("opacity", 0)
+
+		if ($("body").scrollTop()/($("body")[0].scrollHeight - $("body").outerHeight()) > 0.9 && !loadingLists && SCROLLTYPE) {
+			let pages = page[`#${$(".customLists").parent().attr("id")}`]
+			if (pages[1] - 1 > pages[0]) $(".pageBut").eq(1).click()
+			else {
+				loadingLists = true
+			}
+		}
 	})
 })
 
@@ -1313,7 +1347,7 @@ function checkAccount() {
 		}
 	})
 }
-
+let loadingLists = false
 function logout() {
 	localStorage.removeItem("userInfo")
 	$.get("./php/accounts.php?logout", e =>{
@@ -1370,15 +1404,28 @@ async function lists(list) {
 					await getProfilePicture(pfpLink).then(link => profilePic = link)
 				}
 
+				$("#listName").text(data[0]["name"])
+				$("#listCreator").text(listCreator)
+				$(".listPFP").attr("src", profilePic)
 
-				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
-					<p class="listUsername"><img class="listPFP" src="${profilePic}">${listCreator}</p></div>`);
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
 				let isHidden = data[0]["hidden"] != 0
 				LIST_ID = !isHidden ? parseInt(data[0]["id"]) : data[0]["hidden"]
-				$("#viewCount").text(data[0]["views"])
+				$("#listViews").text(data[0]["views"])
+				let nT = new Date(data[0]["timestamp"] * 1000);
+				$("#listDate").text(`${nT.toLocaleDateString()}`)
+				
 				$("#commAmount").text(data[0]["commAmount"])
+				$("#listDescription").html(parseFormatting(boards.description ?? `<div id="noDesc">Seznam nemá popisek</div>`))
+				$("#listDescription a").click(redirectWarn)
+				if ($("#listDescription")[0].clientHeight == $("#listDescription")[0].scrollHeight) { // No scroll
+					$("#listDescription").css("--gradEnabled", "none")
+					$("#showMore").hide()
+				}
+
+				$("#rateRatio").on("mouseover", () => $(".rateButton > div").css("opacity", "0.7"))
+				$("#rateRatio").on("mouseout", () => $(".rateButton > div").css("opacity", "0"))
 
 				generateList(boards, [LIST_ID, data[0]["name"], isHidden ? "pid" : "id"]);
 			}
@@ -1394,7 +1441,7 @@ async function lists(list) {
 			if (arr[0] == LIST_ID) {
 				$(".pin").empty()
 				$(".pin").append("<img src='images/unpin.svg'>")
-				$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+				$(".listOptionsContainer .pin div").text(jsStr["UNPIN_LIST"][LANG])
 				$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
 			}
 		});
@@ -1422,6 +1469,9 @@ async function lists(list) {
 	// Load ratings
 	$.get("php/rateAction.php", { "id": LIST_ID }, rates => {
 		// 0 - likes, 1 - dislikes
+
+		$("#rateRatio").removeClass("unloadedRate")
+		$("#rateRatio").text(rates[0]-rates[1])
 		$("#likes").text(rates[0])
 		$("#dislikes").text(rates[1])
 
@@ -1471,9 +1521,11 @@ function pageSwitch(num, data, parent, ctype) {
 	Object.values($(".pageYes")).slice(0, -2).forEach(x => {
 		if ($(x).text() == page[parent][0] + 1) $(x).attr("id", "pgSelected")
 	})
+	loadingLists = false
 }
 
 async function onlinePageSwitch(num, online, parent, ctype) {
+	loadingLists = true
 	online.page = clamp(num, 0, page[parent][1] - 1)
 
 	// Without redrawing, only page scrollbar is set
@@ -1504,9 +1556,11 @@ async function onlinePageSwitch(num, online, parent, ctype) {
 	Object.values($(".pageYes")).slice(0, -2).forEach(x => {
 		if ($(x).text() == page[parent][0] + 1) $(x).attr("id", "pgSelected")
 	})
+	loadingLists = false
 }
 
 function search(data, parent, ctype) {
+	loadingLists = false
 	let query = $(`${parent} #searchBar`).val();
 	if (query == "") {
 		// Reset stuff
@@ -1548,7 +1602,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 	}
 
 	// Clear old cards
-	$(`${parent} .customLists`).empty();
+	if (!SCROLLTYPE) $(`${parent} .customLists`).empty();
 
 	// We want to sort from newest to oldest by default
 	let reversed = JSON.parse(JSON.stringify(data)).reverse();
@@ -1639,7 +1693,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 		// No comments
 		else if (cardType == 6) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center;">${jsStr["NOCOMM"][LANG]}</p>`);
 		// Object is empty
-		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
+		else $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}
 }
 
@@ -1647,21 +1701,21 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 	let data = [];
 	let init = 0;
 	await $.get("php/" + online["path"].match(/[A-z]*\.php/), online, response => {
+		if (response == 3) response = [[], [], online]
 		originalListData[parent] = response; currentListData[parent] = response;
 		page[parent] = [parseInt(response[2].page), response[2].maxPage]
 		data = response
 		if (online.startID == 999999) { init = 1; online.startID = response[2].startID }
 	})
 
-	// Clear old cards
-	$(`${parent} .customLists`).empty();
-
 	// List search button action
 	$(`${parent} .doSearch`).off("click")
 	$(`${parent} .doSearch`).one("click", () => {
-		online.searchQuery = $(`${parent} #searchBar`).val()
+		online.searchQuery = $(`${parent} #searchBar`).val() // TODO: FIX SEARCHING!!!!!!!!
+		online.startID = 999998
+		online.page = 0
+		$(`${parent} > .customLists`).empty()
 		listOnlineViewerDrawer(online, parent, cardType, disableControls, title, addElements)
-
 	})
 
 	$(`${parent} .pageBut`).off("click")
@@ -1726,7 +1780,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 		// No comments
 		else if (cardType == 6) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center;">${jsStr["NOCOMM"][LANG]}</p>`);
 		// Object is empty
-		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
+		else $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}
 	return online
 	// Draw pages
@@ -1839,6 +1893,8 @@ function rateList(el) {
 	$.post("php/rateAction.php", postArray, data => {
 		$("#likes").text(data.ratings[0])
 		$("#dislikes").text(data.ratings[1])
+		$("#rateRatio").text(data.ratings[0] - data.ratings[1])
+
 		discolorRatings(data.ratings[0], data.ratings[1])
 		if (data.result == "deleted") return
 		else colorRatings(smashedLike)

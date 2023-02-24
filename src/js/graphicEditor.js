@@ -230,6 +230,93 @@ function showBGdialog() {
     $(".boom").animate({ "opacity": 100 }, 200)
 }
 
+function hideDescriptionDialog() {
+    $(".mainInpContainer .descriptionThing").val(levelList.description ?? "")
+    $(".fullscreenDescription").fadeOut(100)
+    $(".boom").fadeOut(100)
+}
+function showDescriptionDialog() {
+    $(".fullscreenDescription").fadeIn(100)
+    $(".fsDescriptionArea").val(levelList.description ?? "")
+    $(".boom").css("background-color", "#000000a0")
+    $(".boom").show()
+    $(".boom").animate({ "opacity": 100 }, 200)
+}
+
+function formatText(type) {
+    if ($("#descPreviewButton").attr("data-on") == "1") return
+
+    let chars = ["**", "//", "__", "--"][type]
+    let textbox = $(".fsDescriptionArea")
+    let selStart = textbox[0].selectionStart
+    switch (true) {
+        case type >= 0 && type <= 3:
+            if (selStart == textbox[0].selectionEnd) { // No text selected
+                textbox.val(textbox.val().slice(0, selStart) + `${chars} ${chars}` + textbox.val().slice(selStart))
+                textbox.focus()
+                textbox.prop("selectionStart", selStart+2)
+                textbox.prop("selectionEnd", selStart+3)
+            }
+            else {
+                let selectedText = textbox.val().slice(selStart, textbox[0].selectionEnd)
+                textbox.val(textbox.val().slice(0, selStart) + `${chars}${selectedText}${chars}` + textbox.val().slice(textbox[0].selectionEnd))
+                textbox.focus()
+                textbox.prop("selectionStart", textbox[0].selectionEnd+2)
+                textbox.prop("selectionEnd", textbox[0].selectionEnd+2)
+            }
+            
+            break;
+            case [4,5].includes(type):
+                let format = type == 4 ? "#" : "*"
+                let startLF = [undefined, "\n"].includes(textbox.val()[selStart-1]) ? "" : "\n"
+                textbox.val(textbox.val().slice(0, selStart) + `${startLF}${format}` + textbox.val().slice(selStart))
+                textbox.focus()
+                textbox.prop("selectionStart", selStart+2)
+                textbox.prop("selectionEnd", selStart+2)
+                break;
+                
+            default:
+                break;
+            }
+    levelList.description = textbox.val()
+}
+
+function previewDescription() {
+    if ($("#descPreviewButton").attr("data-on") == "0") {
+        $(".formattingButton:not(#descPreviewButton)").addClass("disabled")
+        $(".fsDescriptionArea").hide()
+        $("#descriptionPreview").html(parseFormatting(levelList.description))
+        $("#descriptionPreview").show()
+        $("#descPreviewButton").css("background", "#ffffff4a")
+        $("#descPreviewButton").attr("data-on", "1")
+    }
+    else {
+        $(".formattingButton:not(#descPreviewButton)").removeClass("disabled")
+        $(".fsDescriptionArea").show()
+        $("#descriptionPreview").hide()
+        $("#descPreviewButton").css("background", "")
+        $("#descPreviewButton").attr("data-on", "0")
+    }
+}
+
+function parseFormatting(text) {
+    let chars = ["\\*\\*", "\\/\\/", "__", "--"]
+    let tags = ["b", "i", "u", "strike"]
+    let i = 0
+    chars.forEach(c => {
+        let regex = new RegExp(`${c}(.*?)${c}`, "g")
+        text = text.replace(regex, `<${tags[i]}>$1</${tags[i]}>`)
+        i++
+    });
+    text = text.replace(/#(.*?)\n/g, `<div class="header">$1</div>\n`)
+    text = text.replace(/\*(.*?)(\n|$)/g, `<li class="descList">$1</li>\n`)
+
+    let urlRegex = /(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*))/g
+    text = text.replace(urlRegex, `<a href="$1" class="gamLink">$1</a>`)
+
+    return text
+}
+
 function hideBGsettings() {
     hideBGdialog()
     $(".backSett").fadeOut(50)
@@ -349,6 +436,8 @@ function generateFromJSON(part, boards) {
     $("#listnm").val(boards["name"])
 
     levelList = JSON.parse(boards["data"]);
+
+    $(".mainInpContainer .descriptionThing").text(levelList.description ?? "")
 
     if (levelList["translucent"] != undefined && levelList["translucent"]) {
         $(`img[for="transCards"]`).attr("src", "images/modernCheckOn.svg")
@@ -1064,7 +1153,7 @@ function card(index) {
         <div style="display: flex; justify-content: space-between;">
             <div style="display: flex; align-items: center;">
                 <img id="posInputPics" src="./images/star.webp">
-                <input autocomplete="off" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text">
+                <input autocomplete="off" maxlength="8" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text">
                 <img id="passSubmit" src="images/searchOpaque.svg" onclick="getDetailsFromID(${index})" class="fillID button disabled idDetailGetter${index}" style="margin-left: 1em;">
             </div>
 
@@ -1086,7 +1175,7 @@ function card(index) {
         <div style="display: flex; flex-wrap: wrap;">
             <div style="display: flex; flex-wrap: wrap; width: 100%; align-items: center;">
                 <img id="posInputPics" src="./images/island.webp">
-                <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr['L_NAME'][LANG]}">
+                <input id="posInputBox" maxlength="25" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr['L_NAME'][LANG]}">
 
                 <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
 
@@ -1094,14 +1183,14 @@ function card(index) {
 
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
-                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="display: inline-flex;"><br />
+                <input id="posInputBox" maxlength="25" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="display: inline-flex;"><br />
                 <img class="collListBut button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.webp" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
                 <div style="display: flex; align-items: center;">
                     <img id="posInputPics" src="./images/yticon.webp">
-                    <input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr['L_VIDEO'][LANG]}">
+                    <input class="cardLVideo${index} cardInput" maxlength="50" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr['L_VIDEO'][LANG]}">
                 </div>
                 
                 <div class="cardButtonsContainer">
