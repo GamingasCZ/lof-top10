@@ -1237,6 +1237,7 @@ async function loadSite() {
 
 		default:
 			if (hash == "") { makeHP(); break };
+			if (hash.startsWith("@")) {makeProfile(); break;}
 			await $.get("./parts/listViewer.html", data => {
 				$("#app").html(translateDoc(data, "listViewer"))
 				let listObject;
@@ -1851,6 +1852,9 @@ async function setPFP(userInfo) {
 	$(".setLoginText").after(`
 	<div onclick="logout()" class="button eventButton uploadText settingsButton noMobileResize"><img src="images/logout.svg">${jsStr["LOGOUT"][LANG]}</div>
 	`)
+	$("#myProfile").click(() => {
+		switchLoFList(`@${userInfo[0]}`)
+	})
 
 	$(".userIcon").attr("id", "userLoggedIn")
 	await getProfilePicture(`https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`).then(link => $(".userIcon").attr("src", link))

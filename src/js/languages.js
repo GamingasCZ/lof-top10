@@ -416,7 +416,8 @@ var parts = {
         ["Rating", "Rating"],
         ["Průsvitné karty", "Translucent Cards"],
         ["Nahrát", "Upload"]
-    ]
+    ],
+    "profiles": []
 }
 
 function translateDoc(doc, ind) {

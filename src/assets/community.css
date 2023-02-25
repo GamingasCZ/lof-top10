@@ -1447,3 +1447,68 @@ input:disabled {
     gap: 1.5em;
     width: max-content;
 }
+
+.profileSectionButtonContainer {
+    width: min(26em, 75vw);
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    background: #ffffff17;
+    border-radius: 0.4em;
+}
+
+.profileSectionButtonContainer > img { width: 3em; }
+.profileSectionButtonContainer > div { line-height: 103%; }
+.profileSectionButtonHelpText {
+    opacity: 0.4;
+    font-size: var(--miniFont);
+}
+
+#profileBanner {
+    /* background: url(../images/introGrad2.webp); */
+    background: url(../images/gggraf.png) no-repeat;
+    height: 12em;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+#profileHeader {
+    display: flex;
+    width: min(100vw, 70em);
+    flex-direction: column;
+    margin: auto;
+    --PFPwidth: 8em;
+}
+
+#profileTabButtonContainer {
+    display: flex;
+    gap: 2em;
+    padding-left: calc(var(--PFPwidth) - 2em);
+    align-items: center;
+    height: inherit;
+}
+
+#profileTabs {
+    position: relative;
+    background: var(--defaultGradient);
+    margin-left: calc(var(--PFPwidth) / 2);
+    height: calc(var(--PFPwidth) - 4.4em);
+    border-bottom-right-radius: 5em;
+}
+
+#profilePicture {
+    border-radius: 10em;
+    position: absolute;
+    top: calc(var(--PFPwidth) - (2 * var(--PFPwidth) - 3em));
+    width: var(--PFPwidth);
+    border: white 6px solid;
+    left: calc((var(--PFPwidth) - 2 * var(--PFPwidth)) / 2);
+}
+
+.profileTab > img {
+    width: 1.5em;
+    vertical-align: middle;
+    margin-right: 0.5em;
+  }
+   
