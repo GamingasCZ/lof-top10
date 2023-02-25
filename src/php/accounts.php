@@ -17,6 +17,7 @@ if (sizeof($_GET) == 1) {
     if (array_keys($_GET)[0] == "logout") { // Check login validity
         removeCookie("access_token");
         echo "1";
+        return true;
     }
 
     // Get the access token from the authorization code
