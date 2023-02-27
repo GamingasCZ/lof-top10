@@ -1465,12 +1465,14 @@ input:disabled {
 }
 
 #profileBanner {
-    /* background: url(../images/introGrad2.webp); */
-    background: url(../images/gggraf.png) no-repeat;
-    height: 12em;
-    width: 100%;
-    background-size: cover;
-    background-position: center;
+	/* background: url(../images/introGrad2.webp); */
+	background: url(../images/gggraf.png) no-repeat;
+	height: 12em;
+	width: 100%;
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
 }
 
 #profileHeader {
@@ -1491,7 +1493,7 @@ input:disabled {
 
 #profileTabs {
     position: relative;
-    background: var(--defaultGradient);
+    background: var(--greenGradient);
     margin-left: calc(var(--PFPwidth) / 2);
     height: calc(var(--PFPwidth) - 4.4em);
     border-bottom-right-radius: 5em;
@@ -1502,8 +1504,11 @@ input:disabled {
     position: absolute;
     top: calc(var(--PFPwidth) - (2 * var(--PFPwidth) - 3em));
     width: var(--PFPwidth);
+    height: var(--PFPwidth);
     border: white 6px solid;
     left: calc((var(--PFPwidth) - 2 * var(--PFPwidth)) / 2);
+    background-size: cover;
+    background-position: center;
 }
 
 .profileTab > img {
@@ -1511,4 +1516,13 @@ input:disabled {
     vertical-align: middle;
     margin-right: 0.5em;
   }
-   
+
+#bannerOverlay {
+    flex-grow: 1;
+}
+
+#profileUsername {
+    margin-left: 12rem;
+    font-size: var(--biggerFont);
+    line-height: 150%;
+}

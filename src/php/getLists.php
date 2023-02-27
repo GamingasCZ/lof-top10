@@ -112,7 +112,8 @@ if (count($_GET) == 1) {
   $addReq = "";
   $showHidden = "`hidden` = '0' AND";
   if (isset($_GET["user"])) {
-    $user = checkAccount()["id"];
+    // make sure to fuck up user later
+    $user = strlen($_GET["user"]) == 0 ? checkAccount()["id"] : $_GET["user"];
     $addReq = "AND `uid`=" . $user . " AND `hidden` LIKE 0";
   }
   if (isset($_GET["hidden"])) {
