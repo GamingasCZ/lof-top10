@@ -194,6 +194,7 @@ var jsStr = {
     "DEL_CARD": ["Smazat kartu", "Delete card"],
     "CARD_COL": ["Barva karty", "Card color"],
     "TAGSTIT": ["Štítky", "Tags"],
+    "REVIEWS": ["Recenze", "Review"],
     "EDITING": ["Upravování", "Editing"],
     "L_UPDATE": ["Aktualizovat", "Update"],
     "LEVELS": ["Levely", "Levels"],

@@ -736,7 +736,8 @@ function addPicked(ind) {
         "color": favesData[ind][3],
         "difficulty": [0, 0],
         "background": [1, true, 30, 100], //BG, gradient, alpha, brightness
-        "tags": favesData[ind][8] != undefined ? favesData[ind][8] : [] // TODO: možná změň index
+        "tags": favesData[ind][8] != undefined ? favesData[ind][8] : [], // TODO: možná změň index
+        "review": [0, "", "", []] // Rating, revTitle, review, sliders
     };
     loadLevel(listLenght)
     displayCard(listLenght)
@@ -792,18 +793,6 @@ function makeFavesPicker() {
     })
 }
 
-class Level {
-    constructor(levelName = "", creator = "", levelID = -1, video = "", color = "", difficulty = [0, 0], tags = []) {
-        this.levelName = levelName;
-        this.creator = creator;
-        this.levelID = levelID;
-        this.video = video;
-        this.color = color;
-        this.difficulty = difficulty;
-        this.tags = tags;
-    }
-}
-
 async function addLevel() {
     var listLenght = getListLen(levelList) + 1;
     if (listLenght == 1) {
@@ -837,7 +826,8 @@ async function addLevel() {
         "color": "",
         "difficulty": [0, 0],
         "background": [1, true, 30, 100], //BG, gradient, alpha, brightness
-        "tags": []
+        "tags": [],
+        "review": [0, "", "", []] // Rating, revTitle, review, sliders
     };
 
     $("#top" + listLenght).css("transform", "scaleY(1)");
@@ -942,6 +932,50 @@ function updateCardData(prevID, newID) {
     }
 
 }
+
+function openReviewDropdown(lp) {
+    $('.cardContainer' + lp).text('')
+    if (openedPane == 4 || $('.cardContainer' + lp).css("display") == "none") $('.cardContainer' + lp).slideToggle(50)
+    openedPane = 4
+
+    let review = $(`
+    <div id="reviewTitleContainer">
+        <input placeholder="Titulek recenze" class="uploadMainInp" style="margin: 0">
+        <div id="reviewStarContainer">
+            <img class="button noMobileResize" src="images/starUnfilled.svg">
+            <img class="button noMobileResize" src="images/starUnfilled.svg">
+            <img class="button noMobileResize" src="images/starUnfilled.svg">
+            <img class="button noMobileResize" src="images/starUnfilled.svg">
+            <img class="button noMobileResize" src="images/starUnfilled.svg">
+        </div>
+    </div>
+    <div id="reviewDescContainer">
+        <textarea id="reviewDesc" class="listDesc uploadText" placeholder="Recenze"></textarea>
+        <img src="./images/fullscreen.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize descFSbutton">
+    </div>
+    <div id="reviewSliderContainer">
+        <div>
+            <div>
+                <button type="button" class="uploadText button eventButton">Dekorace</button>
+                <button type="button" class="uploadText button eventButton">Gameplay</button>
+                <button type="button" class="uploadText button eventButton">Sync</button>
+                <button type="button" class="uploadText button eventButton">Mince</button>
+            </div>
+            <img src="./images/plus.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize descFSbutton">
+        </div>
+        <div id="reviewSliderContainer">
+        
+        </div>
+    </div>
+    
+    `)
+    review.appendTo($(".cardContainer" + lp))
+}
+
+/*
+            <h6>Dekorace</h6>
+            <input type="range" id="bgCoverageSlider" min="0" max="100">
+*/
 
 function openColorPicker(lp) {
     $('.cardContainer' + lp).text('')
@@ -1205,6 +1239,8 @@ function card(index) {
                     </div>
                     <img title="${jsStr['TAGSTIT'][LANG]}" class="button cardButton tagPicker${index}"
                         onclick="openTagPicker(${index})" src="./images/tags.webp">
+                    <img title="${jsStr['REVIEWS'][LANG]}" class="button cardButton reviews${index}"
+                        onclick="openReviewDropdown(${index})" src="./images/reviews.webp">
                 </div>
             </div>
 

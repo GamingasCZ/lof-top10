@@ -1075,8 +1075,8 @@ footer {
 
 .eventButton {
 	background-color: #00000070 !important;
-	padding: 0% 1vw;
-	margin-left: 1%;
+	padding: 0% 0.6em;
+	margin-left: 0.3em;
 	border-radius: 100vw;
 }
 
