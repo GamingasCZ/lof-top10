@@ -69,6 +69,9 @@ var jsStr = {
     "WELCOME1": ["Vítej v GD Seznamech, ", "Welcome to GD Lists, "],
     "WELCOME2": ["Nyní můžeš využívat všechny funkce stránky :)", "You can now use all the site's features :)"],
     "LOGOUT": ["Odhlásit se", "Log out"],
+    "LOGIN": ["Přihlásit se", "Log in"],
+    "NOTNOW": ["Teď ne", "Not now"],
+    "RATELOGIN": ["Pro hodnocení seznamů se prosím přihlaš!", "Please login to rate lists!"],
 
     // generator
     "VIEWS": [" zhlédnutí", " views"],
@@ -127,6 +130,7 @@ var jsStr = {
     "TWIT_SHARE": ["Sdílet na Twitteru", "Share on Twitter"],
     "MAKEGUESSES": ["Hádej nebo skipni všechny levely k odemknutí skákání!", "Guess or Skip all levels to unlock jumping!"],
     "SHORTTIME": [["s","m","h","d","t","r"], ["s","m","h","d","w","y"]],
+    "NO_DESC": ["Seznam nemá popisek", "List doesn't have a description"],
 
     // helpDialogs
     "LICENSE": ["Licence","License"],
@@ -306,7 +310,8 @@ var parts = {
         ["Hledat seznamy...", "Search for lists..."],
         ["Vytvořit seznam","Create a list"],
         ["Zkusit štestí","Try luck"],
-        ["Vítej v GD Seznamech! Připoj svůj Discord účet pro vytváření seznamů, hodnocení a komentování!", "Welcome to GD Lists! Hook up your Discord account to make lists, rate and comment!"],
+        ["Vítej v GD Seznamech!", "Welcome to GD Lists!"],
+        [" Připoj svůj Discord účet pro vytváření seznamů, hodnocení a komentování!", " Hook up your Discord account to make lists, rate and comment!"],
         ["Přihlásit se", "Log in"],
         ["Nejnovější", "Newest"],
         ["Více", "More"],
@@ -340,6 +345,7 @@ var parts = {
         ["Členové", "Members"],
         ["Líbí se mi to!", "I like this!"],
         ["Nelíbí se mi to!", "I dislike this!"],
+        [" zhlédnutí", " views"],
         ["Komentáře", "Comments"],
         ["Sdílet", "Share"],
         ["Skočit na", "Jump To"],

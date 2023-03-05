@@ -1299,11 +1299,18 @@ cb { color: #5fe7ff ;}
   position: relative;
 }
 
+#lessImportantButton {
+	background: none !important;
+	border: 0.2em #00000070 solid;
+	box-sizing: border-box;
+	padding: 0 0.6em;
+}
+
 .settingsButton {
   display: flex;
   align-items: center;
   gap: 0.5em;
-  padding: 0.3em;
+  padding: 0.3em 0.6em;
   width: 93%;
 }
 .settingsButton > img {width: var(--normalFont);}
@@ -1334,6 +1341,7 @@ cb { color: #5fe7ff ;}
   align-items: center;
   padding: 1em;
   width: min(40em, 85%);
+  margin-bottom: 2em;
 }
 
 #settings {

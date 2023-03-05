@@ -1417,7 +1417,7 @@ async function lists(list) {
 				$("#listDate").text(`${nT.toLocaleDateString()}`)
 				
 				$("#commAmount").text(data[0]["commAmount"])
-				$("#listDescription").html(parseFormatting(boards.description ?? `<div id="noDesc">Seznam nemá popisek</div>`))
+				$("#listDescription").html(parseFormatting(boards.description ?? `<div id="noDesc">${jsStr["NO_DESC"][LANG]}</div>`))
 				$("#listDescription a").click(redirectWarn)
 				if ($("#listDescription")[0].clientHeight == $("#listDescription")[0].scrollHeight) { // No scroll
 					$("#listDescription").css("--gradEnabled", "none")
@@ -1474,13 +1474,9 @@ async function lists(list) {
 		$("#rateRatio").text(rates[0]-rates[1])
 		$("#likes").text(rates[0])
 		$("#dislikes").text(rates[1])
-
-		$("#likeBut").click(rateList)
-		$("#dislikeBut").click(rateList)
-
-		if (rates[2] == -2) { // Not logged in
-			return $(".rateButton").remove()
-		}
+	
+		$("#likeBut").click(rates[2] == -2 ? rateLogin : rateList)
+		$("#dislikeBut").click(rates[2] == -2 ? rateLogin : rateList)
 
 		discolorRatings(rates[0], rates[1])
 		if (rates[2] >= 0) colorRatings(rates[2]) // colorize if has rated
@@ -1899,4 +1895,26 @@ function rateList(el) {
 		if (data.result == "deleted") return
 		else colorRatings(smashedLike)
 	})
+}
+
+function rateLogin() {
+	$("#popupBG").show()
+	$("#popupBG").css("opacity", 1)
+
+	// reusing the login popup... how lazy of me :D
+	$("#app").prepend(`
+	<div class="uploadBG uploadText" id="loginPopup" style="opacity: 0;">
+		<div class="quoteContainer" style="margin: auto; font-size: 0.75em;">
+			<img src="" style="width: 3em;" class="loginEmoji" loading="lazy">
+			<h2 class="quote"></h2>
+		</div>	
+		<h4>${jsStr["RATELOGIN"][LANG]}</h4>
+		<div style="display: flex; gap: 1em;">
+			<div onclick="login(1)" class="button eventButton uploadText settingsButton noMobileResize loginBut"><img src="images/discord.svg">${jsStr["LOGIN"][LANG]}</div>
+			<div onclick="hideLoginPopup()" class="button eventButton uploadText settingsButton noMobileResize" id="lessImportantButton"><img src="images/close.svg">${jsStr["NOTNOW"][LANG]}</div>
+		</div>
+	</div>
+		`)
+	lockQuotes()
+	$("#loginPopup").animate({opacity: 1}, 100)
 }
