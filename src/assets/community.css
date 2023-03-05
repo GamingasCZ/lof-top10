@@ -265,24 +265,6 @@ input::-webkit-inner-spin-button {
     width: 90%;
 }
 
-/*Would it be better to get rid of this lmao?*/
-input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCpicker, .homeSearch) {
-    margin-left: auto;
-    margin-right: auto;
-    padding: 3px 5px;
-    color: white;
-    font-family: "pusab";
-    font-size: var(--normalFont);
-    display: flex;
-    justify-content: center;
-    width: 20em;
-    background-color: rgba(255, 255, 255, 0.08);
-    border: none;
-    border-radius: 25px;
-    min-width: 2vw;
-}
-
-
 .inputErr {
     animation-name: inputError;
     animation-duration: 0.5s;

@@ -114,17 +114,6 @@ span {
   display: block;
 }
 
-.credits {
-  color: white;
-  text-align: center;
-  font-family: sans-serif;
-}
-
-/* Homepage containers */
-ul > div {
-  margin-left: 6em;
-}
-
 /*Nadpis v custom Listu*/
 .titles {
     font-size: var(--xlFont);
@@ -471,20 +460,6 @@ ul > div {
 
 .siteSettingsChild > p {
   margin: 0;
-}
-
-.settingsMenu {
-  position: absolute;
-  background: var(--greenGradient);
-  right: 0.75em;
-  top: 4em;
-  padding: 0.6em;
-  width: max-content;
-  border-radius: 0.7em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6em;
 }
 
 .favoriteStar {
@@ -1028,51 +1003,6 @@ html, body {
   transition: transform 0.2s ease-in-out;
 }
 
-nav {
-  background-image: var(--greenGradient);
-  animation-duration: 0.25s;
-  position: sticky;
-  width: auto;
-  z-index: 3;
-  display: flex;
-  justify-content: space-between;
-  transition: transform 0.05s ease-in;
-  top: 0;
-  box-shadow: black 0 0 1vw;
-
-}
-
-.mobilePicker {
-  text-align: center;
-  font-family: pusab;
-  color: white;
-  display: none;
-  flex-direction: row;
-  justify-content: center;
-  gap: 30%;
-}
-
-.mobilePicker > a > h6 {
-  margin: 0;
-  font-size: var(--miniFont);
-  color: white;
-}
-.mobilePicker > a > img, object {
-  width: 1.6em;
-  padding-top: 0.2em;
-}
-
-footer {
-  opacity: 0;
-  transition: opacity 1s ease-out;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: var(--tinyFont);
-  opacity: 1;
-  margin-top: 10em;
-}
-
 .eventButton {
 	background-color: #00000070 !important;
 	padding: 0% 1vw;
@@ -1080,53 +1010,11 @@ footer {
 	border-radius: 100vw;
 }
 
-.mobileButton:not(.noMobileResize) {
-  width: 8vw !important;
-  height: auto !important;
-}
 
 .inlineFlex {
   display: flex;
   justify-content: center;
   gap: 0.5em;
-  align-items: center;
-}
-
-#homepageHeader {
-  margin: 0 0 1em;
-  min-height: 16em;
-  align-items: flex-end;
-  background: url(../images/introGrad2.webp);
-  background-repeat: repeat-x;
-  background-size: cover;
-  background-position-y: top;
-}
-
-#homepageSearch {
-  background: var(--greenGradient);
-  border: var(--normalColor) solid 5px;
-  padding: 0.3em;
-  font-size: var(--bigFont);
-  color: white;
-  border-radius: 1vw;
-  max-width: 61%;
-}
-
-.homepageTitles {
-  font-size: var(--biggerFont);
-  font-family: pusab;
-  color: white;
-  list-style-image: url("../images/wave.svg");
-  list-style-position: inside;
-  margin-left: 0;
-}
-
-.homepageBigButton {
-  display: flex;
-  padding: 0.5em 0;
-  background-color: var(--normalColor);
-  border-radius: 1vw;
-  border: none;
   align-items: center;
 }
 
@@ -1136,47 +1024,12 @@ a {text-decoration: none;}
 .IXstyle { background-image: linear-gradient(39deg, rgb(123,-40,20), #a3003c, rgb(223,60,120)); border-color: rgb(123,-40,20) !important; }
 .XXIstyle { background-image: linear-gradient(39deg, rgb(123,82,-40), #a37a00, rgb(223,182,60)); border-color: rgb(123,82,-40) !important; }
 
-.homeLoginInfo {
-  background: var(--greenGradient);
-  display: flex;
-  align-items: center;
-  gap: 0.7em;
-  max-width: 66em;
-  margin: 2em auto 0;
-  padding: 0.3em 0.7em;
-  border-radius: 0.5em;
-  font-size: var(--smallFont) !important;
-}
-
-.homeLoginInfo > div {
-  width: max-content;
-  margin-left: auto;
-}
-
 .navPlaceholder {
   width: 90%;
   padding: 0.8vw;
   background: #0000002a;
   margin: 0.8vw auto;
   border-radius: 1vw;
-}
-
-#homepageHelp {
-  width: 1em;
-  margin-left: 0.4em;
-}
-
-#categoryBut {
-  display: inline-flex;
-  align-items: center;
-  gap: 1em;
-  background: var(--normalColor);
-  border-radius: 2.1em;
-  margin-left: 1em;
-  padding: 0.2em 0.6em;
-}
-#categoryBut img {
-  width: 1.5em;
 }
 
 /* Text color */

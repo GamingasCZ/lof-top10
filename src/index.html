@@ -6,12 +6,10 @@
   <meta name="viewport" content="user-scalable=0, width=device-width, initial-scale=1">
   <meta name="mobile-web-app-capable" content="yes" />
 
-  <link rel="preload" as="style" href="./assets/style.css">
+  <!-- <link rel="preload" as="style" href="./assets/style.css">
   <link rel="preload" as="style" href="./assets/community.css">
-  <link rel="preload" as="style" href="./assets/mobile.css">
-  <link rel="stylesheet" href="./assets/style.css">
-  <link rel="stylesheet" href="./assets/community.css">
-  <link rel="stylesheet" href="./assets/mobile.css">
+  <link rel="preload" as="style" href="./assets/mobile.css"> -->
+  <link href="./assets/output.css" rel="stylesheet">
 
   <link rel="icon" href="./images/gdl.svg">
 
@@ -36,21 +34,18 @@
   <title>GD Lists</title>
 </head>
 
-<body>
-  <div class="overlay">
-    <img src="images/arrow-left.webp" class="scrollToTop button" title="Skočit na vrch"
-      onclick="document.body.scrollTop = 0">
-  </div>
+<body class="bg-lofDarkGreen font-display relative">
+  <img class="bottom-0 absolute" src="images/arrow-left.webp">
 
-  <nav>
-    <div class="navPlaceholder"></div>
+  <nav class="text-white flex justify-between greenGradient h-14 md:h-10 items-center fixed w-[100%] z-10">
+  <div class="navPlaceholder"></div>
   </nav>
 
   <div class="boom" id="popupBG"></div>
 
   <!-- Help dialogs -->
-  <div class="helpBG" style="display: none;"></div>
-  <div class="popupHelp uploadText uploadBG" style="display: none;">
+  <div class="helpBG hidden"></div>
+  <div class="popupHelp uploadText uploadBG hidden">
     <img src="./images/smallClose.svg" class="button" style="width: 4%; float: right;" onclick="closeHelp()">
     <p id="helpTitle"></p>
     <div id="helpContent">
@@ -79,13 +74,13 @@
 
 <div id="app"></div>
 
-<footer>
-  <p class="uploadText pageBy">Vytvořil </p>
-  <a href="https://gamingascz.github.io/" class="uploadText gamLink"> GamingasCZ </a>
-  <span class="uploadText"> | 2021-2023 | </span>
-  <a href="https://github.com/GamingasCZ/lof-top10" style="margin: 0 1%;"><img class="github"
-      src="images/github.webp"></a>
-  <a onclick="openHelp('license')" class="uploadText gamLink"> Licence</a>
+<footer class="flex text-xs items-center justify-center font-display text-white">
+  <p class="">Vytvořil </p>
+  <a href="https://gamingascz.github.io/" class="gamLink"> GamingasCZ </a>
+  <p> | 2021-2023 | </p>
+  <a href="https://github.com/GamingasCZ/lof-top10"><img class="w-8 mx-3"
+      src="images/github.webp" ></a>
+  <a onclick="openHelp('license')" class="gamLink"> Licence</a>
 </footer>
 
 </html>

@@ -16,10 +16,6 @@
     display: none;
 }
 
-.button:not(.noMobileResize) {
-    width: 8vw !important;
-    height: auto !important;
-}
 
 #collabTools {
     border-radius: 0px;

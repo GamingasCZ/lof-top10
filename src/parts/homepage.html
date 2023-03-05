@@ -1,103 +1,106 @@
-<div id="homepageHeader" class="inlineFlex">
-    <input placeholder="%%s" id="homepageSearch" class="homeSearch"></input>
-    <button class="button hpSearchButton" style="display: flex;">
-        <img id="searchLists" style="width: 4em;" src="images/searchOpaque.svg">
+<div class="flex items-end pb-4 justify-center bg-[url(../images/introGrad2.webp)] h-[16em]">
+    <input placeholder="%%s" class="greenGradient border-lofGreen border-4 border-solid px-2 py-1 rounded-xl placeholder:text-xl"></input>
+    <button class="button greenGradient rounded-full p-1 ml-2">
+        <img src="images/searchOpaque.svg">
     </button>
 </div>
-<div class="inlineFlex searchButs">
+<div class="text-white flex justify-center gap-5 pt-4">
     <a href="#editor">
-        <button class="homepageBigButton button noMobileResize"><img src="images/plus.svg">
-            <h2 class="uploadText">%%s</h2>
+        <button class="button flex gap-2 items-center bg-lofGreen px-4 py-2 rounded-xl"><img class="w-8 mr-3" src="images/plus.svg">
+            <h2 class="">%%s</h2>
         </button>
     </a>
     
     <a href="#random">
-        <button class="homepageBigButton button noMobileResize"><img src="images/dice.svg">
-            <h2 class="uploadText">%%s</h2>
+        <button class="button flex gap-2 items-center bg-lofGreen px-4 py-2 rounded-xl"><img class="w-8 mr-3" src="images/dice.svg">
+            <h2 class="">%%s</h2>
         </button>
     </a>
 
 </div>
 
-<div class="homeLoginInfo uploadText">
-    <img src="images/info.svg" style="width: 1.6em;">
-    <label>%%s</label>
-    <div onclick="login(1)" class="button eventButton uploadText settingsButton noMobileResize loginBut">
-        <img src="images/discord.svg">%%s</div>
+<div class="text-white flex items-center gap-4 greenGradient py-2 px-4 w-max m-auto mt-5 rounded-xl">
+    <img src="images/info.svg">
+    <div>
+        <label>%%s</label> 
+        <label class="max-lg:hidden">%%s</label>
+    </div>
+    <div onclick="login(1)" class="button flex gap-3 rounded-full bg-nonopaqueBlack px-2 py-1 ml-3">
+        <img src="images/discord.svg" class="w-6">%%s</div>
 </div>
 
-<ul style="padding: 0 1vw;">
-    <li class="homepageTitles">%%s
-        <a href="#browse">
-            <button class="button noMobileResize" id="categoryBut">
-                <img src="images/more.svg">
-                <div class="uploadText">%%s</div>
+<ul class="text-white">
+    <li class="text-2xl gap-4 waveList">%%s
+        <a href="#browse" class="inline-flex ml-5">
+            <button class="button rounded-full bg-lofGreen flex items-center w-max gap-2 px-2">
+                <img src="images/more.svg" class="w-4">
+                <div class="text-lg">%%s</div>
             </button>
         </a>
     </li>
-    <div class="newestLists">
-        <div class="uploadText" style="color: #82f9e5;">%%s</div>
+    <div class="ml-16 newestLists">
+        <div class="text-lightBlue">%%s</div>
     </div>
 
-    <li class="homepageTitles">%%s
-        <img src="images/help.svg" id="homepageHelp" class="helpButton button"
+    <li class="text-2xl gap-4 waveList">%%s
+        <img src="images/help.svg" id="" class="button"
             onclick="openHelp('pinnedLists')">
     </li>
     <div class="pinnedLists">
-        <div class="uploadText" style="color: #f9e582;">%%s</div>
+        <div class="ml-16 text-lightYellow">%%s</div>
     </div>
 
-    <li class="homepageTitles">%%s
-        <a href="#uploads">
-            <button class="button noMobileResize" id="categoryBut">
-                <img src="images/more.svg">
-                <div class="uploadText">%%s</div>
+    <li class="text-2xl gap-4 waveList">%%s
+        <a href="#uploads" class="inline-flex ml-5">
+            <button class="button rounded-full bg-lofGreen flex items-center w-max gap-2 px-2">
+                <img src="images/more.svg" class="w-4">
+                <div class="text-lg">%%s</div>
             </button>
         </a>
     </li>
-    <div class="uploadedLists">
-        <div class="uploadText" style="color: #f9e582;">%%s</div>
+    <div class="ml-16 uploadedLists">
+        <div class="text-lightYellow">%%s</div>
     </div>
 
-    <li class="homepageTitles">%%s
-        <button onclick="clearViewed()" class="button noMobileResize" id="categoryBut">
-            <img src="images/close.svg">
-            <div class="uploadText">%%s</div>
+    <li class="text-2xl gap-4 waveList">%%s
+        <button onclick="clearViewed()" class="button rounded-full bg-lofGreen items-center w-max gap-2 px-2 inline-flex ml-5" id="">
+            <img src="images/close.svg" class="w-4">
+            <div class="text-lg">%%s</div>
         </button>
     </li>
-    <div class="recentlyViewed">
-        <div class="uploadText" style="color: #f9e582;">%%s</div>
+    <div class="ml-16 recentlyViewed">
+        <div class="text-lightYellow">%%s</div>
     </div>
 
-    <li class="homepageTitles">%%s
-        <a href="#saved">
-            <button class="button noMobileResize" id="categoryBut">
-                <img src="images/more.svg">
-                <div class="uploadText">%%s</div>
+    <li class="text-2xl gap-4 waveList">%%s
+        <a href="#saved" class="inline-flex ml-5">
+            <button class="button rounded-full bg-lofGreen flex items-center w-max gap-2 px-2" id="">
+                <img src="images/more.svg" class="w-4">
+                <div class="text-lg">%%s</div>
             </button>
         </a>
     </li>
-    <div class="savedLists">
-        <div class="uploadText" style="color: #f9e582;">%%s</div>
+    <div class="ml-16 savedLists">
+        <div class="text-lightYellow">%%s</div>
     </div>
 
-    <li class="homepageTitles">%%s
-        <img src="images/help.svg" id="homepageHelp" class="helpButton button"
+    <li class="text-2xl gap-4 waveList">%%s
+        <img src="images/help.svg" id="homepageHelp" class="button"
             onclick="openHelp('officialLists')">
     </li>
 
-    <div class="officialLists">
+    <div class="ml-16 officialLists">
         <a href="#y2019">
-            <div class="IXstyle noMobileResize" id="listPreview">
-                <div class="uploadText">%%s</div>
-                <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
+            <div class="" id="listPreview">
+                <div class="">%%s</div>
+                <p class="" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
             </div>
         </a>
 
         <a href="#y2021">
-            <div class="XXIstyle noMobileResize" id="listPreview">
-                <div class="uploadText">%%s</div>
-                <p class="uploadText" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
+            <div class="" id="listPreview">
+                <div class="">%%s</div>
+                <p class="" style="font-size: var(--miniFont); margin: 0;">- GamingasCZ -</p>
             </div>
         </a>   
     </div>

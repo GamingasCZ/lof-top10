@@ -1,0 +1,16 @@
+@layer components {
+    .greenGradient { background: linear-gradient(9deg, #142019, #045124); }
+    .waveList {
+        list-style-image: url("../images/wave.svg");
+        list-style-position: inside;
+    }
+    @font-face {
+        font-family: Poppins;
+        src: url("../assets/Poppins-Medium.ttf");
+    }
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -1,5 +1,5 @@
-<a href="#" style="display: flex; padding-left: 1vw;" class="button noMobileResize"><img src="images/gdl.svg" class="logo"></a>
-<div class="menuPicker">
+<a href="#" class="button"><img src="images/gdl.svg" class="w-11 md:w-9 ml-2"></a>
+<div class="max-md:hidden flex gap-5">
   <a class="yearButtonImg uploadText" href="#editor">
     <img src="images/editorMobHeader.svg">
     <h4>%%s</h4>
@@ -13,44 +13,44 @@
     <h4>%%s</h4>
   </a>
 </div>
-<div class="mobilePicker" onchange="switchSite($(this)[0].value)">
-  <a href="#editor"><img src="images/editorMobHeader.svg">
+<div class="flex gap-5 text-xs items-center md:hidden">
+  <a class="flex flex-col items-center gap-1" href="#editor"><img class="w-7" src="images/editorMobHeader.svg">
     <h6>%%s</h6>
   </a>
-  <a href="#browse"><img src="images/browseMobHeader.svg">
+  <a class="flex flex-col items-center gap-1" href="#browse"><img class="w-7" src="images/browseMobHeader.svg">
     <h6>%%s</h6>
   </a>
-  <a href="#saved"><img src="images/savedMobHeader.svg">
+  <a class="flex flex-col items-center gap-1" href="#saved"><img class="w-7" src="images/savedMobHeader.svg">
     <h6>%%s</h6>
   </a>
 </div>
-<div class="pfpContainer">
-  <img class="userIcon" style="width: 2em;">
-  <div class="pfpPlaceholder button noMobileResize" onclick="openSettings()"></div>
+<div class="mr-2 md:w-9">
+  <img class="userIcon w-auto rounded-full">
+  <div class="button pfpContainer" onclick="openSettings()"></div>
 </div>
-<div class="settingsMenu" style="display: none;">
-  <div onclick="login(1)" class="button eventButton uploadText settingsButton noMobileResize loginBut">
-    <img src="images/discord.svg">%%s</div>
-  <div class="siteSettingsChild noMobileResize logContainer" style="display: none;">
+<div class="greenGradient settingsMenu hidden flex-col absolute p-2 rounded-xl gap-2 top-16 right-3">
+  <div onclick="login(1)" class="button loginBut flex items-center gap-2 rounded-full bg-nonopaqueBlack px-2 py-1">
+    <img src="images/discord.svg" class="w-6">%%s</div>
+  <div class="logContainer hidden">
     <p class="uploadText setLoginText"></p>
   </div>
 
-  <div class="siteSettingsChild">
+  <div class="text-center bg-nonopaqueBlack rounded-xl p-2">
     <p class="uploadText">%%s</p>
-    <select class="uploadText settingsDropdown">
+    <select class="bg-lofGreen px-2 py-1 rounded-lg">
       <option>%%s</option>
       <option>%%s</option>
     </select>
   </div>
 
-  <div class="siteSettingsChild">
+  <div class="text-center bg-nonopaqueBlack rounded-xl p-2">
     <p class="uploadText langText">%%s</p>
-    <select class="uploadText settingsDropdown">
+    <select class="bg-lofGreen px-2 py-1 rounded-lg">
       <option id="czech">%%s</option>
       <option id="english">%%s</option>
     </select>
   </div>
-  <!-- <div class="button eventButton uploadText settingsButton noMobileResize">
+  <!-- <div class="button eventButton uploadText settingsButton">
     <img src="images/settings.svg">Nastavení
   </div> -->
 
