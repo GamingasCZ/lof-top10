@@ -84,12 +84,13 @@ function decrypt($ivHashCiphertext) {
 
 function post($url, $data, $headers, $needsRURL = false, $noEncodeKeys = []) {
     global $GDL_ENDPOINT;
+
+    $curl = curl_init($url);
     foreach ($data as $key => $value) {
-        $data[$key] = urlencode($value);
+        $data[$key] = curl_unescape($curl, $value);
     }
     if ($needsRURL) { $data["redirect_uri"] = $GDL_ENDPOINT . "/php/accounts.php"; }
 
-    $curl = curl_init($url);
     curl_setopt($curl, CURLINFO_HEADER_OUT, true);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     if (sizeof($data) > 0 and !is_string($data)) {
@@ -140,7 +141,7 @@ function refreshToken($currToken) {
     $ok = json_decode(post($baseURL, array(), $tokenHeaders), true);
     
     // Encrypt and save access token into a cookie
-    setcookie("access_token", encrypt(($accessInfo["access_token"])."|".(time()-$accessInfo["expires_in"])."|".($ok["id"])), time()+$accessInfo["expires_in"], "/");
+    setcookie("access_token", encrypt(($accessInfo["access_token"])."|".(time()+$accessInfo["expires_in"])."|".($ok["id"])), time()+$accessInfo["expires_in"], "/");
     
     $mysqli -> query(sprintf('UPDATE `users` SET `username`="%s", `avatar_hash`="%s", `refresh_token`="%s" WHERE `discord_id`="%s"', $ok["username"], $ok["avatar"], $accessInfo["refresh_token"], $ok["id"]));
     $mysqli -> close();
