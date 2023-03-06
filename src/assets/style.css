@@ -929,7 +929,7 @@ html, body {
 .comBox {
   display: flex;
   flex-direction: column;
-  justify-items: center;
+  animation-duration: 0.7s;
 }
 
 /* Hypermodern buttons in cbox footer */

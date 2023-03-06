@@ -299,7 +299,7 @@ function switchPollStyle(el) {
 }
 
 function sendComment() {
-  if ($(".sendBut")["0"].className.match("disabled") == null) {
+  if ($(".sendBut")["0"].className.match("disabled") == null && actualText.length > 10) {
     $(".sendBut").addClass("disabled");
     let postData = {
       comment: actualText,
@@ -322,6 +322,13 @@ function sendComment() {
         setTimeout(() => {
           $(".sendBut").removeClass("disabled");
         }, 10000);
+      }
+      else {
+        $(".comBox").css("animation-name", "inputError")
+        setTimeout(() => {
+          $(".comBox").css("animation-name", "")
+          $(".sendBut").removeClass("disabled");
+        }, 700);
       }
     })
   }
