@@ -78,7 +78,7 @@
     </div>
 
     <div class="editorHeader collabHeader uploadText collabBar roleStuff">
-        <div class="uploadText button roleHead" onclick="rollThing(0)">%%s</div>
+        <div class="uploadText button roleHead mobileHidden" onclick="rollThing(0)">%%s</div>
         <div class="presetButtonContainer">
             <button class="button uploadText eventButton noMobileResize" onclick="addRole(0)">%%s</button>
             <button class="button uploadText eventButton noMobileResize" onclick="addRole(1)">%%s</button>
@@ -100,9 +100,9 @@
         </table>
     </div>
 
-    <div class="editorHeader collabHeader uploadText collabBar memberStuff">
+    <div class="editorHeader collabHeader uploadText collabBar memberStuff mobileHidden">
         <div style="display: flex;">
-            <div class="uploadText button humHead" onclick="rollThing(1)">%%s</div>
+            <div class="uploadText button humHead mobileHidden" onclick="rollThing(1)">%%s</div>
             <img src="images/help.svg" class="button smallHelp noMobileResize helpButton"
                 onclick="openHelp('humansHelp')" style="transform: translateY(-0.4em);">
         </div>
@@ -132,7 +132,7 @@
                 title="%%s">
         </div>
     </div>
-    <div class="collabBG collabHeader collabDIV memberStuff" style="height: 125%;;">
+    <div class="collabBG collabHeader collabDIV memberStuff mobileHidden" style="height: 125%;">
         <p class="uploadText noRoles">%%s</p>
         <p style="display: none;" class="uploadText addRoles">%%s<img style="width: 2.2%" id="passSubmit"
                 src="images/addLevel.svg"></p>
@@ -161,6 +161,31 @@
 
 </div>
 
+<!-- Description popup -->
+<div style="display: none;" id="centeredPopup" class="uploadText fullscreenDescription uploadBG">
+    <div style="display: flex; align-items: center;">
+        <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">%%s</span>
+        <img onclick="hideDescriptionDialog()" src="./images/smallClose.svg" style="width: 2em;" class="button">
+    </div>
+    <div class="descContainer">
+        <div class="formattingContainer">
+            <img class="button formattingButton noMobileResize" onclick="formatText(0)" title="%%s" src="./images/formatting/bold.webp">
+            <img class="button formattingButton noMobileResize" onclick="formatText(1)" title="%%s" src="./images/formatting/italics.webp">
+            <img class="button formattingButton noMobileResize" onclick="formatText(2)" title="%%s" src="./images/formatting/underline.webp">
+            <img class="button formattingButton noMobileResize" onclick="formatText(3)" title="%%s" src="./images/formatting/strikethrough.webp">
+            <hr class="verticalSplitter">
+            <img class="button formattingButton noMobileResize" onclick="formatText(4)" title="%%s" src="./images/formatting/header.webp">
+            <hr class="verticalSplitter">
+            <img class="button formattingButton noMobileResize" onclick="formatText(5)" title="%%s" src="./images/formatting/list.webp">
+            <hr class="verticalSplitter">
+            <div class="button formattingButton noMobileResize" id="descPreviewButton" data-on="0" onclick="previewDescription()"><img src="./images/view.svg" style="width: 1em;"><div class="mobileHidden">%%s</div></div>
+        </div>
+        <textarea id="listDesc" class="uploadText fsDescriptionArea descriptionThing" placeholder="%%s" maxlength="3000"></textarea>
+        <pre id="descriptionPreview" class="uploadText" style="display: none;"></pre>
+    </div>
+</div>
+
+<!-- Favorites picker -->
 <div style="display: none;" id="centeredPopup" class="uploadText levelPicker">
     <div style="display: flex; align-items: center;">
         <span style="max-width: 100%; text-align: center; flex-grow: 1;" class="uploadText savePickTit">%%s</span>
@@ -187,9 +212,15 @@
     </div>
     <form id="levelUpload" class="uploadBG uploaderDialog">
         <div class="mainInpContainer">
-            <input type="text" id="listnm" class="uploadMainInp" placeholder="%%s">
+            <input type="text" maxlength="40" id="listnm" class="uploadMainInp" placeholder="%%s">
+            
+            <div class="titImageContainer">
+                <textarea id="listDesc" class="uploadText descriptionThing" placeholder="%%s" maxlength="3000"></textarea>
+                <img src="./images/fullscreen.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize descFSbutton">
+            </div>
+            
             <div class="titImageContainer editables">
-                <input type="text" id="listimg" class="uploadMainInp" placeholder="%%s" style="margin: 0;">
+                <input type="text" maxlength="100" id="listimg" class="uploadMainInp" placeholder="%%s" style="margin: 0;">
                 <img src="./images/gear.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize imgSetButton">
             </div>
         </div>

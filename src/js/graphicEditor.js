@@ -85,7 +85,10 @@ async function getDetailsFromName(id) {
     if ($(".idbox" + id).val() != "") { $(".idDetailGetter" + id).removeClass("disabled") }
     else { $(".idDetailGetter" + id).addClass("disabled") }
 
-    
+    availFill(0, $(".cardLName" + id).val(), "freedom69", id)
+    availFill(1, $(".cardLCreator" + id).val(), "freedom69", id)
+
+    updateSmPos()
 }
 
 function saveGDBresult(id, data) {
@@ -226,6 +229,93 @@ function showBGdialog() {
     $(".boom").animate({ "opacity": 100 }, 200)
 }
 
+function hideDescriptionDialog() {
+    $(".mainInpContainer .descriptionThing").val(levelList.description ?? "")
+    $(".fullscreenDescription").fadeOut(100)
+    $(".boom").fadeOut(100)
+}
+function showDescriptionDialog() {
+    $(".fullscreenDescription").fadeIn(100)
+    $(".fsDescriptionArea").val(levelList.description ?? "")
+    $(".boom").css("background-color", "#000000a0")
+    $(".boom").show()
+    $(".boom").animate({ "opacity": 100 }, 200)
+}
+
+function formatText(type) {
+    if ($("#descPreviewButton").attr("data-on") == "1") return
+
+    let chars = ["**", "//", "__", "--"][type]
+    let textbox = $(".fsDescriptionArea")
+    let selStart = textbox[0].selectionStart
+    switch (true) {
+        case type >= 0 && type <= 3:
+            if (selStart == textbox[0].selectionEnd) { // No text selected
+                textbox.val(textbox.val().slice(0, selStart) + `${chars} ${chars}` + textbox.val().slice(selStart))
+                textbox.focus()
+                textbox.prop("selectionStart", selStart+2)
+                textbox.prop("selectionEnd", selStart+3)
+            }
+            else {
+                let selectedText = textbox.val().slice(selStart, textbox[0].selectionEnd)
+                textbox.val(textbox.val().slice(0, selStart) + `${chars}${selectedText}${chars}` + textbox.val().slice(textbox[0].selectionEnd))
+                textbox.focus()
+                textbox.prop("selectionStart", textbox[0].selectionEnd+2)
+                textbox.prop("selectionEnd", textbox[0].selectionEnd+2)
+            }
+            
+            break;
+            case [4,5].includes(type):
+                let format = type == 4 ? "#" : "*"
+                let startLF = [undefined, "\n"].includes(textbox.val()[selStart-1]) ? "" : "\n"
+                textbox.val(textbox.val().slice(0, selStart) + `${startLF}${format}` + textbox.val().slice(selStart))
+                textbox.focus()
+                textbox.prop("selectionStart", selStart+2)
+                textbox.prop("selectionEnd", selStart+2)
+                break;
+                
+            default:
+                break;
+            }
+    levelList.description = textbox.val()
+}
+
+function previewDescription() {
+    if ($("#descPreviewButton").attr("data-on") == "0") {
+        $(".formattingButton:not(#descPreviewButton)").addClass("disabled")
+        $(".fsDescriptionArea").hide()
+        $("#descriptionPreview").html(parseFormatting(levelList.description))
+        $("#descriptionPreview").show()
+        $("#descPreviewButton").css("background", "#ffffff4a")
+        $("#descPreviewButton").attr("data-on", "1")
+    }
+    else {
+        $(".formattingButton:not(#descPreviewButton)").removeClass("disabled")
+        $(".fsDescriptionArea").show()
+        $("#descriptionPreview").hide()
+        $("#descPreviewButton").css("background", "")
+        $("#descPreviewButton").attr("data-on", "0")
+    }
+}
+
+function parseFormatting(text) {
+    let chars = ["\\*\\*", "\\/\\/", "__", "--"]
+    let tags = ["b", "i", "u", "strike"]
+    let i = 0
+    chars.forEach(c => {
+        let regex = new RegExp(`${c}(.*?)${c}`, "g")
+        text = text.replace(regex, `<${tags[i]}>$1</${tags[i]}>`)
+        i++
+    });
+    text = text.replace(/#(.*?)\n/g, `<div class="header">$1</div>\n`)
+    text = text.replace(/\*(.*?)(\n|$)/g, `<li class="descList">$1</li>\n`)
+
+    let urlRegex = /(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*))/g
+    text = text.replace(urlRegex, `<a href="$1" class="gamLink">$1</a>`)
+
+    return text
+}
+
 function hideBGsettings() {
     hideBGdialog()
     $(".backSett").fadeOut(50)
@@ -346,6 +436,8 @@ function generateFromJSON(part, boards) {
 
     levelList = JSON.parse(boards["data"]);
 
+    $(".mainInpContainer .descriptionThing").text(levelList.description ?? "")
+
     if (levelList["translucent"] != undefined && levelList["translucent"]) {
         $(`img[for="transCards"]`).attr("src", "images/modernCheckOn.svg")
         $(`input[name="transCards"]`).attr("checked", true)
@@ -415,41 +507,41 @@ function refreshCardDetails(lp) {
         else $(`.dPick${lp} > .diffBack`).attr("id", "epicGlow")
     }
 
-    availFill(0, $(".cardLName" + lp), "freedom69", lp)
-    availFill(1, $(".cardLCreator" + lp), "freedom69", lp)
+    availFill(0, $(".cardLName" + lp).val(), "freedom69", lp)
+    availFill(1, $(".cardLCreator" + lp).val(), "freedom69", lp)
 }
 function moveCard(position, currID) {
     let listPlacement = parseInt($(".listPosition" + currID.toString()).val());
     if (position == "up" & currID >= 0) {
         if (listPlacement > 1) {
-            refreshCardDetails(listPlacement)
             $(".card" + (listPlacement - 1)).before($(".card" + (listPlacement)));
 
             updateCardData(listPlacement - 1, -1);
             updateCardData(listPlacement, listPlacement - 1);
             updateCardData(-1, listPlacement)
 
-            refreshCardDetails(listPlacement)
             listPlacement--
+            refreshCardDetails(listPlacement)
         }
     }
     else if (position == "down" & currID < getListLen(levelList)) {
         if (listPlacement < getListLen(levelList)) {
-            refreshCardDetails(listPlacement)
             $(".card" + (listPlacement + 1)).after($(".card" + (listPlacement)));
 
             updateCardData(listPlacement + 1, -1);
             updateCardData(listPlacement, listPlacement + 1);
             updateCardData(-1, listPlacement);
 
-            refreshCardDetails(listPlacement)
             listPlacement++
+            refreshCardDetails(listPlacement)
         }
     }
     else { return false; }
 
     updateSmPos();
+    $("body").css("scroll-behavior","initial")
     document.getElementById("top" + listPlacement).scrollIntoView();
+    $("body").css("scroll-behavior","smooth")
     $(".cardExtrasContainer").text('')
     $(".cardExtrasContainer").hide()
     return true;
@@ -492,14 +584,14 @@ function displayCard(id) {
         $(".cardExtrasContainer").hide()
         updateSmPos()
 
-        // Disable/Enable search buttons depending on if there's text in them
-        if ($(".idbox" + id).val().length != 0) { $(".idDetailGetter" + id).removeClass("disabled") }
-        else { $(".idDetailGetter" + id).addClass("disabled") }
+        availFill(0, $(".cardLName" + id).val(), "freedom69", id)
+        availFill(1, $(".cardLCreator" + id).val(), "freedom69", id)
     }
 }
 
 function availFill(type, sel, key, pos) {
     // Shows/hides those white rectangles in the card
+    $(".positionEdit:visible .button").css("transition-duration", "0s")
     if (sel.length < 1) {
         $(".availFill:visible")[type].style.opacity = 0.3
         if ($(".availFill:visible")[0].style.opacity == 0.3 && $(".availFill:visible")[1].style.opacity == 0.3) {
@@ -510,6 +602,10 @@ function availFill(type, sel, key, pos) {
         $(".availFill:visible")[type].style.opacity = 1
         $(".nameDetailGetter" + pos).removeClass("disabled")
     }
+
+    if ($(".idbox" + pos).val() == "") $(".idDetailGetter"+pos).addClass("disabled")
+    else $(".idDetailGetter"+pos).removeClass("disabled")
+    $(".positionEdit:visible .button").css("transition-duration", "")
 }
 
 async function changeColPicker(chosenColor, target, isChangingValue) {
@@ -870,7 +966,7 @@ function tagPopup(lp) {
 
     if ($(".tagContainer").children().length == 0) {
         let tagNames = jsStr["TAGS"][LANG]
-        for (let b = 0; b < 17; b++) {
+        for (let b = 0; b < 27; b++) {
             $(".tagContainer").append(`
             <div class="badgeBox button noMobileResize">
                 <img src="images/badges/${b}.svg">
@@ -1056,7 +1152,7 @@ function card(index) {
         <div style="display: flex; justify-content: space-between;">
             <div style="display: flex; align-items: center;">
                 <img id="posInputPics" src="./images/star.webp">
-                <input autocomplete="off" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text">
+                <input autocomplete="off" maxlength="8" placeholder="${jsStr['L_LEVID'][LANG]}" id="posInputBox" class="idbox${index} cardInput" type="text">
                 <img id="passSubmit" src="images/searchOpaque.svg" onclick="getDetailsFromID(${index})" class="fillID button disabled idDetailGetter${index}" style="margin-left: 1em;">
             </div>
 
@@ -1078,7 +1174,7 @@ function card(index) {
         <div style="display: flex; flex-wrap: wrap;">
             <div style="display: flex; flex-wrap: wrap; width: 100%; align-items: center;">
                 <img id="posInputPics" src="./images/island.webp">
-                <input id="posInputBox" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr['L_NAME'][LANG]}">
+                <input id="posInputBox" maxlength="25" class="cardLName${index} cardInput" type="text" autocomplete="off" placeholder="${jsStr['L_NAME'][LANG]}">
 
                 <hr class="availFill" style="margin-left: 2%; opacity: 0.3;">
 
@@ -1086,14 +1182,14 @@ function card(index) {
 
                 <hr class="availFill" style="margin-right: 2%; opacity: 0.3;">
 
-                <input id="posInputBox" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="display: inline-flex;"><br />
+                <input id="posInputBox" maxlength="25" class="cardInput cardLCreator${index}" autocomplete="off" type="text" placeholder="${jsStr['L_BUILDER'][LANG]}" style="display: inline-flex;"><br />
                 <img class="collListBut button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.webp" onclick="showCollabTools(${index})">
             </div>
 
             <div style="display: flex; width: 100%;">
                 <div style="display: flex; align-items: center;">
                     <img id="posInputPics" src="./images/yticon.webp">
-                    <input class="cardLVideo${index} cardInput" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr['L_VIDEO'][LANG]}">
+                    <input class="cardLVideo${index} cardInput" maxlength="50" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr['L_VIDEO'][LANG]}">
                 </div>
                 
                 <div class="cardButtonsContainer">
@@ -1136,7 +1232,8 @@ async function preview(skipCheck = false) {
     else { $(".preview").fadeIn(100) }
 
     LIST_ID = -8
-    generateList(levelList, [$("#listnm").val(), $("#creatornm").val()])
+    let previewList = JSON.parse(JSON.stringify(levelList))
+    generateList(previewList, [$("#listnm").val(), $("#creatornm").val()])
 }
 
 function editorBack() {

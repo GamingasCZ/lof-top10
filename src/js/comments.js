@@ -17,42 +17,21 @@ function listComments() {
 }
 
 function updateCharLimit() {
-  var charLimit = actualText.length;
+  // I finally got to use the switch statement!!! (so exciting) - just removed it, sorry past gamingas
+  let comLen = Math.floor(actualText.length/300*100)
+  $(".sendBut").css("background", `conic-gradient(${commentColor} ${comLen}%, ${$(".comInpArea").css("background-color")} ${comLen+3}%)`);
+  $(".sendBut").css("background-color", $(".comInpArea").css("background-color"))
 
-  // I finally got to use the switch statement!!! (so exciting)
-  switch (Math.floor(charLimit / 50)) {
-    case 2:
-      $("#charLimit").css("color", "#fce8e8");
-      break;
-    case 3:
-      $("#charLimit").css("color", "#fcc4c4");
-      break;
-    case 4:
-      $("#charLimit").css("color", "#f49f9f");
-      break;
-    case 5:
-      $("#charLimit").css("color", "#ef6969");
-      break;
-    case 6:
-      $("#charLimit").css("color", "#b50e0e");
-      break;
-    default:
-      $("#charLimit").css("color", "#ffffff");
-      break;
-  }
+  if (actualText.length > 10) $(".sendBut").css("border-color", $(".comInpArea").css("background-color"))
+  else $(".sendBut").css("border-color", "")
 
-  // Maybe not neccessary? Unless a hyperhacker hacks the matrix.
-  if (charLimit > 300) {
-    $(".comInpArea").html($(".comInpArea").html().slice(0, 300));
-    charLimit = $(".comInpArea").text().length;
-  }
-
-  $("#charLimit").text(charLimit + "/300");
+  if (actualText.length > 300) $(".comInpArea").html($(".comInpArea").html().slice(0, 300));
 }
 
 var actualText = "";
 var midText = "";
 var commentColor = "";
+var commentPoll = {"q": "", "opt": [false, true]}
 function setupComments() {
   // Is on homepage? (do not load)
   if (LIST_ID == -9) return
@@ -130,9 +109,12 @@ function setupComments() {
     "background-color",
     `hsl(${commentColor[0]}, 100%, 3.7%)`
   );
-  $(".sendBut").css("background-color", hexColor);
+  $(".sendBut").css(
+    "background", `conic-gradient(${hexColor} ${Math.floor(actualText.length/300*100)}%, ${darkHexColor} 0%)`
+    );
+  $(".sendBut").css("background-color", darkHexColor)
   $(".emojiPanel").css("background-color", darkHexColor);
-  $(".cpicker").val(hexColor);
+  $(".pollAdd").css("background", hexColor);
   commentColor = HSLtoHEX(...commentColor)
 
   // MAIN comment handling stuff
@@ -186,13 +168,17 @@ function addEmoji(id) {
   }
 }
 
+// e.clipboardData.getData("Text")
 var lastOpenedPanel = -1;
 function displayPanel(what) {
   if (what == 1) {
     // Emoji
+    $(".pollDialog").hide();
+    $(".mediaDialog").hide();
     $(".colorPicker").hide();
     $(".listEmoji").show();
-  } else {
+  }
+  else if (what == 2) {
     // Color picker
     if ($(".colorPicker").length < 1) {
       let color = makeColorElement(
@@ -219,9 +205,10 @@ function displayPanel(what) {
         $(".emojiPanel").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`);
 
         $(".sendBut").css(
-          "background-color",
-          `hsl(${hue}, ${DEFAULT_SATURATION}, 30%)`
+          "background", `conic-gradient(hsl(${hue}, ${DEFAULT_SATURATION}, ${lightness}%) ${Math.floor(actualText.length/300*100)}%, hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%) 0%)`
         );
+        $(".sendBut").css("background-color", `hsl(${hue}, ${DEFAULT_SATURATION}, 3.7%)`)
+        $(".pollAdd").css("background", commentColor);
 
         let inHex = HSLtoHEX(hue, DEFAULT_SATURATION, lightness + "%");
         commentColor = inHex;
@@ -231,6 +218,27 @@ function displayPanel(what) {
     }
 
     $(".colorPicker").show();
+    $(".pollDialog").hide();
+    $(".mediaDialog").hide();
+    $(".listEmoji").hide();
+  }
+  else if (what == 3) {
+    // Polls
+    if ($(".pollSwitcher").length == 0) {
+      addPollOption()
+      addPollOption()
+      $(".pollQuestion").on("change", el => commentPoll.q = $(el.target).val())
+    }
+
+    $(".pollDialog").show();
+    $(".colorPicker").hide();
+    $(".mediaDialog").hide();
+    $(".listEmoji").hide();
+  }
+  else {
+    $(".mediaDialog").show();
+    $(".pollDialog").hide();
+    $(".colorPicker").hide();
     $(".listEmoji").hide();
   }
 
@@ -244,8 +252,54 @@ function displayPanel(what) {
   lastOpenedPanel = what;
 }
 
+function addPollOption() {
+  if ($(".pollSwitcher").length == 5) return
+  let style = ["yes", "no", "normal", "spike", "deco"][$(".pollSwitcher").length]
+
+  $(".pollContainer").append(`
+  <div class="pollInput pollOptContainer"><img src="images/pollOptions/${style}.webp" class="button pollSwitcher" id="pollStyle">
+    <input type="text" class="pollOptInput" placeholder="Volba ${$(".pollSwitcher").length+1}"><img src="images/close.svg" id="passSubmit" class="button pollDelete"></div>
+  `)
+  if ($(".pollSwitcher").length == 5) $(".pollAdd").addClass("disabled")
+
+  let opt = $(".pollSwitcher").length
+  commentPoll[opt-1] = [$(".pollSwitcher").length-1, ""]
+  $(".pollOptContainer:last()").attr("data-index", opt-1)
+  $(".pollOptInput:last()").on("change", el => pollOptInput(el))
+  $(".pollSwitcher:last()").click(el => switchPollStyle(el))
+  $(".pollDelete:last()").click(el => deletePollOpt(el))
+}
+
+function chPollSetting(opt) {
+  if (opt == "pinToList") commentPoll.opt[0] = !commentPoll.opt[0]
+  else commentPoll.opt[1] = !commentPoll.opt[1]
+}
+
+function pollOptInput(el) {
+  commentPoll[$(el.target).parent().attr("data-index")][1] = $(el.target).val()
+}
+
+function deletePollOpt(el) {
+  $(".pollAdd").removeClass("disabled")
+  $(el.target).parent().remove()
+  for (let i = 0; i < $(".pollOptInput").length+1; i++) {
+    $(".pollOptInput").eq(i).attr("placeholder", `Volba ${i+1}`)
+    $(".pollOptContainer").eq(i).attr("data-index", i)
+  }
+}
+
+function switchPollStyle(el) {
+  let ind = parseInt($(el.target).parent().attr("data-index"))+1
+  let images = ["yes", "no", "normal", "spike", "deco"].map(x => `images/pollOptions/${x}.webp`)
+  let currImg = images.indexOf($(".pollSwitcher").eq(ind-1).attr("src"))
+
+  let imgIndex = images.length-1 == currImg ? 0 : currImg+1
+  commentPoll[ind-1][0] = imgIndex
+  $(".pollSwitcher").eq(ind-1).attr("src", images[imgIndex])
+}
+
 function sendComment() {
-  if ($(".sendBut")["0"].className.match("disabled") == null) {
+  if ($(".sendBut")["0"].className.match("disabled") == null && actualText.length > 10) {
     $(".sendBut").addClass("disabled");
     let postData = {
       comment: actualText,
@@ -268,6 +322,13 @@ function sendComment() {
         setTimeout(() => {
           $(".sendBut").removeClass("disabled");
         }, 10000);
+      }
+      else {
+        $(".comBox").css("animation-name", "inputError")
+        setTimeout(() => {
+          $(".comBox").css("animation-name", "")
+          $(".sendBut").removeClass("disabled");
+        }, 700);
       }
     })
   }
@@ -315,7 +376,6 @@ function chatDate(stamp) {
 }
 
 function comBox(cd, element) {
-  let profPic = "";
   let time = chatDate(cd["timestamp"]);
 
   if (cd["timestamp"].length == 9) {
@@ -325,7 +385,6 @@ function comBox(cd, element) {
 
   let comGlow = `${cd["bgcolor"]} 0 0 10px`
   let comBorder = `${cd["bgcolor"]} 3px solid`
-  profPic = `<img id="pIcon" src="${cd.avatar}">`;
 
   // OwO, adding emojis
   while (cd["comment"].match(/&\d+/g) != null) {
@@ -357,28 +416,28 @@ function comBox(cd, element) {
       }
     });
   }
-
+  
   let darkBG = `hsl(${getHueFromHEX(cd["bgcolor"])}, 100%, 3.7%)`
   let hoverDate = `title="${nT.toLocaleDateString()} ${nT.toLocaleTimeString()}"`
   $(element).append(`
   <div style="margin: 1em auto; max-width: 70em;">
     <div class="comBoxThings uploadText" id="comBoxHeader" style="justify-content: flex-start;">
-      ${profPic}
+      <img id="pIcon" src="${cd.avatar}">
       <div class="comHeaderText">
         <h5>${cd["username"]}</h5>
         <h5 style="font-size: var(--tinyFont); cursor: help;" ${hoverDate}>${time}</h5>
-      </div>
-    </div>
-      
-    <div class="comTextArea" id="comFont" style="background-color: ${darkBG}; box-shadow: ${comGlow}; border: ${comBorder};">
-      ${cd["comment"]}
-    </div>
-  </div>
-    `);
+        </div>
+        </div>
+        
+        <div class="comTextArea" id="comFont" style="background-color: ${darkBG}; box-shadow: ${comGlow}; border: ${comBorder};">
+        ${cd["comment"]}
+        </div>
+        </div>
+  `);   
 }
 
 function redirectWarn(el) {
-  el.preventDefault()
+  window.event.preventDefault()
   $("#popupBG").show()
   $("#popupBG").css("opacity", 1)
   $("#popupBG").fadeIn(100)
@@ -423,17 +482,30 @@ async function displayComments(online = null) {
   $(".refreshBut").one("click", () => refreshComments(online))
 
   data = currentListData["#commentList"]
-  $(".comTextArea .gamLink").click(el => redirectWarn(el))
 
 }
 
 function refreshComments(online) {
   if ($(".refreshBut")["0"].className.match("disabled") == null) {
+    $("#commentList > .customLists").empty()
     $(".refreshBut").addClass("disabled")
     online.startID = 9999999
+    online.page = 0
+    loadingLists = false
     displayComments(online);
     setTimeout(() => {
       $(".refreshBut").removeClass("disabled");
     }, 3000);
+  }
+}
+
+function rollExtras() {
+  if ($("#cToolTop").css("transform") == "none") {
+    $(".mobileExtras").show()
+    $("#cToolTop").css("transform", `translateX(${-$(".listMore").position().left + 10}px)`)
+  }
+  else {
+    $(".mobileExtras").fadeOut(100)
+    $("#cToolTop").css("transform", "none")
   }
 }

@@ -772,13 +772,11 @@ function setupCollabTools() {
     window.addEventListener("resize", () => { $(".socialPicker").hide() });
 
     $(".roleTab").click(() => {
-        $(".roleStuff").eq(0).css("display", "flex");
-        $(".roleStuff").eq(1).css("display", "initial");
-        $(".memberStuff").hide()
+        $(".roleStuff").removeClass("mobileHidden")
+        $(".memberStuff").addClass("mobileHidden")
     })
     $(".humanTab").click(() => {
-        $(".memberStuff").eq(0).css("display", "flex");
-        $(".memberStuff").eq(1).css("display", "initial");
-        $(".roleStuff").hide()
+        $(".roleStuff").addClass("mobileHidden")
+        $(".memberStuff").removeClass("mobileHidden")
     })
 }

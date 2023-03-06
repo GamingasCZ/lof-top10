@@ -1,28 +1,28 @@
 <a href="#" style="display: flex; padding-left: 1vw;" class="button noMobileResize"><img src="images/gdl.svg" class="logo"></a>
-<div class="menuPicker">
-  <button class="yearButtonImg uploadText" onclick="switchLoFList('#editor')">
+<div class="menuPicker mobileHidden">
+  <a class="yearButtonImg uploadText" href="#editor">
     <img src="images/editorMobHeader.svg">
     <h4>%%s</h4>
-  </button>
-  <button class="yearButtonImg uploadText" onclick="switchLoFList('#browse')">
+  </a>
+  <a class="yearButtonImg uploadText" href="#browse">
     <img src="images/browseMobHeader.svg">
     <h4>%%s</h4>
-  </button>
-  <button class="yearButtonImg savedBut uploadText" onclick="switchLoFList('#saved')">
+  </a>
+  <a class="yearButtonImg savedBut uploadText" href="#saved">
     <img src="images/savedMobHeader.svg">
     <h4>%%s</h4>
-  </button>
+  </a>
 </div>
 <div class="mobilePicker" onchange="switchSite($(this)[0].value)">
-  <div onclick="switchLoFList('#editor')"><img src="images/editorMobHeader.svg">
+  <a href="#editor"><img src="images/editorMobHeader.svg">
     <h6>%%s</h6>
-  </div>
-  <div onclick="switchLoFList('#browse')"><img src="images/browseMobHeader.svg">
+  </a>
+  <a href="#browse"><img src="images/browseMobHeader.svg">
     <h6>%%s</h6>
-  </div>
-  <div onclick="switchLoFList('#saved')"><img src="images/savedMobHeader.svg">
+  </a>
+  <a href="#saved"><img src="images/savedMobHeader.svg">
     <h6>%%s</h6>
-  </div>
+  </a>
 </div>
 <div class="pfpContainer">
   <img class="userIcon" style="width: 2em;">
@@ -33,6 +33,14 @@
     <img src="images/discord.svg">%%s</div>
   <div class="siteSettingsChild noMobileResize logContainer" style="display: none;">
     <p class="uploadText setLoginText"></p>
+  </div>
+
+  <div class="siteSettingsChild">
+    <p class="uploadText">%%s</p>
+    <select class="uploadText settingsDropdown">
+      <option>%%s</option>
+      <option>%%s</option>
+    </select>
   </div>
 
   <div class="siteSettingsChild">

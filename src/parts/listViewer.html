@@ -17,8 +17,12 @@
         <label style="margin-right: 18em;">%%s</label>
         <input class="listLink" type="text" readonly value="" style="width: 81%;">
         <div class="button finishButton noMobileResize clipboardCopy"><img src="images/link.svg">%%s</div>
-        <div class="button finishButton noMobileResize edit" style="margin-top: 3em;"><img src="images/edit.svg">%%s</div>
-        <div class="button finishButton noMobileResize" onclick="hideFinishUpload()"><img src="images/smallClose.svg">%%s</div>
+        <div class="button finishButton noMobileResize edit" style="margin-top: 3em;"><img src="images/edit.svg">%%s
+        
+        </div>
+        <div class="button finishButton noMobileResize" onclick="hideFinishUpload()"><img
+               
+                src="images/smallClose.svg">%%s</div>
     </div>
 </div>
 
@@ -53,47 +57,48 @@
 </div>
 
 <div class="listMaster">
+    <div id="shade"></div>
     <div class="listInfo" style="display: none;">
-        <div class="titles listInfoContainer" id="listOptionsID">
-            <div class="loadPlaceholder">
-                <div class="placeholderName"></div>
-                <div class="placeholderCreator"></div>
-            </div>
-            <div class="listOptionsContainer">
-                <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg">
-                    <div id="shareBut">%%s</div>
-                </button>
-                <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg">
-                    <div id="jumpToBut">%%s</div>
-                </button>
-                <button onclick="pinList()" class="listHeaderBlue uploadText pin"><img src="images/pin.svg">
-                    <div id="pinBut">%%s</div>
-                </button>
-                <button class="listHeaderBlue uploadText edit"><img src="images/edit.svg">
-                    <div id="editBut">%%s</div>
-                </button>
-            </div>
+        <div class="ratingContainer">
+            <button id="likeBut" title="%%s" class="rateButton button"><div id="likes" style="opacity: 0;"></div></button>
+            <div id="rateRatio" class="uploadText unloadedRate"></div>
+            <button id="dislikeBut" title="%%s" class="rateButton button"><div id="dislikes" style="opacity: 0;"></div></button>
         </div>
-        <div id="cToolTop">
-            <div class="ratingContainer">
-                <button id="likeBut" title="%%s" class="rateButton button"></button>
-                <div class="rateData">
-                    <div class="likeBar">
-                        <div class="likeFill"></div>
-                    </div>
-                    <div class="likeText uploadText">
-                        <div id="likes"></div>
-                        <div id="dislikes"></div>
+        <div id="descriptionContainer">
+            <header id="listName" class="uploadText"></header>
+            <div id="listDescriptionContainer">
+                <div id="listHeader">
+                    <img src="" class="listPFP">
+                    <div id="listHeaderInfo" class="uploadText">
+                        <label id="listCreator"></label> ●
+                        <img src="./images/view.svg" id="viewImg"><label id="listViews"></label><div id="viewText" class="mobileHidden">%%s</div> ●
+                        <label id="listDate"></label>
                     </div>
                 </div>
-                <button id="dislikeBut" title="%%s" class="rateButton button"></button>
+                <pre id="listDescription" class="uploadText" data-open="0"></pre>
+                <button id="showMore" onclick="descriptionShowAll()"><img src="./images/descMore.svg"></button>
             </div>
-            <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img
-                    src="images/comment.svg" style="width: 2em;">
-                <div id="commButtonText">%%s</div>
-                <div id="commAmount"></div>
-            </button>
-            <hr class="lineSplitGeneral">
+            <div id="listButtonContainer">
+                <button onclick="listComments()" class="listHeaderBlue uploadText" id="commButton"><img
+                        src="images/comment.svg" style="width: 2em;">
+                    <div id="commButtonText" class="mobileHidden">%%s</div>
+                    <div id="commAmount"></div>
+                </button>
+                <div class="listOptionsContainer">
+                    <button onclick="listShare()" class="listHeaderBlue uploadText"><img src="images/share.svg">
+                        <div class="mobileHidden" id="shareBut">%%s</div>
+                    </button>
+                    <button onclick="showJumpTo()" class="listHeaderBlue uploadText"><img src="images/jumpto.svg">
+                        <div class="mobileHidden" id="jumpToBut">%%s</div>
+                    </button>
+                    <button onclick="pinList()" class="listHeaderBlue uploadText pin"><img src="images/pin.svg">
+                        <div class="mobileHidden" id="pinBut">%%s</div>
+                    </button>
+                    <button class="listHeaderBlue uploadText edit"><img src="images/edit.svg">
+                        <div class="mobileHidden" id="editBut">%%s</div>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -112,29 +117,62 @@
             </div>
         </div>
 
-        <p id="comTest"></p>
         <div class="positionEdit" id="commentMaker">
-            <div id="cHeader" class="uploadText">
-                <div class="cNameContainer">
-                    <img id="pIcon" src="" loading="lazy">
-                    <div id="commentName"></div>
-                </div>
-                <h3 id="charLimit">0/300</h3>
-            </div>
             <div class="comBox">
                 <div style="display: flex; width: inherit;">
-                    <div contenteditable="" class="uploadText comTextArea comInpArea" style="height: 5em;" id="comFont">
+                    <div contenteditable="" class="uploadText comTextArea comInpArea" style="min-height: 2em;"
+                        id="comFont"></div>
+                </div>
+            </div>
+
+            <div class="emojiPanel">
+                <div style="display: none;" class="pollDialog">
+                    <div class="pollContainer">
+                        <div class="pollInput">
+                            <input class="pollQuestion" type="text" maxlength="20" placeholder="Otázka"><img src="images/close.svg" id="passSubmit" class="button pollDelete"></div>
+                        <hr>
+                    </div>
+                    <div>
+                        <div class="setting">
+                            <img src="images/modernCheck.svg" onclick='checkCheckbox("pinToList", chPollSetting)' for="pinToList"
+                                class="setCheckbox button">
+                            <label for="private" class="uploadText setLabel">Připnout k seznamu</label>
+                            <img src="images/help.svg" class="button setHelp" onclick="openHelp('pinPoll')">
+                        </div>
+                        <div class="setting">
+                            <img src="images/modernCheckOn.svg" onclick='checkCheckbox("showOnHP", chPollSetting)' for="showOnHP"
+                                class="setCheckbox button">
+                            <label for="private" class="uploadText setLabel">Zobrazovat na domovské stránce</label>
+                            <img src="images/help.svg" class="button setHelp" onclick="openHelp('private')">
+                        </div>
+                        <div class="button uploadText pollAdd" onclick="addPollOption()">
+                            <img src="images/plus.svg">Přidat
+                        </div>
+                    </div>
+                </div>
+                <div style="display: none;" class="mediaDialog">
+                    <div>
+                        <input class="pollQuestion" type="text" placeholder="Zadej URL obrázku, YouTube videa, Twitch streamu, seznamu, či jinou adresu!">
                     </div>
                 </div>
             </div>
 
-            <div class="emojiPanel"></div>
-
-        </div>
-        <div class="uploadText comBoxThings" id="comBoxFooter">
-            <img class="comFooterButton comInpThings" src="images/emoji.svg" loading="lazy" title="%%s" onclick="displayPanel(1)">
-            <img class="comFooterButton comInpThings" src="images/color.svg" loading="lazy" title="%%s" onclick="displayPanel(2)">
-            <img class="comFooterButton sendBut" src="images/send.svg" loading="lazy" title="%%s" onclick="sendComment()">
+            <div class="uploadText comBoxThings" id="comBoxFooter">
+                <div>
+                    <div class="cNameContainer">
+                        <img id="pIcon" style="width: 1.5em;" loading="lazy">
+                        <div id="commentName"></div>
+                    </div>
+                </div>
+                <div>
+                    <img class="comFooterButton comInpThings" src="images/color.svg" loading="lazy" title="%%s"
+                        onclick="displayPanel(2)">
+                    <img class="comFooterButton comInpThings" src="images/emoji.svg" loading="lazy" title="%%s"
+                        onclick="displayPanel(1)">
+                    <img class="comFooterButton sendBut" src="images/send.svg" loading="lazy" title="%%s"
+                        onclick="sendComment()">
+                </div>
+            </div>
         </div>
 
         <div id="commentList"></div>

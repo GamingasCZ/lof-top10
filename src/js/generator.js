@@ -1,5 +1,7 @@
 const getListLen = b => Object.keys(b).filter(x => x.match(/\d+/)).length
 const DISABLE_GDB = "h" // Change to anything else than "h" to break requests
+var settings = Array(2)
+
 
 function onGDBClick(pos) { window.open("https://gdbrowser.com/" + pos, "_blank"); }
 function onYTClick(link) { window.open("https://youtu.be/" + link, "_blank") };
@@ -126,6 +128,21 @@ function hideJumpTo() {
 	$(".jumpDialog").fadeOut(100);
 	$("#popupBG").css("opacity", 0)
 	setTimeout(() => { $("#popupBG").hide() }, 100);
+}
+
+function descriptionShowAll() {
+	if ($("#listDescription").attr("data-open") == "0") {
+		$("#listDescription").css("--gradEnabled", "none")
+		$("#listDescription").css("height", $("#listDescription")[0].scrollHeight+10+"px")
+		$("#showMore > img").css("transform", "scaleY(-1)")
+		$("#listDescription").attr("data-open", "1")
+	}
+	else {		
+		$("#listDescription").css("--gradEnabled", "")
+		$("#listDescription").css("height", "")
+		$("#showMore > img").css("transform", "scaleY(1)")
+		$("#listDescription").attr("data-open", "0")
+	}
 }
 
 const openSocLink = link => { window.open(link) }
@@ -664,7 +681,8 @@ function generateList(boards, listData, singleLevel = -1, isResult = false) {
 		boards[bIndex]["tags"].forEach(tag => {
 			let tagName = tag[1] == -1 ? jsStr["TAGS"][LANG][tag[0]] : tag[1]
 			tagName = tag[2] == "" ? tagName : `<a class="gamLink" target="_blank" href="${tag[2]}">${tagName}</a>`
-			$(".listTagContainer").eq(bIndex-1).append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)		});
+			$(".listTagContainer").eq(bIndex - 1).append(`<div class="listTag"><img src="images/badges/${tag[0]}.svg">${tagName}</div>`)
+		});
 
 		// Only display icons on hover
 		if (typeof boards[bIndex]["creator"] == "object") {
@@ -856,15 +874,14 @@ function pinList(rem = null, isOnHomepage = false) {
 		if (!indToRemove[1]) indToRemove[0]++
 	});
 
-	$(".pin").empty()
 	if (indToRemove[1]) {
-		$(".pin").append("<img src='images/pin.svg'>")
-		$(".pin").append(jsStr["PIN_LIST"][LANG])
+		$(".pin > img").attr("src", "images/pin.svg")
+		$("#pinBut").text(jsStr["PIN_LIST"][LANG])
 		pinnedLists.splice(pinnedLists.indexOf(indToRemove[0]), 1)
 	}
 	else {
-		$(".pin").append("<img src='images/unpin.svg'>")
-		$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+		$(".pin > img").attr("src", "images/unpin.svg")
+		$("#pinBut").text(jsStr["UNPIN_LIST"][LANG])
 		// [listID, listName, listCreator, listColor, currTime, isGuess]
 		let isGuess = boards.diffGuesser != undefined ? boards.diffGuesser[0] : 0
 		pinnedLists.push([LIST_ID, LIST_NAME, LIST_CREATOR, boards[1].color, (new Date).getTime(), isGuess])
@@ -942,18 +959,19 @@ function removeFave(remID) {
 const switchLoFList = hash => window.location.hash = hash
 
 // const MAX_ON_PAGE = 4;
-function homeCards(obj, custElement = ".listContainer", previewType = 1, overwriteMax = false, custPagination = 0, reverseList = false) {
+async function homeCards(obj, custElement = ".listContainer", previewType = 1, overwriteMax = false, custPagination = 0, reverseList = false) {
 	// Do nothing if empty
 	if (obj == null || obj == false) return
 
 	if (reverseList) obj = JSON.parse(JSON.stringify(obj)).reverse()
 
-	$(custElement).text("");
+	if ($(`${custElement} > #listPreview,#comBoxHeader`).length == 0 || !SCROLLTYPE) $(custElement).empty();
+	if (SCROLLTYPE) $(".page").hide()
 
 	let MAX_ON_PAGE = overwriteMax ? overwriteMax : 4
 
 	obj.slice(MAX_ON_PAGE * custPagination, MAX_ON_PAGE * custPagination + MAX_ON_PAGE)
-		.forEach((object) => {
+		.forEach(async object => {
 			if ([1, 3].includes(previewType)) { // Favorite level
 				let darkCol = HEXtoRGB(object[3], 40);
 				let priv = object[4].toString().match(/[A-z]/) != null ? "pid" : "id"
@@ -1007,11 +1025,11 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 			}
 			else if (previewType == 4) { // Newest lists
 				let dGuesserBadge = "";
-				if (object.data.diffGuesser != undefined) {
-					dGuesserBadge = object.data.diffGuesser[0] ? "<img src='images/diffGuessSign.svg' class='guessBadge'>" : ""
+				if (object.diffGuesser != 0) {
+					dGuesserBadge = "<img src='images/diffGuessSign.svg' class='guessBadge'>"
 				}
 
-				let level1col = object["data"][1].color
+				let level1col = colorFromText(object["name"], [0, 0], [360, 42])
 				let lightCol = HEXtoRGB(level1col, -60)
 				let darkCol = HEXtoRGB(level1col, 40)
 
@@ -1041,10 +1059,20 @@ function homeCards(obj, custElement = ".listContainer", previewType = 1, overwri
 				`);
 			}
 			else if (previewType == 6) { // Comment
+				await getProfilePicture(object.avatar).then(link => object.avatar = link)
 				comBox(object, custElement)
 			}
 
 		});
+}
+
+function getProfilePicture(link) {
+	return new Promise(loaded => {
+		let loadPFP = new Image()
+		loadPFP.src = link
+		loadPFP.addEventListener("error", () => loaded(`images/defaultPFP.webp`))
+		loadPFP.addEventListener("load", () => loaded(link))
+	})
 }
 
 async function makeHP() {
@@ -1141,6 +1169,8 @@ async function loadSite() {
 	currentListData = []
 	page = {}
 	levelList = JSON.parse(JSON.stringify(DEFAULT_LEVELLIST))
+	$("window").off("beforeunload")
+	loadingLists = false
 
 	$(".logo").css("transform", `rotate(360deg)`)
 	let spinning = setInterval(() => { rot += 1; $(".logo").css("transform", `rotate(${rot * 360}deg)`) }, 1000)
@@ -1211,7 +1241,7 @@ async function loadSite() {
 				$("#app").html(translateDoc(data, "listViewer"))
 				let listObject;
 				if (hash.match(/[A-z]/) == null) listObject = { "type": "id", "id": hash.match(/\d+/)[0] }
-				else if (hash == "random") listObject = { "type": "random", "id": -10 }
+				else if (hash == "random") listObject = { "type": "random", "id": 1 }
 				else listObject = { "type": "pid", "id": hash }
 
 				LIST_ID = listObject.id
@@ -1255,49 +1285,74 @@ $(async function () {
 		}
 
 		// Setting mobile picker in navbar to curr site name
-		if (window.location.href.includes("browse")) $(".mobilePicker > div")[1].style.filter = "var(--lightHighlight)"
-		if (window.location.href.includes("editor")) $(".mobilePicker > div")[0].style.filter = "var(--lightHighlight)"
+		if (window.location.href.includes("browse")) $(".mobilePicker > a")[1].style.filter = "var(--lightHighlight)"
+		if (window.location.href.includes("editor")) $(".mobilePicker > a")[0].style.filter = "var(--lightHighlight)"
 
-		$($(".settingsDropdown > option")[LANG]).attr("selected", true)
-
-		$(".settingsDropdown").on("change", () => {
-			let switchLang = $(".settingsDropdown").val() == jsStr["CZECH"][LANG] ? 0 : 1
+		
+		$(".settingsDropdown:eq(0)").on("change", () => {
+			let scrollType = $(".settingsDropdown:eq(0)")[0].selectedIndex ? 1 : 0
+			makeCookie(["scrolling", scrollType])
+			window.location.reload();
+		})
+		if (!getCookie("scrolling")) makeCookie(["scrolling", 0])
+		$($(".settingsDropdown:eq(0) > option")[parseInt(getCookie("scrolling"))]).attr("selected", true)
+		
+		$(".settingsDropdown:eq(1)").on("change", () => {
+			let switchLang = $(".settingsDropdown:eq(1)").val() == jsStr["CZECH"][LANG] ? 0 : 1
 			makeCookie(["lang", switchLang])
 			window.location.reload();
 		})
-
+		var currLang = getCookie("lang");
+		if (!currLang) {
+			let getLang = navigator.language;
+			if (["cs", "sk"].includes(getLang)) { currLang = 0; }
+			else { currLang = 1; }
+			
+			makeCookie(["lang", currLang])
+		}
+		$($(".settingsDropdown:eq(1) > option")[LANG]).attr("selected", true)
+		
 		$("footer").css("opacity", 1)
 	})
-
-	var currLang = getCookie("lang");
-	if (!currLang) {
-		let getLang = navigator.language;
-		if (["cs", "sk"].includes(getLang)) { currLang = 0; }
-		else { currLang = 1; }
-
-		makeCookie(["lang", currLang])
-	}
-	LANG = currLang;
-	$($(".settingsDropdown").children()[currLang]).attr("selected", true)
-
+	
+	SCROLLTYPE = parseInt(getCookie("scrolling"))
+	LANG = parseInt(getCookie("lang"));
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
 
 	window.addEventListener("hashchange", loadSite)
+	checkAccount()
 	loadSite()
+
 
 	// Hiding header and showing scroll to top button
 	$("body").on("scroll", () => {
 		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
 		else $(".scrollToTop").css("opacity", 0)
+
+		if ($("body").scrollTop()/($("body")[0].scrollHeight - $("body").outerHeight()) > 0.9 && !loadingLists && SCROLLTYPE) {
+			let pages = page[`#${$(".customLists").parent().attr("id")}`]
+			if (pages[1] - 1 > pages[0]) $(".pageBut").eq(1).click()
+			else {
+				loadingLists = true
+			}
+		}
 	})
 })
 
 
+function checkAccount() {
+	$.get("./php/accounts.php?check", loginValid => {
+		if (loginValid != -1 && !loginValid) {
+			logout()
+		}
+	})
+}
+let loadingLists = false
 function logout() {
 	localStorage.removeItem("userInfo")
-	makeCookie(["accessToken", ""], true)
-	makeCookie(["cA", ""], true)
-	window.location.reload()
+	$.get("./php/accounts.php?logout", e =>{
+		if (e == 1) window.location.reload()
+	})
 }
 
 async function lists(list) {
@@ -1329,35 +1384,8 @@ async function lists(list) {
 		}
 		return
 	}
-	else if (list.type == "random") {
-		$.get("php/getLists.php?random=1", data => {
-			LIST_NAME = data[0]["name"]
-			LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
-			
-			let profilePic;
-			if (data[0].uid != -1) {
-				profilePic = `<img class="listPFP" src="https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png">`
-				if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
-			} else profilePic = '<img class="listPFP" src="images/oldPFP.png">'
-
-			let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
-			boards = data[0]["data"];
-
-			$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
-			<p class="listUsername">${profilePic}${listCreator}</p></div>`);
-			$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
-
-			LIST_ID = parseInt(data[0]["id"])
-
-			$("#commAmount").text(data[0]["commAmount"])
-
-			generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
-
-			refreshComments()
-		})
-	}
-	else if (list.type == "id") {
-		$.get("./php/getLists.php?id=" + list.id, function (data) {
+	else {
+		$.get(`./php/getLists.php?${list.type}=${list.id}`, async data => {
 			if ([1, 2].includes(data)) {
 				$(".boards").append("<h2 class='titles'><img src='images/listError.svg' class='listErrors'>" + jsStr["DEADLIST"][LANG] + "</h2>")
 				$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
@@ -1369,46 +1397,37 @@ async function lists(list) {
 				LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
 
 				boards = data[0]["data"];
-				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
 				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
-				if (data[1][0] != undefined && data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
+				let profilePic = "images/oldPFP.png"
+				if (data[1].length > 0) { // Old user, no user data
+					let pfpLink = `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`
+					await getProfilePicture(pfpLink).then(link => profilePic = link)
+				}
 
-				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
-					<p class="listUsername">${profilePic}${listCreator}</p></div>`);
+				$("#listName").text(data[0]["name"])
+				$("#listCreator").text(listCreator)
+				$(".listPFP").attr("src", profilePic)
+
 				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
 
+				let isHidden = data[0]["hidden"] != 0
+				LIST_ID = !isHidden ? parseInt(data[0]["id"]) : data[0]["hidden"]
+				$("#listViews").text(data[0]["views"])
+				let nT = new Date(data[0]["timestamp"] * 1000);
+				$("#listDate").text(`${nT.toLocaleDateString()}`)
+				
 				$("#commAmount").text(data[0]["commAmount"])
+				$("#listDescription").html(parseFormatting(boards.description ?? `<div id="noDesc">${jsStr["NO_DESC"][LANG]}</div>`))
+				$("#listDescription a").click(redirectWarn)
+				if ($("#listDescription")[0].clientHeight == $("#listDescription")[0].scrollHeight) { // No scroll
+					$("#listDescription").css("--gradEnabled", "none")
+					$("#showMore").hide()
+				}
 
-				generateList(boards, [encodeURIComponent(data[0]["id"]), data[0]["name"], "id"]);
-			}
-		}
-		)
-	}
-	else if (list.type == "pid") {
-		await $.get("./php/getLists.php?pid=" + list.id, function (data) {
-			if ([1, 2].includes(data)) {
-				$(".boards").append("<h2 class='titles'><img src='images/listError.svg' class='listErrors'>" + jsStr["DEADLIST"][LANG] + "</h2>")
-				$("title").html(`${jsStr["NONEXISTENT_L"][LANG]} | ${jsStr["GDLISTS"][LANG]}`)
-				$(".listInfo").remove();
-				return
-			}
-			else {
-				LIST_NAME = data[0]["name"]
-				LIST_CREATOR = data[0]["creator"].length == 0 ? data[1][0]["username"] : data[0]["creator"]
+				$("#rateRatio").on("mouseover", () => $(".rateButton > div").css("opacity", "0.7"))
+				$("#rateRatio").on("mouseout", () => $(".rateButton > div").css("opacity", "0"))
 
-				boards = data[0]["data"];
-				let profilePic = `<img class="listPFP" src="${data[0].uid == -1 ? "images/oldPFP.png" : `https://cdn.discordapp.com/avatars/${data[1][0].discord_id}/${data[1][0].avatar_hash}.png`}">`
-				let listCreator = data[0]["uid"] == -1 ? data[0]["creator"] : data[1][0]["username"]
-				if (data[1][0].avatar_hash == "") profilePic = `<img class="listPFP" src="images/defaultPFP.webp">`
-
-				$(".titles").prepend(`<div><p style="margin: 0; font-weight: bold;">${data[0]["name"]}</p>
-				<p class="listUsername">${profilePic}${listCreator}</p></div>`);
-				$("title").html(`${data[0]["name"]} | ${jsStr["GDLISTS"][LANG]}`)
-
-				LIST_ID = data[0]["hidden"]
-				$("#commAmount").text(data[0]["commAmount"])
-
-				generateList(boards, [encodeURIComponent(data[0]["hidden"]), data[0]["name"], "pid"]);
+				generateList(boards, [LIST_ID, data[0]["name"], isHidden ? "pid" : "id"]);
 			}
 		}
 		)
@@ -1422,7 +1441,7 @@ async function lists(list) {
 			if (arr[0] == LIST_ID) {
 				$(".pin").empty()
 				$(".pin").append("<img src='images/unpin.svg'>")
-				$(".pin").append(jsStr["UNPIN_LIST"][LANG])
+				$(".listOptionsContainer .pin div").text(jsStr["UNPIN_LIST"][LANG])
 				$(".pin").attr("title", jsStr["UNPIN_LIST"][LANG])
 			}
 		});
@@ -1450,15 +1469,14 @@ async function lists(list) {
 	// Load ratings
 	$.get("php/rateAction.php", { "id": LIST_ID }, rates => {
 		// 0 - likes, 1 - dislikes
+
+		$("#rateRatio").removeClass("unloadedRate")
+		$("#rateRatio").text(rates[0]-rates[1])
 		$("#likes").text(rates[0])
 		$("#dislikes").text(rates[1])
-
-		$("#likeBut").click(rateList)
-		$("#dislikeBut").click(rateList)
-
-		if (rates[2] == -2) { // Not logged in
-			return $(".rateButton").remove()
-		}
+	
+		$("#likeBut").click(rates[2] == -2 ? rateLogin : rateList)
+		$("#dislikeBut").click(rates[2] == -2 ? rateLogin : rateList)
 
 		discolorRatings(rates[0], rates[1])
 		if (rates[2] >= 0) colorRatings(rates[2]) // colorize if has rated
@@ -1499,10 +1517,12 @@ function pageSwitch(num, data, parent, ctype) {
 	Object.values($(".pageYes")).slice(0, -2).forEach(x => {
 		if ($(x).text() == page[parent][0] + 1) $(x).attr("id", "pgSelected")
 	})
+	loadingLists = false
 }
 
 async function onlinePageSwitch(num, online, parent, ctype) {
-	online.page = clamp(num, 0, page[parent][1]-1)
+	loadingLists = true
+	online.page = clamp(num, 0, page[parent][1] - 1)
 
 	// Without redrawing, only page scrollbar is set
 	await listOnlineViewerDrawer(online, parent, ctype)
@@ -1532,9 +1552,11 @@ async function onlinePageSwitch(num, online, parent, ctype) {
 	Object.values($(".pageYes")).slice(0, -2).forEach(x => {
 		if ($(x).text() == page[parent][0] + 1) $(x).attr("id", "pgSelected")
 	})
+	loadingLists = false
 }
 
 function search(data, parent, ctype) {
+	loadingLists = false
 	let query = $(`${parent} #searchBar`).val();
 	if (query == "") {
 		// Reset stuff
@@ -1576,7 +1598,7 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 	}
 
 	// Clear old cards
-	$(`${parent} .customLists`).empty();
+	if (!SCROLLTYPE) $(`${parent} .customLists`).empty();
 
 	// We want to sort from newest to oldest by default
 	let reversed = JSON.parse(JSON.stringify(data)).reverse();
@@ -1667,34 +1689,34 @@ function listViewerDrawer(data, parent, cardType, disableControls = [0, 0], titl
 		// No comments
 		else if (cardType == 6) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center;">${jsStr["NOCOMM"][LANG]}</p>`);
 		// Object is empty
-		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
+		else $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}
 }
 
 async function listOnlineViewerDrawer(online, parent, cardType, disableControls = [0, 0], title = "", addElements = []) {
 	let data = [];
 	let init = 0;
-	await $.get("php/"+online["path"].match(/[A-z]*\.php/), online, response => {
+	await $.get("php/" + online["path"].match(/[A-z]*\.php/), online, response => {
+		if (response == 3) response = [[], [], online]
 		originalListData[parent] = response; currentListData[parent] = response;
 		page[parent] = [parseInt(response[2].page), response[2].maxPage]
 		data = response
-		if (online.startID == 999999) {init = 1; online.startID = response[2].startID}
+		if (online.startID == 999999) { init = 1; online.startID = response[2].startID }
 	})
-
-	// Clear old cards
-	$(`${parent} .customLists`).empty();
 
 	// List search button action
 	$(`${parent} .doSearch`).off("click")
 	$(`${parent} .doSearch`).one("click", () => {
-		online.searchQuery = $(`${parent} #searchBar`).val()
+		online.searchQuery = $(`${parent} #searchBar`).val() // TODO: FIX SEARCHING!!!!!!!!
+		online.startID = 999998
+		online.page = 0
+		$(`${parent} > .customLists`).empty()
 		listOnlineViewerDrawer(online, parent, cardType, disableControls, title, addElements)
-		
 	})
 
 	$(`${parent} .pageBut`).off("click")
-	$(`${parent} .pageBut`).eq(0).one("click", () => onlinePageSwitch(online.page-1, online, parent, cardType)) // Page -1 (left) action
-	$(`${parent} .pageBut`).eq(1).one("click", () => onlinePageSwitch(online.page+1, online, parent, cardType)) // Page +1 (right) action
+	$(`${parent} .pageBut`).eq(0).one("click", () => onlinePageSwitch(online.page - 1, online, parent, cardType)) // Page -1 (left) action
+	$(`${parent} .pageBut`).eq(1).one("click", () => onlinePageSwitch(online.page + 1, online, parent, cardType)) // Page +1 (right) action
 
 	if (init) {
 		if (data[0].length == 0) {
@@ -1722,7 +1744,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 		$(".page > *:not(.pageBut)").remove()
 		let keepSize = (page[parent][0] < 3 || page[parent][1] - page[parent][0] < 4) ? 6 : 5
 		for (let i = 0; i < clamp(page[parent][1], 0, keepSize); i++) {
-			$(".pageYes:last()").click(() => onlinePageSwitch(i-1, online, parent, cardType))
+			$(".pageYes:last()").click(() => onlinePageSwitch(i - 1, online, parent, cardType))
 			$(".pageBut").eq(1).before(`<div class="uploadText pageYes button">${i + 1}</div>`)
 		}
 		$(".pageYes:last()").click(() => onlinePageSwitch(page[parent][1] - 1, online, parent, cardType))
@@ -1754,7 +1776,7 @@ async function listOnlineViewerDrawer(online, parent, cardType, disableControls 
 		// No comments
 		else if (cardType == 6) $(`${parent} .customLists`).append(`<p class="uploadText" style="text-align: center;">${jsStr["NOCOMM"][LANG]}</p>`);
 		// Object is empty
-		else if (cardType == 4 || currentListData[parent] != originalListData[parent]) $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
+		else $(`${parent} .customLists`).append(`<p align=center>${jsStr['NO_RES'][LANG]}</p>`);
 	}
 	return online
 	// Draw pages
@@ -1766,7 +1788,7 @@ function doSearch(e) {
 
 function login(part) {
 	if (part == 1) { // Discord popup
-		window.location.replace(`https://discord.com/api/oauth2/authorize?client_id=989511463360139264&redirect_uri=${encodeURIComponent(window.location.origin+window.location.pathname+"php/accounts.php")}&response_type=code&scope=identify`)
+		window.location.replace(`https://discord.com/api/oauth2/authorize?client_id=989511463360139264&redirect_uri=${encodeURIComponent(window.location.origin + window.location.pathname + "php/accounts.php")}&response_type=code&scope=identify`)
 	}
 	else if (part == 2) {
 		let loginData = getCookie("logindata")
@@ -1778,12 +1800,14 @@ function login(part) {
 			setPFP(loginData)
 			$("#app").prepend(`
 		<div class="uploadBG uploadText" id="loginPopup">
-			<img id="loginPFP" src="https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png">
+			<img id="loginPFP">
 			<h2>${jsStr["WELCOME1"][LANG]}<cy>${loginData[0]}</cy>!</h2>
 			<h4>${jsStr["WELCOME2"][LANG]}</h4>
 			<button class="button eventButton uploadText" onclick="hideLoginPopup()">Ok!</button>
 		</div>
 			`)
+
+			getProfilePicture(`https://cdn.discordapp.com/avatars/${loginData[1]}/${loginData[2]}.png`).then(link => $("#loginPFP").attr("src", link))
 			localStorage.setItem("userInfo", JSON.stringify(loginData))
 		}
 	}
@@ -1816,7 +1840,7 @@ function openSettings() {
 	setOpened = !setOpened
 }
 
-function setPFP(userInfo) {
+async function setPFP(userInfo) {
 	$(".loginBut").remove()
 	$(".logContainer").show()
 	$(".setLoginText").text(userInfo[0])
@@ -1825,12 +1849,7 @@ function setPFP(userInfo) {
 	`)
 
 	$(".userIcon").attr("id", "userLoggedIn")
-	if (userInfo[2] == null) {
-		$(".userIcon").attr("src", "images/defaultPFP.webp")
-	}
-	else {
-		$(".userIcon").attr("src", `https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`)
-	}
+	await getProfilePicture(`https://cdn.discordapp.com/avatars/${userInfo[1]}/${userInfo[2]}.png`).then(link => $(".userIcon").attr("src", link))
 }
 
 function colorRatings(like) {
@@ -1870,8 +1889,32 @@ function rateList(el) {
 	$.post("php/rateAction.php", postArray, data => {
 		$("#likes").text(data.ratings[0])
 		$("#dislikes").text(data.ratings[1])
+		$("#rateRatio").text(data.ratings[0] - data.ratings[1])
+
 		discolorRatings(data.ratings[0], data.ratings[1])
 		if (data.result == "deleted") return
 		else colorRatings(smashedLike)
 	})
+}
+
+function rateLogin() {
+	$("#popupBG").show()
+	$("#popupBG").css("opacity", 1)
+
+	// reusing the login popup... how lazy of me :D
+	$("#app").prepend(`
+	<div class="uploadBG uploadText" id="loginPopup" style="opacity: 0;">
+		<div class="quoteContainer" style="margin: auto; font-size: 0.75em;">
+			<img src="" style="width: 3em;" class="loginEmoji" loading="lazy">
+			<h2 class="quote"></h2>
+		</div>	
+		<h4>${jsStr["RATELOGIN"][LANG]}</h4>
+		<div style="display: flex; gap: 1em;">
+			<div onclick="login(1)" class="button eventButton uploadText settingsButton noMobileResize loginBut"><img src="images/discord.svg">${jsStr["LOGIN"][LANG]}</div>
+			<div onclick="hideLoginPopup()" class="button eventButton uploadText settingsButton noMobileResize" id="lessImportantButton"><img src="images/close.svg">${jsStr["NOTNOW"][LANG]}</div>
+		</div>
+	</div>
+		`)
+	lockQuotes()
+	$("#loginPopup").animate({opacity: 1}, 100)
 }

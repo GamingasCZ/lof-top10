@@ -1,0 +1,23 @@
+<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <linearGradient id="b" x2="32" y1="16" y2="16" gradientTransform="translate(-10.144 5.8564)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#80ffff" offset="0"/>
+   <stop stop-color="#4338f0" offset="1"/>
+  </linearGradient>
+  <mask id="a" maskUnits="userSpaceOnUse">
+   <path id="c" d="m-3.5745 18.649h39.215v24.216h-39.215z" fill="#fff"/>
+   <path d="m11.829 5.7927-27.683 27.191 39.219 22.643 19.375-31.988zm11.349 6.5684c3.583 2.3032 5.7489 6.2705 5.7487 10.53-1.49e-4 6.9125-5.6036 12.516-12.516 12.517-6.9133 5.83e-4 -12.518-5.6036-12.518-12.517-1.608e-4 -6.9136 5.6047-12.518 12.518-12.517 2.3997 1.25e-4 4.7487 0.69003 6.7674 1.9875z" stroke-width=".78232"/>
+  </mask>
+ </defs>
+ <g>
+  <circle transform="rotate(-30)" cx="5.8564" cy="21.856" r="16" fill="url(#b)" stroke-linecap="round" stroke-width="10.519"/>
+ </g>
+ <g transform="matrix(1.107 -.63912 .63912 1.107 -16.797 1.1478)">
+  <g fill="none" mask="url(#a)" stroke-dashoffset="25.618" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="2" stroke-width="5.149">
+   <path d="m0 25.496c5.4069-4.3432 10.877-4.3844 16.411 0 5.5166 5.1051 11.047 5.247 15.655 0" stroke="#f63838"/>
+   <path d="m0 28.8c5.4069-4.3432 10.877-4.3844 16.411 0 5.5166 5.1051 11.047 5.247 15.655 0" stroke="#f68c38"/>
+   <path d="m0 32.104c5.4069-4.3432 10.877-4.3844 16.411 0 5.5166 5.1051 11.047 5.247 15.655 0" stroke="#f6f238"/>
+   <path d="m0 35.408c5.4069-4.3432 10.877-4.3844 16.411 0 5.5166 5.1051 11.047 5.247 15.655 0" stroke="#62f638"/>
+  </g>
+ </g>
+</svg>

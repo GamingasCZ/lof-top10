@@ -8,6 +8,18 @@ header('Content-type: application/json'); // Return as JSON
 require("secrets.php");
 
 if (sizeof($_GET) == 1) {
+    if (array_keys($_GET)[0] == "check") { // Check login validity
+        if (!isset($_COOKIE["access_token"])) {echo -1; return false;} // Not logged in
+
+        echo checkAccount() ? 1 : 0;
+        return true;
+    }
+    if (array_keys($_GET)[0] == "logout") { // Check login validity
+        removeCookie("access_token");
+        echo "1";
+        return true;
+    }
+
     // Get the access token from the authorization code
     $tokenUrl =  array(
         "client_id" => $DISCORD_CLIENT_ID,

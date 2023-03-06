@@ -49,6 +49,10 @@ var help = {
         "title": jsStr["OLDLIST_T"],
         "content": jsStr["OLDLIST_D"]
     },
+    "pinPoll": {
+        "title": "Připínání hlasování",
+        "content": "Připlá hlasování budou zviditelněná tím, že se zobrazí nad seznamem. Nad seznamem mohou být maximálně 3 hlasování! "
+    }
 }
 
 function closeHelp() {
@@ -56,7 +60,7 @@ function closeHelp() {
     $(".helpBG").fadeOut();
 }
 async function openHelp(yes) {
-    if (yes == "license") await $.get("https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/LICENSE", d => {help[yes]["content"] = d})
+    if (yes == "license") await $.get("https://raw.githubusercontent.com/GamingasCZ/lof-top10/master/LICENSE", d => {help[yes]["content"] = [d,d]})
 
     $("#helpTitle").html(help[yes]["title"][LANG])
     $("#helpContent").html(help[yes]["content"][LANG])

@@ -49,7 +49,7 @@ $result = $mysqli->query($query) or die($mysqli -> error);
 $comments = $result -> fetch_all(MYSQLI_ASSOC);
 
 $dbInfo["maxPage"] = $maxpage;
-$dbInfo["startID"] = $comments[0]["comID"];
+$dbInfo["startID"] = sizeof($comments) ? $comments[0]["comID"] : null;
 $dbInfo["page"] = $_GET["page"];
 $dbInfo["path"] = $_SERVER["SCRIPT_NAME"];
 $dbInfo["commAmount"] = $commAmount;
