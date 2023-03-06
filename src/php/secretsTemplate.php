@@ -82,14 +82,15 @@ function decrypt($ivHashCiphertext) {
     return openssl_decrypt($ciphertext, $method, $key, OPENSSL_RAW_DATA, $iv);
 }
 
-function post($url, $data, $headers, $needsRURL = false) {
+function post($url, $data, $headers, $needsRURL = false, $noEncodeKeys = []) {
     global $GDL_ENDPOINT;
+
+    $curl = curl_init($url);
     foreach ($data as $key => $value) {
-        $data[$key] = urlencode($value);
+        $data[$key] = curl_unescape($curl, $value);
     }
     if ($needsRURL) { $data["redirect_uri"] = $GDL_ENDPOINT . "/php/accounts.php"; }
 
-    $curl = curl_init($url);
     curl_setopt($curl, CURLINFO_HEADER_OUT, true);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     if (sizeof($data) > 0 and !is_string($data)) {
@@ -129,8 +130,8 @@ function refreshToken($currToken) {
     $baseURL = "https://discord.com/api/v10/oauth2/token";
     $accessInfo = json_decode(post($baseURL, $tokenUrl, $tokenHeaders, 0), true);
     if (array_key_exists("error", $accessInfo)) {
-        setcookie("access_token","",time()-3600000);
-        setcookie("cA","",time()-3600000);
+        removeCookie("access_token");
+        removeCookie("cA");
         return false;
     }
 
@@ -140,7 +141,7 @@ function refreshToken($currToken) {
     $ok = json_decode(post($baseURL, array(), $tokenHeaders), true);
     
     // Encrypt and save access token into a cookie
-    setcookie("access_token", encrypt(($accessInfo["access_token"])."|".(time()-$accessInfo["expires_in"])."|".($ok["id"])), time()+$accessInfo["expires_in"], "/");
+    setcookie("access_token", encrypt(($accessInfo["access_token"])."|".(time()+$accessInfo["expires_in"])."|".($ok["id"])), time()+$accessInfo["expires_in"], "/");
     
     $mysqli -> query(sprintf('UPDATE `users` SET `username`="%s", `avatar_hash`="%s", `refresh_token`="%s" WHERE `discord_id`="%s"', $ok["username"], $ok["avatar"], $accessInfo["refresh_token"], $ok["id"]));
     $mysqli -> close();
@@ -148,19 +149,14 @@ function refreshToken($currToken) {
     return $accessInfo["access_token"];
 }
 
+function removeCookie($cookie) {
+    setcookie($cookie, null, -1, "/");
+    unset($_COOKIE[$cookie]);
+}
+
 function checkAccount() {
     if (!isset($_COOKIE["access_token"])) return false;
 
-    if (isset($_COOKIE["cA"])) {
-        $data = decrypt($_COOKIE["cA"]);
-        if (strpos($data, "<hash>")) {
-            $check = explode("<hash>", $data, 2);
-            if (md5($check[0]) == $check[1]) {
-                return json_decode($check[0], true);
-            }
-        }
-    }
- 
     $token = explode("|", decrypt($_COOKIE["access_token"]));
     if (time()-$token[1] < 86400) $token[0] = refreshToken($token);
 
@@ -170,11 +166,11 @@ function checkAccount() {
     $json = json_decode($ok, true);
 
     if (isset($json["message"]) && strstr($json["message"], "401")) { // Invalid token, logout
-        setcookie("access_token","",time()-3600000);
-        setcookie("cA","",time()-3600000);
-        return false;
+        removeCookie("access_token");
+        removeCookie("cA");
+        $res = refreshToken($token);
+        return $res ? true : false;
     }
-    setcookie("cA",encrypt($ok . "<hash>" . md5($ok)), time()+300);
     return $json;
 }
 
@@ -185,6 +181,10 @@ function checkListOwnership($mysqli, $user_id) {
 
 function list_id($row) {
     return $row["hidden"] == 0 ? $row["id"] : $row["hidden"];
+}
+
+function clamp($current, $min, $max) {
+    return max($min, min($max, $current));
 }
 
 ?>

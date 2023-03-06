@@ -22,7 +22,7 @@ switch (array_keys($_GET)[0]) {
         break;
     }
     case "levelName": {
-        $levelDataReq = post("https://www.boomlings.com/database/getGJLevels21.php", ["secret"=>"Wmfd2893gb7","type"=>0,"str"=>$_GET["name"]], [], $noEncodeKeys = ["str"]);
+        $levelDataReq = post("https://www.boomlings.com/database/getGJLevels21.php", ["secret"=>"Wmfd2893gb7","type"=>0,"str"=>$_GET["levelName"]], []);
         if ($levelDataReq == -1) { // No levels found
             http_response_code(404);
             die(-1);
