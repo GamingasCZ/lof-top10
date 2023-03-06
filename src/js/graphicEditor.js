@@ -15,7 +15,7 @@ function getDetailsFromID(id) {
             return false
         }
 
-        $.get("../php/rubLevelData.php", {"id": givenID}, function (data) {
+        $.get("./php/rubLevelData.php", {"id": givenID}, function (data) {
             if (data != -1) saveGDBresult(id, data)
             else {
                 $(".idbox" + id).addClass("inputErr");
@@ -35,15 +35,15 @@ async function getDetailsFromName(id) {
     let givenMaker = $(".cardLCreator" + id).val();
 
     // Only level name passed in (most liked with that name)
-    if (givenName != "" && givenMaker == "") url = `../php/rubLevelData.php/?levelName=${givenName}`
+    if (givenName != "" && givenMaker == "") url = `./php/rubLevelData.php/?levelName=${givenName}`
     // Only creator passed in (newest level from user)
-    else if (givenName == "" && givenMaker != "") url = `../php/rubLevelData.php/?levelMaker=${givenMaker}`
+    else if (givenName == "" && givenMaker != "") url = `./php/rubLevelData.php/?levelMaker=${givenMaker}`
     // Both passed in (newest level from passed in used with the passed in name)
     else {
         for (let pages = 0; pages < MAX_GDB_SCROLL; pages++) {
             if (!succ) {
                 await $.ajax({
-                    url: `../php/rubLevelData.php/?userSearch=${givenMaker}&name=${givenName}&page=${pages}`, timeout: 1000, "Access-Control-Allow-Origin": "*",
+                    url: `./php/rubLevelData.php/?userSearch=${givenMaker}&name=${givenName}&page=${pages}`, timeout: 1000, "Access-Control-Allow-Origin": "*",
                     success: data => {
                         if (data.name != undefined) {
                             saveGDBresult(id, data)
