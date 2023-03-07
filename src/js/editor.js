@@ -272,6 +272,8 @@ const pageExit = exit => {
 function makeBrowser() {
     let isSearching = null
 
+    browser = 0
+
     hash = window.location.hash
     let search = hash.includes("!") ? hash.split("!")[1] : ""
     if (search != "") {
@@ -290,7 +292,7 @@ function makeBrowser() {
     }
 
     // Generates stuff
-    if (hash == "#uploads") { browser = 0; switchBrowser('#uploads') }
+    if (hash == "#uploads") { switchBrowser('#uploads') }
     else {
         listOnlineViewerDrawer(
             {startID: 999999, searchQuery: isSearching, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0},
