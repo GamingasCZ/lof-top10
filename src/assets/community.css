@@ -277,7 +277,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.08);
     border: none;
-    border-radius: 25px;
+    border-radius: 0.5em;
     min-width: 2vw;
     box-sizing: border-box;
 }
@@ -390,7 +390,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
     margin: 15px 30%;
     background-color: rgb(36, 36, 36);
     border: rgb(36, 36, 36) 5px solid;
-    border-radius: 20em;
+    border-radius: 0.5em;
     padding: 3px 5px;
     color: white;
     transform: translateY(-20%);
@@ -1436,6 +1436,7 @@ input:disabled {
 
 #reviewDesc {
     width: 100%;
+    background: rgba(23, 23, 23, 0.35);
 }
 
 #reviewDescContainer {
@@ -1451,17 +1452,92 @@ input:disabled {
     gap: 1em;
 }
 
+#reviewTitleContainer > input { background: rgba(23, 23, 23, 0.35); }
+
 #reviewStarContainer {
     margin-right: 2.5em;
     box-sizing: border-box;
-    border-radius: 10em;
+    border-radius: 0.5em;
     background: rgba(255, 255, 255, 0.08);
     display: flex;
     padding: 0 0.4em;
+    background: rgba(23, 23, 23, 0.35);
 }
 
 #reviewStarContainer > img {
     width: 2em;
+}
+
+#reviewSliderHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 0.7em;
+}
+
+#reviewPresetsContainer {
+    --overflowEnabled: linear-gradient(90deg, transparent, #0f0f0fbf);
+	flex-grow: 1;
+	margin-right: 0.5em;
+	background: rgba(23, 23, 23, 0.35);
+	padding: 0.5em 0;
+	border-radius: 0.5em 0.5em 0 0;
+    font-size: 0.8em;
+	overflow-x: auto;
+	position: relative;
+}
+
+#reviewPresetsContainer::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 4em;
+    background: var(--overflowEnabled);
+    right: 0;
+    top: 0;
+  }
+
+#reviewSliderContainer {
+	background: rgba(23, 23, 23, 0.2);
+	margin-right: 2.5em;
+	padding: 0.5em;
+	border-radius: 0 0 0.5em 0.5em;
+	gap: 0.5em;
+	display: flex;
+	flex-direction: column;
+}
+
+.reviewSlider {
+	background: rgba(23, 23, 23, 0.35);
+	padding: 0.4em 1em;
+	border-radius: 0.5em;
+}
+
+.reviewSliderHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.reviewSliderHeader > label {
+    margin: 0;
+    flex-grow: 1;
+}
+
+.reviewSliderOptions {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.reviewSliderOptions > img {
+    width: 1.8em;
+}
+
+.reviewSliderOptions > label {
+    background: rgba(108, 108, 108, 0.35);
+    padding: 0.3em 0.7em;
+    border-radius: 1em;
 }
 
 .browserButton {

@@ -951,30 +951,96 @@ function openReviewDropdown(lp) {
     </div>
     <div id="reviewDescContainer">
         <textarea id="reviewDesc" class="listDesc uploadText" placeholder="Recenze"></textarea>
-        <img src="./images/fullscreen.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize descFSbutton">
+        <img src="./images/fullscreen.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize reviewFSbutton">
     </div>
-    <div id="reviewSliderContainer">
-        <div>
-            <div>
-                <button type="button" class="uploadText button eventButton">Dekorace</button>
-                <button type="button" class="uploadText button eventButton">Gameplay</button>
-                <button type="button" class="uploadText button eventButton">Sync</button>
-                <button type="button" class="uploadText button eventButton">Mince</button>
+    <div id="reviewSliderParent">
+        <div id="reviewSliderHeader">
+            <div id="reviewPresetsContainer">
+                <button type="button" class="uploadText button noMobileResize eventButton reviewPreset">Dekorace</button>
+                <button type="button" class="uploadText button noMobileResize eventButton reviewPreset">Gameplay</button>
+                <button type="button" class="uploadText button noMobileResize eventButton reviewPreset">Obtížnost</button>
+                <button type="button" class="uploadText button noMobileResize eventButton reviewPreset">Čitelnost</button>
+                <button type="button" class="uploadText button noMobileResize eventButton reviewPreset">Sync</button>
+                <button type="button" class="uploadText button noMobileResize eventButton reviewPreset">Mince</button>
             </div>
-            <img src="./images/plus.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize descFSbutton">
+            <img src="./images/plus.svg" id="passSubmit" style="width: 1.5em;" class="button noMobileResize addReviewSliderButton">
         </div>
         <div id="reviewSliderContainer">
-        
         </div>
     </div>
     
     `)
+
     review.appendTo($(".cardContainer" + lp))
+
+    $(".addReviewSliderButton:visible").click(() => addReviewSlider(null))
+    $(".reviewPreset").click(e => {
+        addReviewSlider($(e.currentTarget).parent().children().index(e.currentTarget))
+    })
+    $("#reviewStarContainer > *").on("mouseover click", e => {
+        $("#reviewStarContainer > *").attr("src", "images/starUnfilled.svg")
+
+        let mouseX = e.originalEvent.clientX
+        let starX = e.currentTarget.x
+        let starWidth = e.currentTarget.clientWidth
+
+        let starIndex = $(e.currentTarget).parent().children().index(e.currentTarget)
+        let rating = 0
+        for (let i = 0; i <= starIndex; i++) {
+            $("#reviewStarContainer > *").eq(i).attr("src", "images/star.svg")
+            if (i == starIndex) {
+                rating = i+1
+                if (mouseX < starX+starWidth/2) {
+                    $("#reviewStarContainer > *").eq(i).attr("src", "images/starHalfFilled.svg")
+                    rating = i+0.5
+                }
+                if (e.type == "click") levelList[lp].review[0] = rating
+            }
+        }
+        
+    })
+    $("#reviewStarContainer > *").mouseout(() => {
+        $("#reviewStarContainer > *").attr("src", "images/starUnfilled.svg")
+        for (let i = 0; i < Math.ceil(levelList[lp].review[0]); i++) {
+            $("#reviewStarContainer > *").eq(i).attr("src", "images/star.svg")
+        }
+        if (levelList[lp].review[0] % 1 > 0) {
+            $("#reviewStarContainer > *").eq(Math.floor(levelList[lp].review[0])).attr("src", "images/starHalfFilled.svg")
+        }
+    })
+}
+
+function addReviewSlider(presetID) {
+    let sliderName = $(`#reviewPresetsContainer > button:eq(${presetID ?? 0})`).text()
+
+    $("#reviewSliderContainer:visible").append(`
+    <div class="reviewSlider">
+        <div class="reviewSliderHeader">
+            <label>${sliderName}</label>
+            <div class="reviewSliderOptions">
+                <img src="images/smallClose.svg" class="button">
+                <label class="sliderRating">7.5/10</label>
+            </div>
+        </div>
+        <input type="range" id="bgCoverageSlider" min="0" max="100">
+    </div>
+    `)
+
+    $(".reviewSlider:last > input").on("input", e => {
+        let value = `${e.currentTarget.value/10}/10`
+        $(e.currentTarget).parent().find(".sliderRating").text(value)
+
+    })
 }
 
 /*
-            <h6>Dekorace</h6>
-            <input type="range" id="bgCoverageSlider" min="0" max="100">
+Pro hodnocení kvalit levelu vyber ze šablon, nebo vytvoř nové kritérium!
+        <div>
+            <img src="images/modernCheck.svg" onclick="checkCheckbox(&quot;hidden&quot;)" for="hidden" class="setCheckbox button">
+            <label for="private" class="uploadText setLabel">Měnit celkové hodnocení levelu</label>
+        </div>
+
+            
 */
 
 function openColorPicker(lp) {
@@ -1221,7 +1287,7 @@ function card(index) {
                 <img class="collListBut button colButton${index}" style="margin-left: 1vw;" id="posInputPics" src="./images/bytost.webp" onclick="showCollabTools(${index})">
             </div>
 
-            <div style="display: flex; width: 100%;">
+            <div style="display: flex; width: 100%;margin-top: 0.4em;">
                 <div style="display: flex; align-items: center;">
                     <img id="posInputPics" src="./images/yticon.webp">
                     <input class="cardLVideo${index} cardInput" maxlength="50" autocomplete="off" id="posInputBox" type="text" placeholder="${jsStr['L_VIDEO'][LANG]}">
