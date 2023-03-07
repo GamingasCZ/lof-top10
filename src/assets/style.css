@@ -395,6 +395,7 @@ ul > div {
   transition: height 0.2s ease-in-out;
   overflow: hidden;
   line-height: 130%;
+  white-space: pre-wrap;
 }
 
 #listDescription::before {
