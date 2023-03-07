@@ -1557,6 +1557,7 @@ async function onlinePageSwitch(num, online, parent, ctype) {
 
 function search(data, parent, ctype) {
 	loadingLists = false
+	$(`${parent} > .customLists`).empty()
 	let query = $(`${parent} #searchBar`).val();
 	if (query == "") {
 		// Reset stuff
