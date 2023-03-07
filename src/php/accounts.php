@@ -41,18 +41,24 @@ if (sizeof($_GET) == 1) {
     setcookie("logindata", $userInfo, time()+30, "/");
 
     // Encrypt and save access token into a cookie
-    setcookie("access_token", encrypt(($accessInfo["access_token"])."|".(time()-$accessInfo["expires_in"])."|".($ok["id"])), time()+$accessInfo["expires_in"], "/");
+    setcookie("access_token", encrypt(($accessInfo["access_token"])."|".(time()-$accessInfo["expires_in"])."|".($ok["id"])), time()+2678400, "/");
 
     // Save data to database
     $mysqli = new mysqli($hostname, $username, $password, $database);
     if ($mysqli -> connect_errno) die("0");
 
-    $mysqli -> query(sprintf("INSERT INTO `users`(`username`, `avatar_hash`, `discord_id`, `refresh_token`) VALUES ('%s','%s','%s','%s')", $ok["username"], $ok["avatar"], $ok["id"], $accessInfo["refresh_token"]));
-
-    // Database does not allow duplicate values (already registered), do not die in that case, else ye, commit die :D
-    if (strpos(mysqli_error($mysqli), "Duplicate") !== false) {
-        $mysqli -> query(sprintf("UPDATE `users` SET `username`='%s', `avatar_hash`='%s', `refresh_token`='%s' WHERE `discord_id`='%s'", $ok["username"], $ok["avatar"], $accessInfo["refresh_token"], $ok["id"]));
+    try {
+        $mysqli -> query(sprintf("INSERT INTO `users`(`username`, `avatar_hash`, `discord_id`, `refresh_token`) VALUES ('%s','%s','%s','%s')", $ok["username"], $ok["avatar"], $ok["id"], $accessInfo["refresh_token"]));
+        // Database does not allow duplicate values (already registered), do not die in that case, else ye, commit die :D
+        if (strpos(mysqli_error($mysqli), "Duplicate") !== false) {
+            $mysqli -> query(sprintf("UPDATE `users` SET `username`='%s', `avatar_hash`='%s', `refresh_token`='%s' WHERE `discord_id`='%s'", $ok["username"], $ok["avatar"], $accessInfo["refresh_token"], $ok["id"]));
+        }
+    } catch (mysqli_sql_exception $err) {
+        if (str_contains($err, "Duplicate")) {
+            $mysqli -> query(sprintf("UPDATE `users` SET `username`='%s', `avatar_hash`='%s', `refresh_token`='%s' WHERE `discord_id`='%s'", $ok["username"], $ok["avatar"], $accessInfo["refresh_token"], $ok["id"]));
+        }
     }
+
     $mysqli -> close();
 
     header("Location: " . $GDL_ENDPOINT ."/#login");

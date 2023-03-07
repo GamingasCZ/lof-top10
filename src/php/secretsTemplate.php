@@ -141,7 +141,7 @@ function refreshToken($currToken) {
     $ok = json_decode(post($baseURL, array(), $tokenHeaders), true);
     
     // Encrypt and save access token into a cookie
-    setcookie("access_token", encrypt(($accessInfo["access_token"])."|".(time()+$accessInfo["expires_in"])."|".($ok["id"])), time()+$accessInfo["expires_in"], "/");
+    setcookie("access_token", encrypt(($accessInfo["access_token"])."|".(time()+$accessInfo["expires_in"])."|".($ok["id"])), time()+2678400, "/");
     
     $mysqli -> query(sprintf('UPDATE `users` SET `username`="%s", `avatar_hash`="%s", `refresh_token`="%s" WHERE `discord_id`="%s"', $ok["username"], $ok["avatar"], $accessInfo["refresh_token"], $ok["id"]));
     $mysqli -> close();
@@ -169,7 +169,7 @@ function checkAccount() {
         removeCookie("access_token");
         removeCookie("cA");
         $res = refreshToken($token);
-        return $res ? true : false;
+        return checkAccount();
     }
     return $json;
 }
