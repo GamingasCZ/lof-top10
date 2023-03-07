@@ -271,40 +271,31 @@ const pageExit = exit => {
 
 function makeBrowser() {
     let isSearching = null
-    $.get("./parts/listBrowser.html", dt => {
-        hash = window.location.hash
-        let search = hash.includes("!") ? hash.split("!")[1] : ""
-        if (search != "") {
-        
-            $("#searchBar").val(search)
-            isSearching = decodeURIComponent(search)
-        }
 
-        // Add switch buttons
-        if (hasLocalStorage() && localStorage.getItem("userInfo") != null) {
-            $(".titleTools").after(`<div class="browserContainer">
-                <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#browse')">${jsStr["NEWEST"][LANG]}</button>
-                <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#uploads')">${jsStr["UPLOADS"][LANG]}</button>
-            </div>`)
-            $(".browserButton").eq(hash == "#uploads").attr("id", "browserBSelected")
-        }
+    hash = window.location.hash
+    let search = hash.includes("!") ? hash.split("!")[1] : ""
+    if (search != "") {
+    
+        $("#searchBar").val(search)
+        isSearching = decodeURIComponent(search)
+    }
 
-        // Generates stuff
-        if (hash == "#uploads") browser = 1
+    // Add switch buttons
+    if (hasLocalStorage() && localStorage.getItem("userInfo") != null) {
+        $(".titleTools").after(`<div class="browserContainer">
+            <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#browse')">${jsStr["NEWEST"][LANG]}</button>
+            <button class="browserButton noMobileResize uploadText button" onclick="switchBrowser('#uploads')">${jsStr["UPLOADS"][LANG]}</button>
+        </div>`)
+        $(".browserButton").eq(hash == "#uploads").attr("id", "browserBSelected")
+    }
 
-        $(".browserButton").attr("id", "")
-        if (browser > 0) {
-            if ($(".privateSel").length == 0) {
-                $(".browserContainer").append(`<div style="padding: 0.3em 0.4em 0;" class="button browserButton noMobileResize privateSel" title="${jsStr["SH_PRIVATE"][LANG]}"><img style="width: 1.6em;" src="images/hidden.svg"></div>`)
-                $(".privateSel").click(() => switchBrowser("#hidden"))
-            }
-        }
-        $(".browserButton").eq(browser).attr("id", "browserBSelected")
-
+    // Generates stuff
+    if (hash == "#uploads") { browser = 0; switchBrowser('#uploads') }
+    else {
         listOnlineViewerDrawer(
             {startID: 999999, searchQuery: isSearching, page: 0, path: "/php/getLists.php", fetchAmount: 8, sort: 0},
             "#communityContainer", 4, [0, 0], jsStr["CLISTS"][LANG])
-    })
+    }        
 }
 
 function changeUsernames(data, type) {
