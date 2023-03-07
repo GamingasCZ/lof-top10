@@ -10,7 +10,7 @@ Return codes:
 6 - Comment sent!!
 */
 
-require("secrets.php");
+require("globals.php");
 header('Content-type: application/json'); // Return as JSON
 
 // Checking request

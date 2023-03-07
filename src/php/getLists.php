@@ -9,7 +9,7 @@ Return codes:
 */
 
 header("Content-Type: application/json"); // Return as JSON
-require("secrets.php");
+require("globals.php");
 
 $mysqli = new mysqli($hostname, $username, $password, $database);
 if ($mysqli->connect_errno) {

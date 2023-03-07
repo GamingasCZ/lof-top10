@@ -5,7 +5,7 @@ Return codes:
 1 - Account already created
 */
 header('Content-type: application/json'); // Return as JSON
-require("secrets.php");
+require("globals.php");
 
 if (sizeof($_GET) == 1) {
     if (array_keys($_GET)[0] == "check") { // Check login validity

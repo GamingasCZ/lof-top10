@@ -1,5 +1,5 @@
 <?php
-require("secrets.php");
+require("globals.php");
 header('Content-type: application/json'); // Return as JSON
 /*
 Return codes:

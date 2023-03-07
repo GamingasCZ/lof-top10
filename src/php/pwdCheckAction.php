@@ -8,7 +8,7 @@ Return codes:
 4 - Success!!
 */
 
-require("secrets.php");
+require("globals.php");
 header('Content-type: application/json'); // Return as JSON
 
 $mysqli = new mysqli($hostname, $username, $password, $database);

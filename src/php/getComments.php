@@ -5,7 +5,7 @@
 3 - Bad list ID
 */
 
-require("secrets.php");
+require("globals.php");
 header('Content-type: application/json'); // Return as JSON
 
 if (!preg_match('/[A-z]/', $_GET["listid"])) {

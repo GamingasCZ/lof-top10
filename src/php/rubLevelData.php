@@ -1,6 +1,6 @@
 <?php
 header('Content-type: application/json'); // Return as JSON
-require("secrets.php");
+require("globals.php");
 $returnData = [];
 
 
