@@ -497,7 +497,7 @@ function doDiffGuessing(cardBG, bIndex) {
 		<div class="boxHeader">
 			<span class="listLNContainer"><p id="listLevelName">${boards[bIndex]["levelName"]}</p></span>
 			<div class="boxLinksContainer">
-				<img src="images/skip.webp" title="${jsStr["SKIP"][LANG]}" style="width: 5vw" class="button skipBut">
+				<img src="images/skip.svg" title="${jsStr["SKIP"][LANG]}" class="button boxLink skipBut">
 			</div>
 		</div>
 		${boxCreator(boards[bIndex]["creator"], bIndex, true)}
