@@ -138,6 +138,7 @@
     padding: 0;
     flex-direction: column;
     transform: translate(-50%,-50%);
+    backdrop-filter: blur(20px) brightness(50%);
 }
 
 .collabBar {
