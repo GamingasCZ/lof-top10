@@ -594,6 +594,7 @@ ul > div {
   display: inherit;
   background: #00000039;
   border-radius: 5px;
+  position: relative;
 }
 
 .graphLine:hover {
@@ -616,12 +617,13 @@ ul > div {
   transition: opacity 0.1s;
   transform: scaleY(0.8);
   font-size: var(--smallFont);
+  height: inherit;
 }
 
 .graphLine {
   transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
   transform: none;
-  min-height: var(--normalFont);
+  position: absolute;
 }
 
 .finishDiffList {

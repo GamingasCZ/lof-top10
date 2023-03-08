@@ -133,11 +133,11 @@ function hideJumpTo() {
 function descriptionShowAll() {
 	if ($("#listDescription").attr("data-open") == "0") {
 		$("#listDescription").css("--gradEnabled", "none")
-		$("#listDescription").css("height", $("#listDescription")[0].scrollHeight+10+"px")
+		$("#listDescription").css("height", $("#listDescription")[0].scrollHeight + 10 + "px")
 		$("#showMore > img").css("transform", "scaleY(-1)")
 		$("#listDescription").attr("data-open", "1")
 	}
-	else {		
+	else {
 		$("#listDescription").css("--gradEnabled", "")
 		$("#listDescription").css("height", "")
 		$("#showMore > img").css("transform", "scaleY(1)")
@@ -292,42 +292,27 @@ function showCollabStats(id) {
 	level[1].forEach(roles => { // Roles
 		let graphBars = [];
 
-		let firstElement = 0
 		humanRoles = humanRoles.sort((a, b) => a[0][0] - b[0][0])
-		humanRoles.forEach(hum => {
-			if (hum[1] == roles.id) {
-				let mixAmount = 0
+		let humanParts = []
+		humanRoles.forEach(el => humanParts.push(el[0]));
 
-				// Spacing elements
-				if (firstElement == 0) { // First spacing element
-					if (0 - humanRoles[firstElement][0][0] < 0) {
-						graphBars.push(`<div class="graphLine space" style="background: none; width: ${Math.abs(0 - humanRoles[firstElement][0][0])}%; height: 100%;"></div>`)
-					}
-				}
-				else {
-					if (humanRoles[firstElement + 1] != undefined && humanRoles[firstElement][0][1] - humanRoles[firstElement + 1][0][0] < 0) { // All other elements
-						let x = humanRoles[firstElement][0][1] - humanRoles[firstElement + 1][0][0]
-						graphBars.push(`<div class="graphLine space" style="background: none; width: ${x - x * 2}%; height: 100%;"></div>`)
-					}
-
-				}
-
-				if (humanRoles[firstElement + 1] == undefined && firstElement != 0) { // Last spacing element
-					graphBars.push(`<div class="graphLine space" style="background: none; width: ${Math.abs(humanRoles[firstElement][0][1] - 100)}%; height: 100%;"></div>`)
-				}
-
-				// Role graph lines
-				graphBars.push(`<div for="${hum[3]}" class="graphLine"
-				                     style="background: ${hum[2]}; width: ${hum[0][1] - hum[0][0] - mixAmount}%; height: 100%;">
-									 <div class="graphPerc" for="${hum[3]}">	
-									 	<div class="graphText">|< ${hum[0][0]}%</div><div class="graphText">${hum[0][1]}% >|</div>
-									 </div>
-								</div>`)
-				mixAmount = 0
-			}
-			firstElement++
+		let intersections = [];
+		for (let i = 0; i < humanParts.length; i++) {
+		  for (let j = i + 1; j < humanParts.length; j++) {
+			if (humanParts[i][0] < humanParts[j][1] && humanParts[i][1] > humanParts[j][0]) intersections.push([i, j]);
+		  }
 		}
-		);
+		
+		humanRoles.forEach(hum => {
+			// Role graph lines
+			graphBars.push(`<div for="${hum[3]}" class="graphLine"
+									style="background: ${hum[2]}; width: ${hum[0][1]-hum[0][0]}%; height: 100%; left: ${hum[0][0]}%">
+									<div class="graphPerc" for="${hum[3]}">	
+										<div class="graphText">|< ${hum[0][0]}%</div><div class="graphText">${hum[0][1]}% >|</div>
+									</div>
+								</div>`)
+			}
+			);
 
 		// Adding role graphs 
 		$(".collabGraphs").append(`
@@ -349,6 +334,10 @@ function showCollabStats(id) {
 			</div>
 		</div>
 		`)
+
+		intersections.forEach(graphs => {
+			$(".graphLine").eq(graphs[1]).css("height", `${parseInt($(".graphLine")[graphs[0]].style.height.slice(0, -1))/2}%`)
+		});
 	});
 
 	// Hovering over graph parts
@@ -392,7 +381,7 @@ function hoverBar(k) {
 
 	$(nameShower[1]).text(hoverName.text())
 
-	if (k.currentTarget.clientWidth > $(".graphContainer")["0"].clientWidth * 0.15) {
+	if (k.currentTarget.clientWidth > $(".graphContainer")["0"].clientWidth * 0.15 && k.currentTarget.style.height == "100%") {
 		$(k.currentTarget.children).css("opacity", 1)
 	}
 	else {
@@ -1288,7 +1277,7 @@ $(async function () {
 		if (window.location.href.includes("browse")) $(".mobilePicker > a")[1].style.filter = "var(--lightHighlight)"
 		if (window.location.href.includes("editor")) $(".mobilePicker > a")[0].style.filter = "var(--lightHighlight)"
 
-		
+
 		$(".settingsDropdown:eq(0)").on("change", () => {
 			let scrollType = $(".settingsDropdown:eq(0)")[0].selectedIndex ? 1 : 0
 			makeCookie(["scrolling", scrollType])
@@ -1296,7 +1285,7 @@ $(async function () {
 		})
 		if (!getCookie("scrolling")) makeCookie(["scrolling", 0])
 		$($(".settingsDropdown:eq(0) > option")[parseInt(getCookie("scrolling"))]).attr("selected", true)
-		
+
 		$(".settingsDropdown:eq(1)").on("change", () => {
 			let switchLang = $(".settingsDropdown:eq(1)").val() == jsStr["CZECH"][LANG] ? 0 : 1
 			makeCookie(["lang", switchLang])
@@ -1307,14 +1296,14 @@ $(async function () {
 			let getLang = navigator.language;
 			if (["cs", "sk"].includes(getLang)) { currLang = 0; }
 			else { currLang = 1; }
-			
+
 			makeCookie(["lang", currLang])
 		}
 		$($(".settingsDropdown:eq(1) > option")[LANG]).attr("selected", true)
-		
+
 		$("footer").css("opacity", 1)
 	})
-	
+
 	SCROLLTYPE = parseInt(getCookie("scrolling"))
 	LANG = parseInt(getCookie("lang"));
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
@@ -1329,7 +1318,7 @@ $(async function () {
 		if (document.body.scrollTop > 150) $(".scrollToTop").css("opacity", 1)
 		else $(".scrollToTop").css("opacity", 0)
 
-		if ($("body").scrollTop()/($("body")[0].scrollHeight - $("body").outerHeight()) > 0.9 && !loadingLists && SCROLLTYPE) {
+		if ($("body").scrollTop() / ($("body")[0].scrollHeight - $("body").outerHeight()) > 0.9 && !loadingLists && SCROLLTYPE) {
 			let pages = page[`#${$(".customLists").parent().attr("id")}`]
 			if (pages[1] - 1 > pages[0]) $(".pageBut").eq(1).click()
 			else {
@@ -1350,7 +1339,7 @@ function checkAccount() {
 let loadingLists = false
 function logout() {
 	localStorage.removeItem("userInfo")
-	$.get("./php/accounts.php?logout", e =>{
+	$.get("./php/accounts.php?logout", e => {
 		if (e == 1) window.location.reload()
 	})
 }
@@ -1415,7 +1404,7 @@ async function lists(list) {
 				$("#listViews").text(data[0]["views"])
 				let nT = new Date(data[0]["timestamp"] * 1000);
 				$("#listDate").text(`${nT.toLocaleDateString()}`)
-				
+
 				$("#commAmount").text(data[0]["commAmount"])
 				$("#listDescription").html(parseFormatting(boards.description ?? `<div id="noDesc">${jsStr["NO_DESC"][LANG]}</div>`))
 				$("#listDescription a").click(redirectWarn)
@@ -1471,10 +1460,10 @@ async function lists(list) {
 		// 0 - likes, 1 - dislikes
 
 		$("#rateRatio").removeClass("unloadedRate")
-		$("#rateRatio").text(rates[0]-rates[1])
+		$("#rateRatio").text(rates[0] - rates[1])
 		$("#likes").text(rates[0])
 		$("#dislikes").text(rates[1])
-	
+
 		$("#likeBut").click(rates[2] == -2 ? rateLogin : rateList)
 		$("#dislikeBut").click(rates[2] == -2 ? rateLogin : rateList)
 
@@ -1917,5 +1906,5 @@ function rateLogin() {
 	</div>
 		`)
 	lockQuotes()
-	$("#loginPopup").animate({opacity: 1}, 100)
+	$("#loginPopup").animate({ opacity: 1 }, 100)
 }
