@@ -242,7 +242,7 @@ function showCollabStats(id) {
 			<td>${socialTags}</td>
 			<td>
 				<div class="pStatsContainer">
-					<img style="width: 2em;margin: 0.4vw;" src="images/gdbrowser.webp" class="getProfile button" title="${jsStr["SHOW_PROFILE"][LANG]}">
+					<img style="width: 2em;margin: 0.4vw;" src="images/modGDB.webp" class="getProfile button" title="${jsStr["SHOW_PROFILE"][LANG]}">
 				</div>
 			</td>
 		</tr>`)
