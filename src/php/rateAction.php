@@ -64,7 +64,7 @@ switch ($method) {
             doRequest($mysqli,"UPDATE lists SET rate_ratio = rate_ratio+? WHERE id=?", [$inc, $fuckupData], "ii");
             $result["result"] = "deleted";
         }
-        $result["ratings"] = getRatings($userID, $fuckupData);
+        $result["ratings"] = getRatings($accountCheck, $fuckupData);
         echo json_encode($result);
         break;
     default:
