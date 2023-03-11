@@ -72,8 +72,8 @@
 .mainInpContainer {
     display: flex;
     flex-direction: column;
-    gap: 2vh;
-    padding: 1.7vh;
+    gap: 0.6em;
+    padding: 1em;
 }
 
 .customLists {
@@ -92,7 +92,7 @@
 
 .uploadMainInp {
     font-size: var(--normalFont) !important;
-    padding: 0 1vw !important;
+    padding: 0 0.9em !important;
 }
 .titImageContainer {
     display: flex;
@@ -321,7 +321,7 @@ input:not(.gdSlider, .cardButton, .cardInput, .searchBar, .setCheckbox, .tableCp
     margin-right: 0;
     border: 0.3em white solid;
     background: none;
-    border-radius: 0.5vw;
+    border-radius: 0.5em;
     padding: 0;
     background: #020202;
 }

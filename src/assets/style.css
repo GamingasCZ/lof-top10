@@ -1111,7 +1111,7 @@ footer {
   padding: 0.3em;
   font-size: var(--bigFont);
   color: white;
-  border-radius: 1vw;
+  border-radius: 0.7em;
   max-width: 61%;
 }
 
@@ -1128,7 +1128,7 @@ footer {
   display: flex;
   padding: 0.5em 0;
   background-color: var(--normalColor);
-  border-radius: 1vw;
+  border-radius: 0.7em;
   border: none;
   align-items: center;
 }

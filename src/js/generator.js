@@ -1293,19 +1293,15 @@ $(async function () {
 		})
 		var currLang = getCookie("lang");
 		if (!currLang) {
-			let getLang = navigator.language;
-			if (["cs", "sk"].includes(getLang)) { currLang = 0; }
-			else { currLang = 1; }
-
-			makeCookie(["lang", currLang])
+			makeCookie(["lang", !["cs", "sk"].includes(navigator.language) | 0])
 		}
-		$($(".settingsDropdown:eq(1) > option")[LANG]).attr("selected", true)
-
+		
 		$("footer").css("opacity", 1)
 	})
-
+	
 	SCROLLTYPE = parseInt(getCookie("scrolling"))
-	LANG = parseInt(getCookie("lang"));
+	LANG = parseInt(getCookie("lang") ?? !["cs", "sk"].includes(navigator.language) | 0);
+	$($(".settingsDropdown:eq(1) > option")[LANG]).attr("selected", true)
 	$('img').on('dragstart', function (event) { event.preventDefault(); });
 
 	window.addEventListener("hashchange", loadSite)
