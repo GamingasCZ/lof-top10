@@ -1,4 +1,6 @@
 # Geometry Dash Level Lists
+## *Repository may soon be ARCHIVED, the site is getting rewritten from the ground up as we speak 😈*
+
 Hi, this is the code for my website where you can create your own lists of GD levels.
 
 It also serves as a site for displaying the **Top 10 Fan Levels** from my GD Level Request series :).
